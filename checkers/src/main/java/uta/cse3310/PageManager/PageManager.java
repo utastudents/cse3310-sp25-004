@@ -14,7 +14,8 @@ public class PageManager {
 
     public PageManager() {
         db = new DB();
-        pu = new PairUp();
+        // pass over a pointer to the single database object in this system
+        pu = new PairUp(db);
     }
 
 }
