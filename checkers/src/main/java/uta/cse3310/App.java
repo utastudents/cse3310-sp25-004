@@ -1,6 +1,6 @@
-package cse3310.uta;
+package uta.cse3310;
 
-import cse3310.uta.PageManager.PageManager;
+import uta.cse3310.PageManager.PageManager;
 
 public class App {
     PageManager pm;

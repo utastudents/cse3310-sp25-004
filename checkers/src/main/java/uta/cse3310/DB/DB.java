@@ -1,4 +1,4 @@
-package cse3310.uta.DB;
+package uta.cse3310.DB;
 
 public class DB {
     

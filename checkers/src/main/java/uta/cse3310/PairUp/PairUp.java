@@ -1,4 +1,4 @@
-package cse3310.uta.PairUp;
+package uta.cse3310.PairUp;
 
 public class PairUp {
     
