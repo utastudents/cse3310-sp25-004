@@ -1,4 +1,4 @@
-package cse3310.uta.GameTermination;
+package uta.cse3310.GameTermination;
 
 public class GameTermination {
     

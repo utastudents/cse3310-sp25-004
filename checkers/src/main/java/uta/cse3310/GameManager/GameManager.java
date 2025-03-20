@@ -1,4 +1,4 @@
-package cse3310.uta.GameManager;
+package uta.cse3310.GameManager;
 
 public class GameManager {
     

@@ -1,4 +1,4 @@
-package cse3310.uta.Bot;
+package uta.cse3310.Bot;
 
 public abstract class Bot {
     

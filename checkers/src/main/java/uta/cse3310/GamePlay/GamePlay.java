@@ -1,4 +1,4 @@
-package cse3310.uta.GamePlay;
+package uta.cse3310.GamePlay;
 
 public class GamePlay {
     

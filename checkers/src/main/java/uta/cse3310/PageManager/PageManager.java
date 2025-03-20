@@ -1,7 +1,7 @@
-package cse3310.uta.PageManager;
+package uta.cse3310.PageManager;
 
-import cse3310.uta.DB.DB;
-import cse3310.uta.PairUp.PairUp;
+import uta.cse3310.DB.DB;
+import uta.cse3310.PairUp.PairUp;
 
 public class PageManager {
     DB db;
