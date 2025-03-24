@@ -2,5 +2,5 @@
 
 ```
 mvn clean compile package
-mvn exec:java -Dexec.mainClass=cse3310.uta.App
+mvn exec:java -Dexec.mainClass=uta.cse3310.App
 ```
