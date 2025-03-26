@@ -1,5 +1,4 @@
 Interfaces being worked with: 
-Databases
-Game Play
-Bot 1
-Bot 2
+Database: Retrieve ELO score from DB. 
+Game Play: Game board sent to us after every move. We will determine if movements can be made and whether a player has one or a draw has occured.  
+Pair up: Retrieve ELO score from DB, update it and send back to DB> 
