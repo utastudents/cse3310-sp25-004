@@ -22,11 +22,14 @@ public class PairUp {
 class Challenge {
     Player first;
     Player second;
+    boolean hasJustOne;
     public Challenge(Player p) {
         first = p;
+        hasJustOne = true;
     }
     public Challenge(Player p, Player c) {
         first = p;
         second = c;
+        hasJustOne = false;
     }
 }
