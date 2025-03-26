@@ -1,0 +1,34 @@
+<html>
+     <div "new_account"></div>
+     new account
+     <div "join_game"></div>
+     join game
+     <div "game_display"></div>
+     game display
+     <div "summary"></div>
+     summary
+</html>
+<script>
+    var connection = null;
+
+    var serverUrl;
+    serverUrl = "ws://" + window.location.hostname +":"+ (parseInt(location.port) + 100);
+    connection = new WebSocket(serverUrl);
+
+    connection.onopen = function (evt) {
+        console.log("open");
+    }
+
+    connection.onclose = function (evt) {
+        console.log("close");
+    }
+
+    connection.onmessage = function (evt) {
+        var msg;
+        msg = evt.data;
+
+        console.log("Message received: " + msg);
+        const obj = JSON.parse(msg);
+    }
+
+</script>
