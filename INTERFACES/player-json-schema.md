@@ -34,4 +34,4 @@
 }
 ```
 ## Interfaces
-- A json object will be passed from `PageMgr` to `Summary` via method `retrieveUserJson` and `retrieveTopTenJson`
+- `PageMgr` will send a player-json object to `Summary` when `Summary` invokes methods `retrieveUserJson` and `retrieveTopTenJson`.
