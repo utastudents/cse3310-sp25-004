@@ -33,5 +33,3 @@
     }
 }
 ```
-## Interfaces
-- `PageMgr` will send a player-json object to `Summary` when `Summary` invokes methods `retrieveUserJson` and `retrieveTopTenJson`.
