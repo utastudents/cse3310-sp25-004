@@ -1,0 +1,9 @@
+Interfaces being worked with: 
+Game Manager
+Game termination 
+Game Play
+
+Description 
+Join game - Two buttons on the page one to join a queue and one to play a bot. Plan to show all players waiting to play a game and current games going on.  
+
+Game display - 64 squares, 12 pieces for each player. Shows the score on the right.
