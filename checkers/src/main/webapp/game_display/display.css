@@ -2,9 +2,16 @@
     text-align: center;
 }
 
+#game-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 #board-container {
     display:flex;
-    padding: none;
+    padding: 5vh;
     position: relative;
   
     width: 70vh;
@@ -13,6 +20,37 @@
     max-width: 100vw;
     max-height: 100vw;
   }
+
+#players-table {
+  position: relative;
+  background-color: #6eb868;
+  float: right;
+  border-radius: 3px;
+
+
+  width: 40vh;
+  height: 70vh;
+}
+
+#buttons-cont {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  
+  margin-top: auto;
+  padding-bottom: 1vh;
+
+  width: 100%;
+  height: 4vh;
+}
+
+.button {
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+  margin: 5px;
+}
 
   table {
     border: 15px solid rgb(0, 0, 0);
@@ -31,7 +69,7 @@
     height: 10%;
   }
 
-  .noPieceHere {
+  .emptySquare {
     background-color: #ffffff;
   }
 
