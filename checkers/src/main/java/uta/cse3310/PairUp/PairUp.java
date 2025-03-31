@@ -3,7 +3,8 @@ package uta.cse3310.PairUp;
 import java.util.Queue;
 import java.util.LinkedList;
 import uta.cse3310.DB.DB;
-import uta.cse3310.Bot.*;
+import uta.cse3310.Bot.BotI.BotI;
+import uta.cse3310.Bot.BotII.BotII;
 
 public class PairUp {
     private Queue<Challenge> playerQueue;
