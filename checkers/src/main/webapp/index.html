@@ -9,7 +9,7 @@
     game display
     </div>
     <div id="summary">
-    summary
+	summary
     </div>
     <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
@@ -64,4 +64,16 @@
         connection.send(JSON.stringify(U));
         console.log(JSON.stringify(U))
     }
+
+	function summary()
+	{
+		/*
+		 * This function requests a player-json-object from pageMrg for the current player as well as the top 10 ranked players 
+		 * (See ./INTERFACES/player-json-schema.md) via methods `retrieveUserJson` and `retrieveTopTenJson`.
+		 * This data is then written to the html table in the summary div
+		 * 
+		 */
+		;
+
+	}
 </script>
