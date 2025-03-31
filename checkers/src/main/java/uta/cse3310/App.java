@@ -182,6 +182,7 @@ public class App extends WebSocketServer {
     HttpServer H = new HttpServer(port, "./src/main/webapp/");
     H.start();
     System.out.println("http Server started on port: " + port);
+    System.out.println("http://localhost:" + port + "/index.html");
 
     // create and start the websocket server
 
