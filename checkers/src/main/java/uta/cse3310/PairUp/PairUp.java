@@ -1,15 +1,16 @@
 package uta.cse3310.PairUp;
 
 import java.util.Queue;
-
+import java.util.LinkedList;
 import uta.cse3310.DB.DB;
 import uta.cse3310.Bot.*;
 
 public class PairUp {
     private Queue<Challenge> playerQueue;
-
+    private DB db;
     public PairUp(DB db) {
-        
+                this.playerQueue = new LinkedList<>();
+                this.db = db;
     }
 
     public boolean addToQueue(Player p) {return false;} //Adds a player to the Queue
