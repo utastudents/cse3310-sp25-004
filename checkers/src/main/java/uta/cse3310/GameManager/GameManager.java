@@ -16,18 +16,26 @@ public class GameManager {
     private ArrayList<Games> games = new ArrayList<>();
     private int maxGames = 10; // essentially a global variable we can check later on
 
-    // test
     public GameManager() {
         gp = new GamePlay();
         gt = new GameTermination();
         b1 = new BotI();
         b2 = new BotII();
         pu = new PairUp();
-
+        
+        games = new ArrayList<>(maxGames);
     }
     
+    public void initializeGames(){
+   	
+   }
     
+    public boolean addToGame{
+    	for(int i = 0; i < maxGames; i++){
+    		
+    	}
     
-    
+    	return false;
+    }
 
 }
