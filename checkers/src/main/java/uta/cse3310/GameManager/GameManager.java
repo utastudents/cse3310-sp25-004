@@ -11,6 +11,7 @@ public class GameManager {
     BotI b1;
     BotII b2;
 
+    // test
     public GameManager() {
         gp = new GamePlay();
         gt = new GameTermination();
