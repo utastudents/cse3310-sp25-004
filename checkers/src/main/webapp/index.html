@@ -1,55 +1,56 @@
-<!-- <html>
-<div "new_account"></div>
-new account -->
+<html>
+    <!-- <div "new_account"></div>
+    new account -->
 
-<head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="join_game.js"></script>
+    </head>
 
-<!-- <div "join_game"> -->
-    <div class="lobby_lists_container">
-        <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
-        <p>Current players: 3/48</p> 
-        <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-            <ol>
-                <li class="player">
-                    <p id="#UID001"> Player 1 - {ELO}</p>
+    <!-- <div "join_game"> -->
+        <div class="lobby_lists_container">
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p> 
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol>
+                    <li class="player">
+                        <p id="#UID001"> Player 1 - {ELO}</p>
 
-                    <button><a id="btn1-UID001" type="button" href="">Challenge</a></button>
-                    <button><a id="btn2-UID001" type="button" href="">View Match</a></button>
-                </li>
+                        <button><a id="btn1-UID001" type="button" href="">Challenge</a></button>
+                        <button><a id="btn2-UID001" type="button" href="">View Match</a></button>
+                    </li>
 
-                <li class="player">
-                    <p id="#UID002"> Player 2 - {ELO}</p>
-                    <button><a id="btn1-UID002" type="button" href="">Challenge</a></button>
-                    <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-                </li>
-            </ol>
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO}</p>
+                        <button><a id="btn1-UID002" type="button" href="">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li>
+                </ol>
+            </div>
+
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
         </div>
+        
 
-        <button>
-            <a id="CURRENT_SESSION_JQ" type="button">
-                Match Making
-            </a>
-        </button>
-        <button>
-            <a id="CURRENT_SESSION_BOT" type="button">
-                Request Bot
-            </a>
-        </button>
-        <button>
-            <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                Watch Bot Vs Bot
-            </a></button>
     </div>
-    
 
-</div>
-
-<!-- <div "game_display"></div>
-game display
-<div "summary"></div>
-summary -->
+    <!-- <div "game_display"></div>
+    game display
+    <div "summary"></div>
+    summary -->
 
 </html>
 <script>
@@ -67,12 +68,37 @@ summary -->
         console.log("close");
     }
 
-    connection.onmessage = function (evt) {
-        var msg;
-        msg = evt.data;
+    connection.onmessage = (event) => {
+            const users = JSON.parse(event.data);
+            const listEl = document.getElementById("lobby_list");
 
-        console.log("Message received: " + msg);
-        const obj = JSON.parse(msg);
-    }
+
+            for (const userKey in users) {
+                const user = users[userKey];
+
+                // Create list item
+                const li = document.createElement("li");
+                li.innerText = `${user.username} (ID: ${user.ID})`;
+
+                // Create action button
+                const btn = document.createElement("button");
+                btn.innerText = "Send Event";
+
+                //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
+
+                btn.addEventListener("click", () => {
+                    const payload = {
+                        userID: user.ID,
+                        action: "do_something",
+                        username: user.username,
+                    };
+                socket.send(JSON.stringify(payload));
+                console.log("Sent:", payload);
+            });
+
+            li.appendChild(btn);
+            listEl.appendChild(li);
+        }
+    };
 
 </script>
