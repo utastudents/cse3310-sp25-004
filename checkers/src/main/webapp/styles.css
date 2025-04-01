@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+.lobby_lists_container {
+    background: white;
+    padding: 20px;
+    border-radius: 0px;
+    width: 50%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.lobby_lists {
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    padding: 15px;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+ol {
+    list-style: none;
+    padding: 0;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e9e9e9;
+    padding: 10px;
+    border-radius: 0px;
+    margin: 10px 0;
+}
+
+.player p {
+    margin: 0;
+    flex: 1;
+    text-align: left;
+    font-weight: bold;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+}
+
+.lobby_actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
