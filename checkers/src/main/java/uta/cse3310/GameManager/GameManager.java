@@ -1,5 +1,6 @@
 package uta.cse3310.GameManager;
 
+
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
@@ -24,18 +25,25 @@ public class GameManager {
         pu = new PairUp();
         
         games = new ArrayList<>(maxGames);
-    }
-    
-    public void initializeGames(){
-   	
    }
-    
-    public boolean addToGame{
-    	for(int i = 0; i < maxGames; i++){
-    		
-    	}
-    
-    	return false;
-    }
+   
+   public void initializeGames(){
+   	// most likely a for loop over ArrayList and adding games with Game Play board and players
+   }
+   
+   public void createGame(){
+   	// if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
+   
+   public void removeGame(){
+   	// not sure if needed (?) have to check with GameTermination if they're removing game fully or we do
+   }
+   
+   public boolean checkAvailableGames(){
+   	// code implementing later to by checking if elements in ArrayList is null then set return value to true, else false
+   }
+   
+   
+   
+   
 
 }
