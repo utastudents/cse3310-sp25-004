@@ -1,53 +1,53 @@
 <html>
-    <!-- <div "new_account"></div>
+<!-- <div "new_account"></div>
     new account -->
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <script src="join_game.js"></script>
-    </head>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="join_game.js"></script>
+</head>
 
-    <!-- <div "join_game"> -->
-        <div class="lobby_lists_container">
-            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
-            <p>Current players: 3/48</p> 
-            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-                <ol>
-                    <li class="player">
-                        <p id="#UID001"> Player 1 - {ELO}</p>
+<!-- <div "join_game"> -->
+<div class="lobby_lists_container">
+    <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+    <p>Current players: 3/48</p>
+    <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+        <ol>
+            <li class="player">
+                <p id="#UID001"> Player 1 - {ELO}</p>
 
-                        <button><a id="btn1-UID001" type="button" href="">Challenge</a></button>
-                        <button><a id="btn2-UID001" type="button" href="">View Match</a></button>
-                    </li>
+                <button><a id="btn1-UID001" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                <button><a id="btn2-UID001" type="button" href="">View Match</a></button>
+            </li>
 
-                    <li class="player">
-                        <p id="#UID002"> Player 2 - {ELO}</p>
-                        <button><a id="btn1-UID002" type="button" href="">Challenge</a></button>
-                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-                    </li>
-                </ol>
-            </div>
-
-            <button>
-                <a id="CURRENT_SESSION_JQ" type="button">
-                    Match Making
-                </a>
-            </button>
-            <button>
-                <a id="CURRENT_SESSION_BOT" type="button">
-                    Request Bot
-                </a>
-            </button>
-            <button>
-                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                    Watch Bot Vs Bot
-                </a></button>
-        </div>
-        
-
+            <li class="player">
+                <p id="#UID002"> Player 2 - {ELO}</p>
+                <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+            </li>
+        </ol>
     </div>
 
-    <!-- <div "game_display"></div>
+    <button>
+        <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+            Match Making
+        </a>
+    </button>
+    <button>
+        <a id="CURRENT_SESSION_BOT" type="button">
+            Request Bot
+        </a>
+    </button>
+    <button>
+        <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+            Watch Bot Vs Bot
+        </a></button>
+</div>
+
+
+</div>
+
+<!-- <div "game_display"></div>
     game display
     <div "summary"></div>
     summary -->
@@ -69,29 +69,29 @@
     }
 
     connection.onmessage = (event) => {
-            const users = JSON.parse(event.data);
-            const listEl = document.getElementById("lobby_list");
+        const users = JSON.parse(event.data);
+        const listEl = document.getElementById("lobby_list");
 
 
-            for (const userKey in users) {
-                const user = users[userKey];
+        for (const userKey in users) {
+            const user = users[userKey];
 
-                // Create list item
-                const li = document.createElement("li");
-                li.innerText = `${user.username} (ID: ${user.ID})`;
+            // Create list item
+            const li = document.createElement("li");
+            li.innerText = `${user.username} (ID: ${user.ID})`;
 
-                // Create action button
-                const btn = document.createElement("button");
-                btn.innerText = "Send Event";
+            // Create action button
+            const btn = document.createElement("button");
+            btn.innerText = "Send Event";
 
-                //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
+            //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
 
-                btn.addEventListener("click", () => {
-                    const payload = {
-                        userID: user.ID,
-                        action: "do_something",
-                        username: user.username,
-                    };
+            btn.addEventListener("click", () => {
+                const payload = {
+                    userID: user.ID,
+                    action: "do_something",
+                    username: user.username,
+                };
                 socket.send(JSON.stringify(payload));
                 console.log("Sent:", payload);
             });
@@ -100,5 +100,43 @@
             listEl.appendChild(li);
         }
     };
+    /**
+     * [This function take in player id 1, player id 2 and then send back to server to signal a challenge request]
+     */
+    function req_challenge(id1, id2) {
+        //do same handling here 
+        alert(`${id1} request challenge ${id2}`);
+    }
+
+    /**
+     * [This function take in player id 1, player id 2 and then send back to server to signal a view match request]
+     */
+    function req_viewmatch(id1, id2) {
+        //do same handling here , playerid1 want to view playerid2 match
+
+        alert(`${id1} request view ${id2}`);
+    }
+
+    /**
+     * [This function take in current client and send signal to server indicating bot request]
+     */
+    function req_bot(id1) {
+        alert(`${id1} request bot`);
+    }
+
+    /**
+     * [This function take in current client json and signal to server indicating matchmaking request]
+     */
+    function match_making(player1) {
+        const message = {
+            'message_type': 'match_making',
+            'player': {
+                'id1': player1.id1,
+                'name': player1.name,
+                'elo': player1.elo
+            }
+        };
+        alert(JSON.stringify(message, null, 2)); // Converts the object to a readable JSON string
+    }
 
 </script>
