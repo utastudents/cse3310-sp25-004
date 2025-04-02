@@ -40,5 +40,12 @@ public class BotII extends Bot {
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
     }
+     public boolean isPieceCaptured(int pieceId) {
+        // TODO: Check if a piece has been captured
+        return false;
+    }
+    public void protectBackLine() {
+        // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
+    }
 
 }
