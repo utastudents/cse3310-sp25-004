@@ -16,7 +16,8 @@ public class PairUp {
         this.db = db;
     }
 
-    private void PairUp() {} //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
+    private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
+    private void pairUp() {} //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
 
     public boolean addToQueue(Player p) {return false;} //Adds a player to the Queue
     public boolean challenge(Player p, Player c) {return false;} //Makes 2 players challenge eachother (or player & bot, or 2 bots)
