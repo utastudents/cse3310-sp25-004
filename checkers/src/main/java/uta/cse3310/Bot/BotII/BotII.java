@@ -20,4 +20,15 @@ public class BotII extends Bot {
     public void moveChecker() {
         // TODO: Move a non-king piece diagonally one square
     }
+    public void moveKing() {
+        // TODO: Move a king piece diagonally one square in any direction
+    }
+    public boolean isMoveLegal() {
+        // TODO: Validate if a move is legal
+        return true;
+    }
+    public void waitForOpponent() {
+        // TODO: Wait for opponent to make a move before acting
+    }
+
 }
