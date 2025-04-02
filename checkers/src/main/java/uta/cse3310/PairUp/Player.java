@@ -7,8 +7,8 @@ public abstract class Player {
         ONLINE
     };
     
-    int playerId;
-    STATUS status = STATUS.ONLINE;
+    protected int playerId;
+    protected STATUS status = STATUS.ONLINE;
 
     /** Methodology
         - Game Manager will call these methods
@@ -19,4 +19,7 @@ public abstract class Player {
 
     public abstract boolean makeMove(/** BoardState */); //Returns false if the client could not be reached
     public abstract boolean updateBoard(/** BoardState */); //Returns false if the client could not be reached
+
+    public int getPlayerId() {return playerId;}
+    public STATUS getStatus() {return status;}
 }
