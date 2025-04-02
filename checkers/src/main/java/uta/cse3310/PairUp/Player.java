@@ -6,7 +6,8 @@ public abstract class Player {
         IN_QUEUE,
         ONLINE
     };
-    
+
+    private static int nextId = 1;    
     protected int playerId;
     protected STATUS status = STATUS.ONLINE;
 
@@ -19,6 +20,8 @@ public abstract class Player {
 
     public abstract boolean makeMove(/** BoardState */); //Returns false if the client could not be reached
     public abstract boolean updateBoard(/** BoardState */); //Returns false if the client could not be reached
+
+    public static int nextId() {return nextId++;}
 
     public int getPlayerId() {return playerId;}
     public STATUS getStatus() {return status;}
