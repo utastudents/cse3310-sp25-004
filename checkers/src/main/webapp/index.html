@@ -54,6 +54,16 @@
 
 </html>
 <script>
+    // each of the 'divs' in the html page should have attributes to allow them to be hidden.
+    // the page manager should send a small json message, that tells which of these are hidden
+    // and which are visible when there is a change
+    // something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
+
+
+    // a reminder.  we want to create one websocket connection, and use if, basically forever.
+    // or until the user decides to go to another page.
+    // this requires everything to load from this page.
+
     var connection = null;
 
     var serverUrl;
@@ -101,4 +111,34 @@
         }
     };
 
+    class UserEvent {
+        msg;
+    }
+
+    function msg() {
+        console.log("button clicked");
+        U = new UserEvent();
+        U.msg="i pushed a button";
+        connection.send(JSON.stringify(U));
+        console.log(JSON.stringify(U))
+    }
+
+	function summary(/*void*/)
+	{
+		/*
+		 * This function requests a player-json-object from pageMrg for the current player as well as the top 10 ranked players 
+		 * (See ./INTERFACES/player-json-schema.md) via methods `retrieveUserJson` and `retrieveTopTenJson`.
+		 * This data is then written to the html table in the summary div
+		 * 
+		 * TODO: Need to get uuid of current session to call `retrieveUserJson`
+		 */
+		
+		// playerData = retreiveUserJson();
+		// globalData = retrieveTopTenJson();
+
+		// Write top ten to table
+		// write user to table
+		return;
+
+	}
 </script>
