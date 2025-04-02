@@ -34,8 +34,8 @@ function sortLeaderboard() {
 
 // Function to render the leaderboard
 function renderLeaderboard() {
-    const tableBody = document.querySelector("tableBody");
-    tableBody.innerHTML = ""; // Clear the table body
+    const tbody = document.querySelector("tbody");
+    tbody.innerHTML = ""; // Clear the table body
 
     // Sort players by Elo before rendering
     sortLeaderboard();
@@ -50,7 +50,7 @@ function renderLeaderboard() {
             <td>${player.gamesLost}</td>
             <td>${player.getTotalGames()}</td>
         `;
-        tableBody.appendChild(row);
+        tbody.appendChild(row);
     });
 }
 
