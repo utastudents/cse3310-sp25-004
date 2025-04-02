@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import uta.cse3310.DB.DB;
 import uta.cse3310.Bot.BotI.BotI;
-import uta.cse3310.Bot.BotII.BotII;
+// import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.PageManager.HumanPlayer;
 
 public class PairUp {
