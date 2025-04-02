@@ -56,7 +56,8 @@ public ArrayList<Integer> getNumOfGames() {
    public void removeGame(){
    	// not sure if needed (?) have to check with GameTermination if they're removing game fully or we do
    }
-   
+   //Check for null in ArrayList Games
+
    public boolean checkAvailableGames(){
     for (Game game : games) {
         if (game == null) {
