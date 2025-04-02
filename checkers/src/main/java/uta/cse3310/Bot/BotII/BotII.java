@@ -11,4 +11,13 @@ public class BotII extends Bot {
         // TODO: Prioritize defending own pieces over offense
         // TODO: Try to block opponent from advancing or jumping
     }
+    public void capturePiece() {
+        // TODO: Capture opponent piece by jumping diagonally (Call method)
+    }
+    public void checkMultipleJumps() {
+        // TODO: If multiple jumps are possible, do them
+    }
+    public void moveChecker() {
+        // TODO: Move a non-king piece diagonally one square
+    }
 }
