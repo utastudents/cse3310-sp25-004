@@ -13,6 +13,9 @@ public class BotI extends Bot {
     public void defendPieces() {
         // TODO: Prioritize defending own pieces over offense
     }
+    public void attackPieces() {
+        // TODO: Look for chances to force opponent into bad moves
+    }
     
     public void capturePieces() {
         // TODO: Capture opponent piece by jumping diagonally 
