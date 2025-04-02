@@ -3,15 +3,19 @@ package uta.cse3310.Bot.BotI;
 public class BotI extends Bot {
 
     public void makeValidMove() {
+        // TODO: Logic to choose and make a legal move
     }
     
     public void promoteToKing() {
+        // TODO: Check if a piece reached the end and promote to king
     }
     
     public void defendPieces() {
+        // TODO: Prioritize defending own pieces over offense
     }
     
     public void capturePieces() {
+        // TODO: Capture opponent piece by jumping diagonally 
     }
     
      public void checkMultipleJumps() {
