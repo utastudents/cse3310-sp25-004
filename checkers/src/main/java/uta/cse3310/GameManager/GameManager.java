@@ -20,7 +20,7 @@ public class GameManager {
         gp = new GamePlay();
         gt = new GameTermination();
         b1 = new BotI();
-        b2 = new BotII();gi
+        b2 = new BotII();
         pu = new PairUp();
         
         games = new ArrayList<>(maxGames);
