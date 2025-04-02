@@ -7,30 +7,52 @@ import uta.cse3310.GamePlay.GamePlay;
 public class Game{
 
    //private int player1;       // work on making sure pair up data matches up 
-  // private int player2;
+   //private int player2;
    private GamePlay board;     //decide later how to use when gameplay is more fleshed out 
    //private boolean isGameActive;
    //public int gameID
 
+ 
 
-	//Roughdraft for controlling the game board wise 
+   private int player1;  // ID for player 1
+   private int player2;  // ID for player 2
+   private int gameID;   // Unique game identifier
 
 
-
-		
 	public Game(int gameID, int playerId){ // might need to handle challenge Q in here too 
-     // i think need pair up needs to make a function to that returns player ID so we can call and store it for whatever we need 
+     // i think pair up needs to make a function to that returns player ID so we can call and store it for whatever we need 
 	
    
    }
-
 
    public GamePlay getBoard(){
       return board;
    }
 
-   //get board might interact with intergeres being x,y dont know exactly how its going to work 
-	
-        
-          
+
+   // Setting the second player after the game is created
+   public void setPlayer2(int playerId) {
+      this.player2 = playerId;
+   }
+
+   // Getting player 1 ID
+   public int getPlayer1() {
+      return player1;
+   }
+
+   // Getting player 2 ID
+   public int getPlayer2() {
+      return player2;
+   }
+
+   // Getting the unique game ID
+   public int getGameID() {
+      return gameID;
+   }
+
+   // initializing the board gameplay logic
+   public void startGame() {
+      // Eventually it initializes and starts the board game logic once GamePlay is fully implemented
+   }
+
 }
