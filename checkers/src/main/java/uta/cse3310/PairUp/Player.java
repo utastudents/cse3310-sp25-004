@@ -1,7 +1,7 @@
 package uta.cse3310.PairUp;
 
 public abstract class Player {
-    static enum STATUS {
+    public static enum STATUS {
         IN_GAME,
         IN_QUEUE,
         ONLINE
