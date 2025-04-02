@@ -1,5 +1,5 @@
 package uta.cse3310.Bot.BotI;
 
-public class BotI {
+public class BotI extends Bot {
     
 }
