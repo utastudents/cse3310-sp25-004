@@ -50,7 +50,6 @@ public ArrayList<Integer> getNumOfGames() {
    public boolean createGame(Player one, Player two, ArrayList<Player> spectator){
     return boardAvailable(one,two,spectator);
    	// if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
-    return false;
    }
    
    public void removeGame(){
