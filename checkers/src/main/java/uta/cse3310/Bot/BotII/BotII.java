@@ -37,10 +37,6 @@ public class BotII extends Bot {
         // Second: A King comes into play?
         // Late: A select # of pieces left on the board?
     }
-      public void defendPieces() {
-        // TODO: Prioritize defending own pieces over offense
-       // TODO: Try to block opponent from advancing or jumping
-    }
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
     }
