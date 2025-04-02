@@ -44,15 +44,15 @@ public class PageManager {
 
     //EVAN SHUGART 1001817633 
     //Method to be called by summary to get JsonObject of the specified user.
-    public static JsonObject retrieveUserJson(int StudentID) {
-            return new JsonObject(); 
-        }
+    // public static JsonObject retrieveUserJson(int StudentID) {
+    //         return new JsonObject(); 
+    //     }
     
     //EVAN SHUGART 1001817633 
     //Method to be called by summary to get JsonObject of the top 10 users.
-    public static JsonObject retrieveTopTenJson() {
-            return new JsonObject();
-        }
+    // public static JsonObject retrieveTopTenJson() {
+    //         return new JsonObject();
+    //     }
     //EVAN SHUGART 1001817633 
     //Find top10 users and store them in a arrayList of Player Object Type
     // public static ArrayList<Player> findTopTen() {

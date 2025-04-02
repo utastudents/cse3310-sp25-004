@@ -5,7 +5,7 @@ import uta.cse3310.PairUp.Player.STATUS;
 
 public class HumanPlayer extends Player{
 
-    private static int nextId = 1;    
+   
     private String username;
     private String password;
     private int wins;
@@ -16,8 +16,7 @@ public class HumanPlayer extends Player{
     // constructors
     public HumanPlayer(String username, String password)
     {
-        this.playerId = nextId;
-        nextId++;
+        this.playerId = nextId();
         this.username = username;
         this.password = password;
         this.wins = 0;
