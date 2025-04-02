@@ -30,5 +30,19 @@ public class BotII extends Bot {
     public void waitForOpponent() {
         // TODO: Wait for opponent to make a move before acting
     }
+      public void adjustStrategy() {
+        // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
+        // TODO: Change strategy based on early, mid, or late game
+        // Early: Moving first row pieces?
+        // Second: A King comes into play?
+        // Late: A select # of pieces left on the board?
+    }
+      public void defendPieces() {
+        // TODO: Prioritize defending own pieces over offense
+       // TODO: Try to block opponent from advancing or jumping
+    }
+    public void findOffensiveMove() {
+        // TODO: Decide if it's safe and smart to attack
+    }
 
 }
