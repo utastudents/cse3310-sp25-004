@@ -1,7 +1,41 @@
 <html>
     <div id="new_account">
-    new account
+		<!--Signup screen logo-->
+    	<h1>Create New Account</h1>
+			<label for = "username">Enter new username</label>
+			<input type = "text" id = "username" name="username" placeholder="Enter new username">
+			<label for = "password">Enter new password</label>
+			<input type="password" id="password" name="password" placeholder="Enter new password">
+
+			<button type="submit">Register</button>
+
+			<!--Button to return to login from sign up page-->
+			<button id ="back-to-login">Return</button>
+			
     </div>
+	<div id="login">
+		<!--Login screen logo-->
+
+		<!-- username login box-->
+		<label for = "login-username">Username</label>
+		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username">
+		<!-- password login box-->
+
+		<!-- submit button-->
+		 <button type = "submit">Login</button>
+
+		 <!--Show signup screen-->
+		 <button id = "show-signup">Sign Up</button>
+
+		 <script>
+			//(On Click)Sign in screen appear, login disappear
+
+
+			//(On Click)Login screen appear, sign in disappear
+
+		 </script>
+		
+	</div>
     <div id="join_game">
     join game
     </div>
@@ -164,22 +198,31 @@
         console.log(JSON.stringify(U))
     }
 
-	function summary(/*void*/)
-	{
-		/*
-		 * This function requests a player-json-object from pageMrg for the current player as well as the top 10 ranked players 
-		 * (See ./INTERFACES/player-json-schema.md) via methods `retrieveUserJson` and `retrieveTopTenJson`.
-		 * This data is then written to the html table in the summary div
-		 * 
-		 * TODO: Need to get uuid of current session to call `retrieveUserJson`
-		 */
-		
-		// playerData = retreiveUserJson();
-		// globalData = retrieveTopTenJson();
+	function summary(/*void*/) {
+    /*
+     * Fetches and displays player ranking data in the summary table.
+     *
+     * This function retrieves JSON data for:
+     * - The current player, identified via a session UUID.
+     * - The top 10 ranked players.
+     *
+     * The data is retrieved using:
+     * - `retrieveUserJson(uuid)`: Fetches the current player's data.
+     * - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+     *
+     * The retrieved data is then written to the HTML table inside the summary div.
+     *
+     * TODO:
+     * - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+     * - Handle potential errors when fetching data.
+     * - Ensure proper table structure for displaying the data.
+     */
+    
+    // playerData = retrieveUserJson();
+    // globalData = retrieveTopTenJson();
 
-		// Write top ten to table
-		// write user to table
-		return;
-
-	}
+    // Write top ten to table
+    // Write user to table
+    return;
+}
 </script>
