@@ -73,3 +73,20 @@ tbody tr:hover {
 	text-align: center;
 	margin-top: 10px;
 }
+
+/* button styling*/
+.button{
+    background-color: white;
+    color: gray;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: grey;
+    color: white;
+}
