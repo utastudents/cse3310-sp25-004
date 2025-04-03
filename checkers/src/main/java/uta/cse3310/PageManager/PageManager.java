@@ -3,8 +3,6 @@ package uta.cse3310.PageManager;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import uta.cse3310.GameState;
-
 import uta.cse3310.DB.DB;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;

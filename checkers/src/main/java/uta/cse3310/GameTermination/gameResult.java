@@ -1,7 +1,6 @@
 package uta.cse3310.GameTermination;
 
 import java.util.HashMap;
-//import uta.cse3310.GameManager;
 
 import uta.cse3310.GameManager.Game;
 
