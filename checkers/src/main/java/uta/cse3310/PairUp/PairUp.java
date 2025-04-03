@@ -1,28 +1,21 @@
 package uta.cse3310.PairUp;
 
-import java.util.Queue;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
+
 import uta.cse3310.DB.DB;
-import uta.cse3310.Bot.BotI.BotI;
-import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.PageManager.HumanPlayer;
 
 public class PairUp {
     private Queue<Challenge> playerQueue;
     private DB db;
-<<<<<<< HEAD
+    private int numPlayersInQueue;
 
     public PairUp(DB db) {
-        this.playerQueue = new LinkedList<>(); //Queue of players waiting to be paired
+        this.playerQueue = new LinkedList<>();//Queue of players waiting to be paired
         this.db = db; //Database object for storing player data
-=======
-    private int numPlayersInQueue;
-    public PairUp(DB db) {
-        this.playerQueue = new LinkedList<>();
-        this.db = db;
         numPlayersInQueue = 0;
->>>>>>> 9e2eea4ea65a5c95c4c7a3a90ac3e305b20ceb74
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
