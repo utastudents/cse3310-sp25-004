@@ -46,4 +46,15 @@ public class DB
                         }
                 }
                 return null;  /* Player not found */
+        }
+        /* Natalie Tran */
+        //Get player by password
+        public HumanPlayer getPlayerByPassword(String password) {
+                for (HumanPlayer player : players) {
+                    if (player.getPassword().equals(password)) {
+                        return player;
+                    }
+                }
+                return null;  // Player not found
+        }
 }
