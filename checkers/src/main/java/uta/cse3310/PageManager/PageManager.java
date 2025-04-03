@@ -6,6 +6,8 @@ import uta.cse3310.DB.DB;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
+import uta.cse3310.PageManager.HumanPlayer;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,22 +27,22 @@ public class PageManager {
     }
 
 
-    //EVAN SHUGART 1001817633 
-    //Method to be called by summary to get JsonObject of the specified user.
-    // public static JsonObject retrieveUserJson(int StudentID) {
-    //         return new JsonObject(); 
-    //     }
+
+   
+    public static JsonObject retrieveUserJson(int StudentID) 
+    {
+             return null; 
+    }
     
-    //EVAN SHUGART 1001817633 
-    //Method to be called by summary to get JsonObject of the top 10 users.
-    // public static JsonObject retrieveTopTenJson() {
-    //         return new JsonObject();
-    //     }
-    //EVAN SHUGART 1001817633 
-    //Find top10 users and store them in a arrayList of Player Object Type
-    // public static ArrayList<Player> findTopTen() {
-    //         return new ArrayList<>(); 
-    // 
+    public static JsonObject retrieveTopTenJson() 
+    {
+           return null;
+    }
+    
+    public static ArrayList<HumanPlayer> findTopTen() 
+    {
+         return null; 
+    }
     
     
     public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)

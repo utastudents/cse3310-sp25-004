@@ -59,6 +59,10 @@ public class HumanPlayer extends Player{
         return username;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
     public int getPlayerId(){
         return playerId;
     }
