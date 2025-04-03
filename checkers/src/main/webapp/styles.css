@@ -78,3 +78,19 @@ button a {
     justify-content: center;
     gap: 10px;
 }
+.status {
+    display: inline-block;
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%; 
+    margin-left: 10px; 
+}
+
+
+.free {
+    background-color: green;
+}
+
+.busy {
+    background-color: red;
+}
