@@ -11,10 +11,18 @@ import uta.cse3310.PageManager.HumanPlayer;
 public class PairUp {
     private Queue<Challenge> playerQueue;
     private DB db;
+<<<<<<< HEAD
 
     public PairUp(DB db) {
         this.playerQueue = new LinkedList<>(); //Queue of players waiting to be paired
         this.db = db; //Database object for storing player data
+=======
+    private int numPlayersInQueue;
+    public PairUp(DB db) {
+        this.playerQueue = new LinkedList<>();
+        this.db = db;
+        numPlayersInQueue = 0;
+>>>>>>> 9e2eea4ea65a5c95c4c7a3a90ac3e305b20ceb74
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
@@ -33,6 +41,7 @@ public class PairUp {
 
     public boolean boardAvailable() {return false;} //Called by GameManager when a board becomes available (in case all were previously taken)
 
+    public int getNumPlayersInQueue() {return numPlayersInQueue;}
 }
 
 //Private class for handling challenge queue
