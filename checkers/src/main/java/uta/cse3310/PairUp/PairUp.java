@@ -7,6 +7,7 @@ import java.util.Queue;
 import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
 
+
 public class PairUp {
     private Queue<Challenge> playerQueue;
     private DB db;
