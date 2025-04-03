@@ -64,6 +64,8 @@ import java.time.Duration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.Hashtable;
 
@@ -125,28 +127,58 @@ public class App extends WebSocketServer {
     // At this point, it is known it will be a UserEvent
     // In the future, that will have to be figured out.
     // Suggestion: look in the string for a specific name
-
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
-    UserEvent U = gson.fromJson(message, UserEvent.class);
-
+    
     // where did this message come from?
-    U.id = con2id.get(conn);
 
+
+    int Id = con2id.get(conn);
     // now, need to call a function to get this processed.
     // the function to be called needs to accept (for this example) a
     // UserEvent, and return a ReplyEvent
-    UserEventReply Reply = new UserEventReply();
-    Reply = PM.ProcessInput(U);
-    // Send it to all that need it
 
-    String jsonString = gson.toJson(Reply.status);
+    //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
+    JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
+    String action = jsonObj.get("action").getAsString();
+    //
+
+    //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
+    UserEventReply Reply = null;
+
+    switch(action)
+    {
+      case "getActivePlayers":
+        // each method from page manager returns a UserEventReply putting their JsonObject in replyObj and id of client in recipients
+        Reply = PM.getActivePlayers(jsonObj, Id);
+        break;
+      case "joinQueue":        
+        Reply = PM.joinQueue(jsonObj, Id);
+        break;
+      case "challengePlayer":      
+        Reply = PM.challengePlayer(jsonObj, Id);
+        break;
+      case "challengeBot":        
+        Reply = PM.challengeBot(jsonObj, Id);
+        break;
+      case "BotvsBot":        
+        Reply = PM.BotvsBot(jsonObj, Id);
+        break;        
+      case "ViewMatch":        
+        Reply = PM.ViewMatch(jsonObj, Id);
+        break;  
+      default:
+        System.out.println("Unknown action: " + action);
+        break;
+    }
+    //
+
+
+    // Send it to all that need it
 
     for (Integer id : Reply.recipients) {
       WebSocket destination = id2con.get(id);
 
-      destination.send(jsonString);
-      System.out.println("sending " + jsonString + " to " + id);
+      destination.send(Reply.replyObj.toString());
+      System.out.println("sending " + Reply.replyObj.toString() + " to " + id);
     }
   }
 
