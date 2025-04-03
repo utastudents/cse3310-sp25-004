@@ -1,6 +1,7 @@
 package uta.cse3310.PageManager;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import uta.cse3310.DB.DB;
 import uta.cse3310.PairUp.PairUp;
@@ -19,6 +20,11 @@ public class PageManager {
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
                       // is not unique per client (or game)
+
+
+    // List to track active players in the subsystem
+    Hashtable<HumanPlayer, Integer> trackPlayers = new Hashtable<>();
+
 
     public PageManager() {
         db = new DB();
