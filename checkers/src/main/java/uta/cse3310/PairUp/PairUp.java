@@ -11,9 +11,10 @@ import uta.cse3310.PageManager.HumanPlayer;
 public class PairUp {
     private Queue<Challenge> playerQueue;
     private DB db;
+
     public PairUp(DB db) {
-        this.playerQueue = new LinkedList<>();
-        this.db = db;
+        this.playerQueue = new LinkedList<>(); //Queue of players waiting to be paired
+        this.db = db; //Database object for storing player data
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
