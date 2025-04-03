@@ -16,6 +16,7 @@ public class PairUp {
         this.playerQueue = new LinkedList<>();
         this.db = db;
         numPlayersInQueue = 0;
+        
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
