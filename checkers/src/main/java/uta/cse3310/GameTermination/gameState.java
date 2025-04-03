@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package uta.cse3310.GameTermination;
 
 import java.util.HashMap;
@@ -29,4 +30,9 @@ public class gameState{
 }
 
 
+=======
+package uta.cse3310.GameTermination
+
+import uta.cse3310.GameManager.Game
+>>>>>>> 54ad28769fd10d579bfe9c7d55da29b9c5e7fd66
 

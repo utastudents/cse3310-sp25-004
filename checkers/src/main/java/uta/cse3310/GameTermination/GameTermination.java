@@ -1,5 +1,6 @@
 package uta.cse3310.GameTermination;
 
+<<<<<<< HEAD
 import uta.cse3310.GameManager.Game;
 
 public class GameTermination {
@@ -14,5 +15,8 @@ public class GameTermination {
         
 
 
+=======
+public class GameTermination {
+>>>>>>> 54ad28769fd10d579bfe9c7d55da29b9c5e7fd66
 
 }
