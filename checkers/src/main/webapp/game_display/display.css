@@ -101,4 +101,13 @@ body {
   .emptySquare {
     background-color: #ffffff;
   }
+  .checker{
+		width: 75px;
+		height: 75px;
+		border-radius: 40px;
+		position: fixed;
+	}
 
+	.player1 { background-color: red; }
+
+	.player2 { background-color: blue; }
