@@ -3,6 +3,7 @@ package uta.cse3310.DB;
 
 import java.util.LinkedList; 
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.DB.PasswordManager;
 
 public class DB {
     /* List to store player objects */
