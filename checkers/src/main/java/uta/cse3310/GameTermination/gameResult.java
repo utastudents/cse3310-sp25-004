@@ -4,7 +4,8 @@ import uta.cse3310.GameManager;
 import java.util.map;
 
 public class gameResult{
-    //todo:add player scores (playerScores = new HashMap<String, Integer>();)
+    // HashMap for players scores. 
+    private HashMap<String, Integer> playerScores = new HashMap<>();
 
     //todo:add function for gameResult
 
