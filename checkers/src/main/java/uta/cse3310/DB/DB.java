@@ -22,8 +22,8 @@ public class DB {
         String salt = PasswordManager.generateSalt();
         String hashedPassword = PasswordManager.hashPassword(password, salt);
 
-        // bd9659  HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
-        // bd9659  players.add(newPlayer);
+        HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
+        players.add(newPlayer);
     }
 
     /* Retrieves a player by their unique player ID. Returns the player if found, otherwise null. */
@@ -52,8 +52,8 @@ public class DB {
         if (player == null) {
             return false; // User not found
         }
-        // bd9659 return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
-        return false; // bd9659
+        return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
+        
     }
 
     /* Calculates the total number of games played across all players. */
