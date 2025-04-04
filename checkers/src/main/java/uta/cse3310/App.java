@@ -165,6 +165,9 @@ public class App extends WebSocketServer {
       case "ViewMatch":        
         Reply = PM.ViewMatch(jsonObj, Id);
         break;  
+      case "GameMove":        
+        Reply = PM.GameMove(jsonObj, Id);
+        break; 
       default:
         System.out.println("Unknown action: " + action);
         break;
