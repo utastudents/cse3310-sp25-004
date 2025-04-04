@@ -33,8 +33,8 @@ body {
     padding: 5vh;
     position: relative;
   
-    width: 70vh;
-    height: 70vh;
+    width: 90vh; /*increased size*/
+    height: 90vh;
   
     max-width: 100vw;
     max-height: 100vw;
@@ -68,9 +68,19 @@ body {
   
   margin: 0 auto;
   padding-bottom: 1vh;
+  padding-top:3vh;
 
   width: 100%;
   height: 4vh;
+}
+
+#live-box{
+  height: 70vh;
+  width: 50vh;
+  background-color: rgb(197, 215, 223);
+  border: 5px, inset, grey;
+  margin: 3px;
+
 }
 
 .button {
@@ -79,10 +89,14 @@ body {
   padding: 10px;
   margin: 5px;
   border-radius: 5px;
+  border: 5px, grey, outline;
+  align-content: center;
+  padding: 1px;
 }
 
   table {
-    border: 15px solid #545861;
+    /*border: 15px solid #545861;*/
+    border-collapse: collapse; /*no gaps between the cells*/
     background-color: #545861;
     border-radius: 5px;
   
@@ -92,22 +106,56 @@ body {
 
   td {
     text-align: center;
+    cursor: pointer; /*Pointer cursor so it's interactive*/
     background-color: #C5D5EA;
   
-    width: 10%;
-    height: 10%;
+    width: 12.50%; /*adjusted for 8x8 grid*/
+    height: 12.50%;
+    border:none; /*no border around squares*/
   }
 
+  /*light beige squares*/
   .emptySquare {
-    background-color: #ffffff;
+    background-color: #f0d9b5;
   }
-  .checker{
-		width: 75px;
-		height: 75px;
-		border-radius: 40px;
-		position: fixed;
-	}
 
-	.player1 { background-color: red; }
+  /*dark brown squares*/
+  td:not(.emptySquare) {
+    background-color: #b58863;
+  }
 
-	.player2 { background-color: blue; }
+/* Styling for red pieces (Player 1) */
+.red-piece {
+  position: relative;
+}
+
+.red-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #ff4d4d; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+/* Styling for black pieces (Player 2) */
+.black-piece {
+  position: relative;
+}
+
+.black-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #333; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
