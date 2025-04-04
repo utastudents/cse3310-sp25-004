@@ -74,6 +74,19 @@ public class PageManager {
     {
         return null;
     }
+    public UserEventReply GameMove(JsonObject jsonObj, int Id)
+    {
+        GameMove move = gson.fromJson(jsonObj,GameMove.class);
+        move.setClientId(Id);
+       /*  GameUpdate update = Gm.ProcessMove(move); will onlu work after GameManager have created the methid
+
+        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+       */
+        UserEventReply reply = new UserEventReply();
+       // reply.replyObj = json;
+        reply.recipients.add(move.getClientId());
+        return reply;
+    }
 
     // feat: implement login and registration handlers in PageManager.java
 
