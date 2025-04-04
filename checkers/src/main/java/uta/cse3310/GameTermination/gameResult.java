@@ -12,7 +12,10 @@ public class gameResult{
         
     }
 
-    //todo:add function for leaderboard
+    // Generates Leaderboard. 
+    public void generateLeaderboard(){
+        
+    }
 }
 
 
