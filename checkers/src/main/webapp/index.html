@@ -12,19 +12,15 @@
     <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
     <p>Current players: 3/48</p>
     <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-        <ol>
-            <li class="player">
-                <p id="UID001"> Player 1 - {ELO} <span class="status free"></span></p>
+        <ol id="lobby_list_items">
+            <!-- Dynamically Created Elements -->
 
-                <button><a id="btn1-UID001" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
-                <button><a id="btn2-UID001" type="button" href="">View Match</a></button>
-            </li>
-
+            <!-- EXAMPLE:
             <li class="player">
                 <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
                 <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
                 <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-            </li>
+            </li> -->
         </ol>
     </div>
 
@@ -80,23 +76,54 @@
 
     connection.onmessage = (event) => {
         const users = JSON.parse(event.data);
-        const listEl = document.getElementById("lobby_list");
+        const listEl = document.getElementById("lobby_list_items");
 
 
         for (const userKey in users) {
             const user = users[userKey];
-
-            // Create list item
+            console.log(user); 
             const li = document.createElement("li");
-            li.innerText = `${user.username} (ID: ${user.ID})`;
+            li.className = "player"; 
 
-            // Create action button
-            const btn = document.createElement("button");
-            btn.innerText = "Send Event";
+            // create player info
+            const para = document.createElement("p")
+            para.innerText = `${user.username} (ID: ${parseInt(user)})`;
+            para.style.fontSize = "17px"; // Set font size for the player info
+            para.id = `UID${parseInt(user)}`; 
 
+            const statusSpan = document.createElement("span");
+            statusSpan.className = "status free"; 
+
+            para.appendChild(statusSpan); 
+
+            // Create buttons button
+            const challenge_btn = document.createElement("button");
+            const challenge_btn_link = document.createElement("a");
+
+            challenge_btn_link.id = `btn1-${parseInt(user)}`; 
+            challenge_btn_link.type = "button";
+            challenge_btn_link.href = "#";
+            challenge_btn_link.innerText = "Challenge";
+
+            challenge_btn_link.onclick = function() { 
+                req_challenge(1, parseInt(user)); 
+                return false; 
+            };
+            
+            const view_btn = document.createElement("button");
+            const view_btn_link = document.createElement("a");
+            
+            view_btn_link.id = `btn2-${parseInt(user)}`;
+            view_btn_link.type = "button";
+            view_btn_link.href = "#";
+            view_btn_link.innerText = "View Match"; 
+            
+            challenge_btn.appendChild(challenge_btn_link); 
+            view_btn.appendChild(view_btn_link); 
+            
             //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
 
-            btn.addEventListener("click", () => {
+            challenge_btn.addEventListener("click", () => {
                 const payload = {
                     userID: user.ID,
                     action: "do_something",
@@ -105,8 +132,10 @@
                 socket.send(JSON.stringify(payload));
                 console.log("Sent:", payload);
             });
-
-            li.appendChild(btn);
+            
+            li.appendChild(para); 
+            li.appendChild(challenge_btn);
+            li.appendChild(view_btn);
             listEl.appendChild(li);
         }
     };
