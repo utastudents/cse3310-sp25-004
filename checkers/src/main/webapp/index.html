@@ -3,16 +3,26 @@
 		<!--Signup screen logo-->
     	<h1>Create New Account</h1>
 		<!--Signup screen logo-->
-		<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-			<label for = "username">Enter new username</label>
-			<input type = "text" id = "username" name="username" placeholder="Enter new username">
-			<label for = "password">Enter new password</label>
-			<input type="password" id="password" name="password" placeholder="Enter new password">
+		
+		    <img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+		    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
+		
+				<div style="margin-bottom: 10px;">
+					<label for="username">Enter new username: </label>
+					<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+				  </div>
+				  <div style="margin-bottom: 10px;">
+					<label for="password">Enter new password: </label>
+					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+				  </div>
 			
-			<button type="submit">Register</button>
+			<button type="submit" style="display: block; margin: 3 auto;">Register</button>
 
 			<!--Button to return to login from sign up page-->
 			<button id ="back-to-login">Login</button>
+		
+		    </body>
+		
 			
     </div>
 	<div id="login">
@@ -20,10 +30,15 @@
 		<!--Login screen logo DONE-->
 		<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
 		<!-- username login box-->
-		<label for = "login-username">Username</label>
-		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username">
+		<div style="margin-bottom: 10px;">
+		<label for = "login-username">Username: </label>
+		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+		</div>
 		<!-- password login box-->
-		<input type ="text" style="width: 140px; height: 25px; border-radius: 100px;display: block; margin: auto;" placeholder="Enter Password">
+		<div style="margin-bottom: 10px;">
+		<label for = "login-password">Password: </label>
+		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+		</div>
 		<!-- submit button-->
 		 <button type = "submit" style="display: block; margin: 3 auto;">Login</button>
 
@@ -31,11 +46,17 @@
 		 <button id = "show-signup">Sign Up</button>
 
 		 <script>
-			//(On Click)Sign in screen appear, login disappear
+			// (On Click) Sign up screen appear, login disappear
+			document.getElementById("show-signup").onclick = function() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("new_account").style.display = "block";
+                  };
 
-
-			//(On Click)Login screen appear, sign in disappear
-
+           // (On Click) Login screen appear, sign up disappear
+            document.getElementById("back-to-login").onclick = function() {
+            document.getElementById("new_account").style.display = "none";
+            document.getElementById("login").style.display = "block";
+             	};
 		 </script>
 		
 	</div>
