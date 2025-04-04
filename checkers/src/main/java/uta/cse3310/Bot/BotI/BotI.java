@@ -3,10 +3,6 @@ package uta.cse3310.Bot.BotI;
 import uta.cse3310.Bot.Bot;
 
 public class BotI extends Bot {
-
-    public void makeValidMove() {
-        // TODO: Logic to choose and make a legal move
-    }
     
     public void promoteToKing() {
         // TODO: Check if a piece reached the end and promote to king
