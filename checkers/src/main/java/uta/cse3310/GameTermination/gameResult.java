@@ -5,15 +5,18 @@ import java.util.HashMap;
 import uta.cse3310.GameManager.Game;
 
 public class gameResult{
-    // HashMap for players scores. 
+    // HashMap to store  players scores. 
     private HashMap<String, Integer> playerScores = new HashMap<>();
 
-    // Updates players scores at the end of the game. 
+    // Updates the scores of players at the end of the game. 
     public void updateGameResult(Game player1, Game player2){
+        //playerScores.put(player1.getName(), player1.getScore());
+        //playerScores.put(player2.getName(), player2.getScore());
+    
         
     }
 
-    // Generates Leaderboard. 
+    // Generates and displays the leaderboard based on player scores. 
     public void generateLeaderboard(){
         
     }
