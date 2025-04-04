@@ -5,6 +5,8 @@ import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.PairUp.PairUp;
+import uta.cse3310.PairUp.Player;
+
 import java.util.ArrayList;
 
 
@@ -31,7 +33,7 @@ public class GameManager {
     // Initialize first 10 games
     public void initializeGames() {	// most likely a for loop over ArrayList and adding games with Game Play board and players
         for (int i = 0; i < MAX_GAMES; i++) {
-            games.add(new Game());
+            games.add(new Game(0,-1));
             numOfGames.add(i); // marking these as available
         }
     }
