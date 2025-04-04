@@ -51,7 +51,8 @@ public class GameManager {
     
     // Create a new game from Pair Up
     public boolean createGame(Player p1, Player p2, ArrayList<Player> spectator){
-        return boardAvailable(p1, p2, spectator);
+        return false;
+        //return boardAvailable(p1, p2, spectator);
         // if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
     }
     

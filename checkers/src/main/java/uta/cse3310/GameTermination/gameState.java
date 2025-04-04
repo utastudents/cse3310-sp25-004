@@ -14,12 +14,12 @@ public class gameState{
 
     //checks gameState after each move to see if a player is winning
     public int checkForWinningPlayer(Board gameState, Game player1, Game player2){
-
+        return -1;
     }
 
     //checks gameState for a draw
     public boolean gameStateDraw(){
-
+        return false;
     }
 
 

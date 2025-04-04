@@ -1,7 +1,9 @@
 package uta.cse3310.GameTermination;
 
-import uta.cse3310.GameManager;
-import java.util.map;
+import java.util.HashMap;
+//import uta.cse3310.GameManager;
+
+import uta.cse3310.GameManager.Game;
 
 public class gameResult{
     // HashMap for players scores. 
