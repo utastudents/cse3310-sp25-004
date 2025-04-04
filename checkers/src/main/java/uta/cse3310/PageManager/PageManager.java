@@ -90,7 +90,10 @@ public class PageManager {
         // Create reply object
     
         // Check if user already exists in database
-        return reply;
+
+        // Changed to returning null so that code can compile.
+        // TODO: Fix UserEventReply  handleNewUser to return the correct object.
+        return null;
         }
     
     
@@ -105,7 +108,10 @@ public class PageManager {
         // Check if user exists in db.getPasswordForUser (username)
     
         // Validate credentials
-        return reply;
+
+        // Changed to returning null so that code can compile.
+        // TODO: Fix UserEventReply handleLogin to return the correct object.
+        return null;
         }
 
 
