@@ -7,7 +7,11 @@ public class gameResult{
     // HashMap for players scores. 
     private HashMap<String, Integer> playerScores = new HashMap<>();
 
-    //todo:add function for gameResult
+    // Function for final game result. 
+    public void updateGameResult(Game player1, Game player2) 
+    {
+        
+    }
 
     //todo:add function for leaderboard
 }
