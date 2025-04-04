@@ -7,9 +7,8 @@ public class gameResult{
     // HashMap for players scores. 
     private HashMap<String, Integer> playerScores = new HashMap<>();
 
-    // Function for final game result. 
-    public void updateGameResult(Game player1, Game player2) 
-    {
+    // Updates players scores at the end of the game. 
+    public void updateGameResult(Game player1, Game player2){
         
     }
 
