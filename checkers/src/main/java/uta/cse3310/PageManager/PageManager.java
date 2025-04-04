@@ -31,22 +31,16 @@ public class PageManager {
 
 
    
-    public static JsonObject retrieveUserJson(int StudentID) 
+    public UserEventReply retrieveUserJson(int Id) 
     {
              return null; 
     }
     
-    public static JsonObject retrieveTopTenJson() 
+    public UserEventReply retrieveTopTenJson() 
     {
            return null;
     }
-    
-    public static ArrayList<HumanPlayer> findTopTen() 
-    {
-         return null; 
-    }
-    
-    
+
     public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)
     {
         return null;
