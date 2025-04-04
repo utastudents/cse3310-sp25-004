@@ -19,7 +19,8 @@ public class PageManager {
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
                       // is not unique per client (or game)
-
+    GameManager Gm = new GameManager();
+    Gson gson = new Gson();
     public PageManager() {
         db = new DB();
         // pass over a pointer to the single database object in this system
