@@ -6,7 +6,7 @@ import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GameManager.Game;
 
 public class gameState{
-    //todo: add function to see if player can still make legal moves
+    //todo: add function to see if player can still make legal moves; will use same function as gamePlay.
      //todo: add function to see if player has won
 
 
