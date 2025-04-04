@@ -55,7 +55,8 @@ public class DB
         public boolean verifyPassword(String username, String password) 
         {
                 HumanPlayer player = getPlayerByUsername(username);
-                return player != null && checkPassword(password, player.getPassword());
+                return false;
+                //return player != null && checkPassword(password, player.getPassword());
         }
 
         /* Get total games played across all players */
