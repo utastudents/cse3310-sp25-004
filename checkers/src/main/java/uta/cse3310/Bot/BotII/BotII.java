@@ -1,5 +1,7 @@
 package uta.cse3310.Bot.BotII;
 
+import uta.cse3310.Bot.Bot;
+
 public class BotII extends Bot {
     public void makeValidMove() {
         // TODO: Logic to choose and make a legal move
@@ -46,6 +48,18 @@ public class BotII extends Bot {
     }
     public void protectBackLine() {
         // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
+    }
+
+    
+    @Override
+    public boolean makeMove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+    @Override
+    public boolean updateBoard() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
     }
 
 }
