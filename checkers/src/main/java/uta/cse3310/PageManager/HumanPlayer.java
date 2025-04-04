@@ -8,6 +8,7 @@ public class HumanPlayer extends Player{
    
     private String username;
     private String password;
+    private String salt;
     private int wins;
     private int losses;
     private int ELO;
@@ -19,6 +20,7 @@ public class HumanPlayer extends Player{
         this.playerId = nextId();
         this.username = username;
         this.password = password;
+        this.salt = salt;
         this.wins = 0;
         this.losses = 0;
         this.ELO = 0;
@@ -57,6 +59,14 @@ public class HumanPlayer extends Player{
     //getters
     public String getUsername(){
         return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public int getPlayerId(){
