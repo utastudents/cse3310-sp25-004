@@ -1,5 +1,7 @@
 package uta.cse3310.Bot.BotI;
 
+import uta.cse3310.Bot.Bot;
+
 public class BotI extends Bot {
 
     public void makeValidMove() {
@@ -69,6 +71,18 @@ public class BotI extends Bot {
 
     public void protectBackLine() {
         // TODO: Avoid moving back row pieces unless necessary
+    }
+
+    @Override
+    public boolean makeMove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+
+    @Override
+    public boolean updateBoard() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
     }
 
 }
