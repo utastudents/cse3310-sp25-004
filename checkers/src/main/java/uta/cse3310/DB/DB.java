@@ -8,7 +8,6 @@ import uta.cse3310.PageManager.HumanPlayer;
 public class DB 
 {
         private LinkedList<HumanPlayer> players;
-        private int nextPlayerId = 1;
          
         public DB() 
         {
@@ -22,7 +21,7 @@ public class DB
                 {
                         return; // Username already exists, do nothing
                 }
-                HumanPlayer newPlayer = new HumanPlayer(username, password, nextPlayerId++);
+                HumanPlayer newPlayer = new HumanPlayer(username, password);
                 players.add(newPlayer);
         }
                 
