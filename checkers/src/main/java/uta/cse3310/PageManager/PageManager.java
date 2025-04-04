@@ -353,10 +353,30 @@ public class PageManager {
         return null;
     }
     // method handle new user registration from frontend 
-    public UserEventReply handleNewUser(JsonObject jsonObj, int Id)
-    {
-        return null;
+    public UserEventReply handleNewUser(JsonObject jsonObj, int Id) {
+        String username = jsonObj.get("UserName").getAsString();
+        String password = jsonObj.get("Password").getAsString();
+    
+        UserEventReply reply = new UserEventReply();
+        reply.recipients = new ArrayList<>();
+        reply.recipients.add(Id);
+    
+        JsonObject status = new JsonObject();
+        status.addProperty("responseID", "new_user");
+    
+        // SEND TO SQLITE DATABASE
+        boolean success = db.addPlayerToDB(username, password);
+    
+        if (success) {
+            status.addProperty("msg", "Account created successfully!");
+        } else {
+            status.addProperty("msg", "Username already exists.");
+        }
+    
+        reply.replyObj = status;
+        return reply;
     }
+    
 
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
