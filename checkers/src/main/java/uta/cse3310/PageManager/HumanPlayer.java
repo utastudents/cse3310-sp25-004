@@ -15,7 +15,7 @@ public class HumanPlayer extends Player{
     private int gamesPlayed;
 
     // constructors
-    public HumanPlayer(String username, String password)
+    public HumanPlayer(String username, String password, String salt)
     {
         this.playerId = nextId();
         this.username = username;
