@@ -5,8 +5,7 @@ import uta.cse3310.GamePlay.Board;
 
 public class gameState{
 
-//function to see if player can still make legal moves; will use same
-//function as gamePlay.
+//function to see if player can still make legal moves; will use same function as gamePlay.
 public boolean canPlayerMove(Board gameState, int playerId){
 
 //assume player has moves
