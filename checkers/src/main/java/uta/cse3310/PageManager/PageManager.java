@@ -84,16 +84,6 @@ public class PageManager {
         return null;
     }
 
-    // feat: implement login and registration handlers in PageManager.java
-
-    // - Added handleLogin(UserEvent U) to check if a username exists in the DB and validate password
-    // - Added handleNewUser(UserEvent U) to create new user records if username does not exist
-    // - Updated ProcessInput(UserEvent U) to route "login" and "new_user" events to appropriate handlers
-    // - Integrated UserEventReply to return status messages to the frontend
-    // - Stubbed out user credential checking using db.getPasswordForUser() and db.userExists()
-    
-    // Partially fulfills requirements 31–42 on the task sheet under Tony's responsibilities.
-    
 
     public UserEventReply handleLogin(JsonObject jsonObj, int Id)
     {
