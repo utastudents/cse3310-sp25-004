@@ -95,8 +95,29 @@ public class PageManager {
     // Partially fulfills requirements 31–42 on the task sheet under Tony's responsibilities.
     
 
+    public UserEventReply handleLogin(JsonObject jsonObj, int Id)
+    {
+        return null;
+    }
+
+    public UserEventReply handleNewUser(JsonObject jsonObj, int Id)
+    {
+        return null;
+    }
+
+    public UserEventReply GameMove(JsonObject jsonObj, int Id)
+    {
+        return null;
+    }    
+
+
     // Method to transition between pages
     private UserEventReply transitionPage(int clientId, GameState newState) {
+        return null;
+    }
+
+    // Method to transition to join game page after user finishes reviewing summary of game
+    public UserEventReply backToHome(int clientId) {
         return null;
     }
 

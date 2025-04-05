@@ -173,7 +173,10 @@ public class App extends WebSocketServer {
         break;  
       case "GameMove":        
         Reply = PM.GameMove(jsonObj, Id);
-        break; 
+        break;
+      case "backToHome":
+        Reply = PM.backToHome(Id);
+        break;
       default:
         System.out.println("Unknown action: " + action);
         break;
