@@ -3,7 +3,7 @@ package uta.cse3310.GameTermination;
 import uta.cse3310.GameManager.Game;
 
 public class GameTermination {
-        //todo: create function that tells gameplay game is over
+        // Tells game play game is over. 
         public void endGame() {
         }
 
