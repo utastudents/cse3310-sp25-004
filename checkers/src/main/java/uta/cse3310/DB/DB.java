@@ -77,7 +77,24 @@ public class DB
         }
         return Total_Games;
     }
-
+        /* This methods is called from addPlayer and will create a text document storing what is being stored in the DB per person. 
+     * 
+     * gabriel wynne
+     * Function savePlayerToFile(player):
+	    	Create a file named "player_<playerId>.txt"
+	
+	    	Write the following to the file, each on a new line:
+		        - player's username
+		        - player's hashed password
+		        - player's salt
+		        - player's number of wins followed by " wins"
+		        - player's number of losses followed by " losses"
+		        - player's ELO followed by " ELO"
+		        - player's total games played followed by " games played"
+	
+	    	Close the file
+     * -gw*/
+    
     /* This method will update Players status their ID, wins, losses, Elo and gamesPlayed */
     public boolean updatePlayerStats(int playerId, int wins, int losses, int ELO, int gamesPlayed) 
     {
