@@ -5,18 +5,19 @@ import uta.cse3310.GamePlay.Board;
 
 public class gameState{
 
-//function to see if player can still make legal moves; will use same
-//function as gamePlay.
-//public boolean canPlayerMove(Board gameState, int playerId){
-//return true;
+//function to see if player can still make legal moves; will use same function as gamePlay.
+public boolean canPlayerMove(Board gameState, int playerId){
+
 //assume player has moves
 //replace logic to check board for valid moves
-//}
+
+return true;
+}
 
 //function to see if player has won
-//public boolean hasPlayerWon(Board gameState, int playerID){
-//return false;
-//}
+public boolean hasPlayerWon(Board gameState, int playerID){
+return false;
+}
 
 
 Board gameState = new Board();
