@@ -10,9 +10,7 @@ public class gameResult{
 
     // Updates the scores of players at the end of the game. 
     public void updateGameResult(Game player1, Game player2){
-        //playerScores.put(player1.getName(), player1.getScore());
-        //playerScores.put(player2.getName(), player2.getScore());
-    
+        
         
     }
 
