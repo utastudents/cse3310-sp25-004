@@ -84,12 +84,12 @@ public class PageManager {
         return null;
     }
 
-
+    // handle login request from the frintend (expects a jsonObject w/ "username" "Password"
     public UserEventReply handleLogin(JsonObject jsonObj, int Id)
     {
         return null;
     }
-
+    // method handle new user registration from frontend 
     public UserEventReply handleNewUser(JsonObject jsonObj, int Id)
     {
         return null;
