@@ -90,8 +90,10 @@ public class DB
                 player.setELO(ELO);
                 player.setGamesPlayed(gamesPlayed);
                 return true;  /* if Status are updated with no any issues */
-        
+            }
         }
-        return false;  
+        return false;
     }
+    
+
 }
