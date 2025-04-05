@@ -1,18 +1,19 @@
 package uta.cse3310.DB;
 
 public class PasswordManager {
-    // Placeholder for salt generation
+    
+    /* TODO: salt generation implementation */
     public static String generateSalt() {
-        return ""; // Placeholder
+        return "";
     }
 
-    // Placeholder for password hashing
+    /* TODO :  password hashing */
     public static String hashPassword(String password, String salt) {
-        return ""; // Placeholder
+        return "";
     }
 
-    // Placeholder for password verification
+    /* TODO : password verification code using salt with stored hash */
     public static boolean verifyPassword(String password, String storedHash, String salt) {
-        return false; // Placeholder
+        return false; 
     }
 }
