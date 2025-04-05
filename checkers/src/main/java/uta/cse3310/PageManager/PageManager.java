@@ -2,6 +2,7 @@ package uta.cse3310.PageManager;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.HashMap;
 
 import uta.cse3310.GameState;
 
@@ -25,8 +26,10 @@ public class PageManager {
 
 
     // List to track active players in the subsystem
-    Hashtable<HumanPlayer, Integer> trackPlayers = new Hashtable<>();
+    Hashtable<HumanPlayer, Integer> activePlayers = new Hashtable<>();
 
+    // 
+    HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() {
         db = new DB();
@@ -92,6 +95,25 @@ public class PageManager {
     // Partially fulfills requirements 31–42 on the task sheet under Tony's responsibilities.
     
 
+    // Method to transition between pages
+    private UserEventReply transitionPage(int clientId, GameState newState) {
+        return null;
+    }
+
+    // Method to check if transition possible
+    public boolean canTransition(GameState from, GameState to) {
+        return false;
+    }
+
+    // Method to get the current state of user
+    public GameState getCurrentState(int clientId) {
+        return null;
+    }
+
+    // Method to reset client states for the new game
+    public void resetClient(int clientId) {
+        clientStates.remove(clientId);
+    }
 
 
    
