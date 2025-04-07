@@ -67,7 +67,8 @@
     game display
     </div>
 	<div class="summary">
-		<button onclick="alert('Placeholder')// ask page manager to show summary" style="display: inline-block">Leaderboard</button>
+		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+		<!-- visibility hidden -->
 		<div id="summary-leaderboard" style="display: none;">
 			<h1>Leaderboard</h1>
 			<table id="summary-table">
@@ -86,8 +87,21 @@
 				</tbody>
 			</table>
 			<!--- <p class= "caption"> Top 10 players.</p> -->
-			<button onclick="alert('Placeholder')// ask page manager to hide summary">Back to Home</button>
+			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
 			<script src="./summary/summary.js"></script>
+			<script>
+				// Temporary functions to show/hide the leaderboard until page manager can take over
+				function summaryShow() {
+					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+					renderLeaderboard();
+				}
+				
+				function summaryHide() {
+					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				}
+			</script>
 		</div>
 	</div>
 
