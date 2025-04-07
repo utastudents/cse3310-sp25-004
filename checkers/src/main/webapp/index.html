@@ -1,5 +1,9 @@
 <html>
 
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
     <div id="new_account">
 		<!--Signup screen logo-->
     	<h1>Create New Account</h1>
@@ -62,36 +66,37 @@
 		
 	</div>
     <div id="join_game">
-    <div class="lobby_lists_container">
-        <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
-        <p>Current players: 3/48</p>
-        <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-            <ol id="lobby_list_items">
-                <!-- Dynamically Created Elements -->
-    
-                <!-- EXAMPLE:
-                <li class="player">
-                    <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
-                    <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
-                    <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-                </li> -->
-            </ol>
+        <div class="lobby_lists_container">
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p>
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol id="lobby_list_items">
+                    <!-- Dynamically Created Elements -->
+        
+                    <!-- EXAMPLE:
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li> -->
+                </ol>
+            </div>
+        
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
         </div>
-    
-        <button>
-            <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
-                Match Making
-            </a>
-        </button>
-        <button>
-            <a id="CURRENT_SESSION_BOT" type="button">
-                Request Bot
-            </a>
-        </button>
-        <button>
-            <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                Watch Bot Vs Bot
-            </a></button>
     </div>
     <div id="game_display">
     game display
@@ -204,7 +209,6 @@
       <textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
     </div>
->>>>>>> main
 </html>
 <script>
     // each of the 'divs' in the html page should have attributes to allow them to be hidden.
