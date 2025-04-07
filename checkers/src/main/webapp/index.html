@@ -139,11 +139,33 @@
     }
 
     connection.onmessage = function (evt) {
-        var msg;
-        msg = evt.data;
-
+        let msg = evt.data; //extract data from websocket response
         console.log("Message received: " + msg);
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML;
+		let jsonMsg = JSON.parse(msg); //convert data to JSON
+		//Extracts the response identifier from the response, so we can determine whose code it belongs to
+		//See ./INTERFACES/client-server-docs.md for details
+		let responseID = Object.keys(jsonMsg)[0]; 
+		switch ( responseID )
+		{
+			// Account Responses
+			
+			// Game Responses
+
+			// Summary Responses
+			case "summaryTopTenData":{
+				console.log("Received summaryTopTenData!");
+				break;
+			}
+			case "summaryUserJson":{
+				console.log("Received summaryUserJson!");
+				break;
+			}
+			default:{
+				console.log("Received unexpected responseID! Got: \n"+responseID);
+			}
+		}
+
+        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -185,8 +207,8 @@
 		// playerData = retrieveUserJson();
 		// globalData = retrieveTopTenJson();
 
-		// Write top ten to table
-		// Write user to table
-		return;
+    // Write top ten to table
+    // Write user to table
+    return;
 }
 </script>
