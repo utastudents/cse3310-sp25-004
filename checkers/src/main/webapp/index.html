@@ -66,7 +66,7 @@
 		
 	</div>
     <div id="join_game">
-        <div class="lobby_lists_container" style="margin: 20px auto"> <!-- idk why but this wasn't updating in styles.css -->
+        <div class="lobby_lists_container" > 
             <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
             <p>Current players: 3/48</p>
             <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
@@ -235,6 +235,7 @@
         console.log("close");
     }
 
+    // Team 2 created this, contact us if you also need to use onmessage
     connection.onmessage = (event) => {
         const users = JSON.parse(event.data);
         const listEl = document.getElementById("lobby_list_items");
