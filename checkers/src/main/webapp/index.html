@@ -66,106 +66,29 @@
     <div id="game_display">
     game display
     </div>
-    <div class="summary">
-		<h1>Leaderboard</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Player</th>
-					<th>Elo</th>
-					<th>Games Won</th>
-					<th>Games Lost</th>
-					<th>Total Number of Games</th>
-				</tr>
-			</thead>
-		<!-- Example data, these will be cleared and filled with JSON through a JS script -->
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Player 1</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Player 2</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Player 3</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>Player 4</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>Player 5</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>Player 6</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>Player 7</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td>Player 8</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>Player9</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>Player 10</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-			</tbody>
-		</table>
-		 <!--- <p class= "caption"> Top 10 players.</p> -->
-		<!-- <a href="../index.html" class="button">Back to Home</a> -->
-		<script src="summary.js"></script>	
+	<div class="summary">
+		<button onclick="// ask page manager to show summary" style="display: inline-block">Leaderboard</button>
+		<div id="summary-leaderboard" style="display: none;">
+			<h1>Leaderboard</h1>
+			<table id="summary-table">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Elo</th>
+						<th>Games Won</th>
+						<th>Games Lost</th>
+						<th>Total Number of Games</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- These data will be filled with JSON through a JS script -->
+				</tbody>
+			</table>
+			<!--- <p class= "caption"> Top 10 players.</p> -->
+			<button onclick="// ask page manager to hide summary">Back to Home</button>
+			<script src="./summary/summary.js"></script>
+		</div>
 	</div>
 
     <div id="stuff">
@@ -223,30 +146,31 @@
     }
 
 	function summary(/*void*/) {
-    /*
-     * Fetches and displays player ranking data in the summary table.
-     *
-     * This function retrieves JSON data for:
-     * - The current player, identified via a session UUID.
-     * - The top 10 ranked players.
-     *
-     * The data is retrieved using:
-     * - `retrieveUserJson(uuid)`: Fetches the current player's data.
-     * - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-     *
-     * The retrieved data is then written to the HTML table inside the summary div.
-     *
-     * TODO:
-     * - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-     * - Handle potential errors when fetching data.
-     * - Ensure proper table structure for displaying the data.
-     */
-    
-    // playerData = retrieveUserJson();
-    // globalData = retrieveTopTenJson();
+		/*
+		* Fetches and displays player ranking data in the summary table.
+		*
+		* This function retrieves JSON data for:
+		* - The current player, identified via a session UUID.
+		* - The top 10 ranked players.
+		*
+		* The data is retrieved using:
+		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
+		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+		*
+		* The retrieved data is then written to the HTML table inside the summary div.
+		*
+		* TODO:
+		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+		* - Handle potential errors when fetching data.
+		* - Ensure proper table structure for displaying the data.
+		*/
+		
+		// playerData = retrieveUserJson();
+		// globalData = retrieveTopTenJson();
 
-    // Write top ten to table
-    // Write user to table
-    return;
-}
+		// Write top ten to table
+		// Write user to table
+		renderLeaderboard();
+		return;
+	}
 </script>
