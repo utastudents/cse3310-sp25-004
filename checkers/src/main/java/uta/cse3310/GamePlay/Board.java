@@ -3,6 +3,8 @@ import java.util.ArrayList;
 /*
  * this class creates and changes the checker board
  * checks if moves are valid
+ * Forward is defined a moving up the board from black to red
+ * Backward is defined as moving down the board from red to black
  */
 public class Board 
 {
@@ -14,15 +16,43 @@ public class Board
 
 	public Board()
 	{
-        //Initialize class with board array and inital checker positions
+        //Initialize class with board array and initialize checker positions
 
 		initCheckers(Color.RED);
 		initCheckers(Color.BLACK);
 		board.add(redCheckers);
 		board.add(blackCheckers);
 	}
+
+	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
+	// Returns null if no checker is found
+	{
+		// Check if the space has a red checker
+
+		for(Checker c : redCheckers)
+		{
+			if(c.getCord().equals(Cord))
+			{
+				return c;
+			}
+		}
+
+		// Check if the space has a black checker
+
+		for(Checker c : redCheckers)
+		{
+			if(c.getCord().equals(Cord))
+			{
+				return c;
+			}
+		}
 	
-	private void initCheckers(Color color) // Takes in a color and adds the inital checker of that color
+		// If no checker is found, return null
+
+		return null; 
+	}
+	
+	private void initCheckers(Color color) // Takes in a color and adds the checkers of that color in there starting position.
 	// TODO Refactor initCheckers function to use loops instead of hardcoding the values
 	{
 		if (color == Color.RED) 
@@ -87,7 +117,63 @@ public class Board
 	}
 
 
-	
+	private boolean moveForwardCheck(Checker piece, Cord dest) 
+	// Returns true if the piece can move diagonally forward to the destination square. 
+	// Does not check Jumps
+	{
+		Checker destPiece = checkSpace(dest); // Check if the destination square is occupied by another piece
+
+		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
+		{
+			return false; // Invalid move, out of bounds
+		}
+
+		if(destPiece != null) 
+		{
+			return false; // Cannot move to a square already occupied by another piece
+		}
+		else
+		{
+			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
+			int yDiff = (dest.getY() - piece.getCord().getY());
+
+			if(xDiff == 1 && yDiff == 1)
+			{
+				return true;
+			}
+		}
+
+		return false; // Should not reach. If it does something is wrong and the move is invalid
+	}
+
+	private boolean moveBackwardCheck(Checker piece, Cord dest) 
+	// Returns true if the piece can move diagonally backward to the destination square. 
+	// Does not check Jumps
+	{
+		Checker destPiece = checkSpace(dest); // Check if the destination square is occupied by another piece
+
+		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
+		{
+			return false; // Invalid move, out of bounds
+		}
+
+		if(destPiece != null) 
+		{
+			return false; // Cannot move to a square already occupied by another piece
+		}
+		else
+		{
+			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
+			int yDiff = (dest.getY() - piece.getCord().getY());
+
+			if(xDiff == 1 && yDiff == -1)
+			{
+				return true;
+			}
+		}
+
+		return false; // Should not reach. If it does something is wrong and the move is invalid
+	}
 	
 
 }

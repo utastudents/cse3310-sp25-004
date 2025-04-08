@@ -28,4 +28,6 @@ public class Cord
 		this.x = x;
 		this.y = y;
 	}
+
+	
 }
