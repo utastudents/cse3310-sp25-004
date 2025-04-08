@@ -1,4 +1,7 @@
 # Schema
+- Responses should be sent in the format
+- `{ receiverID : { response } }` so the response can be parsed by the client and be mapped to a request
+
 ## Account
 ### Login
 - input: `login`
