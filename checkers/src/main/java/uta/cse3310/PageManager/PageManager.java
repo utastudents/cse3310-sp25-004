@@ -37,10 +37,42 @@ public class PageManager {
         pu = new PairUp(db);
     }
 
-   
+    //what retrieveUserJson could look like
     public UserEventReply retrieveUserJson(JsonObject jsonObject, int Id) 
     {
-             return null; 
+             UserEventReply userEventReply= new UserEventReply();
+
+             //dummy player but eventually will get the desired player from db of players using int Id
+             HumanPlayer player = new HumanPlayer("temp", "temp", "temp");
+
+            //outer json object will have the responseID
+            JsonObject responseJson = new JsonObject(); 
+             responseJson.addProperty("responseID", "summaryUserJson");
+
+            //inner json object will have the player info
+            if(player != null){
+             JsonObject playerData = new JsonObject();
+             playerData.addProperty("ID", player.getPlayerId());
+             playerData.addProperty("Username", player.getUsername());
+             playerData.addProperty("elo", player.getELO());
+             playerData.addProperty("gamesWon", player.getLosses());
+             playerData.addProperty("gamesLost", player.getWins());
+
+             responseJson.add("USER", playerData);
+
+            }
+            //error if there's no valid user
+            else {
+                responseJson.addProperty("ERROR", "no player found");
+            }
+
+            userEventReply.replyObj = responseJson;
+
+            userEventReply.recipients = new ArrayList<>();
+            userEventReply.recipients.add(Id);
+            
+            return userEventReply;
+
     }
     
     public UserEventReply retrieveTopTenJson(JsonObject jsonObj) 
