@@ -31,6 +31,11 @@ public class Checker
 		return cord;
 	}
 
+	public void setCord(int x, int y)
+	{
+		this.cord.setCord(x, y);
+	}
+
 	public Color getColor()
 	{
 		return color;
