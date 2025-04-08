@@ -24,7 +24,7 @@ public class Board
 		board.add(blackCheckers);
 	}
 
-	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
+	private Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
 		// Check if the space has a red checker
@@ -175,5 +175,14 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
+	public int moveChecker(Checker piece, Cord dest)
+	{
+		// TODO: Finish Board moveChecker function
+		int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
+
+
+
+		return result;
+	}
 
 }
