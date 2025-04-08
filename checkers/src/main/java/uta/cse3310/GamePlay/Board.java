@@ -175,9 +175,12 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
-	public int moveChecker(Checker piece, Cord dest)
+	public int moveValidation(Checker piece, Cord dest)
+	// The main logic for movement. 
+	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
+
 	{
-		// TODO: Finish Board moveChecker function
+		// TODO: Finish Board moveValidation function
 		int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
 
 
