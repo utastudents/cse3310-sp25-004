@@ -39,6 +39,7 @@ public class GameManager {
             numOfGames.add(i); // marking these as available
         }
     }
+    
     //Track numOfGames[] ArrayList for available game slots
     public ArrayList<Integer> getNumOfGames() {
         ArrayList<Integer> availableSlots = new ArrayList<>();
@@ -59,7 +60,6 @@ public class GameManager {
     }
     
     public void removeGame(){
-        // not sure if needed (?) have to check with GameTermination if they're removing game fully or we do
         // if GameTermination sends a Game object that should end, check Game ID and remove here
     }
     
@@ -76,7 +76,7 @@ public class GameManager {
     }   
 
     /*public GameUpdate processMove(GameMove move){
-
+        // call GamePlay Board method to validate move ? and return GameUpdate object with new position and player ID
         return new GameUpdate();
     }*/
 }
