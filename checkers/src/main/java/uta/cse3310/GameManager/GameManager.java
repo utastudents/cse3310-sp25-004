@@ -6,6 +6,8 @@ import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
+import uta.cse3310.PageManager.GameUpdate;
+import uta.cse3310.PageManager.GameMove;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,7 @@ public class GameManager {
             numOfGames.add(i); // marking these as available
         }
     }
+    
     //Track numOfGames[] ArrayList for available game slots
     public ArrayList<Integer> getNumOfGames() {
         ArrayList<Integer> availableSlots = new ArrayList<>();
@@ -57,7 +60,7 @@ public class GameManager {
     }
     
     public void removeGame(){
-        // not sure if needed (?) have to check with GameTermination if they're removing game fully or we do
+        // if GameTermination sends a Game object that should end, check Game ID and remove here
     }
     
     //Check for null in ArrayList Games
@@ -71,4 +74,9 @@ public class GameManager {
         // code implementing later to by checking if elements in ArrayList is null then set return value to true, else false
         return false;
     }   
+
+    /*public GameUpdate processMove(GameMove move){
+        // call GamePlay Board method to validate move ? and return GameUpdate object with new position and player ID
+        return new GameUpdate();
+    }*/
 }

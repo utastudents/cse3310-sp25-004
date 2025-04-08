@@ -101,106 +101,43 @@
     <div id="game_display">
     game display
     </div>
-    <div class="summary">
-		<h1>Leaderboard</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Player</th>
-					<th>Elo</th>
-					<th>Games Won</th>
-					<th>Games Lost</th>
-					<th>Total Number of Games</th>
-				</tr>
-			</thead>
-		<!-- Example data, these will be cleared and filled with JSON through a JS script -->
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Player 1</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Player 2</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Player 3</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>Player 4</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>Player 5</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>Player 6</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>Player 7</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td>Player 8</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>Player9</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>Player 10</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-			</tbody>
-		</table>
-		 <!--- <p class= "caption"> Top 10 players.</p> -->
-		<!-- <a href="../index.html" class="button">Back to Home</a> -->
-		<script src="summary.js"></script>	
+	<div class="summary">
+		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+		<!-- visibility hidden -->
+		<div id="summary-leaderboard" style="display: none;">
+			<h1>Leaderboard</h1>
+			<table id="summary-table">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Elo</th>
+						<th>Games Won</th>
+						<th>Games Lost</th>
+						<th>Total Number of Games</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- These data will be filled with JSON through a JS script -->
+				</tbody>
+			</table>
+			<!--- <p class= "caption"> Top 10 players.</p> -->
+			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+			<script src="./summary/summary.js"></script>
+			<script>
+				// Temporary functions to show/hide the leaderboard until page manager can take over
+				function summaryShow() {
+					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+					renderLeaderboard();
+				}
+				
+				function summaryHide() {
+					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				}
+			</script>
+		</div>
 	</div>
 
     <div id="stuff">
@@ -235,109 +172,35 @@
         console.log("close");
     }
 
-    // Team 2 created this, contact us if you also need to use onmessage
-    connection.onmessage = (event) => {
-        const users = JSON.parse(event.data);
-        const listEl = document.getElementById("lobby_list_items");
+    connection.onmessage = function (evt) {
+        let msg = evt.data; //extract data from websocket response
+        console.log("Message received: " + msg);
+		let jsonMsg = JSON.parse(msg); //convert data to JSON
+		//Extracts the response identifier from the response, so we can determine whose code it belongs to
+		//See ./INTERFACES/client-server-docs.md for details
+		let responseID = Object.keys(jsonMsg)[0]; 
+		switch ( responseID )
+		{
+			// Account Responses
+			
+			// Game Responses
 
+			// Summary Responses
+			case "summaryTopTenData":{
+				console.log("Received summaryTopTenData!");
+				break;
+			}
+			case "summaryUserJson":{
+				console.log("Received summaryUserJson!");
+				break;
+			}
+			default:{
+				console.log("Received unexpected responseID! Got: \n"+responseID);
+			}
+		}
 
-        for (const userKey in users) {
-            const user = users[userKey];
-            console.log(user); 
-            const li = document.createElement("li");
-            li.className = "player"; 
-
-            // create player info
-            const para = document.createElement("p")
-            para.innerText = `${user.username} (ID: ${parseInt(user)})`;
-            para.style.fontSize = "17px"; // Set font size for the player info
-            para.id = `UID${parseInt(user)}`; 
-
-            const statusSpan = document.createElement("span");
-            statusSpan.className = "status free"; 
-
-            para.appendChild(statusSpan); 
-
-            // Create buttons button
-            const challenge_btn = document.createElement("button");
-            const challenge_btn_link = document.createElement("a");
-
-            challenge_btn_link.id = `btn1-${parseInt(user)}`; 
-            challenge_btn_link.type = "button";
-            challenge_btn_link.href = "#";
-            challenge_btn_link.innerText = "Challenge";
-
-            challenge_btn_link.onclick = function() { 
-                req_challenge(1, parseInt(user)); 
-                return false; 
-            };
-            
-            const view_btn = document.createElement("button");
-            const view_btn_link = document.createElement("a");
-            
-            view_btn_link.id = `btn2-${parseInt(user)}`;
-            view_btn_link.type = "button";
-            view_btn_link.href = "#";
-            view_btn_link.innerText = "View Match"; 
-            
-            challenge_btn.appendChild(challenge_btn_link); 
-            view_btn.appendChild(view_btn_link); 
-            
-            //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
-
-            challenge_btn.addEventListener("click", () => {
-                const payload = {
-                    userID: user.ID,
-                    action: "do_something",
-                    username: user.username,
-                };
-                socket.send(JSON.stringify(payload));
-                console.log("Sent:", payload);
-            });
-            
-            li.appendChild(para); 
-            li.appendChild(challenge_btn);
-            li.appendChild(view_btn);
-            listEl.appendChild(li);
-        }
-    };
-    /**
-     * [This function take in player id 1, player id 2 and then send back to server to signal a challenge request]
-     */
-    function req_challenge(id1, id2) {
-        //do same handling here 
-        alert(`${id1} request challenge ${id2}`);
-    }
-
-    /**
-     * [This function take in player id 1, player id 2 and then send back to server to signal a view match request]
-     */
-    function req_viewmatch(id1, id2) {
-        //do same handling here , playerid1 want to view playerid2 match
-
-        alert(`${id1} request view ${id2}`);
-    }
-
-    /**
-     * [This function take in current client and send signal to server indicating bot request]
-     */
-    function req_bot(id1) {
-        alert(`${id1} request bot`);
-    }
-
-    /**
-     * [This function take in current client json and signal to server indicating matchmaking request]
-     */
-    function match_making(player1) {
-        const message = {
-            'message_type': 'match_making',
-            'player': {
-                'id1': player1.id1,
-                'name': player1.name,
-                'elo': player1.elo
-            }
-        };
-        alert(JSON.stringify(message, null, 2)); // Converts the object to a readable JSON string
+        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+        //const obj = JSON.parse(msg);
     }
 
     class UserEvent {
@@ -353,27 +216,30 @@
     }
 
 	function summary(/*void*/) {
-    /*
-     * Fetches and displays player ranking data in the summary table.
-     *
-     * This function retrieves JSON data for:
-     * - The current player, identified via a session UUID.
-     * - The top 10 ranked players.
-     *
-     * The data is retrieved using:
-     * - `retrieveUserJson(uuid)`: Fetches the current player's data.
-     * - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-     *
-     * The retrieved data is then written to the HTML table inside the summary div.
-     *
-     * TODO:
-     * - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-     * - Handle potential errors when fetching data.
-     * - Ensure proper table structure for displaying the data.
-     */
     
-    // playerData = retrieveUserJson();
-    // globalData = retrieveTopTenJson();
+		/* DEPRECATED : Code now resides in ./summary.js */
+		
+		/*
+		* Fetches and displays player ranking data in the summary table.
+		*
+		* This function retrieves JSON data for:
+		* - The current player, identified via a session UUID.
+		* - The top 10 ranked players.
+		*
+		* The data is retrieved using:
+		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
+		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+		*
+		* The retrieved data is then written to the HTML table inside the summary div.
+		*
+		* TODO:
+		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+		* - Handle potential errors when fetching data.
+		* - Ensure proper table structure for displaying the data.
+		*/
+		
+		// playerData = retrieveUserJson();
+		// globalData = retrieveTopTenJson();
 
     // Write top ten to table
     // Write user to table
