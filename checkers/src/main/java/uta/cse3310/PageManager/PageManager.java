@@ -38,19 +38,14 @@ public class PageManager {
     }
 
    
-    public static JsonObject retrieveUserJson(int StudentID) 
+    public UserEventReply retrieveUserJson(JsonObject jsonObject, int Id) 
     {
              return null; 
     }
     
-    public static JsonObject retrieveTopTenJson() 
+    public UserEventReply retrieveTopTenJson(JsonObject jsonObj) 
     {
            return null;
-    }
-    
-    public static ArrayList<HumanPlayer> findTopTen() 
-    {
-         return null; 
     }
     
     
@@ -125,6 +120,8 @@ public class PageManager {
     public void resetClient(int clientId) {
         clientStates.remove(clientId);
     }
+
+    
 
 
    
