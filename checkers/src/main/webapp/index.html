@@ -1,4 +1,9 @@
 <html>
+
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
     <div id="new_account">
 		<!--Signup screen logo-->
     	<h1>Create New Account</h1>
@@ -61,7 +66,37 @@
 		
 	</div>
     <div id="join_game">
-    join game
+        <div class="lobby_lists_container" > 
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p>
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol id="lobby_list_items">
+                    <!-- Dynamically Created Elements -->
+        
+                    <!-- EXAMPLE:
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li> -->
+                </ol>
+            </div>
+        
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
+        </div>
     </div>
     <div id="game_display">
     game display
@@ -186,7 +221,6 @@
     // or until the user decides to go to another page.
     // this requires everything to load from this page.
 
-   
     var connection = null;
 
     var serverUrl;
@@ -201,13 +235,109 @@
         console.log("close");
     }
 
-    connection.onmessage = function (evt) {
-        var msg;
-        msg = evt.data;
+    // Team 2 created this, contact us if you also need to use onmessage
+    connection.onmessage = (event) => {
+        const users = JSON.parse(event.data);
+        const listEl = document.getElementById("lobby_list_items");
 
-        console.log("Message received: " + msg);
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML;
-        //const obj = JSON.parse(msg);
+
+        for (const userKey in users) {
+            const user = users[userKey];
+            console.log(user); 
+            const li = document.createElement("li");
+            li.className = "player"; 
+
+            // create player info
+            const para = document.createElement("p")
+            para.innerText = `${user.username} (ID: ${parseInt(user)})`;
+            para.style.fontSize = "17px"; // Set font size for the player info
+            para.id = `UID${parseInt(user)}`; 
+
+            const statusSpan = document.createElement("span");
+            statusSpan.className = "status free"; 
+
+            para.appendChild(statusSpan); 
+
+            // Create buttons button
+            const challenge_btn = document.createElement("button");
+            const challenge_btn_link = document.createElement("a");
+
+            challenge_btn_link.id = `btn1-${parseInt(user)}`; 
+            challenge_btn_link.type = "button";
+            challenge_btn_link.href = "#";
+            challenge_btn_link.innerText = "Challenge";
+
+            challenge_btn_link.onclick = function() { 
+                req_challenge(1, parseInt(user)); 
+                return false; 
+            };
+            
+            const view_btn = document.createElement("button");
+            const view_btn_link = document.createElement("a");
+            
+            view_btn_link.id = `btn2-${parseInt(user)}`;
+            view_btn_link.type = "button";
+            view_btn_link.href = "#";
+            view_btn_link.innerText = "View Match"; 
+            
+            challenge_btn.appendChild(challenge_btn_link); 
+            view_btn.appendChild(view_btn_link); 
+            
+            //send info to server using socket.send, do have to update the Id and im not sure if you guys prefer sending the whole list or just 1 player info at a time
+
+            challenge_btn.addEventListener("click", () => {
+                const payload = {
+                    userID: user.ID,
+                    action: "do_something",
+                    username: user.username,
+                };
+                socket.send(JSON.stringify(payload));
+                console.log("Sent:", payload);
+            });
+            
+            li.appendChild(para); 
+            li.appendChild(challenge_btn);
+            li.appendChild(view_btn);
+            listEl.appendChild(li);
+        }
+    };
+    /**
+     * [This function take in player id 1, player id 2 and then send back to server to signal a challenge request]
+     */
+    function req_challenge(id1, id2) {
+        //do same handling here 
+        alert(`${id1} request challenge ${id2}`);
+    }
+
+    /**
+     * [This function take in player id 1, player id 2 and then send back to server to signal a view match request]
+     */
+    function req_viewmatch(id1, id2) {
+        //do same handling here , playerid1 want to view playerid2 match
+
+        alert(`${id1} request view ${id2}`);
+    }
+
+    /**
+     * [This function take in current client and send signal to server indicating bot request]
+     */
+    function req_bot(id1) {
+        alert(`${id1} request bot`);
+    }
+
+    /**
+     * [This function take in current client json and signal to server indicating matchmaking request]
+     */
+    function match_making(player1) {
+        const message = {
+            'message_type': 'match_making',
+            'player': {
+                'id1': player1.id1,
+                'name': player1.name,
+                'elo': player1.elo
+            }
+        };
+        alert(JSON.stringify(message, null, 2)); // Converts the object to a readable JSON string
     }
 
     class UserEvent {

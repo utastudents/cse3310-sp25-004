@@ -14,7 +14,7 @@ public class GameManager {
     // GamePlay gp;
     private static final int MAX_GAMES = 10;// essentially a global variable we can change later on
     BotI b1;
-    BotII b2;
+    BotII b2; // Ensure BotII is correctly imported or defined
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
     private ArrayList<Integer> numOfGames = new ArrayList<>();
