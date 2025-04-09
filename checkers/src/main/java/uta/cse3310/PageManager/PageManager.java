@@ -192,27 +192,28 @@ public class PageManager {
 
         int playerClientId = jsonObj.get("playerClientId").getAsInt();
 
-    //     // general identification of JSON
-    //     responseJson.addProperty("responseID", "joinQueue");
-    //     responseJson.addProperty("WhoAmI", Id);
+    //      general identification of JSON
+        responseJson.addProperty("responseID", "joinQueue");
+        responseJson.addProperty("WhoAmI", Id);
 
+        // State whether the adding to queue was a success
         if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
-            responseJson.addProperty("matchFound", true);
+            responseJson.addProperty("inQueue", true);
         }
         else
         {
-            responseJson.addProperty("matchFound", false);
+            responseJson.addProperty("inQueue", false);
         }
 
-    //     userEventReply.replyObj = responseJson;
+        userEventReply.replyObj = responseJson;
 
-    //     userEventReply.recipients = new ArrayList<>();
-    //     userEventReply.recipients.add(Id);
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
 
          return userEventReply;
 
-    //     // No where near complete
+
 
      }
 
@@ -221,12 +222,12 @@ public class PageManager {
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
 
-        int opponentClientId = jsonObj.get("OpponentClientId").getAsInt();
+        int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "challengePlayer");
 
-        responseJson.addProperty("PlayerClientId", Id);
+        responseJson.addProperty("playerClientId", Id);
 
         HumanPlayer player = activePlayers.get(Id);
         responseJson.addProperty("Username", player.getUsername());
