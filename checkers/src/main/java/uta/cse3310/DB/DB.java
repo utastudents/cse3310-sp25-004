@@ -22,8 +22,9 @@ public class DB
         {
             return; /*if username exists it will return */
         }
-        String salt = PasswordManager.generateSalt();
-        String hashedPassword = PasswordManager.hashPassword(password, salt);
+        String salt = java.util.Base64.getEncoder().encodeToString(PasswordManager.generateSalt());
+        byte[] decodedSalt = java.util.Base64.getDecoder().decode(salt);
+        String hashedPassword = PasswordManager.hashPassword(password, decodedSalt);
 
         HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
         players.add(newPlayer);
@@ -63,7 +64,8 @@ public class DB
         {
             return false; 
         }
-        return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
+        byte[] decodedSalt = java.util.Base64.getDecoder().decode(player.getSalt());
+        return PasswordManager.verifyPassword(password, player.getPassword(), decodedSalt);
         
     }
 
