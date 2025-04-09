@@ -296,9 +296,9 @@ public class PageManager {
 
 
         // Extracting what i recieve
-        int BotId = jsonObj.get("BotId").getAsInt();
+        int botId = jsonObj.get("botId").getAsInt();
 
-        if(BotId == 1)
+        if(botId == 1)
         {
             bot1 = true;
         }
@@ -328,7 +328,32 @@ public class PageManager {
 
     public UserEventReply BotvsBot(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // Extracting what i recieve
+        boolean bot1 = jsonObj.get("bot1").getAsBoolean();
+        boolean bot2 = jsonObj.get("bot2").getAsBoolean();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "BotvsBot");
+
+        // State whether the adding to queue was a success
+        if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
+        {
+            responseJson.addProperty("inQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("inQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
     }
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
