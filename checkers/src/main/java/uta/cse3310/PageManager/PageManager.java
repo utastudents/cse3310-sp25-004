@@ -103,7 +103,7 @@ public class PageManager {
             int key = e.nextElement();
 
             HumanPlayer player = activePlayers.get(key);
-            playerData.addProperty("ID", player.getPlayerId());
+            playerData.addProperty("ClientID", key);
             playerData.addProperty("Username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getLosses());
@@ -130,7 +130,7 @@ public class PageManager {
   "WhoAmI": 123,
   "activePlayers": [
         {
-        "ID": 1,
+        "ClientID": 1,
         "Username": "player1",
         "elo": 1500,
         "gamesWon": 10,
@@ -149,7 +149,33 @@ public class PageManager {
 
     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        Int PlayerClientId = jsonObj.get("PlayerClientId").getAsInt();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "joinQueue");
+        responseJson.addProperty("WhoAmI", Id);
+
+        if (pu.addToQueue(activePlayers.get(PlayerClientId)).getPlayerId())
+        {
+            responseJson.addProperty("matchFound", true);
+        }
+        else
+        {
+            responseJson.addProperty("matchFound", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
+
+        // No where near complete
+
     }
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
