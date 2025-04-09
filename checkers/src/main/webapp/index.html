@@ -67,12 +67,16 @@
 	</div>
     <div id="join_game">
         <div class="lobby_lists_container" > 
-            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+			<!-- have function to get player username and/ or ID -->
+            <h2>Welcome back {player ID} Have fun in the lobby :D</h2>
+			<!-- Have function to get amount of players -->
             <p>Current players: 3/48</p>
             <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
                 <ol id="lobby_list_items">
                     <!-- Dynamically Created Elements -->
-        
+					
+					<!-- UPDATE STATUS INDICATOR -->
+
                     <!-- EXAMPLE:
                     <li class="player">
                         <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
@@ -83,15 +87,19 @@
             </div>
         
             <button>
+				<!-- Will always have current player information, parameter is player they want to challenge -->
+				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
                 <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
                     Match Making
                 </a>
             </button>
+			<!-- Will send info to DB and Bots with what bot and person -->
             <button>
                 <a id="CURRENT_SESSION_BOT" type="button">
                     Request Bot
                 </a>
             </button>
+			<!-- request to see bots play -->
             <button>
                 <a id="CURRENT_SESSION_BOTvsBOT" type="button">
                     Watch Bot Vs Bot
@@ -184,6 +192,13 @@
 			// Account Responses
 			
 			// Game Responses
+			case "playerInfo": {
+				console.log("Received thing!");
+				break;
+			} case "allOnlinePlayerInfo": {
+				console.log("Received thing!");
+				break;
+			}
 
 			// Summary Responses
 			case "summaryTopTenData":{
