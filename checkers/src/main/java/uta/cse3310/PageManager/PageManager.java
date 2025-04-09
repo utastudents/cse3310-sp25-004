@@ -126,6 +126,7 @@ public class PageManager {
         // general identification of JSON
         responseJson.addProperty("responseID", "getActivePlayers");
         responseJson.addProperty("WhoAmI", Id);
+        responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
 
         // to have an array of active players
