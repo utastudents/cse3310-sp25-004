@@ -289,7 +289,7 @@ public class PageManager {
         return null;
     }
 
-    }    
+     
 
 
     // Method to transition between pages
