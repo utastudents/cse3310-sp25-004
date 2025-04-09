@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 
 public class PageManager {
     DB db;
@@ -26,7 +27,7 @@ public class PageManager {
 
 
     // List to track active players in the subsystem
-    Hashtable<HumanPlayer, Integer> activePlayers = new Hashtable<>();
+    Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
 
     // 
     HashMap<Integer, GameState> clientStates = new HashMap<>();
@@ -83,7 +84,66 @@ public class PageManager {
     
     public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "getActivePlayers");
+        responseJson.addProperty("WhoAmI", Id);
+        Enumeration<Integer> e = activePlayers.keys();
+
+        // to have an array of active players
+        JsonArray playersArray = new JsonArray();
+
+        // loop through active players and add info onto the players array
+        while (e.hasMoreElements())
+        {
+            JsonObject playerData = new JsonObject();
+            int key = e.nextElement();
+
+            HumanPlayer player = activePlayers.get(key);
+            playerData.addProperty("ID", player.getPlayerId());
+            playerData.addProperty("Username", player.getUsername());
+            playerData.addProperty("elo", player.getELO());
+            playerData.addProperty("gamesWon", player.getLosses());
+            playerData.addProperty("gamesLost", player.getWins());
+
+
+            playersArray.add(playerData);
+        }
+
+
+        // add the array to the JSON and add recipients
+        responseJson.add("activePlayers", playersArray);
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
+
+        /* JSON STRUCTURE
+    {
+  "responseID": "getActivePlayers",
+  "WhoAmI": 123,
+  "activePlayers": [
+        {
+        "ID": 1,
+        "Username": "player1",
+        "elo": 1500,
+        "gamesWon": 10,
+        "gamesLost": 5
+        },
+        {
+        "ID": 2,
+        "Username": "player2",
+        "elo": 1450,
+        "gamesWon": 8,
+        "gamesLost": 7
+        }
+        ]
+    } */
     }
 
     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
@@ -92,6 +152,11 @@ public class PageManager {
     }
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
+    {
+        return null;
+    }
+
+    public UserEventReply challengePlayerReply(JsonObject jsonObj, int Id)
     {
         return null;
     }
