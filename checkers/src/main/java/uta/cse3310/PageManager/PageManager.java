@@ -45,8 +45,8 @@ public class PageManager {
     {
              UserEventReply userEventReply= new UserEventReply();
 
-             //dummy player but eventually will get the desired player from db of players using int Id
-             HumanPlayer player = new HumanPlayer("temp", "temp", "temp");
+             
+             HumanPlayer player = db.getPlayerById(Id);
 
             //outer json object will have the responseID
             JsonObject responseJson = new JsonObject(); 
