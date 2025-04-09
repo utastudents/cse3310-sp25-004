@@ -21,14 +21,12 @@
 					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
 				  </div>
 			
-			<button type="submit" style="display: block; margin: 3 auto;">Register</button>
+			<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
 
 			<!--Button to return to login from sign up page-->
 			<button id ="back-to-login">Login</button>
 		
-		    </body>
-		
-			
+		    </body>	
     </div>
 	<div id="login">
 		<h1>Login</h1> <!--before create new account-->
@@ -62,6 +60,16 @@
             document.getElementById("new_account").style.display = "none";
             document.getElementById("login").style.display = "block";
              	};
+
+			document.getElementById("register-btn").onclick = function(){
+				const username = document.getElementById("username").value;
+				const password = document.getElementById("password").value;
+
+				if(!username || !password){
+					alert("Invalid username and/or password.");
+					return;
+				}
+			}
 		 </script>
 		
 	</div>
