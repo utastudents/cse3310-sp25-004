@@ -106,8 +106,8 @@ public class PageManager {
             playerData.addProperty("ClientID", key);
             playerData.addProperty("Username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
-            playerData.addProperty("gamesWon", player.getLosses());
-            playerData.addProperty("gamesLost", player.getWins());
+            playerData.addProperty("gamesWon", player.getWins());
+            playerData.addProperty("gamesLost", player.getLosses());
 
 
             playersArray.add(playerData);
@@ -152,13 +152,13 @@ public class PageManager {
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
 
-        Int PlayerClientId = jsonObj.get("PlayerClientId").getAsInt();
+        int playerClientId = jsonObj.get("playerClientId").getAsInt();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "joinQueue");
         responseJson.addProperty("WhoAmI", Id);
 
-        if (pu.addToQueue(activePlayers.get(PlayerClientId)).getPlayerId())
+        if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
             responseJson.addProperty("matchFound", true);
         }
@@ -180,7 +180,28 @@ public class PageManager {
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        int opponentClientId = jsonObj.get("OpponentClientId").getAsInt();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "challengePlayer");
+
+        responseJson.addProperty("PlayerClientId", Id);
+
+        HumanPlayer player = activePlayers.get(Id);
+        responseJson.addProperty("Username", player.getUsername());
+        responseJson.addProperty("elo", player.getELO());
+        responseJson.addProperty("gamesWon", player.getWins());
+        responseJson.addProperty("gamesLost", player.getLosses());
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(opponentClientId);
+
+        return userEventReply;
     }
 
     public UserEventReply challengePlayerReply(JsonObject jsonObj, int Id)
