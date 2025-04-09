@@ -31,6 +31,8 @@ public class PageManager {
     // List to track active players in the subsystem
     Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
 
+    Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+
     // 
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
