@@ -1,5 +1,7 @@
 package uta.cse3310.PageManager;
 
+import uta.cse3310.GameState;
+import uta.cse3310.GameManager.Game;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 
@@ -13,6 +15,8 @@ public class HumanPlayer extends Player{
     private int losses;
     private int ELO;
     private int gamesPlayed;
+
+    //private socketId potentially here
 
     // constructors
     public HumanPlayer(String username, String password, String salt)
@@ -44,17 +48,22 @@ public class HumanPlayer extends Player{
     // These methods will be implemented soon
 
     @Override
-    public boolean makeMove(/** BoardState */) //Returns false if the client could not be reached
+    public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
         return false;
     }
 
     @Override
-    public boolean updateBoard(/** BoardState */) //Returns false if the client could not be reached
+    public boolean updateBoard(GameState gs) //Returns false if the client could not be reached
     {
         return false;
     }
 
+
+    public boolean startGame(Game g) {
+        game = g;
+        return false; //TODO: let the client know the game has started
+    }
 
     //getters
     public String getUsername(){

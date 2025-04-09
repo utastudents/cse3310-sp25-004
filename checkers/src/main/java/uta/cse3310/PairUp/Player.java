@@ -1,5 +1,8 @@
 package uta.cse3310.PairUp;
 
+import uta.cse3310.GameState;
+import uta.cse3310.GameManager.Game;
+
 public abstract class Player {
     public static enum STATUS {
         IN_GAME,
@@ -10,6 +13,7 @@ public abstract class Player {
     private static int nextId = 1;    
     protected int playerId;
     protected STATUS status = STATUS.ONLINE;
+    protected Game game;
 
     /** Methodology
         - Game Manager will call these methods
@@ -18,8 +22,10 @@ public abstract class Player {
         - The implementer will return true (not necessarily before or after calling another method in GM)
      */
 
-    public abstract boolean makeMove(/** BoardState */); //Returns false if the client could not be reached
-    public abstract boolean updateBoard(/** BoardState */); //Returns false if the client could not be reached
+    public abstract boolean makeMove(GameState gs); //Returns false if the client could not be reached
+    public abstract boolean updateBoard(GameState gs); //Returns false if the client could not be reached
+
+    public abstract boolean startGame(Game g);
 
     public static int nextId() {return nextId++;}
 
