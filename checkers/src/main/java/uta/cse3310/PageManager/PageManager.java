@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.List;
 
 import uta.cse3310.GameState;
 
@@ -57,8 +58,8 @@ public class PageManager {
              playerData.addProperty("ID", player.getPlayerId());
              playerData.addProperty("Username", player.getUsername());
              playerData.addProperty("elo", player.getELO());
-             playerData.addProperty("gamesWon", player.getLosses());
-             playerData.addProperty("gamesLost", player.getWins());
+             playerData.addProperty("gamesWon", player.getWins());
+             playerData.addProperty("gamesLost", player.getLosses());
 
              responseJson.add("USER", playerData);
 
@@ -77,9 +78,41 @@ public class PageManager {
 
     }
     
-    public UserEventReply retrieveTopTenJson(JsonObject jsonObj) 
-    {
-           return null;
+    public UserEventReply retrieveTopTenJson(JsonObject inputJson, int id) {
+        UserEventReply userEventReply = new UserEventReply();
+    
+        // Outer Json will have response ID
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty("responseID", "summaryTopTenData");
+    
+        // somehow need to get all players from db 
+        List<HumanPlayer> allPlayers = new ArrayList<>(); //need to get access to all players
+    
+        // Sort by ELO descending
+        allPlayers.sort((p1, p2) -> Integer.compare(p2.getELO(), p1.getELO()));
+    
+        // Add top 10 players to responseJson using userID1, userID2 etc
+        int count = 1;
+        for (HumanPlayer player : allPlayers) {
+            if (count > 10) break;
+    
+            JsonObject playerData = new JsonObject();
+            playerData.addProperty("ID", player.getPlayerId());
+            playerData.addProperty("Username", player.getUsername());
+            playerData.addProperty("elo", player.getELO());
+            playerData.addProperty("gamesWon", player.getWins());
+            playerData.addProperty("gamesLost", player.getLosses());
+    
+            String userKey = "userID" + count;
+            responseJson.add(userKey, playerData);
+    
+            count++;
+        }
+    
+        userEventReply.replyObj = responseJson;
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(id);
+        return userEventReply;
     }
     
     
@@ -147,36 +180,36 @@ public class PageManager {
     } */
     }
 
-    public UserEventReply joinQueue(JsonObject jsonObj, int Id)
-    {
-        UserEventReply userEventReply= new UserEventReply();
-        JsonObject responseJson = new JsonObject();
+     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
+     {
+         UserEventReply userEventReply=  new UserEventReply();
+    //     JsonObject responseJson = new JsonObject();
 
-        Int PlayerClientId = jsonObj.get("PlayerClientId").getAsInt();
+    //     int PlayerClientId = jsonObj.get("PlayerClientId").getAsInt();
 
-        // general identification of JSON
-        responseJson.addProperty("responseID", "joinQueue");
-        responseJson.addProperty("WhoAmI", Id);
+    //     // general identification of JSON
+    //     responseJson.addProperty("responseID", "joinQueue");
+    //     responseJson.addProperty("WhoAmI", Id);
 
-        if (pu.addToQueue(activePlayers.get(PlayerClientId)).getPlayerId())
-        {
-            responseJson.addProperty("matchFound", true);
-        }
-        else
-        {
-            responseJson.addProperty("matchFound", false);
-        }
+    //     if (pu.addToQueue(activePlayers.get(PlayerClientId)).getPlayerId())
+    //     {
+    //         responseJson.addProperty("matchFound", true);
+    //     }
+    //     else
+    //     {
+    //         responseJson.addProperty("matchFound", false);
+    //     }
 
-        userEventReply.replyObj = responseJson;
+    //     userEventReply.replyObj = responseJson;
 
-        userEventReply.recipients = new ArrayList<>();
-        userEventReply.recipients.add(Id);
+    //     userEventReply.recipients = new ArrayList<>();
+    //     userEventReply.recipients.add(Id);
 
-        return userEventReply;
+         return userEventReply;
 
-        // No where near complete
+    //     // No where near complete
 
-    }
+     }
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
     {
