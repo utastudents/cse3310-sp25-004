@@ -189,7 +189,7 @@ body {
   transform: translate(-50%, -50%);
   width: 80%;
   height: 80%;
-  background-color: #ff4d4d; /* Red color */
+  background-color: #FF0000; /* Red color */
   border-radius: 50%; /* Makes it circular */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
 }
@@ -207,7 +207,7 @@ body {
   transform: translate(-50%, -50%);
   width: 80%;
   height: 80%;
-  background-color: #333; /* Black color */
+  background-color: #000000; /* Black color */
   border-radius: 50%; /* Makes it circular */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
 }

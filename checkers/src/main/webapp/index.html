@@ -1,18 +1,41 @@
 <html>
+
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
     <div id="new_account">
 		<!--Signup screen logo-->
     	<h1>Create New Account</h1>
 		<!--Signup screen logo-->
+<<<<<<< HEAD
 		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
 			<label for = "username">Enter new username</label>
 			<input type = "text" id = "username" name="username" placeholder="Enter new username">
 			<label for = "password">Enter new password</label>
 			<input type="password" id="password" name="password" placeholder="Enter new password">
+=======
+		
+		    <img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+		    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
+		
+				<div style="margin-bottom: 10px;">
+					<label for="username">Enter new username: </label>
+					<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+				  </div>
+				  <div style="margin-bottom: 10px;">
+					<label for="password">Enter new password: </label>
+					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+				  </div>
+>>>>>>> a4cc2d8bf78ad459278b0fe7e484d0fdcaa7aca7
 			
-			<button type="submit">Register</button>
+			<button type="submit" style="display: block; margin: 3 auto;">Register</button>
 
 			<!--Button to return to login from sign up page-->
 			<button id ="back-to-login">Login</button>
+		
+		    </body>
+		
 			
     </div>
 	<div id="login">
@@ -20,10 +43,15 @@
 		<!--Login screen logo DONE-->
 		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
 		<!-- username login box-->
-		<label for = "login-username">Username</label>
-		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username">
+		<div style="margin-bottom: 10px;">
+		<label for = "login-username">Username: </label>
+		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+		</div>
 		<!-- password login box-->
-		<input type ="text" style="width: 140px; height: 25px; border-radius: 100px;display: block; margin: auto;" placeholder="Enter Password">
+		<div style="margin-bottom: 10px;">
+		<label for = "login-password">Password: </label>
+		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+		</div>
 		<!-- submit button-->
 		 <button type = "submit" style="display: block; margin: 3 auto;">Login</button>
 
@@ -31,120 +59,93 @@
 		 <button id = "show-signup">Sign Up</button>
 
 		 <script>
-			//(On Click)Sign in screen appear, login disappear
+			// (On Click) Sign up screen appear, login disappear
+			document.getElementById("show-signup").onclick = function() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("new_account").style.display = "block";
+                  };
 
-
-			//(On Click)Login screen appear, sign in disappear
-
+           // (On Click) Login screen appear, sign up disappear
+            document.getElementById("back-to-login").onclick = function() {
+            document.getElementById("new_account").style.display = "none";
+            document.getElementById("login").style.display = "block";
+             	};
 		 </script>
 		
 	</div>
     <div id="join_game">
-    join game
+        <div class="lobby_lists_container" > 
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p>
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol id="lobby_list_items">
+                    <!-- Dynamically Created Elements -->
+        
+                    <!-- EXAMPLE:
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li> -->
+                </ol>
+            </div>
+        
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
+        </div>
     </div>
     <div id="game_display">
     game display
     </div>
-    <div class="summary">
-		<h1>Leaderboard</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Player</th>
-					<th>Elo</th>
-					<th>Games Won</th>
-					<th>Games Lost</th>
-					<th>Total Number of Games</th>
-				</tr>
-			</thead>
-		<!-- Example data, these will be cleared and filled with JSON through a JS script -->
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Player 1</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Player 2</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Player 3</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>Player 4</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>Player 5</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>Player 6</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>Player 7</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td>Player 8</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>Player9</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>Player 10</td>
-					<td>0</td>
-					<td>00</td>
-					<td>000</td>
-					<td>0000</td>
-				</tr>
-			</tbody>
-		</table>
-		 <!--- <p class= "caption"> Top 10 players.</p> -->
-		<!-- <a href="../index.html" class="button">Back to Home</a> -->
-		<script src="summary.js"></script>	
+	<div class="summary">
+		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+		<!-- visibility hidden -->
+		<div id="summary-leaderboard" style="display: none;">
+			<h1>Leaderboard</h1>
+			<table id="summary-table">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Elo</th>
+						<th>Games Won</th>
+						<th>Games Lost</th>
+						<th>Total Number of Games</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- These data will be filled with JSON through a JS script -->
+				</tbody>
+			</table>
+			<!--- <p class= "caption"> Top 10 players.</p> -->
+			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+			<script src="./summary/summary.js"></script>
+			<script>
+				// Temporary functions to show/hide the leaderboard until page manager can take over
+				function summaryShow() {
+					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+					renderLeaderboard();
+				}
+				
+				function summaryHide() {
+					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				}
+			</script>
+		</div>
 	</div>
 
     <div id="stuff">
@@ -165,7 +166,6 @@
     // or until the user decides to go to another page.
     // this requires everything to load from this page.
 
-   
     var connection = null;
 
     var serverUrl;
@@ -181,11 +181,35 @@
     }
 
     connection.onmessage = function (evt) {
-        var msg;
-        msg = evt.data;
-
+        let msg = evt.data; //extract data from websocket response
         console.log("Message received: " + msg);
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML;
+		let jsonMsg = JSON.parse(msg); //convert data to JSON
+		//Extracts the response identifier from the response, so we can determine whose code it belongs to
+		//See ./INTERFACES/client-server-docs.md for details
+		let responseID = Object.keys(jsonMsg)[0]; 
+		switch ( responseID )
+		{
+			// Account Responses
+			
+			// Game Responses
+
+			// Summary Responses
+			case "summaryTopTenData":{
+				console.log("Received summaryTopTenData!");
+				//ommits the responseID and only sends needed values to loadData
+				loadData(jsonMsg[responseID]); 
+				break;
+			}
+			case "summaryUserJson":{
+				console.log("Received summaryUserJson!");
+				break;
+			}
+			default:{
+				console.log("Received unexpected responseID! Got: \n"+responseID);
+			}
+		}
+
+        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -202,27 +226,30 @@
     }
 
 	function summary(/*void*/) {
-    /*
-     * Fetches and displays player ranking data in the summary table.
-     *
-     * This function retrieves JSON data for:
-     * - The current player, identified via a session UUID.
-     * - The top 10 ranked players.
-     *
-     * The data is retrieved using:
-     * - `retrieveUserJson(uuid)`: Fetches the current player's data.
-     * - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-     *
-     * The retrieved data is then written to the HTML table inside the summary div.
-     *
-     * TODO:
-     * - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-     * - Handle potential errors when fetching data.
-     * - Ensure proper table structure for displaying the data.
-     */
     
-    // playerData = retrieveUserJson();
-    // globalData = retrieveTopTenJson();
+		/* DEPRECATED : Code now resides in ./summary.js */
+		
+		/*
+		* Fetches and displays player ranking data in the summary table.
+		*
+		* This function retrieves JSON data for:
+		* - The current player, identified via a session UUID.
+		* - The top 10 ranked players.
+		*
+		* The data is retrieved using:
+		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
+		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+		*
+		* The retrieved data is then written to the HTML table inside the summary div.
+		*
+		* TODO:
+		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+		* - Handle potential errors when fetching data.
+		* - Ensure proper table structure for displaying the data.
+		*/
+		
+		// playerData = retrieveUserJson();
+		// globalData = retrieveTopTenJson();
 
     // Write top ten to table
     // Write user to table

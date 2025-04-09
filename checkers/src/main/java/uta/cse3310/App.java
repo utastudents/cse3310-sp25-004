@@ -146,6 +146,12 @@ public class App extends WebSocketServer {
 
     switch(action)
     {
+      case "login":
+        Reply = PM.handleLogin(jsonObj, Id);
+        break;
+      case "new_user":
+        Reply = PM.handleNewUser(jsonObj, Id);
+        break;
       case "getActivePlayers":
         // each method from page manager returns a UserEventReply putting their JsonObject in replyObj and id of client in recipients
         Reply = PM.getActivePlayers(jsonObj, Id);
@@ -167,7 +173,10 @@ public class App extends WebSocketServer {
         break;  
       case "GameMove":        
         Reply = PM.GameMove(jsonObj, Id);
-        break; 
+        break;
+      case "backToHome":
+        Reply = PM.backToHome(Id);
+        break;
       default:
         System.out.println("Unknown action: " + action);
         break;
