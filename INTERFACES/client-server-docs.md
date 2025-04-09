@@ -42,11 +42,9 @@ response: ???
 ### Top Ten Data
 - input: `requestTopTen`
 	- calls `PageManager.retrieveTopTenJson()`
-- response: `summaryTopTenData`
-- responseID: `summaryTopTenData`
+- out: `summaryTopTenData`
 ### Current User Data
 - input: `requestUserJson`
 	- calls PageManager.retrieveUserJson()
-- response: `summaryUserJson`
-- responseID: `summaryUserJson`
+- output: `summaryUserJson`
 
