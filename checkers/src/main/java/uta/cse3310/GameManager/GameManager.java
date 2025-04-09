@@ -16,7 +16,7 @@ public class GameManager {
     // GamePlay gp;
     private static final int MAX_GAMES = 10;// essentially a global variable we can change later on
     BotI b1;
-    BotII b2; // Ensure BotII is correctly imported or defined
+    BotII b2;
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
     private ArrayList<Integer> numOfGames = new ArrayList<>();
@@ -55,25 +55,14 @@ public class GameManager {
     // Create a new game from Pair Up
     public boolean createGame(Player p1, Player p2, ArrayList<Player> spectator){
         return false;
-        //return boardAvailable(p1, p2, spectator);
+        // implement checking ArrayList<Integer>, if null, create new game in new index
+        // return boardAvailable(p1, p2, spectator);
         // if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
     }
     
     public void removeGame(){
         // if GameTermination sends a Game object that should end, check Game ID and remove here
-    }
-    
-    //Check for null in ArrayList Games
-    public boolean checkAvailableGames(){
-        for (Game game : games) {
-            if (game == null) {
-                return true;
-            }
-        }
-        
-        // code implementing later to by checking if elements in ArrayList is null then set return value to true, else false
-        return false;
-    }   
+    } 
 
     /*public GameUpdate processMove(GameMove move){
         // call GamePlay Board method to validate move ? and return GameUpdate object with new position and player ID
