@@ -126,6 +126,7 @@ public class PageManager {
         // general identification of JSON
         responseJson.addProperty("responseID", "getActivePlayers");
         responseJson.addProperty("WhoAmI", Id);
+        responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
 
         // to have an array of active players
@@ -211,9 +212,7 @@ public class PageManager {
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(Id);
 
-         return userEventReply;
-
-
+        return userEventReply;
 
      }
 
@@ -252,36 +251,109 @@ public class PageManager {
         // Extracting what i recieve
         int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
         int playerClientId = jsonObj.get("playerClientId").getAsInt();
+        boolean accepted = jsonObj.get("accepted").getAsBoolean();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "challengePlayerReply");
 
-        // State whether the adding to queue was a success
-        if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
+        // if challenge is accepted or not
+        if(accepted)
         {
-            responseJson.addProperty("pairInQueue", true);
+
+            // State whether the adding to queue was a success
+            if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
+            {
+                responseJson.addProperty("inQueue", true);
+            }
+            else
+            {
+                responseJson.addProperty("inQueue", false);
+            }
+    
+            userEventReply.recipients = new ArrayList<>();
+            userEventReply.recipients.add(opponentClientId);
+            userEventReply.recipients.add(playerClientId);
         }
         else
         {
-            responseJson.addProperty("pairInQueue", false);
+            responseJson.addProperty("accepted", false);
+            userEventReply.recipients = new ArrayList<>();
+            userEventReply.recipients.add(playerClientId);
         }
+
 
         userEventReply.replyObj = responseJson;
 
-        userEventReply.recipients = new ArrayList<>();
-        userEventReply.recipients.add(opponentClientId);
 
         return userEventReply;
     }
 
     public UserEventReply challengeBot(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+        boolean bot1 = false;
+
+
+        // Extracting what i recieve
+        int botId = jsonObj.get("botId").getAsInt();
+
+        if(botId == 1)
+        {
+            bot1 = true;
+        }
+
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "challengeBot");
+
+        // State whether the adding to queue was a success
+        if (pu.challengeBot(activePlayers.get(Id), bot1))
+        {
+            responseJson.addProperty("inQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("inQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
+
     }
 
     public UserEventReply BotvsBot(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // Extracting what i recieve
+        boolean bot1 = jsonObj.get("bot1").getAsBoolean();
+        boolean bot2 = jsonObj.get("bot2").getAsBoolean();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "BotvsBot");
+
+        // State whether the adding to queue was a success
+        if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
+        {
+            responseJson.addProperty("inQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("inQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
     }
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
