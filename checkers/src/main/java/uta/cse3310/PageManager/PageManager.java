@@ -222,22 +222,50 @@ public class PageManager {
 
     // Method to transition between pages
     private UserEventReply transitionPage(int clientId, GameState newState) {
-        return null;
+        clientStates.put(clientId, newState);
+
+        JsonObject response = new JsonObject();
+        response.addProperty("action", "updateVisibility");
+        response.addProperty("visible", newState.name().toLowerCase());
+
+        UserEventReply reply = new UserEventReply();
+        reply.recipients.add(clientId);
+        reply.replyObj = response;
+        return reply;
     }
 
     // Method to transition to join game page after user finishes reviewing summary of game
     public UserEventReply backToHome(int clientId) {
-        return null;
+        UserEventReply reply = new UserEventReply();
+        reply.replyObj = new JsonObject();
+
+        // Add a status message to indicate the transition
+        reply.replyObj.addProperty("status", "success");
+        reply.replyObj.addProperty("message", "Transitioning back to join game.");
+
+        // Add the instruction to transition to the join game/home page
+        reply.replyObj.addProperty("redirect", "join_game"); // This will signal the client to navigate to the join game page
+
+        // The reply should include the list of recipients (could just be the client for now)
+        reply.recipients.add(clientId);
+
+        return reply;
     }
 
     // Method to check if transition possible
     public boolean canTransition(GameState from, GameState to) {
-        return false;
+        switch(from) {
+            case LOGIN: return to == GameState.JOIN_GAME;
+            case JOIN_GAME: return to == GameState.GAME_DISPLAY;
+            case GAME_DISPLAY: return to == GameState.SUMMARY;
+            case SUMMARY: return to == GameState.JOIN_GAME;
+            default: return false;
+        }
     }
 
     // Method to get the current state of user
     public GameState getCurrentState(int clientId) {
-        return null;
+        return clientStates.getOrDefault(clientId, GameState.LOGIN);
     }
 
     // Method to reset client states for the new game
