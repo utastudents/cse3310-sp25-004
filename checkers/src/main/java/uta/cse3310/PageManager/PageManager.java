@@ -273,7 +273,22 @@ public class PageManager {
 
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
+        
+       /*
+        public UserEventReply GameMove(JsonObject jsonObj, int Id) {
+        GameMove move = gson.fromJson(jsonObj, GameMove.class);
+        move.setClientId(Id);
+        GameUpdate update = Gm.ProcessMove(move);
+        UserEventReply reply = new UserEventReply();
+
+        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+        reply.replyObj = json;
+        reply.recipients.add(move.getClientId());
+        return reply;
+            */
         return null;
+    }
+
     }    
 
 
