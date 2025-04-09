@@ -1,215 +1,234 @@
 <html>
 
-    <head>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+<head>
+	<link rel="stylesheet" href="styles.css">
+</head>
 
-    <div id="new_account">
-		<!--Signup screen logo-->
-    	<h1>Create New Account</h1>
-		<!--Signup screen logo-->
-		
-		    <img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-		    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
-		
-				<div style="margin-bottom: 10px;">
-					<label for="username">Enter new username: </label>
-					<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
-				  </div>
-				  <div style="margin-bottom: 10px;">
-					<label for="password">Enter new password: </label>
-					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
-				  </div>
-			
-			<button type="submit" style="display: block; margin: 3 auto;">Register</button>
+<div id="new_account">
+	<!--Signup screen logo-->
+	<h1>Create New Account</h1>
+	<!--Signup screen logo-->
 
-			<!--Button to return to login from sign up page-->
-			<button id ="back-to-login">Login</button>
-		
-		    </body>
-		
-			
-    </div>
-	<div id="login">
-		<h1>Login</h1> <!--before create new account-->
-		<!--Login screen logo DONE-->
-		<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-		<!-- username login box-->
+	<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&"
+		alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+
+	<body style="text-align: center; height: 100vh; display: table; width: 100%;">
+
 		<div style="margin-bottom: 10px;">
-		<label for = "login-username">Username: </label>
-		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<label for="username">Enter new username: </label>
+			<input type="text" id="username" name="username" placeholder="Enter new username"
+				style="border-radius: 100px;">
 		</div>
-		<!-- password login box-->
 		<div style="margin-bottom: 10px;">
-		<label for = "login-password">Password: </label>
-		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+			<label for="password">Enter new password: </label>
+			<input type="password" id="password" name="password" placeholder="Enter new password"
+				style="border-radius: 100px;">
 		</div>
-		<!-- submit button-->
-		 <button type = "submit" style="display: block; margin: 3 auto;">Login</button>
 
-		 <!--Show signup screen-->
-		 <button id = "show-signup">Sign Up</button>
+		<button type="submit" style="display: block; margin: 3 auto;">Register</button>
 
-		 <script>
-			// (On Click) Sign up screen appear, login disappear
-			document.getElementById("show-signup").onclick = function() {
-            document.getElementById("login").style.display = "none";
-            document.getElementById("new_account").style.display = "block";
-                  };
+		<!--Button to return to login from sign up page-->
+		<button id="back-to-login">Login</button>
 
-           // (On Click) Login screen appear, sign up disappear
-            document.getElementById("back-to-login").onclick = function() {
-            document.getElementById("new_account").style.display = "none";
-            document.getElementById("login").style.display = "block";
-             	};
-		 </script>
-		
+	</body>
+
+
+</div>
+<div id="login">
+	<h1>Login</h1> <!--before create new account-->
+	<!--Login screen logo DONE-->
+	<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&"
+		alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+	<!-- username login box-->
+	<div style="margin-bottom: 10px;">
+		<label for="login-username">Username: </label>
+		<input type="text" id="login-username" name="login-username" placeholder="Enter Username"
+			style="border-radius: 100px;">
 	</div>
+	<!-- password login box-->
+	<div style="margin-bottom: 10px;">
+		<label for="login-password">Password: </label>
+		<input type="text" style="border-radius: 100px;" placeholder="Enter Password">
+	</div>
+	<!-- submit button-->
+	<button type="submit" style="display: block; margin: 3 auto;">Login</button>
 
-    <div id="join_game">
-        <div class="lobby_lists_container" > 
-			<!-- have function to get player username and/ or ID -->
-            <h2 >Have fun in the lobby :D</h2>
-			<!-- Have function to get amount of players -->
-            <h3>Current players: 3/48</h3>
-            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-                <ol id="lobby_list_items">
-                    <!-- Dynamically Created Elements -->
-					
-					<!-- UPDATE STATUS INDICATOR (CHASE) --> 
-					
-                    <!-- EXAMPLE:
-                    <li class="player">
-                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
-                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
-                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-                    </li> -->
-                </ol>
-            </div>
-        
-            <button>
-				<!-- Will always have current player information, parameter is player they want to challenge -->
-				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
-                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
-                    Match Making
-                </a>
-            </button>
-			<!-- Will send info to DB and Bots with what bot and person -->
-            <button>
-                <a id="CURRENT_SESSION_BOT" type="button">
-                    Request Bot
-                </a>
-            </button>
-			<!-- request to see bots play -->
-            <button>
-                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                    Watch Bot Vs Bot
-                </a></button>
-        </div>
-		<!-- Send server who is the current player that logged in and request to see the list of active players-->
+	<!--Show signup screen-->
+	<button id="show-signup">Sign Up</button>
+
+	<script>
+		// (On Click) Sign up screen appear, login disappear
+		document.getElementById("show-signup").onclick = function () {
+			document.getElementById("login").style.display = "none";
+			document.getElementById("new_account").style.display = "block";
+		};
+
+		// (On Click) Login screen appear, sign up disappear
+		document.getElementById("back-to-login").onclick = function () {
+			document.getElementById("new_account").style.display = "none";
+			document.getElementById("login").style.display = "block";
+		};
+	</script>
+
+</div>
+
+<div id="join_game">
+	<div class="lobby_lists_container">
+		<!-- have function to get player username and/ or ID -->
+		<h2>Have fun in the lobby :D</h2>
+		<!-- Have function to get amount of players -->
+		<h3>Current players: 3/48</h3>
+		<div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+			<ol id="lobby_list_items">
+				<!-- Dynamically Created Elements -->
+
+				<!-- UPDATE STATUS INDICATOR (CHASE) -->
+
+				<!-- EXAMPLE: -->
+				<li class="player">
+					<p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+					<button><a id="btn1-UID002" type="button" href=""
+							onclick="req_challenge(1,2)">Challenge</a></button>
+					<button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+				</li>
+			</ol>
+		</div>
+
+		<button>
+			<!-- Will always have current player information, parameter is player they want to challenge -->
+			<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
+			<a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+				Match Making
+			</a>
+		</button>
+		<!-- Will send info to DB and Bots with what bot and person -->
+		<button>
+			<a id="CURRENT_SESSION_BOT" type="button">
+				Request Bot
+			</a>
+		</button>
+		<!-- request to see bots play -->
+		<button>
+			<a id="CURRENT_SESSION_BOTvsBOT" type="button">
+				Watch Bot Vs Bot
+			</a></button>
+	</div>
+	<!-- Send server who is the current player that logged in and request to see the list of active players-->
+	<script>
+		function displayJoinGame() {
+			connection.send(JSON.stringify({ type: "display_join_game", playerID: {} }))
+		}
+
+		function updateJoinGameList(data) {
+			// update to display current player
+			document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
+			//update to display number of players
+			document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
+
+			//update the player lists! - Devin part
+
+		}
+
+		function updateStatus(playerID) {
+			// Access the player ID
+			const playerElement = document.getElementById(playerID);
+
+			// access the status span
+			const statusElement = playerElement.querySelector('.status');
+
+			// Change the status to "free"
+			statusElement.classList.remove('busy'); 
+			statusElement.classList.add('free');
+		}
+	</script>
+</div>
+
+<div id="game_display">
+	game display
+</div>
+<div class="summary">
+	<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+	<!-- visibility hidden -->
+	<div id="summary-leaderboard" style="display: none;">
+		<h1>Leaderboard</h1>
+		<table id="summary-table">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Player</th>
+					<th>Elo</th>
+					<th>Games Won</th>
+					<th>Games Lost</th>
+					<th>Total Number of Games</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- These data will be filled with JSON through a JS script -->
+			</tbody>
+		</table>
+		<!--- <p class= "caption"> Top 10 players.</p> -->
+		<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+		<script src="./summary/summary.js"></script>
 		<script>
-			function displayJoinGame(){
-				connection.send(JSON.stringify({type:"display_join_game", playerID:{}}))
+			// Temporary functions to show/hide the leaderboard until page manager can take over
+			function summaryShow() {
+				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+				renderLeaderboard();
 			}
 
-			function updateJoinGameList(data){
-				// update to display current player
-				document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
-				//update to display number of players
-				document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
-
-				//update the player lists! - Devin part
-
+			function summaryHide() {
+				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
 			}
 		</script>
-    </div>
-
-    <div id="game_display">
-    game display
-    </div>
-	<div class="summary">
-		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
-		<!-- visibility hidden -->
-		<div id="summary-leaderboard" style="display: none;">
-			<h1>Leaderboard</h1>
-			<table id="summary-table">
-				<thead>
-					<tr>
-						<th>Rank</th>
-						<th>Player</th>
-						<th>Elo</th>
-						<th>Games Won</th>
-						<th>Games Lost</th>
-						<th>Total Number of Games</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- These data will be filled with JSON through a JS script -->
-				</tbody>
-			</table>
-			<!--- <p class= "caption"> Top 10 players.</p> -->
-			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
-			<script src="./summary/summary.js"></script>
-			<script>
-				// Temporary functions to show/hide the leaderboard until page manager can take over
-				function summaryShow() {
-					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
-					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
-					renderLeaderboard();
-				}
-				
-				function summaryHide() {
-					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
-					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
-				}
-			</script>
-		</div>
 	</div>
+</div>
 
-    <div id="stuff">
-     <input type="button" value="Send Something" onclick="msg()">
-      <label for="tbox">Received</label>
-      <textarea id="tbox" name="tbox" rows="4" cols="50">
+<div id="stuff">
+	<input type="button" value="Send Something" onclick="msg()">
+	<label for="tbox">Received</label>
+	<textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div>
+</div>
+
 </html>
 <script>
-    // each of the 'divs' in the html page should have attributes to allow them to be hidden.
-    // the page manager should send a small json message, that tells which of these are hidden
-    // and which are visible when there is a change
-    // something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
+	// each of the 'divs' in the html page should have attributes to allow them to be hidden.
+	// the page manager should send a small json message, that tells which of these are hidden
+	// and which are visible when there is a change
+	// something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
 
 
-    // a reminder.  we want to create one websocket connection, and use if, basically forever.
-    // or until the user decides to go to another page.
-    // this requires everything to load from this page.
+	// a reminder.  we want to create one websocket connection, and use if, basically forever.
+	// or until the user decides to go to another page.
+	// this requires everything to load from this page.
 
-    var connection = null;
+	var connection = null;
 
-    var serverUrl;
-    serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
-    connection = new WebSocket(serverUrl);
+	var serverUrl;
+	serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
+	connection = new WebSocket(serverUrl);
 
-    connection.onopen = function (evt) {
-        console.log("open");
-    }
+	connection.onopen = function (evt) {
+		console.log("open");
+	}
 
-    connection.onclose = function (evt) {
-        console.log("close");
-    }
+	connection.onclose = function (evt) {
+		console.log("close");
+	}
 
-    connection.onmessage = function (evt) {
-        let msg = evt.data; //extract data from websocket response
-        console.log("Message received: " + msg);
+	connection.onmessage = function (evt) {
+		let msg = evt.data; //extract data from websocket response
+		console.log("Message received: " + msg);
 		let jsonMsg = JSON.parse(msg); //convert data to JSON
 		//Extracts the response identifier from the response, so we can determine whose code it belongs to
 		//See ./INTERFACES/client-server-docs.md for details
-		let responseID = Object.keys(jsonMsg)[0]; 
-		switch ( responseID )
-		{	
-			
+		let responseID = Object.keys(jsonMsg)[0];
+		switch (responseID) {
+
 			// Account Responses
-			
+
 			// Game Responses
 			case "join_game": {
 				// console.log("Received thing!");
@@ -221,39 +240,39 @@
 			}
 
 			// Summary Responses
-			case "summaryTopTenData":{
+			case "summaryTopTenData": {
 				console.log("Received summaryTopTenData!");
 				break;
 			}
-			case "summaryUserJson":{
+			case "summaryUserJson": {
 				console.log("Received summaryUserJson!");
 				break;
 			}
-			default:{
-				console.log("Received unexpected responseID! Got: \n"+responseID);
+			default: {
+				console.log("Received unexpected responseID! Got: \n" + responseID);
 			}
 		}
 
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
-        //const obj = JSON.parse(msg);
-    }
+		document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+		//const obj = JSON.parse(msg);
+	}
 
-    class UserEvent {
-        msg;
-    }
+	class UserEvent {
+		msg;
+	}
 
-    function msg() {
-        console.log("button clicked");
-        U = new UserEvent();
-        U.msg="i pushed a button";
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
-    }
+	function msg() {
+		console.log("button clicked");
+		U = new UserEvent();
+		U.msg = "i pushed a button";
+		connection.send(JSON.stringify(U));
+		console.log(JSON.stringify(U))
+	}
 
 	function summary(/*void*/) {
-    
+
 		/* DEPRECATED : Code now resides in ./summary.js */
-		
+
 		/*
 		* Fetches and displays player ranking data in the summary table.
 		*
@@ -272,12 +291,12 @@
 		* - Handle potential errors when fetching data.
 		* - Ensure proper table structure for displaying the data.
 		*/
-		
+
 		// playerData = retrieveUserJson();
 		// globalData = retrieveTopTenJson();
 
-    // Write top ten to table
-    // Write user to table
-    return;
-}
+		// Write top ten to table
+		// Write user to table
+		return;
+	}
 </script>
