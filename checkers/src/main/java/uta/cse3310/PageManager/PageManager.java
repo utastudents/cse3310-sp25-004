@@ -143,6 +143,7 @@ public class PageManager {
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
+            playerData.addProperty("state", player.getStatus().toString());
 
 
             playersArray.add(playerData);
@@ -186,10 +187,9 @@ public class PageManager {
      {
 
         JsonObject responseJson = new JsonObject();
+        UserEventReply userEventReply=  new UserEventReply();
 
-         UserEventReply userEventReply=  new UserEventReply();
-    //     JsonObject responseJson = new JsonObject();
-
+        // Extracting what i recieve
         int playerClientId = jsonObj.get("playerClientId").getAsInt();
 
     //      general identification of JSON
@@ -222,13 +222,14 @@ public class PageManager {
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
 
+        // Extracting what i recieve
         int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "challengePlayer");
 
+        // Send the players info to the opponent
         responseJson.addProperty("playerClientId", Id);
-
         HumanPlayer player = activePlayers.get(Id);
         responseJson.addProperty("Username", player.getUsername());
         responseJson.addProperty("elo", player.getELO());
@@ -245,7 +246,32 @@ public class PageManager {
 
     public UserEventReply challengePlayerReply(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // Extracting what i recieve
+        int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
+        int playerClientId = jsonObj.get("playerClientId").getAsInt();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "challengePlayerReply");
+
+        // State whether the adding to queue was a success
+        if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
+        {
+            responseJson.addProperty("pairInQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("pairInQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(opponentClientId);
+
+        return userEventReply;
     }
 
     public UserEventReply challengeBot(JsonObject jsonObj, int Id)
