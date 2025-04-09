@@ -65,18 +65,19 @@
 		 </script>
 		
 	</div>
+
     <div id="join_game">
         <div class="lobby_lists_container" > 
 			<!-- have function to get player username and/ or ID -->
-            <h2>Welcome back {player ID} Have fun in the lobby :D</h2>
+            <h2 >Have fun in the lobby :D</h2>
 			<!-- Have function to get amount of players -->
-            <p>Current players: 3/48</p>
+            <h3>Current players: 3/48</h3>
             <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
                 <ol id="lobby_list_items">
                     <!-- Dynamically Created Elements -->
 					
-					<!-- UPDATE STATUS INDICATOR -->
-
+					<!-- UPDATE STATUS INDICATOR (CHASE) --> 
+					
                     <!-- EXAMPLE:
                     <li class="player">
                         <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
@@ -105,7 +106,24 @@
                     Watch Bot Vs Bot
                 </a></button>
         </div>
+		<!-- Send server who is the current player that logged in and request to see the list of active players-->
+		<script>
+			function displayJoinGame(){
+				connection.send(JSON.stringify({type:"display_join_game", playerID:{}}))
+			}
+
+			function updateJoinGameList(data){
+				// update to display current player
+				document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
+				//update to display number of players
+				document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
+
+				//update the player lists! - Devin part
+
+			}
+		</script>
     </div>
+
     <div id="game_display">
     game display
     </div>
@@ -188,12 +206,14 @@
 		//See ./INTERFACES/client-server-docs.md for details
 		let responseID = Object.keys(jsonMsg)[0]; 
 		switch ( responseID )
-		{
+		{	
+			
 			// Account Responses
 			
 			// Game Responses
-			case "playerInfo": {
-				console.log("Received thing!");
+			case "join_game": {
+				// console.log("Received thing!");
+				updateJoinGameList(msg);
 				break;
 			} case "allOnlinePlayerInfo": {
 				console.log("Received thing!");
