@@ -1,19 +1,32 @@
 package uta.cse3310.DB;
 
 public class PasswordManager {
+    public static byte[] generateSalt() { //will need to generate a new salt for every new (or changed) password, unique to each user
+
+        //creates a random that will generate a random number of 128 bits
+        SecureRandom saltRandom = new SecureRandom();
+        byte[] salt = new byte[16];  //creates empty salt
+        saltRandom.nextBytes(salt);  //fills salt randomly with the SecureRandom
     
-    /* TODO: salt generation implementation */
-    public static String generateSalt() {
-        return "";
+        return salt;
+    }
+    //salt must be store with each user profile, otherwise decoding and checking will be impossible
+
+    // Placeholder for password hashing
+    public static String hashPassword(String password, byte[] salt) { //will be used to encode passwords
+
+
+
+
+        return ""; // Placeholder
     }
 
-    /* TODO :  password hashing */
-    public static String hashPassword(String password, String salt) {
-        return "";
-    }
+    // Placeholder for password verification
+    public static boolean verifyPassword(String password, String storedHash, byte[] salt) { // will be used to (temporarily) decode passwwords and check if it matches user input
 
-    /* TODO : password verification code using salt with stored hash */
-    public static boolean verifyPassword(String password, String storedHash, String salt) {
-        return false; 
+        
+
+
+        return false; // Placeholder
     }
 }
