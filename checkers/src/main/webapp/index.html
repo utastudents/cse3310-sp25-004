@@ -188,6 +188,8 @@
 			// Summary Responses
 			case "summaryTopTenData":{
 				console.log("Received summaryTopTenData!");
+				//ommits the responseID and only sends needed values to loadData
+				loadData(jsonMsg[responseID]); 
 				break;
 			}
 			case "summaryUserJson":{
