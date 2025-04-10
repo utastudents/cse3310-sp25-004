@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="styles.css">
     </head>
 
-    <div id="new_account">
+    <div id="new_account" style = "display: none">
 		<!--Signup screen logo-->
     	<h1>Create New Account</h1>
 		<!--Signup screen logo-->
@@ -74,7 +74,7 @@
 					type: "signup", username : username, password:password
 				}
 			//Send data as JSON string JSON.stringify
-			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData)){}
+			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
 			}
 
 			//Event handler for login button
@@ -87,8 +87,11 @@
 					return;
 				}
 				const loginData = { //Data into JSON object
-					type: "signup", username : username, password:password
+					type: "login", username : login-username, password:login-password
 				}
+			//Send data as JSON string JSON.stringify			
+			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+
 			}
 
 		 </script>
