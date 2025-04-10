@@ -10,84 +10,68 @@ public class Board
 {
     //Variable for 2D array board
 
-	private ArrayList<ArrayList<Checker>> board; // List of checkers on the board split by color
-	private ArrayList<Checker> redCheckers; // list of red checkers
-	private ArrayList<Checker> blackCheckers; // list of black checkers
+	public Checker checkerBoard [][] = new Checker[8][8]; // 2D array of checkers on the board
 
 	public Board()
 	{
         //Initialize class with board array and initialize checker positions
 
-		initCheckers(Color.RED);
-		initCheckers(Color.BLACK);
-		board.add(redCheckers);
-		board.add(blackCheckers);
+		initCheckers();
 	}
 
 	private Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
-		// Check if the space has a red checker
-
-		for(Checker c : redCheckers)
-		{
-			if(c.getCord().equals(Cord))
-			{
-				return c;
-			}
-		}
-
-		// Check if the space has a black checker
-
-		for(Checker c : redCheckers)
-		{
-			if(c.getCord().equals(Cord))
-			{
-				return c;
-			}
-		}
-	
-		// If no checker is found, return null
-
-		return null; 
+		return checkerBoard[Cord.getX()][Cord.getY()]; 
 	}
 	
-	private void initCheckers(Color color) // Takes in a color and adds the checkers of that color in there starting position.
+	
+	private void initCheckers() // Initializes the checkers on the board at there starting positions
 	// TODO Refactor initCheckers function to use loops instead of hardcoding the values
 	{
-		if (color == Color.RED) 
-		{
-			redCheckers.add(new Checker(new Cord(1, 0), color));
-			redCheckers.add(new Checker(new Cord(3, 0), color));
-			redCheckers.add(new Checker(new Cord(5, 0), color));
-			redCheckers.add(new Checker(new Cord(7, 0), color));
-			redCheckers.add(new Checker(new Cord(0, 1), color));
-			redCheckers.add(new Checker(new Cord(2, 1), color));
-			redCheckers.add(new Checker(new Cord(4, 1), color));
-			redCheckers.add(new Checker(new Cord(6, 1), color));
-			redCheckers.add(new Checker(new Cord(1, 2), color));
-			redCheckers.add(new Checker(new Cord(3, 2), color));
-			redCheckers.add(new Checker(new Cord(5, 2), color));
-			redCheckers.add(new Checker(new Cord(7, 2), color));
+		int nums[] = {1,3,5,7};
 
-		} 
-		else if (color == Color.BLACK) 
+
+		// Set the whole board to null
+		for (int i = 0; i < 8; i++)
 		{
-			blackCheckers.add(new Checker(new Cord(1, 5), color));
-			blackCheckers.add(new Checker(new Cord(3, 5), color));
-			blackCheckers.add(new Checker(new Cord(5, 5), color));
-			blackCheckers.add(new Checker(new Cord(7, 5), color));
-			blackCheckers.add(new Checker(new Cord(0, 6), color));
-			blackCheckers.add(new Checker(new Cord(2, 6), color));
-			blackCheckers.add(new Checker(new Cord(4, 6), color));
-			blackCheckers.add(new Checker(new Cord(6, 6), color));
-			blackCheckers.add(new Checker(new Cord(1, 7), color));
-			blackCheckers.add(new Checker(new Cord(3, 7), color));
-			blackCheckers.add(new Checker(new Cord(5, 7), color));
-			blackCheckers.add(new Checker(new Cord(7, 7), color));
+			for(int j = 0; j < 8; j++)
+			{
+				checkerBoard[i][j] = null; // Initialize the board with null values
+			}
 		}
 
-	}
+		for(int y = 0; y < 3; y++)
+		{
+			for(int x = 0; x < 8; x+=2)
+			{
+				if(y%2 == 0)
+				{
+					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.BLACK);
+				}
+				else
+				{
+					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.BLACK);
+				}
+			}
+		}
+
+		for(int y = 5; y < 8; y++)
+		{
+			for(int x = 0; x < 8; x+=2)
+			{
+				if(y%2 == 1)
+				{
+					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
+				}
+				else
+				{
+					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.RED);
+				}
+			}
+		}
+
+	}	
 
 
 	/*
@@ -175,7 +159,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
-	public int moveValidation(Checker piece, Cord dest)
+	public static int moveValidation(Checker piece, Cord dest)
 	// The main logic for movement. 
 	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
 
