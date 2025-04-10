@@ -33,7 +33,7 @@ public class PageManager {
 
     Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
 
-    // 
+    // Track user in which subsytem they are in.
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() {
@@ -400,7 +400,16 @@ public class PageManager {
 
     // Method to transition between pages
     private UserEventReply transitionPage(int clientId, GameState newState) {
-        return null;
+        clientStates.put(clientId, newState);
+
+        JsonObject response = new JsonObject();
+        response.addProperty("action", "updateVisibility");
+        response.addProperty("visible", newState.name().toLowerCase());
+
+        UserEventReply reply = new UserEventReply();
+        reply.recipients.add(clientId);
+        reply.replyObj = response;
+        return reply;
     }
 
     // Method to transition to join game page after user finishes reviewing summary of game
