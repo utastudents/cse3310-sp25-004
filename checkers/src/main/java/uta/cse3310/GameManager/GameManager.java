@@ -53,12 +53,24 @@ public class GameManager {
 
     
     // Create a new game from Pair Up
-    public boolean createGame(Player p1, Player p2, ArrayList<Player> spectator){
+    public boolean createGame(Player p1, Player p2){
+        for (int i = 0; i < MAX_GAMES; i++) {
+            if (games.get(i) == null) {
+                Game newGame = new Game(i, 1); // Game ID = index, state = 1 (example)
+                newGame.setPlayer1(p1);
+                newGame.setPlayer2(p2);
+                games.set(i, newGame);
+                System.out.println("Game created at index: " + i);
+                return true;
+            }
+        }
+        System.out.println("No available game slots.");
         return false;
         // implement checking ArrayList<Integer>, if null, create new game in new index
         // return boardAvailable(p1, p2, spectator);
         // if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
     }
+
     
     public void removeGame(){
         // if GameTermination sends a Game object that should end, check Game ID and remove here
