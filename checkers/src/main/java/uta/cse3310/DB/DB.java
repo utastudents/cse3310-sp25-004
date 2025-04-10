@@ -22,11 +22,15 @@ public class DB
         {
             return; /*if username exists it will return */
         }
+        
+        /* 
         String salt = PasswordManager.generateSalt();
         String hashedPassword = PasswordManager.hashPassword(password, salt);
+        
 
         HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
         players.add(newPlayer);
+        */
     }
 
     /* gets a player using playerId, and return if the player is found */
@@ -63,7 +67,8 @@ public class DB
         {
             return false; 
         }
-        return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
+        //return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
+        return false; /* this will be implemented later */
         
     }
 

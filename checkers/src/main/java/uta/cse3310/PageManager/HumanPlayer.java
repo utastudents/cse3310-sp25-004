@@ -63,7 +63,7 @@ public class HumanPlayer extends Player{
     @Override
     public boolean startGame(Game g) {
         this.game = g;
-        this.STATUS = STATUS.IN_GAME;
+        //this.STATUS = STATUS.IN_GAME;
 
         // Need game board to be sent over
 
