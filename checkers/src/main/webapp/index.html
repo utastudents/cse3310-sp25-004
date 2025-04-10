@@ -60,16 +60,23 @@
             document.getElementById("new_account").style.display = "none";
             document.getElementById("login").style.display = "block";
              	};
-
+			
+			//Evenet Lister for register button
 			document.getElementById("register-btn").onclick = function(){
-				const username = document.getElementById("username").value;
-				const password = document.getElementById("password").value;
+				const username = document.getElementById("username").value; //username from signup form
+				const password = document.getElementById("password").value; //password from signup form
 
 				if(!username || !password){
 					alert("Invalid username and/or password.");
 					return;
 				}
+				const signupData = { //Data into JSON object
+					type: "signup", username : username, password:password
+				}
+			//Send data as JSON string JSON.stringify
+			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData)){}
 			}
+
 		 </script>
 		
 	</div>
