@@ -42,30 +42,32 @@ public class Board
 			}
 		}
 
+		// Set the black checkers on the board on row 0, 1, 2
 		for(int y = 0; y < 3; y++)
 		{
 			for(int x = 0; x < 8; x+=2)
 			{
-				if(y%2 == 0)
+				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
 				{
 					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.BLACK);
 				}
-				else
+				else // Row 1 has the black checkers on squares 0,2,4,6
 				{
 					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.BLACK);
 				}
 			}
 		}
 
+		// Set the red checkers on the board on row 5, 6, 7
 		for(int y = 5; y < 8; y++)
 		{
 			for(int x = 0; x < 8; x+=2)
 			{
-				if(y%2 == 1)
+				if(y%2 == 1) // Row 5 and 7 have the red checkers on squares 0,2,4,6
 				{
 					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
 				}
-				else
+				else // Row 6 has the red checkers on squares 1,3,5,7
 				{
 					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.RED);
 				}
