@@ -8,13 +8,50 @@ import uta.cse3310.PageManager.HumanPlayer;
 
 public class DB 
 {
+    /*declaring conn variable with Connection type, Connection will let us SELECT, INSERT, and UPDATE the database*/
+    //private Connection conn;
     private LinkedList<HumanPlayer> players;
 
     public DB() 
     {
         players = new LinkedList<>();
     }
-
+    	/*
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:players.db");
+            System.out.println("Connected to SQLite database.");
+            initializeDatabase();
+        } catch (SQLException e) {
+            System.out.println("Connection failed: " + e.getMessage());
+        }
+    }
+    /*
+    
+    /*This block will create the "playters.db" if it doesnt already exist.
+     * 
+     * Table will look the following way:
+     * id: | username: | password: | salt: | wins=0 | losses=0 | elo=1000 | games_played=0
+     *  
+     *  */
+    /*
+    private void initializeDatabase() {
+        String sql = "CREATE TABLE IF NOT EXISTS players (" +
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                     "username TEXT UNIQUE NOT NULL," +
+                     "password TEXT NOT NULL," +
+                     "salt TEXT NOT NULL," +
+                     "wins INTEGER DEFAULT 0," +   
+                     "losses INTEGER DEFAULT 0," + 
+                     "elo INTEGER DEFAULT 1000," + //Unsure how we are gonig to do elo, starting at 1000 for now
+                     "games_played INTEGER DEFAULT 0)";
+        
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println("Failed to create table: " + e.getMessage());
+        }
+    }
+    */
     /* if a username is new it will add new player */
     public void addPlayer(String username, String password) 
     {
