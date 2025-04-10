@@ -43,7 +43,7 @@
 		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
 		</div>
 		<!-- submit button-->
-		 <button type = "submit" style="display: block; margin: 3 auto;">Login</button>
+		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
 
 		 <!--Show signup screen-->
 		 <button id = "show-signup">Sign Up</button>
@@ -61,7 +61,7 @@
             document.getElementById("login").style.display = "block";
              	};
 			
-			//Evenet Lister for register button
+			//Event Lister for register button
 			document.getElementById("register-btn").onclick = function(){
 				const username = document.getElementById("username").value; //username from signup form
 				const password = document.getElementById("password").value; //password from signup form
@@ -75,6 +75,20 @@
 				}
 			//Send data as JSON string JSON.stringify
 			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData)){}
+			}
+
+			//Event handler for login button
+			document.getElementById("login-btn").onclick = function(){
+				const username = document.getElementById("login-username").value; //username from signup form
+				const password = document.getElementById("login-password").value; //password from signup form
+
+				if(!username || !password){
+					alert("Invalid username and/or password.");
+					return;
+				}
+				const loginData = { //Data into JSON object
+					type: "signup", username : username, password:password
+				}
 			}
 
 		 </script>
