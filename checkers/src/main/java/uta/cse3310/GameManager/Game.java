@@ -14,7 +14,8 @@ public class Game{
 
 
 	public Game(int gameID, int playerId){ // might need to handle challenge Q in here too 
-     // i think pair up needs to make a function to that returns player ID so we can call and store it for whatever we need 
+      this.gameID = gameID;
+      this.player1 = playerId;// i think pair up needs to make a function to that returns player ID so we can call and store it for whatever we need 
 	
    
    }

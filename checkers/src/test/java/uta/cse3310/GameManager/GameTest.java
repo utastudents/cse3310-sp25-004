@@ -1,15 +1,15 @@
 package uta.cse3310.GameManager;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Unit tests for the Game class to ensure proper behavior of constructors, getters, and setters related to player IDs and game ID.
+ * These are the Unit tests for the Game class to ensure proper behavior of constructors, getters, and setters related to player IDs and game ID.
  */
-class GameTest {
+public class GameTest {
 
     /**
-     * Tests that the constructor correctly sets the game ID and player1 ID.
+     * Testing that the constructor correctly sets the game ID and player1 ID.
      */
     @Test
     void testConstructorAndGetters() {
@@ -19,7 +19,7 @@ class GameTest {
         // Creating a new Game object with the specified IDs
         Game game = new Game(expectedGameID, expectedPlayer1ID);
 
-        // Verifing that the game ID and player1 ID were correctly assigned
+        // Verifying that the game ID and player1 ID were correctly assigned
         assertEquals(expectedGameID, game.getGameID(), 
             "Game ID should match the value set in the constructor");
 
@@ -27,7 +27,9 @@ class GameTest {
             "Player 1 ID should match the value set in the constructor");
     }
 
-    // Testing the setPlayer2() method properly sets and retrieves player2 ID.
+    /**
+     * Tests that setPlayer2() correctly sets and retrieves player2 ID.
+     */
     @Test
     void testSetPlayer2() {
         Game game = new Game(200, 10);   // Creating a Game with dummy IDs
@@ -36,7 +38,7 @@ class GameTest {
         // Setting player 2 using the setter method
         game.setPlayer2(expectedPlayer2ID);
 
-        // Verifing that the player2 ID was set correctly
+        // Verifying that the player2 ID was set correctly
         assertEquals(expectedPlayer2ID, game.getPlayer2(), 
             "Player 2 ID should match the value set by setPlayer2()");
     }
