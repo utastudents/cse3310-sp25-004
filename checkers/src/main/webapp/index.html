@@ -4,41 +4,32 @@
         <link rel="stylesheet" href="styles.css">
     </head>
 
-    <div id="new_account" style = "display: none">
+    <div id="new_account">
 									<!--Signup screen logo-->
     	<h1>Create New Account</h1>
 									<!--Signup screen logo-->
 		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-			<label for = "username">Enter new username</label>
-			<input type = "text" id = "username" name="username" placeholder="Enter new username">
-			<!--Span id username-error goes here-->
+	    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
 
-			<label for = "password">Enter new password</label>
-			<input type="password" id="password" name="password" placeholder="Enter new password">
-			<!--Span id password-error goes here-->
-		
-		    <img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-		    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
-		
-				<div style="margin-bottom: 10px;">
-					<label for="username">Enter new username: </label>
-					<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
-			<!--Span id login-username-error goes here-->
+		<div style="margin-bottom: 10px;">
+				<label for="username">Enter new username: </label>
+				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+		<!--Span id username-error goes here-->
 				  
-				</div>
-				  <div style="margin-bottom: 10px;">
-					<label for="password">Enter new password: </label>
-					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
-			<!--Span id login-password-error goes here-->
+		</div>
+		<div style="margin-bottom: 10px;">
+			<label for="password">Enter new password: </label>					
+			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+		<!--Span id password-error goes here-->
 				  
-				</div>
+			</div>
 			
-			<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
+		<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
 
 									<!--Button to return to login from sign up page-->
-			<button id ="back-to-login">Login</button>
+		<button id ="back-to-login">Login</button>
 		
-		    </body>	
+	    </body>	
     </div>
 	<div id="login">
 		<h1>Login</h1> 				<!--before create new account-->
@@ -79,7 +70,7 @@
 				const password = document.getElementById("password").value; //password from signup form
 				
 				//Hide error messages by default
-				document.getElementByID("username-error").style.display = "none";
+				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
 
 
