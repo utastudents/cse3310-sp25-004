@@ -10,6 +10,10 @@ public class Board
 {
     //Variable for 2D array board
 
+	private ArrayList<ArrayList<Checker>> board; // List of checkers on the board split by color
+	private ArrayList<Checker> redCheckers; // list of red checkers
+	private ArrayList<Checker> blackCheckers; // list of black checkers
+
 	public Checker checkerBoard [][] = new Checker[8][8]; // 2D array of checkers on the board
 
 	public Board()
@@ -17,6 +21,36 @@ public class Board
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
+		board.add(redCheckers);
+		board.add(blackCheckers);
+	}
+
+	private Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
+	// Returns null if no checker is found
+	{
+		// Check if the space has a red checker
+
+		for(Checker c : redCheckers)
+		{
+			if(c.getCord().equals(Cord))
+			{
+				return c;
+			}
+		}
+
+		// Check if the space has a black checker
+
+		for(Checker c : redCheckers)
+		{
+			if(c.getCord().equals(Cord))
+			{
+				return c;
+			}
+		}
+	
+		// If no checker is found, return null
+
+		return null; 
 	}
 	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
