@@ -57,8 +57,8 @@ public class GameManager {
         for (int i = 0; i < MAX_GAMES; i++) {
             if (games.get(i) == null) {
                 Game newGame = new Game(i, 1); // Game ID = index, state = 1 (example)
-                newGame.setPlayer1(p1);
-                newGame.setPlayer2(p2);
+                /* newGame.setPlayer1(p1);
+                newGame.setPlayer2(p2); */
                 games.set(i, newGame);
                 System.out.println("Game created at index: " + i);
                 return true;

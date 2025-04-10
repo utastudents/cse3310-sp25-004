@@ -11,6 +11,7 @@ public class Board
     //Variable for 2D array board
 
 	public Checker checkerBoard [][] = new Checker[8][8]; // 2D array of checkers on the board
+	//NOTE: A NULL value in the array means that the square is empty.
 
 	public Board()
 	{
@@ -105,14 +106,13 @@ public class Board
 	// Returns true if the piece can move diagonally forward to the destination square. 
 	// Does not check Jumps
 	{
-		Checker destPiece = checkSpace(dest); // Check if the destination square is occupied by another piece
 
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
 			return false; // Invalid move, out of bounds
 		}
 
-		if(destPiece != null) 
+		if(checkerBoard[dest.getY()][dest.getX()] == null)
 		{
 			return false; // Cannot move to a square already occupied by another piece
 		}
@@ -134,14 +134,13 @@ public class Board
 	// Returns true if the piece can move diagonally backward to the destination square. 
 	// Does not check Jumps
 	{
-		Checker destPiece = checkSpace(dest); // Check if the destination square is occupied by another piece
 
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
 			return false; // Invalid move, out of bounds
 		}
 
-		if(destPiece != null) 
+		if(checkerBoard[dest.getY()][dest.getX()] == null)
 		{
 			return false; // Cannot move to a square already occupied by another piece
 		}
