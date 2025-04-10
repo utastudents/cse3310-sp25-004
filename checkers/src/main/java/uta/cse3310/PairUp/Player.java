@@ -25,7 +25,11 @@ public abstract class Player {
     public abstract boolean makeMove(GameState gs); //Returns false if the client could not be reached
     public abstract boolean updateBoard(GameState gs); //Returns false if the client could not be reached
 
-    public abstract boolean startGame(Game g);
+    //If this method is overridden, be sure to do super.startGame(g) or to store g in game yourself
+    public boolean startGame(Game g) {
+        game = g;
+        return true;
+    }
 
     public static int nextId() {return nextId++;}
 
