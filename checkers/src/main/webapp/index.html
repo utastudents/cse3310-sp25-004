@@ -78,18 +78,26 @@
 				const username = document.getElementById("username").value; //username from signup form
 				const password = document.getElementById("password").value; //password from signup form
 				
+				//Hide error messages by default
+				document.getElementByID("username-error").style.display = "none";
+				document.getElementById("password-error").style.display = "none";
+
+
 				let valid = true;
-				if(username.length < 4){
+				if(username.length < 3){
+					document.getElementById("username-error").style.display = "inline";
 					valid = false;
 				}
-				if(password.length < 4){
+				if(password.length < 5){
+					document.getElementById("password-error").style.display = "inline";
 					valid = false;
 				}
-				
-				//More Data Validation can go here
 
 				if(!username || !password){
 					alert("Invalid username and/or password.");
+					return;
+				}
+				if(valid == false){
 					return;
 				}
 				const signupData = { 
@@ -104,8 +112,9 @@
 			document.getElementById("login-btn").onclick = function(){
 				const username = document.getElementById("login-username").value; //username from signup form
 				const password = document.getElementById("login-password").value; //password from signup form
-
-				if(!username || !password){
+				
+				// More Data Validation can go here
+				if(!login-username || !login-password){
 					alert("Invalid username and/or password.");
 					return;
 				}
