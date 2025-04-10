@@ -163,26 +163,64 @@ public class Board
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
 		int originY = piece.getCord().getY();
+		Color originColor = piece.getColor();
 		//First check if the jump to the left is in bounds
 		if ((originX-2 > 0 && originX-2 <=8) && (originY+2 > 0 && originY+2 <=8))
 		{
-			//Add to list of jumps if space is free
-			if (checkerBoard[originX-2][originY+2] == null)
+			//Check if the immediate diagonal is an enemy piece
+			if (checkerBoard[originX-1][originY+1] != null && checkerBoard[originX-1][originY+1].getColor() != originColor)
 			{
-				jumpList.add(new Cord(originX-2, originY+2));
+				//Add to list of jumps if space is free
+				if (checkerBoard[originX-2][originY+2] == null)
+				{
+					jumpList.add(new Cord(originX-2, originY+2));
+				}
 			}
 		}
 		//Same as above but checking to the right
 		if ((originX+2 > 0 && originX+2 <=8) && (originY+2 > 0 && originY+2 <=8))
 		{
-			if (checkerBoard[originX+2][originY+2] == null)
+			if (checkerBoard[originX+1][originY+1] != null && checkerBoard[originX+1][originY+1].getColor() != originColor)
 			{
-				jumpList.add(new Cord(originX+2, originY+2));
+				if (checkerBoard[originX+2][originY+2] == null)
+				{
+					jumpList.add(new Cord(originX+2, originY+2));
+				}
 			}
 		}
 		return jumpList;
 	}
 
+	//Same as getPossibleForwardJump but backwards
+	private ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	{
+		ArrayList<Cord> jumpList = new ArrayList<Cord>();
+		int originX = piece.getCord().getX();
+		int originY = piece.getCord().getY();
+		Color originColor = piece.getColor();
+		if ((originX-2 > 0 && originX-2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		{
+			if (checkerBoard[originX-1][originY-1] != null && checkerBoard[originX-1][originY-1].getColor() != originColor)
+			{
+				if (checkerBoard[originX-2][originY-2] == null)
+				{
+					jumpList.add(new Cord(originX-2, originY-2));
+				}
+			}
+		}
+		if ((originX+2 > 0 && originX+2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		{
+			if (checkerBoard[originX+1][originY-1] != null && checkerBoard[originX+1][originY-1].getColor() != originColor)
+			{
+				if (checkerBoard[originX+2][originY-2] == null)
+				{
+					jumpList.add(new Cord(originX+2, originY-2));
+				}
+			}
+		}
+		return jumpList;
+	}
+	
 	public static int moveValidation(Checker piece, Cord dest)
 	// The main logic for movement. 
 	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
