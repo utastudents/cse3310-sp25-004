@@ -61,7 +61,7 @@ public class GameManager {
             /* newGame.setPlayer1(p1);
             newGame.setPlayer2(p2); */
             games.set(index, newGame);
-            System.out.println("Game created at index: " + i);
+            System.out.println("Game created at index: " + index);
             return true;
          }
         System.out.println("No available game slots.");
@@ -74,6 +74,7 @@ public class GameManager {
     
     public void removeGame(){
         // if GameTermination sends a Game object that should end, check Game ID and remove here
+
     } 
 
     /*public GameUpdate processMove(GameMove move){
