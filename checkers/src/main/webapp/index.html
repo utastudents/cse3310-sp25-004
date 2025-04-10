@@ -5,65 +5,69 @@
     </head>
 
     <div id="new_account" style = "display: none">
-		<!--Signup screen logo-->
+									<!--Signup screen logo-->
     	<h1>Create New Account</h1>
-		<!--Signup screen logo-->
-<<<<<<< HEAD
+									<!--Signup screen logo-->
 		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
 			<label for = "username">Enter new username</label>
 			<input type = "text" id = "username" name="username" placeholder="Enter new username">
+			<!--Span id username-error goes here-->
+
 			<label for = "password">Enter new password</label>
 			<input type="password" id="password" name="password" placeholder="Enter new password">
-=======
+			<!--Span id password-error goes here-->
 		
-		    <img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+		    <img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
 		    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
 		
 				<div style="margin-bottom: 10px;">
 					<label for="username">Enter new username: </label>
 					<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
-				  </div>
+			<!--Span id login-username-error goes here-->
+				  
+				</div>
 				  <div style="margin-bottom: 10px;">
 					<label for="password">Enter new password: </label>
 					<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
-				  </div>
->>>>>>> a4cc2d8bf78ad459278b0fe7e484d0fdcaa7aca7
+			<!--Span id login-password-error goes here-->
+				  
+				</div>
 			
 			<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
 
-			<!--Button to return to login from sign up page-->
+									<!--Button to return to login from sign up page-->
 			<button id ="back-to-login">Login</button>
 		
 		    </body>	
     </div>
 	<div id="login">
-		<h1>Login</h1> <!--before create new account-->
-		<!--Login screen logo DONE-->
+		<h1>Login</h1> 				<!--before create new account-->
+									<!--Login screen logo DONE-->
 		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-		<!-- username login box-->
+									<!-- username login box-->
 		<div style="margin-bottom: 10px;">
 		<label for = "login-username">Username: </label>
 		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
 		</div>
-		<!-- password login box-->
+									<!-- password login box-->
 		<div style="margin-bottom: 10px;">
 		<label for = "login-password">Password: </label>
 		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
 		</div>
-		<!-- submit button-->
+									<!-- submit button-->
 		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
 
-		 <!--Show signup screen-->
+		 							<!--Show signup screen-->
 		 <button id = "show-signup">Sign Up</button>
 
 		 <script>
-			// (On Click) Sign up screen appear, login disappear
+									// (On Click) Sign up screen appear, login disappear
 			document.getElementById("show-signup").onclick = function() {
             document.getElementById("login").style.display = "none";
             document.getElementById("new_account").style.display = "block";
                   };
 
-           // (On Click) Login screen appear, sign up disappear
+           							// (On Click) Login screen appear, sign up disappear
             document.getElementById("back-to-login").onclick = function() {
             document.getElementById("new_account").style.display = "none";
             document.getElementById("login").style.display = "block";
@@ -73,12 +77,23 @@
 			document.getElementById("register-btn").onclick = function(){
 				const username = document.getElementById("username").value; //username from signup form
 				const password = document.getElementById("password").value; //password from signup form
+				
+				let valid = true;
+				if(username.length < 4){
+					valid = false;
+				}
+				if(password.length < 4){
+					valid = false;
+				}
+				
+				//More Data Validation can go here
 
 				if(!username || !password){
 					alert("Invalid username and/or password.");
 					return;
 				}
-				const signupData = { //Data into JSON object
+				const signupData = { 
+					//Data into JSON object
 					type: "signup", username : username, password:password
 				}
 			//Send data as JSON string JSON.stringify
