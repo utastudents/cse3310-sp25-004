@@ -356,6 +356,11 @@ public class PageManager {
         return userEventReply;
     }
 
+    /*TODO
+     * create static methods for spectating (maybe change the view match method to static and its parameters) and starting game.
+     * Implement a way when a user leaves the website 
+     */
+
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
     {
         return null;
