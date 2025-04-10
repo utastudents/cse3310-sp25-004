@@ -31,6 +31,8 @@ public class PageManager {
     // List to track active players in the subsystem
     Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
 
+    Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+
     // 
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
@@ -124,6 +126,7 @@ public class PageManager {
         // general identification of JSON
         responseJson.addProperty("responseID", "getActivePlayers");
         responseJson.addProperty("WhoAmI", Id);
+        responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
 
         // to have an array of active players
@@ -141,6 +144,7 @@ public class PageManager {
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
+            playerData.addProperty("state", player.getStatus().toString());
 
 
             playersArray.add(playerData);
@@ -184,33 +188,31 @@ public class PageManager {
      {
 
         JsonObject responseJson = new JsonObject();
+        UserEventReply userEventReply=  new UserEventReply();
 
-         UserEventReply userEventReply=  new UserEventReply();
-    //     JsonObject responseJson = new JsonObject();
-
+        // Extracting what i recieve
         int playerClientId = jsonObj.get("playerClientId").getAsInt();
 
-    //     // general identification of JSON
-    //     responseJson.addProperty("responseID", "joinQueue");
-    //     responseJson.addProperty("WhoAmI", Id);
+    //      general identification of JSON
+        responseJson.addProperty("responseID", "joinQueue");
+        responseJson.addProperty("WhoAmI", Id);
 
+        // State whether the adding to queue was a success
         if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
-            responseJson.addProperty("matchFound", true);
+            responseJson.addProperty("inQueue", true);
         }
         else
         {
-            responseJson.addProperty("matchFound", false);
+            responseJson.addProperty("inQueue", false);
         }
 
-    //     userEventReply.replyObj = responseJson;
+        userEventReply.replyObj = responseJson;
 
-    //     userEventReply.recipients = new ArrayList<>();
-    //     userEventReply.recipients.add(Id);
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
 
-         return userEventReply;
-
-    //     // No where near complete
+        return userEventReply;
 
      }
 
@@ -219,13 +221,14 @@ public class PageManager {
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
 
-        int opponentClientId = jsonObj.get("OpponentClientId").getAsInt();
+        // Extracting what i recieve
+        int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "challengePlayer");
 
-        responseJson.addProperty("PlayerClientId", Id);
-
+        // Send the players info to the opponent
+        responseJson.addProperty("playerClientId", Id);
         HumanPlayer player = activePlayers.get(Id);
         responseJson.addProperty("Username", player.getUsername());
         responseJson.addProperty("elo", player.getELO());
@@ -242,17 +245,115 @@ public class PageManager {
 
     public UserEventReply challengePlayerReply(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // Extracting what i recieve
+        int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
+        int playerClientId = jsonObj.get("playerClientId").getAsInt();
+        boolean accepted = jsonObj.get("accepted").getAsBoolean();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "challengePlayerReply");
+
+        // if challenge is accepted or not
+        if(accepted)
+        {
+
+            // State whether the adding to queue was a success
+            if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
+            {
+                responseJson.addProperty("inQueue", true);
+            }
+            else
+            {
+                responseJson.addProperty("inQueue", false);
+            }
+    
+            userEventReply.recipients = new ArrayList<>();
+            userEventReply.recipients.add(opponentClientId);
+            userEventReply.recipients.add(playerClientId);
+        }
+        else
+        {
+            responseJson.addProperty("accepted", false);
+            userEventReply.recipients = new ArrayList<>();
+            userEventReply.recipients.add(playerClientId);
+        }
+
+
+        userEventReply.replyObj = responseJson;
+
+
+        return userEventReply;
     }
 
     public UserEventReply challengeBot(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+        boolean bot1 = false;
+
+
+        // Extracting what i recieve
+        int botId = jsonObj.get("botId").getAsInt();
+
+        if(botId == 1)
+        {
+            bot1 = true;
+        }
+
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "challengeBot");
+
+        // State whether the adding to queue was a success
+        if (pu.challengeBot(activePlayers.get(Id), bot1))
+        {
+            responseJson.addProperty("inQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("inQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
+
     }
 
     public UserEventReply BotvsBot(JsonObject jsonObj, int Id)
     {
-        return null;
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        // Extracting what i recieve
+        boolean bot1 = jsonObj.get("bot1").getAsBoolean();
+        boolean bot2 = jsonObj.get("bot2").getAsBoolean();
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "BotvsBot");
+
+        // State whether the adding to queue was a success
+        if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
+        {
+            responseJson.addProperty("inQueue", true);
+        }
+        else
+        {
+            responseJson.addProperty("inQueue", false);
+        }
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(Id);
+
+        return userEventReply;
     }
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
@@ -294,50 +395,22 @@ public class PageManager {
 
     // Method to transition between pages
     private UserEventReply transitionPage(int clientId, GameState newState) {
-        clientStates.put(clientId, newState);
-
-        JsonObject response = new JsonObject();
-        response.addProperty("action", "updateVisibility");
-        response.addProperty("visible", newState.name().toLowerCase());
-
-        UserEventReply reply = new UserEventReply();
-        reply.recipients.add(clientId);
-        reply.replyObj = response;
-        return reply;
+        return null;
     }
 
     // Method to transition to join game page after user finishes reviewing summary of game
     public UserEventReply backToHome(int clientId) {
-        UserEventReply reply = new UserEventReply();
-        reply.replyObj = new JsonObject();
-
-        // Add a status message to indicate the transition
-        reply.replyObj.addProperty("status", "success");
-        reply.replyObj.addProperty("message", "Transitioning back to join game.");
-
-        // Add the instruction to transition to the join game/home page
-        reply.replyObj.addProperty("redirect", "join_game"); // This will signal the client to navigate to the join game page
-
-        // The reply should include the list of recipients (could just be the client for now)
-        reply.recipients.add(clientId);
-
-        return reply;
+        return null;
     }
 
     // Method to check if transition possible
     public boolean canTransition(GameState from, GameState to) {
-        switch(from) {
-            case LOGIN: return to == GameState.JOIN_GAME;
-            case JOIN_GAME: return to == GameState.GAME_DISPLAY;
-            case GAME_DISPLAY: return to == GameState.SUMMARY;
-            case SUMMARY: return to == GameState.JOIN_GAME;
-            default: return false;
-        }
+        return false;
     }
 
     // Method to get the current state of user
     public GameState getCurrentState(int clientId) {
-        return clientStates.getOrDefault(clientId, GameState.LOGIN);
+        return null;
     }
 
     // Method to reset client states for the new game

@@ -35,15 +35,6 @@ public class PairUp {
     public boolean addToQueue(Player p) {return false;}
 
     /**
-     * Called by PageManager when a user requests a challenge, but it has not been accepted yet.
-     * The request should be forwarded to the second user.
-     * @param p - The player who requested the challenge
-     * @param c - The player who is being challenged.
-     * @return - false if the player was not notified, true otherwise
-     */
-    public boolean requestChallenge(Player p, Player c) {return false;}
-
-    /**
      * Add a player v player challenge to the queue - after it has been accepted
      * @param p - the player who requested the challenge
      * @param c - the player who accepted the challenge
@@ -69,6 +60,15 @@ public class PairUp {
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
         //return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
+        return false;
+    }
+
+    /**
+     * 
+     * @param p - The player to remove (should be a HumanPlayer)
+     * @return - True if the player was removed from the queue
+     */
+    public boolean removeFromQueue(Player p) {
         return false;
     }
 
