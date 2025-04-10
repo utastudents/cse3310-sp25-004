@@ -192,6 +192,39 @@ public class Board
 		}
 		return jumpList;
 	}
+	
+	//searches the jump list for the requested move
+	private int checkForwardJump(ArrayList<Cord> jumpList, Cord cord)
+	{
+		//base case for our check
+		//checks if our cord was found
+		boolean check = false;
+		//iterator
+		int i;
+		
+		//iterates over the jump list
+		for(i = 0; i<jumpList.size(); i++)
+		{
+			//checks if cords are equal
+			//might need a separate equals methods to actually compare the x-y positions
+			if(jumpList.get(i).equals(cord))
+			{
+				check = true;
+				break;
+			}
+		}
+		
+		//if true return index of cord in list
+		//else return -1, same as null
+		if(check)
+		{
+			return i;
+		}
+		else
+		{
+			return -1;
+		}
+	}
 
 	//Same as getPossibleForwardJump but backwards
 	private ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
@@ -221,6 +254,13 @@ public class Board
 			}
 		}
 		return jumpList;
+	}
+	
+	//deletes a checker at a given cord
+	//can be changed to have x and y as the parameters
+	private void deleteChecker(Cord cord)
+	{
+		checkerBoard[cord.getY()][cord.getX()] = null;
 	}
 	
 	public static int moveValidation(Checker piece, Cord dest)
