@@ -1,7 +1,8 @@
 package uta.cse3310.PageManager;
 
-import uta.cse3310.GameState;
+
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 
@@ -59,11 +60,24 @@ public class HumanPlayer extends Player{
         return false;
     }
 
-
+    @Override
     public boolean startGame(Game g) {
-        game = g;
-        return false; //TODO: let the client know the game has started
+        this.game = g;
+        this.STATUS = STATUS.IN_GAME;
+
+        // Need game board to be sent over
+
+        //call a static method in page manager to make UserEventReply then send it to App.java to send the info to the players
+    
+
+        return true; //TODO: let the client know the game has started
     }
+
+    /*
+     * we could have a method here that is used to add a spectator to the game and call a static method in 
+     * page manager where it would create the UserEventReply which is then sent to another static method in App.java. 
+     * Here the static method will send this to all spectators. Consider creating a new STATE : SPECTATOR
+     */
 
     //getters
     public String getUsername(){
