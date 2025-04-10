@@ -269,6 +269,7 @@ public class Board
 		int newX = dest.getX();
 		int newY = dest.getY();
 		piece.setCord(newX, newY);
+		
 	}
 	
 	public static int moveValidation(Checker piece, Cord dest)
