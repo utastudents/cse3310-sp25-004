@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.List;
 
+
+
 import uta.cse3310.GameState;
 
 import uta.cse3310.DB.DB;
@@ -42,58 +44,21 @@ public class PageManager {
         pu = new PairUp(db);
     }
 
-    //what retrieveUserJson could look like
-    public UserEventReply retrieveUserJson(JsonObject jsonObject, int Id) 
-    {
-             UserEventReply userEventReply= new UserEventReply();
-
-             
-             HumanPlayer player = db.getPlayerById(Id);
-
-            //outer json object will have the responseID
-            JsonObject responseJson = new JsonObject(); 
-             responseJson.addProperty("responseID", "summaryUserJson");
-
-            //inner json object will have the player info
-            if(player != null){
-             JsonObject playerData = new JsonObject();
-             playerData.addProperty("ID", player.getPlayerId());
-             playerData.addProperty("Username", player.getUsername());
-             playerData.addProperty("elo", player.getELO());
-             playerData.addProperty("gamesWon", player.getWins());
-             playerData.addProperty("gamesLost", player.getLosses());
-
-             responseJson.add("USER", playerData);
-
-            }
-            //error if there's no valid user
-            else {
-                responseJson.addProperty("ERROR", "no player found");
-            }
-
-            userEventReply.replyObj = responseJson;
-
-            userEventReply.recipients = new ArrayList<>();
-            userEventReply.recipients.add(Id);
-            
-            return userEventReply;
-
-    }
-    
-    public UserEventReply retrieveTopTenJson(JsonObject inputJson, int id) {
+    //gets top10 players are first 10 and 11th is the current player
+    public UserEventReply retrieveLeaderboardJson(JsonObject inputJson, int id) {
         UserEventReply userEventReply = new UserEventReply();
     
-        // Outer Json will have response ID
+        // Outer JSON with response ID
         JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("responseID", "summaryTopTenData");
+        responseJson.addProperty("responseID", "summaryData");
     
-        // somehow need to get all players from db 
-        List<HumanPlayer> allPlayers = new ArrayList<>(); //need to get access to all players
+        // Placeholder list of all players (replace with actual player list from DB)
+        List<HumanPlayer> allPlayers = new ArrayList<>(); // need to get access to all players
     
         // Sort by ELO descending
         allPlayers.sort((p1, p2) -> Integer.compare(p2.getELO(), p1.getELO()));
     
-        // Add top 10 players to responseJson using userID1, userID2 etc
+        // Add top 10 players
         int count = 1;
         for (HumanPlayer player : allPlayers) {
             if (count > 10) break;
@@ -107,15 +72,31 @@ public class PageManager {
     
             String userKey = "userID" + count;
             responseJson.add(userKey, playerData);
-    
             count++;
         }
     
+    //add current player
+        HumanPlayer currentPlayer = db.getPlayerById(id);
+        if (currentPlayer != null) {
+            JsonObject playerData = new JsonObject();
+            playerData.addProperty("ID", currentPlayer.getPlayerId());
+            playerData.addProperty("Username", currentPlayer.getUsername());
+            playerData.addProperty("elo", currentPlayer.getELO());
+            playerData.addProperty("gamesWon", currentPlayer.getWins());
+            playerData.addProperty("gamesLost", currentPlayer.getLosses());
+    
+            responseJson.add("USER", playerData);
+        } else {
+            responseJson.addProperty("ERROR", "no player found");
+        }
+    
+        
         userEventReply.replyObj = responseJson;
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(id);
         return userEventReply;
     }
+    
     
     
     public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)
@@ -432,8 +413,37 @@ public class PageManager {
         clientStates.remove(clientId);
     }
 
+    //called frrom app.java to remove player from activePlayers and puQueue
+    public void userLeave(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            activePlayers.remove(Id);
+            boolean removed = pu.removeFromQueue(player);
+
+            // JsonObject msg = new JsonObject();
+            // msg.addProperty("action", "playerLeft");
+            // msg.addProperty("playerId", Id);
+            // msg.addProperty("username", player.getUsername());
+
+            //  // Create reply
+            // UserEventReply reply = new UserEventReply();
+            // reply.replyObj = msg;
+            // reply.recipients = new ArrayList<>();
+
+            //  // notify ALL other clients??????
+            // for (Integer otherId : activePlayers.keySet()) {
+            // reply.recipients.add(otherId);
+            /////////////////////////////////////////
+            //}
+
+        } else {
+            System.out.println("Player ID " + Id + " not found in activePlayers.");
+        }
+    }
     
-
-
+    
+    
    
 }
+
+

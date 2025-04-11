@@ -113,13 +113,28 @@ public class App extends WebSocketServer {
     conn.send(jsonString);
   }
 
+
   @Override
-  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+    public void onClose(WebSocket conn, int code, String reason, boolean remote) { 
     System.out.println(conn + " has closed");
-    // need to delete from id2con and con2 at this time ....
 
-  }
+    //get player Id tied to connection
+    Integer Id = con2id.get(conn);
 
+    if (Id != null) {
+        id2con.remove(Id);
+        con2id.remove(conn);
+
+        PM.userLeave(Id); //deletes player from queue, and hashmap and notify other clients
+
+        System.out.println("Removed player " + Id);
+    } else {
+        System.out.println("No associated player found for this connection.");
+    }
+}
+
+  
+  
   @Override
   public void onMessage(WebSocket conn, String message) {
 
@@ -246,3 +261,5 @@ public class App extends WebSocketServer {
     System.out.println("Hello World!");
   }
 }
+
+
