@@ -13,9 +13,10 @@ public class Board
 	public Checker[][] checkerBoard; // 2D array of checkers on the board
 	//NOTE: A NULL value in the array means that the square is empty.
 
+
 	public Board()
 	{
-		this.CheckerBoard=new Checker[8][8];
+		this.CheckerBoard = new Checker[8][8];
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
@@ -83,7 +84,8 @@ public class Board
 	 * piece is the selected checker piece
 	 * dest is selected square
 	 */
-	public boolean isValidMove(Checker piece, Cord dest) 
+
+	/*public boolean isValidMove(Checker piece, Cord dest) 
 	{
 		boolean isValid = false; //base case
 		//Check if the piece becomes a king
@@ -97,12 +99,13 @@ public class Board
 	 * called by isValidMove to check for more
 	 * possible jumps
 	 */
-	public Cord isValidJump(Checker piece, Cord dest, Cord jump) 
+	/*public Cord isValidJump(Checker piece, Cord dest, Cord jump) 
 	{
 		//CODE
 		
 		return jump;
 	}
+	*/
 
 
 	private boolean moveForwardCheck(Checker piece, Cord dest) 
