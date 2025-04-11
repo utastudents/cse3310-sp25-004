@@ -33,7 +33,7 @@ public class GameManager {
     }
 
     // Initialize first 10 games
-    public void initializeGames() {	// most likely a for loop over ArrayList and adding games with Game Play board and players
+    public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
             games.add(new Game(0,-1));
             numOfGames.add(i); // marking these as available
@@ -66,15 +66,20 @@ public class GameManager {
          }
         System.out.println("No available game slots.");
         return false;
-        // implement checking ArrayList<Integer>, if null, create new game in new index
-        // return boardAvailable(p1, p2, spectator);
-        // if checkAvailableGames returns true, call pu.boardAvailable(); to start a new game
+        // return boardAvailable(p1, p2, spectator); (?)
     }
 
     
     public void removeGame(){
+        Game gameToRemove = gt.endGame();
+        for (int i = 0; i < games.size(); i++){
+            Game g = games.get(i);
+            if(g != null && g.getGameID() == gameToRemove.getGameID())
+            {
+                games.set(i, null);
+            }
+        }
         // if GameTermination sends a Game object that should end, check Game ID and remove here
-
     } 
 
     /*public GameUpdate processMove(GameMove move){
