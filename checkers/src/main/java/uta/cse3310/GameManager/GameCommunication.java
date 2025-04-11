@@ -23,7 +23,7 @@ public class GameCommunication {
         }
     }
 
-    static void playerInformation(String id, String username, String password, String nextID) {
+    static void playerInformation(String id, String username, String nextID) {
         // Using to store player information that is recieved from page manager, then
         // sending to gameplay
 
