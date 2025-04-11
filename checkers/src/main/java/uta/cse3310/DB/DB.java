@@ -53,7 +53,9 @@ public class DB
     }
     */
     /* if a username is new it will add new player */
-    public void addPlayer(String username, String password) 
+
+    // testing if we need to return a boolean or void
+    public boolean addPlayer(String username, String password) 
     {
         if (getPlayerByUsername(username) != null) 
         {
@@ -67,6 +69,7 @@ public class DB
 
         HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
         players.add(newPlayer);
+        return true; // successfully added
         */
     }
 

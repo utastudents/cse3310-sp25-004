@@ -365,7 +365,7 @@ public class PageManager {
         status.addProperty("responseID", "new_user");
     
         // SEND TO SQLITE DATABASE
-        boolean success = db.addPlayerToDB(username, password);
+        boolean success = db.addPlayer(username, password);
     
         if (success) {
             status.addProperty("msg", "Account created successfully!");
