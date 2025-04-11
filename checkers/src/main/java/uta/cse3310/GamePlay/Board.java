@@ -10,11 +10,12 @@ public class Board
 {
     //Variable for 2D array board
 
-	public Checker checkerBoard [][] = new Checker[8][8]; // 2D array of checkers on the board
+	public Checker[][] checkerBoard; // 2D array of checkers on the board
 	//NOTE: A NULL value in the array means that the square is empty.
 
 	public Board()
 	{
+		this.CheckerBoard=new Checker[8][8];
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
