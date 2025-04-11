@@ -30,6 +30,11 @@ public class Game{
       this.player2 = playerId;
    }
 
+
+   public void setPlayer1(int playerId) {
+      this.player1 = playerId;
+   }
+
    // Getting player 1 ID
    public int getPlayer1() {
       return player1;

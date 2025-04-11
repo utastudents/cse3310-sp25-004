@@ -42,4 +42,23 @@ public class GameTest {
         assertEquals(expectedPlayer2ID, game.getPlayer2(), 
             "Player 2 ID should match the value set by setPlayer2()");
     }
+
+
+
+
+      /**
+ * Tests that setPlayer1() correctly updates and retrieves the player1 ID.
+ */
+@Test
+void testSetPlayer1() {
+    Game game = new Game(300, 1);  // Initial ID doesn't matter here
+    int newPlayer1ID = 77;
+
+    // Set a new player1 ID
+    game.setPlayer1(newPlayer1ID);
+
+    // Check if the new player1 ID is correctly updated
+    assertEquals(newPlayer1ID, game.getPlayer1(),
+        "Player 1 ID should match the value set by setPlayer1()");
+}
 }
