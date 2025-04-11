@@ -298,6 +298,14 @@ public class Board
 	{
 		checkerBoard[cord.getY()][cord.getX()] = null;
 	}
+
+	// updatePosition updates the chosen checker piece with the chosen destination
+	private void updatePosition(Checker piece, Cord dest)
+	{
+		int newX = dest.getX();
+		int newY = dest.getY();
+		piece.setCord(newX, newY);
+	}
 	
 	public static int moveValidation(Checker piece, Cord dest)
 	// The main logic for movement. 
