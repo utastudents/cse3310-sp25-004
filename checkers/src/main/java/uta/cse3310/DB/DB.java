@@ -59,7 +59,7 @@ public class DB
     {
         if (getPlayerByUsername(username) != null) 
         {
-            return; /*if username exists it will return */
+            return false; /*if username exists it will return */    //Temporary, please fix when you can
         }
         
         /* 
@@ -71,6 +71,7 @@ public class DB
         players.add(newPlayer);
         return true; // successfully added
         */
+        return false; //Temporary, please fix when you can
     }
 
     /* gets a player using playerId, and return if the player is found */

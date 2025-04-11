@@ -16,7 +16,7 @@ public class Board
 
 	public Board()
 	{
-		this.CheckerBoard = new Checker[8][8];
+		this.checkerBoard = new Checker[8][8];
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
@@ -108,7 +108,7 @@ public class Board
 	*/
 
 
-	private boolean moveForwardCheck(Checker piece, Cord dest) 
+	boolean moveForwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally forward to the destination square. 
 	// Does not check Jumps
 	{
@@ -136,7 +136,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 
-	private boolean moveBackwardCheck(Checker piece, Cord dest) 
+	boolean moveBackwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally backward to the destination square. 
 	// Does not check Jumps
 	{
@@ -164,7 +164,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
-	private ArrayList<Cord> getPossibleForwardJump(Checker piece) 
+	ArrayList<Cord> getPossibleForwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -198,7 +198,7 @@ public class Board
 	}
 	
 	//searches the jump list for the requested move
-	private int checkForwardJump(ArrayList<Cord> jumpList, Cord cord)
+	int checkForwardJump(ArrayList<Cord> jumpList, Cord cord)
 	{
 		//base case for our check
 		//checks if our cord was found
@@ -231,7 +231,7 @@ public class Board
 	}
 
 	//Same as getPossibleForwardJump but backwards
-	private ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -259,10 +259,42 @@ public class Board
 		}
 		return jumpList;
 	}
+
+	int checkBackwardJump(ArrayList<Cord> jumpList, Cord cord)
+	{
+		//base case for our check
+		//checks if our cord was found
+		boolean check = false;
+		//iterator
+		int i;
+		
+		//iterates over the jump list
+		for(i = 0; i<jumpList.size(); i++)
+		{
+			//checks if cords are equal
+			//might need a separate equals methods to actually compare the x-y positions
+			if(jumpList.get(i).equals(cord))
+			{
+				check = true;
+				break;
+			}
+		}
+		
+		//if true return index of cord in list
+		//else return -1, same as null
+		if(check)
+		{
+			return i;
+		}
+		else
+		{
+			return -1;
+		}
+	}
 	
 	//deletes a checker at a given cord
 	//can be changed to have x and y as the parameters
-	private void deleteChecker(Cord cord)
+	void deleteChecker(Cord cord)
 	{
 		checkerBoard[cord.getY()][cord.getX()] = null;
 	}

@@ -13,7 +13,7 @@ public class GamePlay
     public GamePlay(int id) 
     {
         this.GameID = id;
-        this.board=board;
+        this.board= new Board();
         //Initialize class with GameID and create starting board
     }
 
@@ -31,18 +31,18 @@ public class GamePlay
     public int move(Checker piece, Cord dest) 
     {
         int result = 0;
-        ArrayList<Cord> possibleJumpsForward = getPossibleForwardJump(piece);
-        ArrayList<Cord> possibleJumpsBackward = getPossibleBackwardJump(piece); //create arrays for possible jumps for that piece
+        ArrayList<Cord> possibleJumpsForward = board.getPossibleForwardJump(piece);
+        ArrayList<Cord> possibleJumpsBackward = board.getPossibleBackwardJump(piece); //create arrays for possible jumps for that piece
 
         //checks if moves are valid
-        if(moveForwardCheck(piece, dest) || moveBackwardCheck(piece, dest) || checkForwardJump(possibleJumpsForward,cord) || checkBackwardJump(possibleJumpsBackward) )
+        if(board.moveForwardCheck(piece, dest) == true || board.moveBackwardCheck(piece, dest)  == true || board.checkForwardJump(possibleJumpsForward, dest)  != -1 || board.checkBackwardJump(possibleJumpsBackward, dest) != -1)
         {
             //free arrays lists and update a temp checker piece with new cord and create new arraylist to check for additional jumps
 
 
 
             //check if there are valid jumps that can be done or what not
-            if(checkForwardJump(possibleJumpsForward,cord) || checkBackwardJump(possibleJumpsBackward))
+            if(board.checkForwardJump(possibleJumpsForward, dest) != -1 || board.checkBackwardJump(possibleJumpsBackward, dest) != -1)
             {
                 result=1;
             }
