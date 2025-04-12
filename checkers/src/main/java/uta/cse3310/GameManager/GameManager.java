@@ -1,6 +1,6 @@
 package uta.cse3310.GameManager;
 
-// import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class GameManager {
     // GamePlay gp;
-    private static final int MAX_GAMES = 10;// essentially a global variable we can change later on
+    private static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
     GameTermination gt;
@@ -69,7 +69,7 @@ public class GameManager {
         // return boardAvailable(p1, p2, spectator); (?)
     }
 
-    
+    // removes finished game
     public void removeGame(){
         Game gameToRemove = gt.endGame();
         for (int i = 0; i < games.size(); i++){
@@ -79,7 +79,6 @@ public class GameManager {
                 games.set(i, null);
             }
         }
-        // if GameTermination sends a Game object that should end, check Game ID and remove here
     } 
 
     /*public GameUpdate processMove(GameMove move){
