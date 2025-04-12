@@ -383,6 +383,11 @@ public class PageManager {
         //transition to the home page
         reply.replyObj = status;
         transitionPage(Id, GameState.HOME);
+        // need to add
+        //. public enum GameState {
+        //   HOME,  // Add this constant
+    // Include other game states as needed
+}
         return reply;
     }
     // method handle new user registration from frontend 
