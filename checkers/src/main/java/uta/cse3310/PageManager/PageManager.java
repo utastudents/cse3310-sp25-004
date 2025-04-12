@@ -382,7 +382,7 @@ public class PageManager {
 
         //transition to the home page
         reply.replyObj = status;
-        transitionPage(Id, GameState.HOME);
+        transitionPage(List.of(Id), GameState.JOIN_GAME);
         // need to add
         //. public enum GameState {
         //   HOME,  // Add this constant
@@ -435,39 +435,28 @@ public class PageManager {
         return null;
     }
 
-     
-
 
     // Method to transition between pages
-    private UserEventReply transitionPage(int clientId, GameState newState) {
-        clientStates.put(clientId, newState);
-
+   // Transition all given clients to a new game state and notify them
+    private UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
         response.addProperty("action", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());
 
         UserEventReply reply = new UserEventReply();
-        reply.recipients.add(clientId);
         reply.replyObj = response;
+        reply.recipients = new ArrayList<>(clientIds);
+
+        for (Integer id : clientIds) {
+            clientStates.put(id, newState);
+        }
+
         return reply;
     }
 
-    // Method to transition to join game page after user finishes reviewing summary of game
+    //Method to transition to join game page after user finishes reviewing summary of game
     public UserEventReply backToHome(int clientId) {
-        UserEventReply reply = new UserEventReply();
-        reply.replyObj = new JsonObject();
-
-        // Add a status message to indicate the transition
-        reply.replyObj.addProperty("status", "success");
-        reply.replyObj.addProperty("message", "Transitioning back to join game.");
-
-        // Add the instruction to transition to the join game/home page
-        reply.replyObj.addProperty("redirect", "join_game"); // This will signal the client to navigate to the join game page
-
-        // The reply should include the list of recipients (could just be the client for now)
-        reply.recipients.add(clientId);
-
-        return reply;
+        return null;
     }
 
     // Method to check if transition possible
