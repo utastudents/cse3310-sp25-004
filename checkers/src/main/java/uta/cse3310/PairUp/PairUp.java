@@ -78,8 +78,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        //return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return false;
+        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
     }
 
     /**
