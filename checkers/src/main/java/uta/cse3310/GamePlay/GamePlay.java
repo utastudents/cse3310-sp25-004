@@ -70,9 +70,9 @@ public class GamePlay
                     if (cordIter != -1)
                     {
                         Cord newPos = possibleJumpsForward.get(cordIter);
+                        board.removeJumpedChecker(piece, newPos);
                         board.updatePosition(piece, newPos);
-    
-                       // TODO: Remove jumped piece / pieces
+                        concurrentJumps(piece);
                     }  
                     else
                     {
@@ -87,9 +87,10 @@ public class GamePlay
                     if (cordIter != -1)
                     {
                         Cord newPos = possibleJumpsBackward.get(cordIter);
+                        board.removeJumpedChecker(piece, newPos);
                         board.updatePosition(piece, newPos);
-    
-                       // TODO: Remove jumped piece / pieces
+                        concurrentJumps(piece);
+
                     }   
                     else
                     {
@@ -97,28 +98,31 @@ public class GamePlay
                     }
                 }
             }
-
-            int cordIndexfwd = board.checkForwardJump(possibleJumpsForward, dest); // Index of forward jump if found
-            int cordIndexbwd = board.checkBackwardJump(possibleJumpsBackward, dest); // Index of backward jump if found
-
-            if(cordIndexfwd != -1)
-            {
-                Cord newPos = possibleJumpsForward.get(cordIndexfwd);
-                board.updatePosition(piece, newPos);
-
-               // TODO: Remove jumped piece / pieces
-            }
-            else if (cordIndexbwd != -1)
-            {
-                Cord newPos = possibleJumpsBackward.get(cordIndexbwd);
-                board.updatePosition(piece, newPos);
-
-                // TODO: Remove jumped piece / pieces
-            }
             else
             {
-                result = 1; 
+                int cordIndexfwd = board.checkForwardJump(possibleJumpsForward, dest); // Index of forward jump if found
+                int cordIndexbwd = board.checkBackwardJump(possibleJumpsBackward, dest); // Index of backward jump if found
+
+                if(cordIndexfwd != -1)
+                {
+                    Cord newPos = possibleJumpsForward.get(cordIndexfwd);
+                    board.removeJumpedChecker(piece, newPos);
+                    board.updatePosition(piece, newPos);
+                    concurrentJumps(piece);
+                }
+                else if (cordIndexbwd != -1)
+                {
+                    Cord newPos = possibleJumpsBackward.get(cordIndexbwd);
+                    board.removeJumpedChecker(piece, newPos);
+                    board.updatePosition(piece, newPos);
+                    concurrentJumps(piece);
+                }
+                else
+                {
+                    result = 1; 
+                }   
             }
+            
         }
         else // If there are no jumps to be made.
         {
@@ -167,6 +171,67 @@ public class GamePlay
         }
         //TODO: Send Game Termination end board
         return result;
+    }
+    //Allows the piece to automatically take direct jumps after a jump by the player
+    public int concurrentJumps(Checker piece)
+    {
+        ArrayList<Cord> possibleJumpsForward;
+        ArrayList<Cord> possibleJumpsBackward;
+        int result = 0;
+        if (piece.isKing())
+        {
+            possibleJumpsForward = board.getPossibleForwardJump(piece);
+            possibleJumpsBackward = board.getPossibleBackwardJump(piece);
+            if (possibleJumpsForward.size() + possibleJumpsBackward.size() > 1)
+            {
+                return 1;
+            }
+            else if (possibleJumpsForward.size() == 1)
+            {
+                move(piece, possibleJumpsForward.get(0));
+            }
+            else if (possibleJumpsBackward.size() == 1)
+            {
+                move(piece, possibleJumpsBackward.get(0));
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else if (piece.getColor() == Color.BLACK)
+        {
+            possibleJumpsForward = board.getPossibleForwardJump(piece);
+            if (possibleJumpsForward.size() > 1)
+            {
+                return 1;
+            }
+            else if (possibleJumpsForward.size() == 1)
+            {
+                move(piece, possibleJumpsForward.get(0));
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else if (piece.getColor() == Color.RED)
+        {
+            possibleJumpsBackward = board.getPossibleBackwardJump(piece);
+            if (possibleJumpsBackward.size() > 1)
+            {
+                return 1;
+            }
+            else if (possibleJumpsBackward.size() == 1)
+            {
+                move(piece, possibleJumpsBackward.get(0));
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        return 0;
     }
 
     public Board getBoard() 

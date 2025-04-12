@@ -299,15 +299,15 @@ public class Board
 		{
 			deleteChecker(new Cord(destX-1, destY-1));
 		}
-		if (checkerBoard[destX+2][destY-2] == piece)
+		else if (checkerBoard[destX+2][destY-2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY-1));
 		}
-		if (checkerBoard[destX-2][destY+2] == piece)
+		else if (checkerBoard[destX-2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX-1, destY+1));
 		}
-		if (checkerBoard[destX+2][destY+2] == piece)
+		else if (checkerBoard[destX+2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
