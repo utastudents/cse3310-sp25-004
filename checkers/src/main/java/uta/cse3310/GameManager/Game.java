@@ -11,6 +11,7 @@ public class Game{
    // private GamePlay board;     //decide later how to use when gameplay is more fleshed out 
    //private boolean isGameActive;
    //public int gameID
+   public int playerID;
 
 
 	public Game(int gameID, int playerId){ // might need to handle challenge Q in here too 
