@@ -157,6 +157,17 @@ public class DB
         }
         return false;
     }
-    
+    /* This method will returns top 10 players ordered with their ELO */	
+    public HumanPlayer[] getTop10PlayersByElo()
+    {
+	return new HumanPlayer[0];
+    }
+
+    // TODO this method will return the player using username and password
+    public HumanPlayer getPlayer(String username, String password)
+    {
+        // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+        return null;  /* null when Player not found */
+    }
 
 }

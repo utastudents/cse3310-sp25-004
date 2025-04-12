@@ -350,7 +350,40 @@ public class PageManager {
     // handle login request from the frintend (expects a jsonObject w/ "username" "Password"
     public UserEventReply handleLogin(JsonObject jsonObj, int Id)
     {
-        return null;
+        // 1) draw out the username and password from the json object
+        String username = jsonObj.get("UserName").getAsString();
+        String password = jsonObj.get("Password").getAsString();
+
+        // 2)create a new userEventReply object to send back to the client
+        UserEventReply reply = new UserEventReply();
+        reply.recipients = new ArrayList<>();
+        reply.recipients.add(Id);
+
+        // 3) check if the username and password are correct by checking the database
+        HumanPlayer player = db.getPlayer(username, password);
+
+        // 4) create a new json object to send back to the client
+        JsonObject status = new JsonObject();
+        status.addProperty("responseID", "login");
+
+        // 5) if the player is null, then the username and password are incorrect
+        if (player == null) {
+            status.addProperty("msg", "Invalid username or password.");
+            //add the status to the reply object and return it
+            reply.replyObj = status;
+            return reply;
+        }
+        // 6) if the player is not null, then the username and password are correct
+        status.addProperty("responseID", "loginSuccess"); // response for frontend
+        status.addProperty("msg", "Login successful!");
+        status.addProperty("playerID", player.getPlayerId());
+        status.addProperty("redirect", "join_game");  // redirect to the join game page
+
+
+        //transition to the home page
+        reply.replyObj = status;
+        transitionPage(Id, GameState.HOME);
+        return reply;
     }
     // method handle new user registration from frontend 
     public UserEventReply handleNewUser(JsonObject jsonObj, int Id) {
@@ -369,6 +402,7 @@ public class PageManager {
     
         if (success) {
             status.addProperty("msg", "Account created successfully!");
+            status.addProperty("redirect", "join_game"); //redirect to the login page
         } else {
             status.addProperty("msg", "Username already exists.");
         }
@@ -415,7 +449,20 @@ public class PageManager {
 
     // Method to transition to join game page after user finishes reviewing summary of game
     public UserEventReply backToHome(int clientId) {
-        return null;
+        UserEventReply reply = new UserEventReply();
+        reply.replyObj = new JsonObject();
+
+        // Add a status message to indicate the transition
+        reply.replyObj.addProperty("status", "success");
+        reply.replyObj.addProperty("message", "Transitioning back to join game.");
+
+        // Add the instruction to transition to the join game/home page
+        reply.replyObj.addProperty("redirect", "join_game"); // This will signal the client to navigate to the join game page
+
+        // The reply should include the list of recipients (could just be the client for now)
+        reply.recipients.add(clientId);
+
+        return reply;
     }
 
     // Method to check if transition possible
@@ -438,7 +485,7 @@ public class PageManager {
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
             activePlayers.remove(Id);
-            boolean removed = pu.removeFromQueue(player);
+            //boolean removed = pu.removeFromQueue(player);
 
             // JsonObject msg = new JsonObject();
             // msg.addProperty("action", "playerLeft");

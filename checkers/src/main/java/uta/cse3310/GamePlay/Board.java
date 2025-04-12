@@ -146,7 +146,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
-	ArrayList<Cord> getPossibleForwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -213,7 +213,7 @@ public class Board
 	}
 
 	//Same as getPossibleForwardJump but backwards
-	ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
