@@ -38,7 +38,7 @@ public class PageManager {
     // Track user in which subsytem they are in.
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
-    public PageManager() {
+    public PageManager() { 
         db = new DB();
         // pass over a pointer to the single database object in this system
         pu = new PairUp(db);
@@ -52,17 +52,11 @@ public class PageManager {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("responseID", "summaryData");
     
-        // Placeholder list of all players (replace with actual player list from DB)
-        List<HumanPlayer> allPlayers = new ArrayList<>(); // need to get access to all players
+        // Get the top10 players by elo from db
+        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();  
     
-        // Sort by ELO descending
-        allPlayers.sort((p1, p2) -> Integer.compare(p2.getELO(), p1.getELO()));
-    
-        // Add top 10 players
         int count = 1;
-        for (HumanPlayer player : allPlayers) {
-            if (count > 10) break;
-    
+        for (HumanPlayer player : topPlayers) {
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", player.getPlayerId());
             playerData.addProperty("Username", player.getUsername());
@@ -75,7 +69,7 @@ public class PageManager {
             count++;
         }
     
-    //add current player
+        // Add current player (even if not in top 10)
         HumanPlayer currentPlayer = db.getPlayerById(id);
         if (currentPlayer != null) {
             JsonObject playerData = new JsonObject();
@@ -85,17 +79,19 @@ public class PageManager {
             playerData.addProperty("gamesWon", currentPlayer.getWins());
             playerData.addProperty("gamesLost", currentPlayer.getLosses());
     
-            responseJson.add("USER", playerData);
+            responseJson.add("currentUser", playerData);
         } else {
             responseJson.addProperty("ERROR", "no player found");
         }
     
-        
         userEventReply.replyObj = responseJson;
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(id);
+    
         return userEventReply;
     }
+    
+    
     
     
     
