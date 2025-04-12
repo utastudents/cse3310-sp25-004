@@ -27,7 +27,24 @@ public class PairUp {
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
-    private void pairUp() {} //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
+    private void pairUp() {
+        if (playerQueue.size() < 2) return; //If there are not enough players in the queue, return
+        while (playerQueue.size() >= 2) {
+            Challenge curr = playerQueue.poll(); //Get the first player in the queue
+            Player p1 = curr.first; //Get the first player
+            Player p2 = curr.second; //Get the second player
+            if (isInRange(p1, p2)) {
+                db.startGame(p1, p2);
+                numPlayersInQueue -= 2;
+                return;
+            } else {        
+                playerQueue.add(p1);
+                playerQueue.add(p2);
+                break;
+             }
+         }
+        
+    } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
 
     /**
      * Add a player to the challenge queue. Called by PageManager when a client requests matchmaking
