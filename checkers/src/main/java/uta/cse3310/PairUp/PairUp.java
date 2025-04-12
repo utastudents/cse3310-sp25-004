@@ -49,7 +49,7 @@ public class PairUp {
      */
     public boolean challengeBot(Player p, boolean botI) {
         //return challenge(p, botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return false;
+        return challenge(p, botI ? new BotI() : new BotII());
     }
     /**
      * Add a bot v bot challenge to the queue
