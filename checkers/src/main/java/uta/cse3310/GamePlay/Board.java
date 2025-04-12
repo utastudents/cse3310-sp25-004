@@ -89,36 +89,7 @@ public class Board
 			piece.setKing(true);
 		}
 	}
-
-	/*
-	 * checks if a move is valid
-	 * piece is the selected checker piece
-	 * dest is selected square
-	 */
-
-	/*public boolean isValidMove(Checker piece, Cord dest) 
-	{
-		boolean isValid = false; //base case
-		//Check if the piece becomes a king
-
-		//CODE
-		
-		return isValid;
-	}
 	
-	/*
-	 * called by isValidMove to check for more
-	 * possible jumps
-	 */
-	/*public Cord isValidJump(Checker piece, Cord dest, Cord jump) 
-	{
-		//CODE
-		
-		return jump;
-	}
-	*/
-
-
 	boolean moveForwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally forward to the destination square. 
 	// Does not check Jumps
