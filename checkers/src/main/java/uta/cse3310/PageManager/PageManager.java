@@ -374,9 +374,6 @@ public class PageManager {
             return reply;
         }
         // 6) if the player is not null, then the username and password are correct
-        // status.addProperty("msg", "Login successful!");
-        // activePlayers.put(Id, player); //add the player to the active players list
-        // userIDToClientID.put(player.getPlayerId(), Id);
         status.addProperty("responseID", "loginSuccess"); // response for frontend
         status.addProperty("msg", "Login successful!");
         status.addProperty("playerID", player.getPlayerId());
@@ -386,7 +383,7 @@ public class PageManager {
         //transition to the home page
         reply.replyObj = status;
         transitionPage(Id, GameState.HOME);
-        return null;
+        return reply;
     }
     // method handle new user registration from frontend 
     public UserEventReply handleNewUser(JsonObject jsonObj, int Id) {
