@@ -1,6 +1,8 @@
 package uta.cse3310.GameTermination;
 
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.DB.DB;
+
 
 public class GameTermination {
         // Tells game play game is over. 
