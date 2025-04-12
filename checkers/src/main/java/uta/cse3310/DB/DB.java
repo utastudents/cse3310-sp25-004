@@ -157,6 +157,10 @@ public class DB
         }
         return false;
     }
-    
+    /* This method will returns top 10 players ordered with their ELO */	
+    public HumanPlayer[] getTop10PlayersByElo()
+    {
+	return new HumanPlayer[0];
+    }
 
 }
