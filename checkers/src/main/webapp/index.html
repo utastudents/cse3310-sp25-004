@@ -36,13 +36,15 @@
 		
 									<!-- username login box-->
 		<div style="margin-bottom: 10px;">
-		<label for = "login-username">Username: </label>
-		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<label for = "login-username">Username: </label>
+			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
 		</div>
 									<!-- password login box-->
 		<div style="margin-bottom: 10px;">
-		<label for = "login-password">Password: </label>
-		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+			<label for = "login-password">Password: </label>
+			<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+			<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
 		</div>
 									<!-- submit button-->
 		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
