@@ -104,24 +104,24 @@
 
 			//Event handler for login button
 			document.getElementById("login-btn").onclick = function(){
-				const loginusername = document.getElementById("login-username").value; //username from signup form
-				const loginpassword = document.getElementById("login-password").value; //password from signup form
+				const loginUsername = document.getElementById("login-username").value; //username from signup form
+				const loginPassword = document.getElementById("login-password").value; //password from signup form
 
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
 				
 				// More Data Validation can go here
-				if(!loginusername || !loginpassword){
+				if(!loginUsername || !loginPassword){
 					alert("Invalid username and/or password.");
 					return;
 				}
 				const loginData = { //Data into JSON object
 					type: "login", 
-					username : loginusername, 
-					password:loginpassword
+					UserName : loginUsername, 
+					Password:loginPassword
 				};
 			//Send data as JSON string JSON.stringify			
-			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+			//Placeholder until datahandling added	PageManager.PageManager.handleLogin(JSON.stringify(loginData));
 
 			}
 
