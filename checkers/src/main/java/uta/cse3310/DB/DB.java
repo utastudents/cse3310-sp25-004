@@ -164,7 +164,7 @@ public class DB
     }
 
     // TODO this method will return the player using username and password
-    public HumanPlayer getPlayer(string username, string password)
+    public HumanPlayer getPlayer(String username, String password)
     {
         // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
         return null;  /* null when Player not found */
