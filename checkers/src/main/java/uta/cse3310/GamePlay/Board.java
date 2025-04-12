@@ -290,6 +290,29 @@ public class Board
 		checkerBoard[newY][newX] = piece;
 	}
 	
+	void removeJumpedChecker(Checker piece, Cord dest)
+	{
+		int destX = dest.getX();
+		int destY = dest.getY();
+
+		if (checkerBoard[destX-2][destY-2] == piece)
+		{
+			deleteChecker(new Cord(destX-1, destY-1));
+		}
+		if (checkerBoard[destX+2][destY-2] == piece)
+		{
+			deleteChecker(new Cord(destX+1, destY-1));
+		}
+		if (checkerBoard[destX-2][destY+2] == piece)
+		{
+			deleteChecker(new Cord(destX-1, destY+1));
+		}
+		if (checkerBoard[destX+2][destY+2] == piece)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+		}
+	}
+
 	public static int moveValidation(Checker piece, Cord dest)
 	// The main logic for movement. 
 	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
