@@ -386,8 +386,8 @@ public class PageManager {
         // need to add
         //. public enum GameState {
         //   HOME,  // Add this constant
-    // Include other game states as needed
-}
+        // Include other game states as needed
+
         return reply;
     }
     // method handle new user registration from frontend 
