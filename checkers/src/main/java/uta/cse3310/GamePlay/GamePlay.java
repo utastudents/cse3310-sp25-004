@@ -73,11 +73,11 @@ public class GamePlay
                         board.updatePosition(piece, newPos);
     
                        // TODO: Remove jumped piece / pieces
-                    }   
-                }
-                else
-                {
-                    result = 1;
+                    }  
+                    else
+                    {
+                        result = 1;
+                    } 
                 }
 
                 if(piece.getColor() == Color.RED ) // Red Man piece jump code
@@ -87,17 +87,14 @@ public class GamePlay
                     if (cordIter != -1)
                     {
                         Cord newPos = possibleJumpsBackward.get(cordIter);
-                        int x = piece.getCord().getX();
-                        int y = piece.getCord().getY();
-    
                         board.updatePosition(piece, newPos);
     
                        // TODO: Remove jumped piece / pieces
                     }   
-                }
-                else
-                {
-                    result = 1;
+                    else
+                    {
+                        result = 1;
+                    }
                 }
             }
 
@@ -136,7 +133,7 @@ public class GamePlay
                     }
                     else
                     {
-                        result = 1;
+                        result = 0;
                     }
                 }
                 else if(piece.getColor() == Color.RED) // Red piece move code
@@ -148,7 +145,7 @@ public class GamePlay
                     }
                     else
                     {
-                        result = 1;
+                        result = 0;
                     }
                 }
             }
@@ -163,7 +160,7 @@ public class GamePlay
                     }
                     else
                     {
-                        result = 1;
+                        result = 0;
                     }
                 }
             }
