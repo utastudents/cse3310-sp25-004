@@ -76,8 +76,19 @@ public class Board
 			}
 		}
 
-	}	
+	}
 
+	private void kingMe(Checker piece)
+	{
+		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
+		{
+			piece.setKing(true);
+		}
+		else if(piece.getColor() == Color.RED && piece.getCord().getY() == 0)
+		{
+			piece.setKing(true);
+		}
+	}
 
 	/*
 	 * checks if a move is valid
@@ -300,11 +311,12 @@ public class Board
 	}
 
 	// updatePosition updates the chosen checker piece with the chosen destination
-	private void updatePosition(Checker piece, Cord dest)
+	public void updatePosition(Checker piece, Cord dest)
 	{
 		int newX = dest.getX();
 		int newY = dest.getY();
 		piece.setCord(newX, newY);
+		checkerBoard[newY][newX] = piece;
 	}
 	
 	public static int moveValidation(Checker piece, Cord dest)
