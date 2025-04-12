@@ -86,10 +86,9 @@
 
 				<!-- EXAMPLE: -->
 				<li class="player">
-					<p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
-					<button><a id="btn1-UID002" type="button" href=""
-							onclick="req_challenge(1,2)">Challenge</a></button>
-					<button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+					<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
+					<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
+					<button id="btn2-UID002" onclick="">View Match</button>
 				</li>
 			</ol>
 		</div>
@@ -129,16 +128,31 @@
 
 		}
 
-		function updateStatus(playerID) {
+		function updateStatus(playerID, status) {
 			// Access the player ID
 			const playerElement = document.getElementById(playerID);
 
 			// access the status span
 			const statusElement = playerElement.querySelector('.status');
-
+			const challengedBtn = document.getElementById(`btn1-${playerID}`);
+			console.log(challengedBtn);
+			if (!challengedBtn){
+				console.log("cant find button");
+			}
 			// Change the status to "free"
-			statusElement.classList.remove('busy'); 
-			statusElement.classList.add('free');
+			if (status == "busy") {
+				statusElement.classList.remove('free');
+				statusElement.classList.add('busy');
+
+				//change button to disabled
+				challengedBtn.disabled = true;
+			}
+			else {
+				statusElement.classList.remove('busy');
+				statusElement.classList.add('free');
+				//change button to normal
+				challengedBtn.disabled = false;
+			}
 		}
 	</script>
 </div>
@@ -217,6 +231,7 @@
 	connection.onclose = function (evt) {
 		console.log("close");
 	}
+
 
 	connection.onmessage = function (evt) {
 		let msg = evt.data; //extract data from websocket response
