@@ -411,7 +411,7 @@ public class PageManager {
         }
     
         reply.replyObj = status;
-        return null;
+        return reply;
     }
     
 
