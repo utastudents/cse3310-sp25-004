@@ -231,7 +231,7 @@ public class PageManager {
         responseJson.addProperty("elo", player.getELO());
         responseJson.addProperty("gamesWon", player.getWins());
         responseJson.addProperty("gamesLost", player.getLosses());
-        playerData.addProperty("status", player.getStatus().toString());
+        responseJson.addProperty("status", player.getStatus().toString());
 
         userEventReply.replyObj = responseJson;
 
