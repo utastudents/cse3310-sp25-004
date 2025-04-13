@@ -16,6 +16,9 @@ public class GameTermination {
 
         }
         //    public GameResult evaluate(GameState gameState) {
+        // boolean p1HasPieces = gameState.hasPieces("P1");
+        // boolean p2HasPieces = gameState.hasPieces("P2");
+
 
 }
         
