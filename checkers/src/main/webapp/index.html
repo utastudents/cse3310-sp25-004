@@ -1,16 +1,203 @@
 <html>
-    <div id="new_account">
-    new account
+
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+	<div id = "account-screen-logo" style="text-align: center;">
+		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+	</div>
+    <div id="new_account" style = "display: none">
+    	<h1>Create New Account</h1>
+	    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
+
+		<div style="margin-bottom: 10px;">
+				<label for="username">Enter new username: </label>
+				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+		<!--Span id username-error goes here-->
+				  
+		</div>
+		<div style="margin-bottom: 10px;">
+			<label for="password">Enter new password: </label>					
+			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+		<!--Span id password-error goes here-->
+				  
+			</div>
+			
+		<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
+
+									<!--Button to return to login from sign up page-->
+		<button id ="back-to-login">Login</button>
+		
+	    </body>	
     </div>
+	<div id="login">
+		<h1>Login</h1> 				<!--before create new account-->
+									<!--Login screen logo DONE-->
+		
+									<!-- username login box-->
+		<div style="margin-bottom: 10px;">
+		<label for = "login-username">Username: </label>
+		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+		</div>
+									<!-- password login box-->
+		<div style="margin-bottom: 10px;">
+		<label for = "login-password">Password: </label>
+		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+		</div>
+									<!-- submit button-->
+		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
+
+		 							<!--Show signup screen-->
+		 <button id = "show-signup">Sign Up</button>
+
+		 <script>
+									// (On Click) Sign up screen appear, login disappear
+			document.getElementById("show-signup").onclick = function() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("new_account").style.display = "block";
+                  };
+
+           							// (On Click) Login screen appear, sign up disappear
+            document.getElementById("back-to-login").onclick = function() {
+            document.getElementById("new_account").style.display = "none";
+            document.getElementById("login").style.display = "block";
+             	};
+			
+			//Event Lister for register button
+			document.getElementById("register-btn").onclick = function(){
+				const username = document.getElementById("username").value; //username from signup form
+				const password = document.getElementById("password").value; //password from signup form
+				
+				//Hide error messages by default
+				document.getElementById("username-error").style.display = "none";
+				document.getElementById("password-error").style.display = "none";
+
+
+				let valid = true;
+				if(username.length < 3){
+					document.getElementById("username-error").style.display = "inline";
+					valid = false;
+				}
+				if(password.length < 5){
+					document.getElementById("password-error").style.display = "inline";
+					valid = false;
+				}
+
+				if(!username || !password){
+					alert("Invalid username and/or password.");
+					return;
+				}
+				if(valid == false){
+					return;
+				}
+				const signupData = { 
+					//Data into JSON object
+					type: "signup", 
+					username : username, 
+					password:password
+				};
+			//Send data as JSON string JSON.stringify
+			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+			}
+
+			//Event handler for login button
+			document.getElementById("login-btn").onclick = function(){
+				const username = document.getElementById("login-username").value; //username from signup form
+				const password = document.getElementById("login-password").value; //password from signup form
+				
+				// More Data Validation can go here
+				if(!login-username || !login-password){
+					alert("Invalid username and/or password.");
+					return;
+				}
+				const loginData = { //Data into JSON object
+					type: "login", 
+					username : login-username, 
+					password:login-password
+				};
+			//Send data as JSON string JSON.stringify			
+			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+
+			}
+
+		 </script>
+		
+	</div>
     <div id="join_game">
-    join game
+        <div class="lobby_lists_container" > 
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p>
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol id="lobby_list_items">
+                    <!-- Dynamically Created Elements -->
+        
+                    <!-- EXAMPLE:
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li> -->
+                </ol>
+            </div>
+        
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
+        </div>
     </div>
     <div id="game_display">
     game display
     </div>
-    <div id="summary">
-	summary
-    </div>
+	<div class="summary">
+		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+		<!-- visibility hidden -->
+		<div id="summary-leaderboard" style="display: none;">
+			<h1>Leaderboard</h1>
+			<table id="summary-table">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Elo</th>
+						<th>Games Won</th>
+						<th>Games Lost</th>
+						<th>Total Number of Games</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- These data will be filled with JSON through a JS script -->
+				</tbody>
+			</table>
+			<!--- <p class= "caption"> Top 10 players.</p> -->
+			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+			<script src="./summary/summary.js"></script>
+			<script>
+				// Temporary functions to show/hide the leaderboard until page manager can take over
+				function summaryShow() {
+					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+					renderLeaderboard();
+				}
+				
+				function summaryHide() {
+					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				}
+			</script>
+		</div>
+	</div>
+
     <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
       <label for="tbox">Received</label>
@@ -29,7 +216,6 @@
     // or until the user decides to go to another page.
     // this requires everything to load from this page.
 
-   
     var connection = null;
 
     var serverUrl;
@@ -45,11 +231,35 @@
     }
 
     connection.onmessage = function (evt) {
-        var msg;
-        msg = evt.data;
-
+        let msg = evt.data; //extract data from websocket response
         console.log("Message received: " + msg);
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML;
+		let jsonMsg = JSON.parse(msg); //convert data to JSON
+		//Extracts the response identifier from the response, so we can determine whose code it belongs to
+		//See ./INTERFACES/client-server-docs.md for details
+		let responseID = Object.keys(jsonMsg)[0]; 
+		switch ( responseID )
+		{
+			// Account Responses
+			
+			// Game Responses
+
+			// Summary Responses
+			case "summaryTopTenData":{
+				console.log("Received summaryTopTenData!");
+				//ommits the responseID and only sends needed values to loadData
+				loadData(jsonMsg[responseID]); 
+				break;
+			}
+			case "summaryUserJson":{
+				console.log("Received summaryUserJson!");
+				break;
+			}
+			default:{
+				console.log("Received unexpected responseID! Got: \n"+responseID);
+			}
+		}
+
+        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -65,22 +275,34 @@
         console.log(JSON.stringify(U))
     }
 
-	function summary(/*void*/)
-	{
-		/*
-		 * This function requests a player-json-object from pageMrg for the current player as well as the top 10 ranked players 
-		 * (See ./INTERFACES/player-json-schema.md) via methods `retrieveUserJson` and `retrieveTopTenJson`.
-		 * This data is then written to the html table in the summary div
-		 * 
-		 * TODO: Need to get uuid of current session to call `retrieveUserJson`
-		 */
+	function summary(/*void*/) {
+    
+		/* DEPRECATED : Code now resides in ./summary.js */
 		
-		// playerData = retreiveUserJson();
+		/*
+		* Fetches and displays player ranking data in the summary table.
+		*
+		* This function retrieves JSON data for:
+		* - The current player, identified via a session UUID.
+		* - The top 10 ranked players.
+		*
+		* The data is retrieved using:
+		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
+		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+		*
+		* The retrieved data is then written to the HTML table inside the summary div.
+		*
+		* TODO:
+		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+		* - Handle potential errors when fetching data.
+		* - Ensure proper table structure for displaying the data.
+		*/
+		
+		// playerData = retrieveUserJson();
 		// globalData = retrieveTopTenJson();
 
-		// Write top ten to table
-		// write user to table
-		return;
-
-	}
+    // Write top ten to table
+    // Write user to table
+    return;
+}
 </script>

@@ -1,5 +1,9 @@
 package uta.cse3310.Bot.BotII;
 
+import uta.cse3310.GameState;
+import uta.cse3310.Bot.Bot;
+import uta.cse3310.GameManager.Game;
+
 public class BotII extends Bot {
     public void makeValidMove() {
         // TODO: Logic to choose and make a legal move
@@ -37,12 +41,31 @@ public class BotII extends Bot {
         // Second: A King comes into play?
         // Late: A select # of pieces left on the board?
     }
-      public void defendPieces() {
-        // TODO: Prioritize defending own pieces over offense
-       // TODO: Try to block opponent from advancing or jumping
-    }
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
+    }
+     public boolean isPieceCaptured(int pieceId) {
+        // TODO: Check if a piece has been captured
+        return false;
+    }
+    public void protectBackLine() {
+        // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
+    }
+
+    @Override
+    public boolean makeMove(GameState gs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
+    @Override
+    public boolean updateBoard(GameState gs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
+    }
+    @Override
+    public boolean startGame(Game g) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'startGame'");
     }
 
 }
