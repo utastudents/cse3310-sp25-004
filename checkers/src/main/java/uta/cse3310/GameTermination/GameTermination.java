@@ -15,6 +15,8 @@ public class GameTermination {
         public void saveResults(Game player1, Game player2){
 
         }
+        //    public GameResult evaluate(GameState gameState) {
+
 }
         
 
