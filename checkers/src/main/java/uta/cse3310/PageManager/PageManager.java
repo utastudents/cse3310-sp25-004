@@ -15,6 +15,7 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PairUp.Player;
 
 
 import com.google.gson.Gson;
@@ -102,7 +103,7 @@ public class PageManager {
 
         // general identification of JSON
         responseJson.addProperty("responseID", "getActivePlayers");
-        responseJson.addProperty("WhoAmI", Id);
+        responseJson.addProperty("MyClientID", Id);
         responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
 
@@ -117,11 +118,11 @@ public class PageManager {
 
             HumanPlayer player = activePlayers.get(key);
             playerData.addProperty("ClientID", key);
-            playerData.addProperty("Username", player.getUsername());
+            playerData.addProperty("username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
-            playerData.addProperty("state", player.getStatus().toString());
+            playerData.addProperty("status", player.getStatus().toString());
 
 
             playersArray.add(playerData);
@@ -141,7 +142,7 @@ public class PageManager {
         /* JSON STRUCTURE
     {
   "responseID": "getActivePlayers",
-  "WhoAmI": 123,
+  "MyClientID": 123,
   "activePlayers": [
         {
         "ClientID": 1,
@@ -149,13 +150,15 @@ public class PageManager {
         "elo": 1500,
         "gamesWon": 10,
         "gamesLost": 5
+        "status": "ONLINE"
         },
         {
-        "ID": 2,
+        "ClientID": 2,
         "Username": "player2",
         "elo": 1450,
         "gamesWon": 8,
         "gamesLost": 7
+        "status": "IN_GAME"
         }
         ]
     } */
@@ -172,12 +175,13 @@ public class PageManager {
 
     //      general identification of JSON
         responseJson.addProperty("responseID", "joinQueue");
-        responseJson.addProperty("WhoAmI", Id);
+        responseJson.addProperty("MyClientID", Id);
 
         // State whether the adding to queue was a success
         if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
             responseJson.addProperty("inQueue", true);
+            activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
         }
         else
         {
@@ -190,6 +194,21 @@ public class PageManager {
         userEventReply.recipients.add(Id);
 
         return userEventReply;
+
+        //Successful
+        // {
+        //     "responseID": "joinQueue",
+        //     "MyClientID": 123,
+        //     "inQueue": true
+        // }
+
+        // Unsuccessful
+        // {
+        //     "responseID": "joinQueue",
+        //     "MyClientID": 123,
+        //     "inQueue": false
+        // }
+        
 
      }
 
