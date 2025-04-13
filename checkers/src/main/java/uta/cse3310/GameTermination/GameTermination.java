@@ -22,7 +22,21 @@ public class GameTermination {
         // boolean p1CanMove = gameState.hasValidMoves("P1");
         // boolean p2CanMove = gameState.hasValidMoves("P2");
 
+        /**i
+         * f (!p1HasPieces || !p1CanMove) {
+            if (!p2HasPieces || !p2CanMove) {
+                return GameResult.DRAW;
+            }
+            return GameResult.PLAYER_TWO_WINS;
+        }
 
+        if (!p2HasPieces || !p2CanMove) {
+            return GameResult.PLAYER_ONE_WINS;
+        }
+
+        return GameResult.IN_PROGRESS;
+         }
+        } */
 
 }
         
