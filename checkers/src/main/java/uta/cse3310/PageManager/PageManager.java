@@ -45,9 +45,10 @@ public class PageManager {
         pu = new PairUp(db);
     }
 
-    //gets top10 players are first 10 and 11th is the current player
-    public UserEventReply retrieveLeaderboardJson(JsonObject inputJson, int id) {
+    //gets top10 playersfirst , 11th is the current player
+    public UserEventReply retrieveLeaderboardJson(JsonObject jsonObj, int id) {
         UserEventReply userEventReply = new UserEventReply();
+
     
         // Outer JSON with response ID
         JsonObject responseJson = new JsonObject();
@@ -508,6 +509,33 @@ public class PageManager {
         return null;
     }
 
+     //removes player who left from queue, active players hashmap, and notifies clients.
+     //Called from app.java OnCLose();
+     public UserEventReply userLeave(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            activePlayers.remove(Id); //rm from active players 
+            boolean removed = pu.removeFromQueue(player); //rm from queue
+    
+            JsonObject msg = new JsonObject();
+            msg.addProperty("action", "playerLeft");
+            msg.addProperty("playerId", Id);
+            msg.addProperty("username", player.getUsername());
+    
+            UserEventReply reply = new UserEventReply();
+            reply.replyObj = msg;
+            reply.recipients = new ArrayList<>();
+    
+            for (Integer otherId : activePlayers.keySet()) {
+                reply.recipients.add(otherId);
+            }
+    
+            return reply;
+        } else {
+            return null;
+        }
+    }
+
 
     // Method to transition between pages
    // Transition all given clients to a new game state and notify them
@@ -546,38 +574,6 @@ public class PageManager {
     public void resetClient(int clientId) {
         clientStates.remove(clientId);
     }
-
-    //called frrom app.java to remove player from activePlayers and puQueue
-    public void userLeave(int Id) {
-        HumanPlayer player = activePlayers.get(Id);
-        if (player != null) {
-            activePlayers.remove(Id);
-            //boolean removed = pu.removeFromQueue(player);
-
-            // JsonObject msg = new JsonObject();
-            // msg.addProperty("action", "playerLeft");
-            // msg.addProperty("playerId", Id);
-            // msg.addProperty("username", player.getUsername());
-
-            //  // Create reply
-            // UserEventReply reply = new UserEventReply();
-            // reply.replyObj = msg;
-            // reply.recipients = new ArrayList<>();
-
-            //  // notify ALL other clients??????
-            // for (Integer otherId : activePlayers.keySet()) {
-            // reply.recipients.add(otherId);
-            /////////////////////////////////////////
-            //}
-
-        } else {
-            System.out.println("Player ID " + Id + " not found in activePlayers.");
-        }
-    }
-    
-    
-    
+ 
    
 }
-
-
