@@ -87,6 +87,6 @@ tbody tr:hover {
 }
 
 .button:hover{
-    background-color: grey;
+    background-color: rgb(54, 17, 204);
     color: white;
 }
