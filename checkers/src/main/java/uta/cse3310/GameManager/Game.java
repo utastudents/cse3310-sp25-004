@@ -5,8 +5,8 @@ import uta.cse3310.PairUp.Player;
 import uta.cse3310.GamePlay.GamePlay;
 
 public class Game{
-   private int player1;  // ID for player 1
-   private int player2;  // ID for player 2
+   public int player1;  // ID for player 1
+   public int player2;  // ID for player 2
    private int gameID;   // Unique game identifier
    public int playerID;
    // private GamePlay board;     *decide later how to use when gameplay is more fleshed out 
