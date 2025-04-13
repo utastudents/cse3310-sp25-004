@@ -115,24 +115,28 @@ public class App extends WebSocketServer {
 
 
   @Override
-    public void onClose(WebSocket conn, int code, String reason, boolean remote) { 
-    System.out.println(conn + " has closed");
-
-    //get player Id tied to connection
-    Integer Id = con2id.get(conn);
-
-    if (Id != null) {
-        id2con.remove(Id);
-        con2id.remove(conn);
-
-        PM.userLeave(Id); //deletes player from queue, and hashmap and notify other clients
-
-        System.out.println("Removed player " + Id);
-    } else {
-        System.out.println("No associated player found for this connection.");
-    }
-}
-
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+      System.out.println(conn + " has closed");
+  
+      Integer Id = con2id.get(conn);
+  
+      if (Id != null) {
+          id2con.remove(Id);
+          con2id.remove(conn);
+  
+          
+          JsonObject Msg = new JsonObject();
+          Msg.addProperty("action", "userLeft");  
+          Msg.addProperty("playerId", Id);
+  
+          onMessage(conn, Msg.toString());
+  
+          System.out.println("Removed player " + Id);
+      } else {
+          System.out.println("No associated player found for this connection.");
+      }
+  }
+  
   
   
   @Override
@@ -191,6 +195,12 @@ public class App extends WebSocketServer {
         break;
       case "backToHome":
         Reply = PM.backToHome(Id);
+        break;
+      case "summaryData":
+        Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
+        break;
+      case "userLeft":
+        Reply = PM.userLeave(Id);
         break;
       default:
         System.out.println("Unknown action: " + action);
