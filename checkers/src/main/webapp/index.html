@@ -40,21 +40,23 @@
 		<div style="margin-bottom: 10px;">
 			<label for = "login-username">Username: </label>
 			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
-			<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
+			<span id="login-username-error" style="color:red; display:none">Username not found. Please try again</span>
 		</div>
 									<!-- password login box-->
 		<div style="margin-bottom: 10px;">
 			<label for = "login-password">Password: </label>
-			<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
-			<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
+			<input type ="password" style="border-radius: 100px;" placeholder="Enter Password" >
+			<span id="login-password-error" style="color:red; display:none">Incorrect password. Please try again</span>
 		</div>
 									<!-- submit button-->
-		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
+		 <button id = "login-btn" type = "submit" style="display: block; margin: 3 auto;">Submit</button>
 
 		 							<!--Show signup screen-->
 		 <button id = "show-signup">Sign Up</button>
 
 		 <script>
+			//connect to server here and send msg to console
+					
 									// (On Click) Sign up screen appear, login disappear
 			document.getElementById("show-signup").onclick = function() {
             document.getElementById("login").style.display = "none";
@@ -91,17 +93,16 @@
 					alert("Invalid username and/or password.");
 					return;
 				}
-				if(valid == false){
-					return;
-				}
+				if(!valid) return;
+
 				const signupData = { 
 					//Data into JSON object
 					type: "signup", 
-					username : username, 
-					password:password
+					UserName : username, 
+					Password:password
 				};
 			//Send data as JSON string JSON.stringify
-			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+			//socket.send(signupData)
 			}
 
 			//Event handler for login button
@@ -109,22 +110,26 @@
 				const loginUsername = document.getElementById("login-username").value; //username from signup form
 				const loginPassword = document.getElementById("login-password").value; //password from signup form
 
-				document.getElementById("username-error").style.display = "none";
-				document.getElementById("password-error").style.display = "none";
+				document.getElementById("login-username-error").style.display = "none";
+				document.getElementById("login-password-error").style.display = "none";
 				
 				// More Data Validation can go here
-				if(!loginUsername || !loginPassword){
+				if(!loginUsername || !loginPassword){ //Username or Password not filled in
 					alert("Invalid username and/or password.");
 					return;
 				}
+				/*if(!correctLogin){
+				document.getElelmentbyId("login-password-error").style.display = "inline"}
+				if(!userNotFound){
+				documenet.getElementbyID("login-username-error").style.display = "inline}""
+				*/
 				const loginData = { //Data into JSON object
 					type: "login", 
 					UserName : loginUsername, 
 					Password:loginPassword
 				};
-			//Send data as JSON string JSON.stringify			
-			//Placeholder until datahandling added	PageManager.PageManager.handleLogin(JSON.stringify(loginData));
-
+			//Send data as JSON string JSON.stringify
+			//socket.send(loginData)		
 			}
 
 		 </script>

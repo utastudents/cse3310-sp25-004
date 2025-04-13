@@ -143,10 +143,11 @@ public class PageManager {
     {
   "responseID": "getActivePlayers",
   "MyClientID": 123,
+  "playersInQueue": 3,
   "activePlayers": [
         {
         "ClientID": 1,
-        "Username": "player1",
+        "username": "player1",
         "elo": 1500,
         "gamesWon": 10,
         "gamesLost": 5
@@ -154,7 +155,7 @@ public class PageManager {
         },
         {
         "ClientID": 2,
-        "Username": "player2",
+        "username": "player2",
         "elo": 1450,
         "gamesWon": 8,
         "gamesLost": 7
@@ -226,10 +227,11 @@ public class PageManager {
         // Send the players info to the opponent
         responseJson.addProperty("playerClientId", Id);
         HumanPlayer player = activePlayers.get(Id);
-        responseJson.addProperty("Username", player.getUsername());
+        responseJson.addProperty("username", player.getUsername());
         responseJson.addProperty("elo", player.getELO());
         responseJson.addProperty("gamesWon", player.getWins());
         responseJson.addProperty("gamesLost", player.getLosses());
+        responseJson.addProperty("status", player.getStatus().toString());
 
         userEventReply.replyObj = responseJson;
 
@@ -237,6 +239,16 @@ public class PageManager {
         userEventReply.recipients.add(opponentClientId);
 
         return userEventReply;
+
+
+        // {
+        //     "ClientID": 1,
+        //     "username": "player1",
+        //     "elo": 1500,
+        //     "gamesWon": 10,
+        //     "gamesLost": 5,
+        //     "status": "ONLINE"
+        // }
     }
 
     public UserEventReply challengePlayerReply(JsonObject jsonObj, int Id)
@@ -260,6 +272,8 @@ public class PageManager {
             if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
             {
                 responseJson.addProperty("inQueue", true);
+                activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+                activePlayers.get(opponentClientId).setStatus(Player.STATUS.IN_QUEUE);
             }
             else
             {
@@ -282,6 +296,24 @@ public class PageManager {
 
 
         return userEventReply;
+
+        //Challenge Accepted and queue success
+        // {
+        //     "responseID": "challengePlayerReply",
+        //     "inQueue": true
+        // }
+
+        //Challenge Accepted and queue unsuccessful
+        // {
+        //     "responseID": "challengePlayerReply",
+        //     "inQueue": false
+        // }
+
+        //Challenge unsuccessful
+        // {
+        //     "responseID": "challengePlayerReply",
+        //     "accepted": false
+        // }
     }
 
     public UserEventReply challengeBot(JsonObject jsonObj, int Id)
@@ -307,6 +339,7 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
+            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
         }
         else
         {
@@ -319,6 +352,18 @@ public class PageManager {
         userEventReply.recipients.add(Id);
 
         return userEventReply;
+
+        //Successful
+        // {
+        //     "responseID": "challengeBot",
+        //     "inQueue": true
+        // }
+
+        //Unsuccessful
+        // {
+        //     "responseID": "challengeBot",
+        //     "inQueue": false
+        // }
 
     }
 
@@ -338,6 +383,7 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
         }
         else
         {
@@ -350,6 +396,18 @@ public class PageManager {
         userEventReply.recipients.add(Id);
 
         return userEventReply;
+
+        //Successful
+        // {
+        //     "responseID": "BotvsBot",
+        //     "inQueue": true
+        // }
+
+        //Unsuccessful
+        // {
+        //     "responseID": "BotvsBot",
+        //     "inQueue": false
+        // }
     }
 
     /*TODO
