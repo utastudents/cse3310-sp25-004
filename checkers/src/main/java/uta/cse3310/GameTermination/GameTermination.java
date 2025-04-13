@@ -19,6 +19,10 @@ public class GameTermination {
         // boolean p1HasPieces = gameState.hasPieces("P1");
         // boolean p2HasPieces = gameState.hasPieces("P2");
 
+        // boolean p1CanMove = gameState.hasValidMoves("P1");
+        // boolean p2CanMove = gameState.hasValidMoves("P2");
+
+
 
 }
         
