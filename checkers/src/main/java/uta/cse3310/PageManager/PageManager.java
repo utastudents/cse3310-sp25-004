@@ -339,6 +339,7 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
+            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
         }
         else
         {
@@ -351,6 +352,18 @@ public class PageManager {
         userEventReply.recipients.add(Id);
 
         return userEventReply;
+
+        //Successful
+        // {
+        //     "responseID": "challengeBot",
+        //     "inQueue": true
+        // }
+
+        //Unsuccessful
+        // {
+        //     "responseID": "challengeBot",
+        //     "inQueue": false
+        // }
 
     }
 
@@ -370,6 +383,7 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
         }
         else
         {
@@ -382,6 +396,18 @@ public class PageManager {
         userEventReply.recipients.add(Id);
 
         return userEventReply;
+
+        //Successful
+        // {
+        //     "responseID": "BotvsBot",
+        //     "inQueue": true
+        // }
+
+        //Unsuccessful
+        // {
+        //     "responseID": "BotvsBot",
+        //     "inQueue": false
+        // }
     }
 
     /*TODO
