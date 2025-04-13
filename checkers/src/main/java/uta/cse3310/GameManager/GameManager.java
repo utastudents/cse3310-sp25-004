@@ -1,6 +1,6 @@
 package uta.cse3310.GameManager;
 
-// import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class GameManager {
     // GamePlay gp;
-    private static final int MAX_GAMES = 10;// essentially a global variable we can change later on
+    private static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
     GameTermination gt;

@@ -13,12 +13,14 @@
 		<div style="margin-bottom: 10px;">
 				<label for="username">Enter new username: </label>
 				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+				<span id="username-error" style="display: none; color: red;">Invalid username</span>
 		<!--Span id username-error goes here-->
 				  
 		</div>
 		<div style="margin-bottom: 10px;">
 			<label for="password">Enter new password: </label>					
 			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+			<span id="password-error" style="display: none; color: red;">Invalid password</span>
 		<!--Span id password-error goes here-->
 				  
 			</div>
@@ -36,13 +38,15 @@
 		
 									<!-- username login box-->
 		<div style="margin-bottom: 10px;">
-		<label for = "login-username">Username: </label>
-		<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<label for = "login-username">Username: </label>
+			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
 		</div>
 									<!-- password login box-->
 		<div style="margin-bottom: 10px;">
-		<label for = "login-password">Password: </label>
-		<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+			<label for = "login-password">Password: </label>
+			<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
+			<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
 		</div>
 									<!-- submit button-->
 		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
@@ -102,21 +106,24 @@
 
 			//Event handler for login button
 			document.getElementById("login-btn").onclick = function(){
-				const username = document.getElementById("login-username").value; //username from signup form
-				const password = document.getElementById("login-password").value; //password from signup form
+				const loginUsername = document.getElementById("login-username").value; //username from signup form
+				const loginPassword = document.getElementById("login-password").value; //password from signup form
+
+				document.getElementById("username-error").style.display = "none";
+				document.getElementById("password-error").style.display = "none";
 				
 				// More Data Validation can go here
-				if(!login-username || !login-password){
+				if(!loginUsername || !loginPassword){
 					alert("Invalid username and/or password.");
 					return;
 				}
 				const loginData = { //Data into JSON object
 					type: "login", 
-					username : login-username, 
-					password:login-password
+					UserName : loginUsername, 
+					Password:loginPassword
 				};
 			//Send data as JSON string JSON.stringify			
-			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
+			//Placeholder until datahandling added	PageManager.PageManager.handleLogin(JSON.stringify(loginData));
 
 			}
 

@@ -53,11 +53,13 @@ public class DB
     }
     */
     /* if a username is new it will add new player */
-    public void addPlayer(String username, String password) 
+
+    // testing if we need to return a boolean or void
+    public boolean addPlayer(String username, String password) 
     {
         if (getPlayerByUsername(username) != null) 
         {
-            return; /*if username exists it will return */
+            return false; /*if username exists it will return */    //Temporary, please fix when you can
         }
         
         /* 
@@ -67,7 +69,9 @@ public class DB
 
         HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
         players.add(newPlayer);
+        return true; // successfully added
         */
+        return false; //Temporary, please fix when you can
     }
 
     /* gets a player using playerId, and return if the player is found */
@@ -153,6 +157,17 @@ public class DB
         }
         return false;
     }
-    
+    /* This method will returns top 10 players ordered with their ELO */	
+    public HumanPlayer[] getTop10PlayersByElo()
+    {
+	return new HumanPlayer[0];
+    }
+
+    // TODO this method will return the player using username and password
+    public HumanPlayer getPlayer(String username, String password)
+    {
+        // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+        return null;  /* null when Player not found */
+    }
 
 }

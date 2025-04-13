@@ -10,11 +10,13 @@ public class Board
 {
     //Variable for 2D array board
 
-	public Checker checkerBoard [][] = new Checker[8][8]; // 2D array of checkers on the board
+	public Checker[][] checkerBoard; // 2D array of checkers on the board
 	//NOTE: A NULL value in the array means that the square is empty.
+
 
 	public Board()
 	{
+		this.checkerBoard = new Checker[8][8];
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
@@ -74,37 +76,21 @@ public class Board
 			}
 		}
 
-	}	
+	}
 
-
-	/*
-	 * checks if a move is valid
-	 * piece is the selected checker piece
-	 * dest is selected square
-	 */
-	public boolean isValidMove(Checker piece, Cord dest) 
+	private void kingMe(Checker piece)
 	{
-		boolean isValid = false; //base case
-		//Check if the piece becomes a king
-
-		//CODE
-		
-		return isValid;
+		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
+		{
+			piece.setKing(true);
+		}
+		else if(piece.getColor() == Color.RED && piece.getCord().getY() == 0)
+		{
+			piece.setKing(true);
+		}
 	}
 	
-	/*
-	 * called by isValidMove to check for more
-	 * possible jumps
-	 */
-	public Cord isValidJump(Checker piece, Cord dest, Cord jump) 
-	{
-		//CODE
-		
-		return jump;
-	}
-
-
-	private boolean moveForwardCheck(Checker piece, Cord dest) 
+	boolean moveForwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally forward to the destination square. 
 	// Does not check Jumps
 	{
@@ -132,7 +118,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 
-	private boolean moveBackwardCheck(Checker piece, Cord dest) 
+	boolean moveBackwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally backward to the destination square. 
 	// Does not check Jumps
 	{
@@ -160,7 +146,7 @@ public class Board
 		return false; // Should not reach. If it does something is wrong and the move is invalid
 	}
 	
-	private ArrayList<Cord> getPossibleForwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -194,7 +180,7 @@ public class Board
 	}
 	
 	//searches the jump list for the requested move
-	private int checkForwardJump(ArrayList<Cord> jumpList, Cord cord)
+	int checkForwardJump(ArrayList<Cord> jumpList, Cord cord)
 	{
 		//base case for our check
 		//checks if our cord was found
@@ -227,7 +213,7 @@ public class Board
 	}
 
 	//Same as getPossibleForwardJump but backwards
-	private ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -255,14 +241,78 @@ public class Board
 		}
 		return jumpList;
 	}
+
+	int checkBackwardJump(ArrayList<Cord> jumpList, Cord cord)
+	{
+		//base case for our check
+		//checks if our cord was found
+		boolean check = false;
+		//iterator
+		int i;
+		
+		//iterates over the jump list
+		for(i = 0; i<jumpList.size(); i++)
+		{
+			//checks if cords are equal
+			//might need a separate equals methods to actually compare the x-y positions
+			if(jumpList.get(i).equals(cord))
+			{
+				check = true;
+				break;
+			}
+		}
+		
+		//if true return index of cord in list
+		//else return -1, same as null
+		if(check)
+		{
+			return i;
+		}
+		else
+		{
+			return -1;
+		}
+	}
 	
 	//deletes a checker at a given cord
 	//can be changed to have x and y as the parameters
-	private void deleteChecker(Cord cord)
+	void deleteChecker(Cord cord)
 	{
 		checkerBoard[cord.getY()][cord.getX()] = null;
 	}
+
+	// updatePosition updates the chosen checker piece with the chosen destination
+	public void updatePosition(Checker piece, Cord dest)
+	{
+		int newX = dest.getX();
+		int newY = dest.getY();
+		piece.setCord(newX, newY);
+		checkerBoard[newY][newX] = piece;
+	}
 	
+	void removeJumpedChecker(Checker piece, Cord dest)
+	{
+		int destX = dest.getX();
+		int destY = dest.getY();
+
+		if (checkerBoard[destX-2][destY-2] == piece)
+		{
+			deleteChecker(new Cord(destX-1, destY-1));
+		}
+		else if (checkerBoard[destX+2][destY-2] == piece)
+		{
+			deleteChecker(new Cord(destX+1, destY-1));
+		}
+		else if (checkerBoard[destX-2][destY+2] == piece)
+		{
+			deleteChecker(new Cord(destX-1, destY+1));
+		}
+		else if (checkerBoard[destX+2][destY+2] == piece)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+		}
+	}
+
 	public static int moveValidation(Checker piece, Cord dest)
 	// The main logic for movement. 
 	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
