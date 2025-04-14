@@ -1,10 +1,10 @@
 package uta.cse3310.GameManager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * These are the Unit tests for the Game class to ensure proper behavior of constructors, getters, and setters related to player IDs and game ID.
@@ -25,6 +25,7 @@ public class GameTest {
         public boolean updateBoard(GameState gs) {
             return true;
         }
+    }
 
     /**
      * Testing that the constructor correctly sets the game ID and player1 ID.
