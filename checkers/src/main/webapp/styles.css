@@ -19,7 +19,6 @@ body {
     padding: 25px;
     text-align: center;
     box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
-    cursor: pointer;
 }
 
 .signup-box img {
@@ -30,12 +29,13 @@ body {
 
 .signup-box input[type="text"],
 .signup-box input[type="password"] {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     width: 75%;
     padding: 5px;
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
+    padding-left: 14%;
 }
 
 input:focus {
@@ -79,6 +79,20 @@ input::placeholder {
 
 .signup-text a:hover {
     color: #000; 
+}
+
+/*ICON SIGNUP*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
 }
 
 /*LOGIN*/
