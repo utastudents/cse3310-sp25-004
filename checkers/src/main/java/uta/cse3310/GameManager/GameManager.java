@@ -8,7 +8,6 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.PageManager.GameMove;
-//import uta.cse3310.GamePlay.Board;
 
 import java.util.ArrayList;
 
@@ -80,21 +79,15 @@ public class GameManager {
         // remove here
     }
 
-    public GameUpdate processMove(GameMove move) {
-        // call GamePlay Board method to validate move ? and return GameUpdate object
-        // with new position and player ID
+    // public GameUpdate processMove(GameMove move) {
+    // call GamePlay Board method to validate move ? and return GameUpdate object
+    // with new position and player ID
 
-        // Making sure validation is called and if not then return -1
-        // if(!moveValidation(move)){
+    // Making new gameUpdate object
+    // GameUpdate newStats = new GameUpdate(true," ", " ", false, true, " " );
 
-        return null;
+    // return;
 
-        // }
-        // Making new gameUpdate object
-        // GameUpdate newStats = new GameUpdate(int playerId);
-
-        // return newStats;
-
-    }
+    // }
 
 }
