@@ -57,6 +57,7 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 System.out.println("Game created at index: " + i);
+                game.setGameActive(false);
                 return true;
             }
         }
