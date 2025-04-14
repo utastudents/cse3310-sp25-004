@@ -74,7 +74,17 @@ public class PairUp {
      * @param c - the player who accepted the challenge
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-    public boolean challenge(Player p, Player c) {return false;}
+    public boolean challenge(Player p, Player c) {
+        return challenge(p, c, null);
+    }
+    /**
+     * Add a player v player challenge to the queue - after it has been accepted
+     * @param p - the player who requested the challenge
+     * @param c - the player who accepted the challenge
+     * @param spectator - can be null. HumanPlayer who will be the spectator
+     * @return - false if the challengers were not added to the queue, true otherwise
+     */
+    public boolean challenge(Player p, Player c, HumanPlayer spectator) {return false;}
     /**
      * Add a player v bot challenge to the queue
      * @param p - The player who requested the challenge
@@ -83,7 +93,7 @@ public class PairUp {
      */
     public boolean challengeBot(Player p, boolean botI) {
         //return challenge(p, botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return challenge(p, botI ? new BotI() : new BotII());
+        return challenge(p, botI ? new BotI() : new BotII(), null);
     }
     /**
      * Add a bot v bot challenge to the queue
@@ -93,7 +103,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
+        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII(), spectator); //just calls challenge with a bot
     }
 
     /**
