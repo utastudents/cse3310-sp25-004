@@ -33,7 +33,7 @@ public class PairUp {
 
     private void pairUp() {
         if (playerQueue.size() == 0) return; //If there are no players in the queue, return
-        //if (gm.numGamesAvailable() <= 0) {return;}
+        if (gm.getNumOfGames() <= 0) {return;}
 
         //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
         for (int c=0; c<playerQueue.size(); c++) {
