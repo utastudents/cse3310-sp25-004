@@ -5,13 +5,13 @@
     </head>
 		
     <!--SIGNUP GOES HERE-->
-    <div class="signup-box" display="none">
-      <form action="signup-info">
+    <div class="signup-box" display = "none">
+      <form action="login-info">
       <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-      <input type="text" name="usr" placeholder="USERNAME" required>
-      <input type="password" name="psw" placeholder="PASSWORD" required>
-      <input type="password" name="psw" placeholder="CONFIRM PASSWORD" required>
-      <button type="submit">SIGN UP</button>
+      <input type="text" id = "signup-username" name="usr" placeholder="USERNAME">
+      <input type="password" id = "signup-password" name="psw" placeholder="PASSWORD">
+      <input type="password" id = "signup_confirm_password" name="psw" placeholder="CONFIRM PASSWORD">
+      <button id = "signup button" type="submit">SIGN UP</button>
       </form>
   	</div>
 
@@ -23,16 +23,16 @@
 	<div class="login-box"> <!--NEED TO CENTER-->
   		<form action="login-info">
  		<img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-  		<input type="text" name="usr" placeholder="USERNAME" required>
-  		<input type="password" name="psw" placeholder="PASSWORD" required>
-  		<button type="submit">LOGIN</button>
-  		<p class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
+  		<input type="text" id = "login-username" name="usr" placeholder="USERNAME">
+  		<input type="password" id = "login-password" name="psw" placeholder="PASSWORD">
+  		<button id = "login-btn" type="submit">LOGIN</button>
+  		<p id = "show-signup" class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
   		</p>
   		</form>
 
 		 <script>
 			//connect to server here and send msg to console
-			/*let socket = new WebSocket("ws://localhost9080);
+			/*let socket = new WebSocket("ws://localhost9080)
 			
 			socket.onopen = function(event){
 			console.log = "Websocket connected"
@@ -60,8 +60,7 @@
 			socket.onclose = function(event){
 				console.log("Websocket Closed");
 			}
-
-			*/
+				*/
 					
 									// (On Click) Sign up screen appear, login disappear
 			document.getElementById("show-signup").onclick = function() {
