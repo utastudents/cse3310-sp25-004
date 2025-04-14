@@ -8,7 +8,7 @@
     <!--SIGNUP GOES HERE-->
     <div id="new_account" class="signup-box" style = "display: none;">
       <form action="login-info">
-      <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
+      <img src="final_logo.png" alt="CHECKERS LOGO">
 	  <div class="input-icon">
 		<i class="fas fa-user"></i>
 		<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
@@ -73,9 +73,19 @@
 
 			socket.onmessage = function(event){
 			const data = JSON.parse(event.data);
+			console.log("Message from server: ", data);
 			if(data.responseID === "login"){
-				if(data.msg === "Invalid username or password."){
-					alert("Login Failed: " + data.msg)
+				document.elementById("login-username-error").style.display = "none";
+				document.elementById("login-password-error").style.display = "none";
+
+				if(data.msg === "Invalid password."){
+					document.elementById("login-password-error").style.display = "inline";
+				}
+				if(data.msg === "Username does not exist."){
+					document.elementById("login-password-error").style.display = "inline";
+				}
+				else{
+					alert("Invalid username or password.");
 				}
 			}
 			else if(data.responseID === "loginSuccess"){
@@ -121,15 +131,15 @@
 
 				let valid = true;
 				if(username.length < 3){
-					document.getElementById("username-error").style.display = "block";
+					document.getElementById("username-error").style.display = "inline";
 					valid = false;
 				}
 				if(password.length < 5){
-					document.getElementById("password-error").style.display = "block";
+					document.getElementById("password-error").style.display = "inline";
 					valid = false;
 				}
 				if(password != confirmPassword){
-					document.getElementById("confirm-password-error").style.display = "block";
+					document.getElementById("confirm-password-error").style.display = "inline";
 					return;
 					valid = false;
 				}
@@ -147,6 +157,7 @@
 				};
 			//Send data as JSON string JSON.stringify
 			socket.send(JSON.stringify(signupData));
+			console.log("Signup Data sent: ", signupData)		
 			};
 			//Event handler for login button
 			document.getElementById("login-btn").onclick = function(e){
@@ -163,18 +174,14 @@
 					alert("Invalid username and/or password.");
 					return;
 				}
-				/*if(!correctLogin){
-				document.getElelmentbyId("login-password-error").style.display = "inline"}
-				if(!userNotFound){
-				documenet.getElementbyID("login-username-error").style.display = "inline}""
-				*/
 				const loginData = { //Data into JSON object
 					type: "login", 
 					UserName : loginUsername, 
 					Password:loginPassword
 				};
 			//Send data as JSON string JSON.stringify
-			socket.send(JSON.stringify(loginData))		
+			socket.send(JSON.stringify(loginData))
+			console.log("Login Data sent: ", loginData)		
 			}
 
 		 </script>
