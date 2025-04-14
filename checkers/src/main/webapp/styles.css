@@ -35,7 +35,8 @@ body {
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
-    padding-left: 14%;
+    padding-left: 30px;
+    font-size: 15px;
 }
 
 input:focus {
@@ -55,8 +56,8 @@ input::placeholder {
     font-size: 15px;
     width: 75%;
     padding: 5px;
-    margin-top: 6px;
-    border-radius: 6px;
+    margin-top: 5px;
+    border-radius: 2px;
 
 }
 
