@@ -166,38 +166,89 @@
 		
 	</div>
     <div id="join_game">
-        <div class="lobby_lists_container" > 
-            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
-            <p>Current players: 3/48</p>
-            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-                <ol id="lobby_list_items">
-                    <!-- Dynamically Created Elements -->
-        
-                    <!-- EXAMPLE:
-                    <li class="player">
-                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
-                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
-                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
-                    </li> -->
-                </ol>
-            </div>
-        
-            <button>
-                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
-                    Match Making
-                </a>
-            </button>
-            <button>
-                <a id="CURRENT_SESSION_BOT" type="button">
-                    Request Bot
-                </a>
-            </button>
-            <button>
-                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                    Watch Bot Vs Bot
-                </a></button>
-        </div>
-    </div>
+		<div class="lobby_lists_container">
+			<!-- have function to get player username and/ or ID -->
+			<h2>Have fun in the lobby :D</h2>
+			<!-- Have function to get amount of players -->
+			<h3>Current players: 3/48</h3>
+			<div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+				<ol id="lobby_list_items">
+					<!-- Dynamically Created Elements -->
+	
+					<!-- UPDATE STATUS INDICATOR (CHASE) -->
+	
+					<!-- EXAMPLE: -->
+					<li class="player">
+						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
+						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
+						<button id="btn2-UID002" onclick="">View Match</button>
+					</li>
+				</ol>
+			</div>
+	
+			<button>
+				<!-- Will always have current player information, parameter is player they want to challenge -->
+				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
+				<a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+					Match Making
+				</a>
+			</button>
+			<!-- Will send info to DB and Bots with what bot and person -->
+			<button>
+				<a id="CURRENT_SESSION_BOT" type="button">
+					Request Bot
+				</a>
+			</button>
+			<!-- request to see bots play -->
+			<button>
+				<a id="CURRENT_SESSION_BOTvsBOT" type="button">
+					Watch Bot Vs Bot
+				</a></button>
+		</div>
+		<!-- Send server who is the current player that logged in and request to see the list of active players-->
+		<script>
+			function displayJoinGame() {
+				connection.send(JSON.stringify({ type: "display_join_game", playerID: {} }))
+			}
+
+			function updateJoinGameList(data) {
+				// update to display current player
+				document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
+				//update to display number of players
+				document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
+
+				//update the player lists! - Devin part
+
+			}
+
+			function updateStatus(playerID, status) {
+				// Access the player ID
+				const playerElement = document.getElementById(playerID);
+
+				// access the status span
+				const statusElement = playerElement.querySelector('.status');
+				const challengedBtn = document.getElementById(`btn1-${playerID}`);
+
+				if (!challengedBtn) {
+					console.log("cant find button");
+				}
+				// Change the status to "free"
+				if (status == "busy") {
+					statusElement.classList.remove('free');
+					statusElement.classList.add('busy');
+
+					//change button to disabled
+					challengedBtn.disabled = true;
+				}
+				else {
+					statusElement.classList.remove('busy');
+					statusElement.classList.add('free');
+					//change button to normal
+					challengedBtn.disabled = false;
+				}
+			}
+		</script>
+	</div>
     <div id="game_display">
     game display
     </div>
