@@ -5,6 +5,7 @@ import uta.cse3310.GameManager.Game;
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
+import uta.cse3310.PageManager.PageManager;
 
 public class HumanPlayer extends Player{
 
@@ -67,6 +68,7 @@ public class HumanPlayer extends Player{
 
         // Need game board to be sent over
 
+        // PageManager.startGameNotifier(g, playerId);
         //call a static method in page manager to make UserEventReply then send it to App.java to send the info to the players
     
 
