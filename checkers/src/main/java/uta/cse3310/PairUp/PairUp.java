@@ -31,8 +31,8 @@ public class PairUp {
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
 
     private void pairUp() {
-        if (playerQueue.size() == 0) return; //If there are no players in the queue, return
-        if (gm.getNumOfGames() <= 0) {return;}
+        if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
+        if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
 
         //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
         for (int c=0; c<playerQueue.size(); c++) {
