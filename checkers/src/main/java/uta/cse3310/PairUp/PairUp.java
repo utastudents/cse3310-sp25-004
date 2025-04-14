@@ -2,7 +2,6 @@ package uta.cse3310.PairUp;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
@@ -33,7 +32,7 @@ public class PairUp {
 
     private void pairUp() {
         if (playerQueue.size() == 0) return; //If there are no players in the queue, return
-        //if (GameManager.numGamesAvailable() <= 0) {return;}
+        if (gm.getNumOfGames() <= 0) {return;}
 
         //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
         for (int c=0; c<playerQueue.size(); c++) {
@@ -46,14 +45,14 @@ public class PairUp {
                         playerQueue.remove(temp);
                         playerQueue.remove(curr);
                         numPlayersInQueue -= 2;
-                        //GameManager.createGame(curr.first, temp.first);
+                        gm.createGame(curr.first, temp.first);
                         return;
                     }
                 }
             } else {
                 playerQueue.remove(curr);//Remove it from the queue, a match has been found
                 numPlayersInQueue -= 2;
-                //GameManager.createGame(curr.first, curr.second);
+                gm.createGame(curr.first, curr.second);
                 return;
             }
             //No match
@@ -74,7 +73,17 @@ public class PairUp {
      * @param c - the player who accepted the challenge
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-    public boolean challenge(Player p, Player c) {return false;}
+    public boolean challenge(Player p, Player c) {
+        return challenge(p, c, null);
+    }
+    /**
+     * Add a player v player challenge to the queue - after it has been accepted
+     * @param p - the player who requested the challenge
+     * @param c - the player who accepted the challenge
+     * @param spectator - can be null. HumanPlayer who will be the spectator
+     * @return - false if the challengers were not added to the queue, true otherwise
+     */
+    public boolean challenge(Player p, Player c, HumanPlayer spectator) {return false;}
     /**
      * Add a player v bot challenge to the queue
      * @param p - The player who requested the challenge
@@ -83,7 +92,7 @@ public class PairUp {
      */
     public boolean challengeBot(Player p, boolean botI) {
         //return challenge(p, botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return challenge(p, botI ? new BotI() : new BotII());
+        return challenge(p, botI ? new BotI() : new BotII(), null);
     }
     /**
      * Add a bot v bot challenge to the queue
@@ -93,7 +102,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
+        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII(), spectator); //just calls challenge with a bot
     }
 
     /**
@@ -102,6 +111,22 @@ public class PairUp {
      * @return - True if the player was removed from the queue
      */
     public boolean removeFromQueue(Player p) {
+        if (p instanceof HumanPlayer) {
+            //Find player p in the queue
+            for (int c=0; c<playerQueue.size(); c++) {
+                Challenge challenge = playerQueue.get(c);
+                if (challenge.first.equals(p) || challenge.second.equals(p)) {
+                    //Found it
+                    if (challenge.hasJustOne) {
+                        numPlayersInQueue -= 1;
+                    } else {
+                        numPlayersInQueue -= 2;
+                    }
+                    playerQueue.remove(c);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

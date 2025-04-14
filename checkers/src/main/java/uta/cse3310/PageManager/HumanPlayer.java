@@ -15,7 +15,6 @@ public class HumanPlayer extends Player{
     private String salt;
     private int wins;
     private int losses;
-    private int ELO;
     private int gamesPlayed;
 
     //private socketId potentially here
@@ -106,10 +105,6 @@ public class HumanPlayer extends Player{
         return losses;
     }
 
-    public int getELO(){
-        return ELO;
-    }
-
     public int getGamesPlayed(){
         return gamesPlayed;
     }
@@ -126,10 +121,6 @@ public class HumanPlayer extends Player{
 
     public void setLosses(int losses){
         this.losses = losses;
-    }
-
-    public void setELO(int ELO){
-        this.ELO = ELO;
     }
 
     public void setGamesPlayed(int gamesPlayed){
