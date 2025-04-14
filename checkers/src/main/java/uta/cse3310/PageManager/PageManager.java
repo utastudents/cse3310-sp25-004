@@ -529,10 +529,6 @@ public class PageManager {
 
     }
     
-    private JsonObject boardToJson(Game g)
-    {
-        
-    }
 
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
