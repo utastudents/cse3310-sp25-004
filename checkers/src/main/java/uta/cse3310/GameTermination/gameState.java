@@ -1,9 +1,8 @@
 package uta.cse3310.GameTermination;
 
 import uta.cse3310.GameManager.Game;
-import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.Checker;
 
 public class gameState{
 
@@ -58,20 +57,31 @@ return !canPlayerMove(board, getOpponent(playerID));
 //Board gameState = new Board();
 
 //checks gameState after each move to see if a player is winning
-public int checkForWinningPlayer(Board board, Game player1, Game player2){
-    if (hasPlayerWon(board, player1.playerID)) {
-        return player1.playerID;
+public int checkForWinningPlayer(Board board, Game game1, Game game2){
+
+    //added by Game.java to fix compiling issue
+    int player1ID = game1.getPlayer1().getPlayerId();
+    int player2ID = game2.getPlayer2().getPlayerId();
+
+    if (hasPlayerWon(board, player1ID)) {
+        return player1ID;
     } 
-    else if (hasPlayerWon(board, player2.playerID)) {
-        return player2.playerID;
+    else if (hasPlayerWon(board, player2ID)) {
+        return player2ID;
     }
     return -1;
 }
 
 //checks gameState for a draw
-public boolean gameStateDraw(Board board, Game player1, Game player2) {
-    return !canPlayerMove(board, player1.playerID) &&
-!canPlayerMove(board, player2.playerID);
+public boolean gameStateDraw(Board board, Game game1, Game game2) {
+
+
+    //added by game.java to fix compiling issue
+    int player1ID = game1.getPlayer1().getPlayerId();
+    int player2ID = game2.getPlayer2().getPlayerId();
+
+    return !canPlayerMove(board, player1ID) &&
+    !canPlayerMove(board, player2ID);
 }
 
 // Utility function for opponent playerID
