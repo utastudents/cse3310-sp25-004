@@ -16,6 +16,7 @@ body {
 	padding: 30px;
 	border-radius: 20px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	
 }
 
 .leaderboard h1 {
@@ -39,12 +40,13 @@ thead {
 
 thead th {
 	padding: 10px;
-	text-align: left;
+	text-align: center;
 }
 
 tbody td {
 	padding: 10px;
 	border-bottom: 3px solid #cadcfc;
+	text-align: center;
 }
 
 tbody tr:nth-child(1) {
@@ -79,7 +81,7 @@ tbody tr:hover {
     background-color: white;
     color: gray;
     padding: 10px 15px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     font-size: 16px;
     border-radius: 8px;
@@ -90,3 +92,20 @@ tbody tr:hover {
     background-color: rgb(54, 17, 204);
     color: white;
 }
+
+.medal-emoji {
+	font-size: 1.3em;
+	margin-right: 5px;
+}
+
+.scrollable-table {
+	max-height: 450px; 
+	overflow-y: auto;
+	border: 1px solid #ccc;
+}
+
+.scrollable-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
