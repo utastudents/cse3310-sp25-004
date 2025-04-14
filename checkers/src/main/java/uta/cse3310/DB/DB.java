@@ -54,7 +54,7 @@ public class DB
     {
         if (getPlayerByUsername(username) != null) 
         {
-            return; /*if username exists it will return */
+            return false; /*if username exists it will return */
         }
         
         try {
