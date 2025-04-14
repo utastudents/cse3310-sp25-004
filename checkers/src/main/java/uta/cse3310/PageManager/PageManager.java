@@ -35,7 +35,8 @@ public class PageManager {
 
     // List to track active players in the subsystem
     Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
-
+    Gson gson = new Gson();
+    GameManager Gm = new GameManager();
     Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
 
     // Track user in which subsytem they are in.
@@ -497,19 +498,19 @@ public class PageManager {
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
         
-       /*
-        public UserEventReply GameMove(JsonObject jsonObj, int Id) {
+       
+        
         GameMove move = gson.fromJson(jsonObj, GameMove.class);
         move.setClientId(Id);
-        GameUpdate update = Gm.ProcessMove(move);
+        GameUpdate update = Gm.processMove(move);
         UserEventReply reply = new UserEventReply();
 
         JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
         reply.replyObj = json;
         reply.recipients.add(move.getClientId());
         return reply;
-            */
-        return null;
+            
+        
     }
 
      //removes player who left from queue, active players hashmap, and notifies clients.
