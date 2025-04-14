@@ -7,6 +7,7 @@ import uta.cse3310.PageManager.UserEventReply;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player;
 
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,9 +21,13 @@ import com.google.gson.JsonArray;
 
 import org.junit.Test;
 
-
+@ExtendWith(MockitoExtension.class)
 public class PageManagerTest
 {
+    @Mock
+    private PairUp pu;
+
+    @InjectMocks
     private PageManager pm;
 
     @BeforeEach
@@ -96,5 +101,46 @@ public class PageManagerTest
 
     }
 
-    
+    @Test
+    public void joinQueueSuccessTest()
+    {
+        // Only using Alice for this test
+
+        JsonObject temp = new JsonObject();
+        temp.addProperty("playerClientId", 1);
+
+        when(pu.addToQueue(pm.activePlayers.get(1))).thenReturn(true);
+
+        UserEventReply reply = pm.joinQueue(temp, 1);
+
+        JsonObject response = reply.replyObj;
+
+        assertEquals("joinQueue", response.get("responseID").getAsString());
+        assertEquals(1, response.get("MyClientID").getAsInt());
+        assertTrue(response.get("inQueue").getAsBoolean(), "inQueue is false for some reason");
+
+    }
+
+    @Test
+    public void joinQueueFailureTest()
+    {
+        // Only using Alice for this test
+
+        JsonObject temp = new JsonObject();
+        temp.addProperty("playerClientId", 1);
+
+        when(pu.addToQueue(pm.activePlayers.get(1))).thenReturn(false);
+
+        UserEventReply reply = pm.joinQueue(temp, 1);
+
+        JsonObject response = reply.replyObj;
+
+        assertEquals("joinQueue", response.get("responseID").getAsString());
+        assertEquals(1, response.get("MyClientID").getAsInt());
+        assertTrue(!(response.get("inQueue").getAsBoolean()), "inQueue is true for some reason");
+
+    }
+
+
+
 }
