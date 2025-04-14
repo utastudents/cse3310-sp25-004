@@ -48,7 +48,7 @@ public class GameTermination {
         }
 
         // updates each player stats based on match results sends to db
-        public void saveResults(HumanPlayer p1, HumanPlayer p2, String resultType){
+     /*   public void saveResults(HumanPlayer p1, HumanPlayer p2, String resultType){
 
                 // retrieves p1 stats
                 int p1Wins = p1.getWins();
@@ -93,7 +93,7 @@ public class GameTermination {
                 //send p2 updated val to db
                 database.updatePlayerStats(p2.getPlayerId(), p2Wins, p2Lossees, p2ELO, p2Games);
 
-        }
+        } */
 
 }
         
