@@ -201,7 +201,7 @@
 			</button>
 			<!-- request to see bots play -->
 			<button>
-				<a id="CURRENT_SESSION_BOTvsBOT" type="button">
+				<a id="CURRENT_SESSION_BOTvsBOT" type="button" onclick="watchBotVsBot()">
 					Watch Bot Vs Bot
 				</a></button>
 		</div>
@@ -250,6 +250,16 @@
 					challengedBtn.disabled = false;
 					viewBtn.disabled = true;
 				}
+			}
+
+			function watchBotVsBot() {
+				const botVsBotReq = {
+					type: "request_bot_vs_bot",
+					playerID: {}
+				};
+
+				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
+				connection.send(JSON.stringify(botVsBotReq));
 			}
 		</script>
 	</div>
@@ -346,8 +356,22 @@
 				// console.log("Received thing!");
 				updateJoinGameList(msg);
 				break;
-			} case "allOnlinePlayerInfo": {
+			} 
+			case "allOnlinePlayerInfo": {
 				console.log("Received thing!");
+				break;
+			}
+			case "bot_vs_bot": {
+				console.log("Recieved bot_vs_bot!");
+				
+				if(jsonMsg[responseID].success){
+				document.getElementById("join_game").style.display = "none";
+				document.getElementById("game_display").style.display = "block";
+
+				console.log("Watching Bot vs Bot match: ", jsonMsg[responseID].matchId);
+				}else{
+					alert("Failed to set up Bot vs Bot Match: " + jsonMsg[responseID].message);
+				}
 				break;
 			}
 
