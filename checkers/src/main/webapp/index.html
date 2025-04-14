@@ -7,15 +7,28 @@
 		
     <!--SIGNUP GOES HERE-->
     <div id="new_account" class="signup-box" style = "display: none;">
-      <form action="login-info">
-      <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-      <input type="text" id = "signup-username" name="usr" placeholder="USERNAME" required>
-	  <span id="username-error" style="display: none; color: red;">Username must be at least 4 characters.</span>
-      <input type="password" id = "signup-password" name="psw" placeholder="PASSWORD" required>
-      <input type="password" id = "signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
-	  <span id="password-error" style="display: none; color: red;">Password must be at least 6 characters.</span>
-      <button id = "signup-btn" type="submit">SIGN UP</button>
-	  <p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
+      <form action="signup-info">
+      <img src="final_logo.png" alt="CHECKERS LOGO">
+	  <div class="input-icon">
+		<i class="fas fa-user"></i>
+		<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
+		</div>
+
+		<span id="username-error" class = "error-msg" style="display: none;">Username must be at least 4 characters.</span>
+		<div class="input-icon">
+		<i class="fas fa-lock"></i>
+		<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
+		</div>
+		<span id="password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
+
+		<div class="input-icon">
+		<i class="fas fa-lock"></i>
+		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
+		</div>
+		<span id="confirm-password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
+
+		<button id="signup-btn" type="submit">SIGN UP</button>
+		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
       </form>
   	</div>
 
@@ -26,19 +39,19 @@
 	<!--Login screen logo DONE-->
 	<div id="login" class="login-box"> <!--doing things in order.. trying-->
         <form action="login-info">
-            <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
+            <img src="final_logo.png" alt="CHECKERS LOGO">
 
             <div class="input-icon">
-                <i class="fas fa-user"></i>
-                <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
+            <i class="fas fa-user"></i>
+            <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
             </div>
-            <span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
+            <span id="login-username-error" class = "error-msg" style="display: none;">Username not found. Please try again</span>
 
             <div class="input-icon">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="login-password" name="psw" placeholder="PASSWORD" required>
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" name="psw" placeholder="PASSWORD" required>
             </div>
-            <span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
+            <span id="login-password-error" class = "error-msg" style="display: none;">Incorrect password. Please try again</span>
 
             <button id="login-btn" type="submit">LOGIN</button>
 
@@ -56,14 +69,24 @@
     		socket = new WebSocket(serverUrl);
 			
 			socket.onopen = function(event){
-			console.log = "Websocket connected"
+			console.log("Websocket Connected")
 			};
 
 			socket.onmessage = function(event){
 			const data = JSON.parse(event.data);
+			console.log("Message from server: ", data);
 			if(data.responseID === "login"){
-				if(data.msg === "Invalid username or password."){
-					alert("Login Failed: " + data.msg)
+				document.elementById("login-username-error").style.display = "none";
+				document.elementById("login-password-error").style.display = "none";
+
+				if(data.msg === "Invalid password."){
+					document.elementById("login-password-error").style.display = "inline";
+				}
+				if(data.msg === "Username does not exist."){
+					document.elementById("login-username-error").style.display = "inline";
+				}
+				else{
+					alert("Invalid username or password.");
 				}
 			}
 			else if(data.responseID === "loginSuccess"){
@@ -71,7 +94,11 @@
 				window.location.href = "join_game.html";
 				}
 			else if(data.responseID ==="new_user"){
-					alert(data.msg);
+					document.elementById("username-error").style.display = "none";
+					document.elementById("password-error").style.display = "none";
+					if(data.msg === "Username already exists"){
+						alert("Username already Exists")
+					}
 					if(data.redirect === "join_game"){
 						window.location.href = "join_game.html";
 					}
@@ -102,14 +129,10 @@
 				const username = document.getElementById("signup-username").value; //username from signup form
 				const password = document.getElementById("signup-password").value; //password from signup form
 				const confirmPassword = document.getElementById("signup-confirm-password").value;
-					if(password != confirmPassword){
-						alert("Passwords do not match.");
-						return;
-					}
-				}
 				//Hide error messages by default
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
+				document.getElementById("confirm-password-error").style.display = "none";
 
 
 				let valid = true;
@@ -121,22 +144,27 @@
 					document.getElementById("password-error").style.display = "inline";
 					valid = false;
 				}
-
-				if(!username || !password){
-					alert("Invalid username and/or password.");
+				if(password != confirmPassword){
+					document.getElementById("confirm-password-error").style.display = "inline";
+					valid = false;
+					return;
+				}
+				if(!username || !password || !confirmPassword){
+					alert("All fields are required.");
 					return;
 				}
 				if(!valid) return;
 
 				const signupData = { 
 					//Data into JSON object
-					type: "signup", 
+					type: "new_user", 
 					UserName : username, 
 					Password:password
 				};
 			//Send data as JSON string JSON.stringify
 			socket.send(JSON.stringify(signupData));
-
+			console.log("Signup Data sent: ", signupData)		
+			};
 			//Event handler for login button
 			document.getElementById("login-btn").onclick = function(e){
 				e.preventDefault();
@@ -152,18 +180,15 @@
 					alert("Invalid username and/or password.");
 					return;
 				}
-				/*if(!correctLogin){
-				document.getElelmentbyId("login-password-error").style.display = "inline"}
-				if(!userNotFound){
-				documenet.getElementbyID("login-username-error").style.display = "inline}""
-				*/
+
 				const loginData = { //Data into JSON object
 					type: "login", 
 					UserName : loginUsername, 
 					Password:loginPassword
 				};
 			//Send data as JSON string JSON.stringify
-			socket.send(JSON.stringify(loginData))		
+			socket.send(JSON.stringify(loginData))
+			console.log("Login Data sent: ", loginData)		
 			}
 
 		 </script>
@@ -203,10 +228,10 @@
         </div>
     </div>
     <div id="game_display">
-    game display
+
     </div>
 	<div class="summary">
-		<button id="summary-button-display" onclick="openLeaderboard()">Leaderboard</button>
+		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
 
 		<!-- visibility hidden -->
 		<div id="summary-leaderboard" style="display: none;">
@@ -245,12 +270,12 @@
 		</div>
 	</div>
 
-    <div id="stuff">
+    <!-- <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
       <label for="tbox">Received</label>
       <textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div>
+    </div> -->
 </html>
 <script>
     // each of the 'divs' in the html page should have attributes to allow them to be hidden.
@@ -306,7 +331,7 @@
 			}
 		}
 
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+        //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -314,42 +339,12 @@
         msg;
     }
 
-    function msg() {
-        console.log("button clicked");
-        U = new UserEvent();
-        U.msg="i pushed a button";
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
-    }
+    // function msg() {
+    //     console.log("button clicked");
+    //     U = new UserEvent();
+    //     U.msg="i pushed a button";
+    //     connection.send(JSON.stringify(U));
+    //     console.log(JSON.stringify(U))
+    // }
 
-	function summary(/*void*/) {
-    
-		/* DEPRECATED : Code now resides in ./summary.js */
-		
-		/*
-		* Fetches and displays player ranking data in the summary table.
-		*
-		* This function retrieves JSON data for:
-		* - The current player, identified via a session UUID.
-		* - The top 10 ranked players.
-		*
-		* The data is retrieved using:
-		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
-		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-		*
-		* The retrieved data is then written to the HTML table inside the summary div.
-		*
-		* TODO:
-		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-		* - Handle potential errors when fetching data.
-		* - Ensure proper table structure for displaying the data.
-		*/
-		
-		// playerData = retrieveUserJson();
-		// globalData = retrieveTopTenJson();
-
-    // Write top ten to table
-    // Write user to table
-    return;
-}
 </script>

@@ -19,7 +19,6 @@ body {
     padding: 25px;
     text-align: center;
     box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
-    cursor: pointer;
 }
 
 .signup-box img {
@@ -30,12 +29,14 @@ body {
 
 .signup-box input[type="text"],
 .signup-box input[type="password"] {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     width: 75%;
     padding: 5px;
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
+    padding-left: 30px;
+    font-size: 15px;
 }
 
 input:focus {
@@ -55,8 +56,8 @@ input::placeholder {
     font-size: 15px;
     width: 75%;
     padding: 5px;
-    margin-top: 6px;
-    border-radius: 6px;
+    margin-top: 5px;
+    border-radius: 2px;
 
 }
 
@@ -79,6 +80,20 @@ input::placeholder {
 
 .signup-text a:hover {
     color: #000; 
+}
+
+/*ICON SIGNUP*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
 }
 
 /*LOGIN*/
@@ -107,6 +122,7 @@ input::placeholder {
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
+    padding-left: 30px;
 }
 
 input:focus {
@@ -115,6 +131,20 @@ input:focus {
 }
 
 input::placeholder {
+    color: #b8b8b8;
+}
+
+/*ICON LOGIN*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 38%;
+    transform: translateY(-50%);
     color: #b8b8b8;
 }
 
@@ -249,4 +279,12 @@ button a {
 
 .busy {
     background-color: #F44336;
+}
+.error-msg {
+    color: red;
+    font-size: 10px;
+    display: block;
+    height: 12px;  /* keeps space even when hidden */
+    margin-top: 2px 0 4px 0;
+    line-height: 1; 
 }

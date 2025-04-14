@@ -14,6 +14,7 @@ public abstract class Player {
     protected int playerId;
     protected STATUS status = STATUS.ONLINE;
     protected Game game;
+    protected int ELO;
 
     /** Methodology
         - Game Manager will call these methods
@@ -35,4 +36,11 @@ public abstract class Player {
 
     public int getPlayerId() {return playerId;}
     public STATUS getStatus() {return status;}
+    public int getELO(){return ELO;}
+
+    public void setELO(int ELO){this.ELO = ELO;}
+
+    public boolean equals(Player p) {
+        return this.playerId == p.playerId;
+    }
 }
