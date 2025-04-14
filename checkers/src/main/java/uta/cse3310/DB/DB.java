@@ -70,6 +70,7 @@ public class DB
             }
         } catch (SQLException e) {
             System.out.println("Failed to add player: " + e.getMessage());
+            return false;
         }
     }
     /* gets a player using playerId, and return if the player is found */
