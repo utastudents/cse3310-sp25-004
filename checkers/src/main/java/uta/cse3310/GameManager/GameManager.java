@@ -19,7 +19,6 @@ public class GameManager {
     BotII b2;
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
-    private ArrayList<Integer> numOfGames = new ArrayList<>();
 
     public GameManager() {
         // gp = new GamePlay();
@@ -34,15 +33,14 @@ public class GameManager {
     public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
             games.add(new Game(i, null, null)); // null since unassigned players
-            numOfGames.add(i); // marking these as available
         }
     }
 
-    // Track numOfGames[] ArrayList for available game slots
+    // Track numOfGames for available game slots
     public int getNumOfGames() {
         int availableGames = 0;
         for (Game game : games) {
-            if (games == null) {
+            if (game.isGameActive()) {
                 availableGames++;
             }
         }
@@ -52,7 +50,8 @@ public class GameManager {
     // Create a new game from Pair Up
     public boolean createGame(Player p1, Player p2) {
         for (int i = 0; i < games.size(); i++) {
-            if (games.get(i) == null) { // Found an open slot
+            Game game = games.get(i);
+            if (game != null && game.isGameActive()) { // Found an open slot
                 Game newGame = new Game(i, p1, p2); // Use index as game ID
                 p1.startGame(newGame);
                 p2.startGame(newGame);
