@@ -280,3 +280,33 @@ button a {
 .busy {
     background-color: #F44336;
 }
+.error-msg {
+    color: red;
+    font-size: 10px;
+    display: block;
+    height: 12px;  /* keeps space even when hidden */
+    margin-top: 2px 0 4px 0;
+    line-height: 1; 
+}
+
+/*Styling for the leaderboard */
+.button:hover{
+    background-color: rgb(54, 17, 204);
+    color: white;
+}
+
+.medal-emoji {
+	font-size: 1.3em;
+	margin-right: 5px;
+}
+
+.scrollable-table {
+	max-height: 450px; 
+	overflow-y: auto;
+	border: 1px solid #ccc;
+}
+
+.scrollable-table table {
+	width: 100%;
+	border-collapse: collapse;
+}

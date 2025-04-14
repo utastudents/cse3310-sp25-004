@@ -13,7 +13,7 @@ public class HumanPlayer extends Player{
    
     private String username;
     private String password;
-    private String salt;
+    private byte[] salt;
     private int wins;
     private int losses;
     private int gamesPlayed;
@@ -21,7 +21,7 @@ public class HumanPlayer extends Player{
     //private socketId potentially here
 
     // constructors
-    public HumanPlayer(String username, String password, String salt)
+    public HumanPlayer(String username, String password, byte[] salt)
     {
         this.playerId = nextId();
         this.username = username;
@@ -90,7 +90,7 @@ public class HumanPlayer extends Player{
         return password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
