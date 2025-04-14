@@ -72,7 +72,26 @@ public class DB
             System.out.println("Failed to add player: " + e.getMessage());
         }
     }
+    /* gets a player using playerId, and return if the player is found */
+    public HumanPlayer getPlayerById(int playerId) 
+    {
+        try {
+            String sql = "SELECT * FROM players WHERE id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, playerId);
+                ResultSet rs = pstmt.executeQuery();
 
+                if (rs.next()) {
+                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
+                }
+            }
+        } catch (SQLException e) 
+        {
+            System.err.println("Error fetching player: " + e.getMessage());
+        }
+        return null;
+    }
+    
     /* gets player using username and it will return if it found  */
     public HumanPlayer getPlayerByUsername(String username) 
     {
