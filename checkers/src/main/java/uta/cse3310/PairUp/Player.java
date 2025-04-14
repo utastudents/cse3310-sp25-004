@@ -39,4 +39,8 @@ public abstract class Player {
     public int getELO(){return ELO;}
 
     public void setELO(int ELO){this.ELO = ELO;}
+
+    public boolean equals(Player p) {
+        return this.playerId == p.playerId;
+    }
 }
