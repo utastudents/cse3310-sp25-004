@@ -40,7 +40,7 @@ public class GameManager {
     public int getNumOfGames() {
         int availableGames = 0;
         for (Game game : games) {
-            if (game.isGameActive()) {
+            if (game == null || !game.isGameActive()) {
                 availableGames++;
             }
         }
@@ -51,7 +51,7 @@ public class GameManager {
     public boolean createGame(Player p1, Player p2) {
         for (int i = 0; i < games.size(); i++) {
             Game game = games.get(i);
-            if (game != null && game.isGameActive()) { // Found an open slot
+            if (game == null || !game.isGameActive()) { // Found an open slot
                 Game newGame = new Game(i, p1, p2); // Use index as game ID
                 p1.startGame(newGame);
                 p2.startGame(newGame);
