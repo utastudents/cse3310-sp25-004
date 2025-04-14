@@ -33,7 +33,7 @@ public class PairUp {
 
     private void pairUp() {
         if (playerQueue.size() == 0) return; //If there are no players in the queue, return
-        //if (GameManager.numGamesAvailable() <= 0) {return;}
+        //if (gm.numGamesAvailable() <= 0) {return;}
 
         //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
         for (int c=0; c<playerQueue.size(); c++) {
@@ -46,14 +46,14 @@ public class PairUp {
                         playerQueue.remove(temp);
                         playerQueue.remove(curr);
                         numPlayersInQueue -= 2;
-                        //GameManager.createGame(curr.first, temp.first);
+                        gm.createGame(curr.first, temp.first);
                         return;
                     }
                 }
             } else {
                 playerQueue.remove(curr);//Remove it from the queue, a match has been found
                 numPlayersInQueue -= 2;
-                //GameManager.createGame(curr.first, curr.second);
+                gm.createGame(curr.first, curr.second);
                 return;
             }
             //No match
