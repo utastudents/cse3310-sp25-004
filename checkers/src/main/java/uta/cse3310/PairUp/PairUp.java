@@ -83,7 +83,13 @@ public class PairUp {
      * @param spectator - can be null. HumanPlayer who will be the spectator
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-    public boolean challenge(Player p, Player c, HumanPlayer spectator) {return false;}
+    public boolean challenge(Player p, Player c, HumanPlayer spectator) {
+        Challenge challenge = new Challenge(p, c, spectator);
+        numPlayersInQueue += 2;
+        playerQueue.add(challenge);
+        pairUp();
+        return true;
+    }
     /**
      * Add a player v bot challenge to the queue
      * @param p - The player who requested the challenge
@@ -155,10 +161,19 @@ class Challenge {
     public Challenge(Player p) {
         first = p;
         hasJustOne = true;
+        spectators = new ArrayList<>();
     }
     public Challenge(Player p, Player c) {
         first = p;
         second = c;
         hasJustOne = false;
+        spectators = new ArrayList<>();
+    }
+    public Challenge(Player p, Player c, HumanPlayer spectator) {
+        first = p;
+        second = c;
+        hasJustOne = false;
+        spectators = new ArrayList<>();
+        spectators.add(spectator);
     }
 }
