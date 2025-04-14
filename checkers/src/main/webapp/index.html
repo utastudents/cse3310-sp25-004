@@ -87,9 +87,14 @@
 			document.getElementById("signup-btn").onclick = function(e){
 				e.preventDefault();
 				
-				const username = document.getElementById("username").value; //username from signup form
-				const password = document.getElementById("password").value; //password from signup form
-				
+				const username = document.getElementById("signup-username").value; //username from signup form
+				const password = document.getElementById("signup-password").value; //password from signup form
+				const confirmPassword = document.getElementById("username-confirm-password").value;
+					if(password != confirmPassword){
+						alert("Passwords do not match.");
+						return;
+					}
+				}
 				//Hide error messages by default
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
