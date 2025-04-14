@@ -10,11 +10,11 @@
       <form action="login-info">
       <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
       <input type="text" id = "signup-username" name="usr" placeholder="USERNAME" required>
-	  <span id="username-error" style="display: none; color: red;">Username must be at least 4 characters.</span>
+	  <span id="username-error" class = "error-msg">Username must be at least 4 characters.</span>
       <input type="password" id = "signup-password" name="psw" placeholder="PASSWORD" required>
       <input type="password" id = "signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
-	  <span id="password-error" style="display: none; color: red;">Password must be at least 6 characters.</span>
-	  <span id="confirm-password-error" style="display: none; color: red;">Passwords do not match.</span>
+	  <span id="password-error" class = "error-msg">Password must be at least 6 characters.</span>
+	  <span id="confirm-password-error" class = "error-msg">Passwords do not match.</span>
       <button id = "signup-btn" type="submit">SIGN UP</button>
 	  <p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
       </form>
@@ -33,13 +33,13 @@
                 <i class="fas fa-user"></i>
                 <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
             </div>
-            <span id="login-username-error" style="color:red; display:none">Username not found. Please try again</span>
+            <span id="login-username-error" class = "error-msg">Username not found. Please try again</span>
 
             <div class="input-icon">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="login-password" name="psw" placeholder="PASSWORD" required>
             </div>
-            <span id="login-password-error" style="color:red; display:none">Incorrect password. Please try again</span>
+            <span id="login-password-error" class = "error-msg">Incorrect password. Please try again</span>
 
             <button id="login-btn" type="submit">LOGIN</button>
 
