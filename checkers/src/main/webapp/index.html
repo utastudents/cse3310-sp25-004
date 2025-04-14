@@ -5,15 +5,15 @@
     </head>
 		
     <!--SIGNUP GOES HERE-->
-    <div class="signup-box" display = "none">
+    <div class="new_account" display = "none">
       <form action="login-info">
       <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-      <input type="text" name="usr" placeholder="USERNAME" required>
-	  <span id="username-error" style="display: none; color: red;">Invalid username</span>
-      <input type="password" name="psw" placeholder="PASSWORD" required>
-      <input type="password" name="psw" placeholder="CONFIRM PASSWORD" required>
-	  <span id="password-error" style="display: none; color: red;">Invalid password</span>
-      <button type="submit">SIGN UP</button>
+      <input type="text" id = "signup-username" name="usr" placeholder="USERNAME" required>
+	  <span id="username-error" style="display: none; color: red;">Username must be at least 4 characters.</span>
+      <input type="password" id = "signup-password" name="psw" placeholder="PASSWORD" required>
+      <input type="password" id = "signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
+	  <span id="password-error" style="display: none; color: red;">Password must be at least 6 characters.</span>
+      <button id = "signup-btn" type="submit">SIGN UP</button>
       </form>
   	</div>
 
@@ -22,21 +22,25 @@
 	<!--Span id password-error goes here-->
       
 	<!--Login screen logo DONE-->
-	<div class="login-box"> <!--NEED TO CENTER-->
+	<div class="login"> <!--NEED TO CENTER-->
   		<form action="login-info">
  		<img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-  		<input type="text" name="usr" placeholder="USERNAME" required>
+  		<input type="text" id = "login-username" name="usr" placeholder="USERNAME" required>
 		<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
-  		<input type="password" name="psw" placeholder="PASSWORD" required>
+  		<input type="password" id = "login-password" name="psw" placeholder="PASSWORD" required>
 		<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
-  		<button type="submit">LOGIN</button>
+  		<button id = "login-btn" type="submit">LOGIN</button>
   		<p class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
   		</p>
   		</form>
 
 		 <script>
 			//connect to server here and send msg to console
-			/*let socket = new WebSocket("ws://localhost9080)
+			var socket = null;
+
+    		var serverUrl;
+    		serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
+    		socket = new WebSocket(serverUrl);
 			
 			socket.onopen = function(event){
 			console.log = "Websocket connected"
@@ -45,7 +49,9 @@
 			socket.onmessage = function(event){
 			const data = JSON.parse(event.data);
 			if(data.responseID === "login"){
-				alert(data.msg);
+				if(data.msg === "Invalid username or password."){
+					alert("Login Failed: " + data.msg)
+				}
 			}
 			else if(data.responseID === "loginSuccess"){
 				alert(data.msg);
@@ -63,9 +69,7 @@
 		 	}
 			socket.onclose = function(event){
 				console.log("Websocket Closed");
-			}
-				*/
-					
+			}		
 									// (On Click) Sign up screen appear, login disappear
 			document.getElementById("show-signup").onclick = function() {
             document.getElementById("login").style.display = "none";
