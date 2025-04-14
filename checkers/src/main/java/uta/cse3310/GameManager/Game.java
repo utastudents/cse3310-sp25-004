@@ -16,9 +16,9 @@ public class Game{
       this.player2 = player2;
    }
 
-   /*public GamePlay getBoard(){        //decide how interacts with gameplay
+   public GamePlay getBoard(){        //decide how interacts with gameplay
       return board;
-   }*/
+   }
 
    // Setting the second player after the game is created
    public void setPlayer2(Player player) {
