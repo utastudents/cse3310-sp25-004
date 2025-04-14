@@ -181,7 +181,7 @@
 					<li class="player">
 						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
 						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
-						<button id="btn2-UID002" onclick="">View Match</button>
+						<button id="btn2-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
 					</li>
 				</ol>
 			</div>
@@ -228,6 +228,7 @@
 				// access the status span
 				const statusElement = playerElement.querySelector('.status');
 				const challengedBtn = document.getElementById(`btn1-${playerID}`);
+				const viewBtn = document.getElementById(`btn2-${playerID}`);
 
 				if (!challengedBtn) {
 					console.log("cant find button");
@@ -237,14 +238,17 @@
 					statusElement.classList.remove('free');
 					statusElement.classList.add('busy');
 
-					//change button to disabled
+					//change challenge button to disabled, view match to True
 					challengedBtn.disabled = true;
+					viewBtn.disabled = false;
 				}
+				// welp you not gonna spectate an idle player 
 				else {
 					statusElement.classList.remove('busy');
 					statusElement.classList.add('free');
 					//change button to normal
 					challengedBtn.disabled = false;
+					viewBtn.disabled = true;
 				}
 			}
 		</script>
