@@ -8,10 +8,12 @@
     <div class="signup-box" display = "none">
       <form action="login-info">
       <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-      <input type="text" id = "signup-username" name="usr" placeholder="USERNAME">
-      <input type="password" id = "signup-password" name="psw" placeholder="PASSWORD">
-      <input type="password" id = "signup_confirm_password" name="psw" placeholder="CONFIRM PASSWORD">
-      <button id = "signup button" type="submit">SIGN UP</button>
+      <input type="text" name="usr" placeholder="USERNAME" required>
+	  <span id="username-error" style="display: none; color: red;">Invalid username</span>
+      <input type="password" name="psw" placeholder="PASSWORD" required>
+      <input type="password" name="psw" placeholder="CONFIRM PASSWORD" required>
+	  <span id="password-error" style="display: none; color: red;">Invalid password</span>
+      <button type="submit">SIGN UP</button>
       </form>
   	</div>
 
@@ -23,10 +25,12 @@
 	<div class="login-box"> <!--NEED TO CENTER-->
   		<form action="login-info">
  		<img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
-  		<input type="text" id = "login-username" name="usr" placeholder="USERNAME">
-  		<input type="password" id = "login-password" name="psw" placeholder="PASSWORD">
-  		<button id = "login-btn" type="submit">LOGIN</button>
-  		<p id = "show-signup" class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
+  		<input type="text" name="usr" placeholder="USERNAME" required>
+		<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
+  		<input type="password" name="psw" placeholder="PASSWORD" required>
+		<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
+  		<button type="submit">LOGIN</button>
+  		<p class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
   		</p>
   		</form>
 
