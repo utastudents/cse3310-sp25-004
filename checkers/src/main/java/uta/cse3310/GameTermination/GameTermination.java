@@ -47,32 +47,53 @@ public class GameTermination {
                 */
         }
 
-        //saves the results of the end of the match and put into database for leaderboard
-        public void saveResults(Game player1, Game player2){
+        // updates each player stats based on match results sends to db
+        public void saveResults(HumanPlayer p1, HumanPlayer p2, String resultType){
+
+                // retrieves p1 stats
+                int p1Wins = p1.getWins();
+                int p1Lossees = p1.getLosses();
+                int p1ELO = p1.getELO();
+                int p1Games = p1.getGamesPlayed();
+                // retrieves p2 stats
+                int p2Wins = p2.getWins();
+                int p2Lossees = p2.getLosses();
+                int p2ELO = p2.getELO();
+                int p2Games = p2.getGamesPlayed();
+                // changes stats based on result
+                switch (resultType){
+                        case "P1_WIN":
+                                p1Wins++;
+                                p1Games++;
+                                p2Lossees++;
+                                p2Games++;
+                                break;
+                        case "P2_WIN":
+                                p2Wins++;
+                                p2Games++;
+                                p1Lossees++;
+                                p1Games++;
+                                break;
+                        case "DRAW":
+                                p1Games++;
+                                p2Games++;
+                                break;
+                }
+                // update p1 HumanPlayer object
+                p1.setWins(p1Wins);
+                p1.setLosses(p1Lossees);
+                p1.setGamesPlayed(p1Games);
+                // update p2 HumanPlayer object
+                p2.setWins(p2Wins);
+                p2.setLosses(p2Lossees);
+                p2.setGamesPlayed(p2Games);
+
+                //send p1 updated val to db
+                database.updatePlayerStats(p1.getPlayerId(), p1Wins, p1Lossees, p1ELO, p1Games);
+                //send p2 updated val to db
+                database.updatePlayerStats(p2.getPlayerId(), p2Wins, p2Lossees, p2ELO, p2Games);
 
         }
-        //    public GameResult evaluate(GameState gameState) {
-        // boolean p1HasPieces = gameState.hasPieces("P1");
-        // boolean p2HasPieces = gameState.hasPieces("P2");
-
-        // boolean p1CanMove = gameState.hasValidMoves("P1");
-        // boolean p2CanMove = gameState.hasValidMoves("P2");
-
-        /**i
-         * f (!p1HasPieces || !p1CanMove) {
-            if (!p2HasPieces || !p2CanMove) {
-                return GameResult.DRAW;
-            }
-            return GameResult.PLAYER_TWO_WINS;
-        }
-
-        if (!p2HasPieces || !p2CanMove) {
-            return GameResult.PLAYER_ONE_WINS;
-        }
-
-        return GameResult.IN_PROGRESS;
-         }
-        } */
 
 }
         
