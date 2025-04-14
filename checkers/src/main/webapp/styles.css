@@ -280,3 +280,11 @@ button a {
 .busy {
     background-color: #F44336;
 }
+.error-msg {
+    color: red;
+    font-size: 10px;
+    display: block;
+    height: 12px;  /* keeps space even when hidden */
+    margin-top: 2px 0 4px 0;
+    line-height: 1; 
+}
