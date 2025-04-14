@@ -84,7 +84,9 @@
              	};
 			
 			//Event Lister for register button
-			document.getElementById("signup-btn").onclick = function(){
+			document.getElementById("signup-btn").onclick = function(e){
+				e.preventDefault();
+				
 				const username = document.getElementById("username").value; //username from signup form
 				const password = document.getElementById("password").value; //password from signup form
 				
@@ -116,11 +118,13 @@
 					Password:password
 				};
 			//Send data as JSON string JSON.stringify
-			//socket.send(JSON.stringify(signupData))
-			}
+			socket.send(JSON.stringify(signupData));
+			};
 
 			//Event handler for login button
-			document.getElementById("login-btn").onclick = function(){
+			document.getElementById("login-btn").onclick = function(e){
+				e.preventDefault();
+
 				const loginUsername = document.getElementById("login-username").value; //username from signup form
 				const loginPassword = document.getElementById("login-password").value; //password from signup form
 
@@ -143,7 +147,7 @@
 					Password:loginPassword
 				};
 			//Send data as JSON string JSON.stringify
-			//socket.send(JSON.stringify(loginData))		
+			socket.send(JSON.stringify(loginData))		
 			}
 
 		 </script>
