@@ -11,8 +11,6 @@ public class Game{
    public int playerID;
    private GamePlay board;
    // private boolean isGameActive;
-   // public int gameID
-
 
 	public Game(int gameID, int playerId){ // might need to handle challenge Q in here too 
       this.gameID = gameID;
