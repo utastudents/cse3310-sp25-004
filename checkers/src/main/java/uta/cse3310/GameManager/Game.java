@@ -9,7 +9,7 @@ public class Game{
    public int player2;  // ID for player 2
    private int gameID;   // Unique game identifier
    public int playerID;
-   // private GamePlay board;     *decide later how to use when gameplay is more fleshed out 
+   private GamePlay board;
    // private boolean isGameActive;
    // public int gameID
 
@@ -48,7 +48,7 @@ public class Game{
    }
 
    // initializing the board gameplay logic
-   public void startGame() {
-      // Eventually it initializes and starts the board game logic once GamePlay is fully implemented
+   public void startGame(Game game) {
+      board = new GamePlay(gameID);
    }
 }
