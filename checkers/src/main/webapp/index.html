@@ -3,56 +3,32 @@
     <head>
         <link rel="stylesheet" href="styles.css">
     </head>
-	<div id = "account-screen-logo" style="text-align: center;">
-		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-	</div>
-    <div id="new_account" style = "display: none">
-    	<h1>Create New Account</h1>
-	    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
-
-		<div style="margin-bottom: 10px;">
-				<label for="username">Enter new username: </label>
-				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
-				<span id="username-error" style="display: none; color: red;">Invalid username</span>
-		<!--Span id username-error goes here-->
-				  
-		</div>
-		<div style="margin-bottom: 10px;">
-			<label for="password">Enter new password: </label>					
-			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
-			<span id="password-error" style="display: none; color: red;">Invalid password</span>
-		<!--Span id password-error goes here-->
-				  
-			</div>
-			
-		<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
-
-									<!--Button to return to login from sign up page-->
-		<button id ="back-to-login">Login</button>
 		
-	    </body>	
-    </div>
-	<div id="login">
-		<h1>Login</h1> 				<!--before create new account-->
-									<!--Login screen logo DONE-->
-		
-									<!-- username login box-->
-		<div style="margin-bottom: 10px;">
-			<label for = "login-username">Username: </label>
-			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
-			<span id="login-username-error" style="color:red; display:none">Username not found. Please try again</span>
-		</div>
-									<!-- password login box-->
-		<div style="margin-bottom: 10px;">
-			<label for = "login-password">Password: </label>
-			<input type ="password" style="border-radius: 100px;" placeholder="Enter Password" >
-			<span id="login-password-error" style="color:red; display:none">Incorrect password. Please try again</span>
-		</div>
-									<!-- submit button-->
-		 <button id = "login-btn" type = "submit" style="display: block; margin: 3 auto;">Submit</button>
+    <!--SIGNUP GOES HERE-->
+    <div class="login-box">
+      <form action="login-info">
+      <img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
+      <input type="text" name="usr" placeholder="USERNAME">
+      <input type="password" name="psw" placeholder="PASSWORD">
+      <input type="password" name="psw" placeholder="CONFIRM PASSWORD">
+      <button type="submit">SIGN UP</button>
+      </form>
+  	</div>
 
-		 							<!--Show signup screen-->
-		 <button id = "show-signup">Sign Up</button>
+	<!--Span id username-error goes here-->
+    
+	<!--Span id password-error goes here-->
+      
+	<!--Login screen logo DONE-->
+	<div class="login-box"> <!--NEED TO CENTER-->
+  		<form action="login-info">
+ 		<img src="FINAL_LOGO.png" alt="CHECKERS LOGO">
+  		<input type="text" name="usr" placeholder="USERNAME">
+  		<input type="password" name="psw" placeholder="PASSWORD">
+  		<button type="submit">LOGIN</button>
+  		<p class="signup-text">Don't have an account? <a href="signup.html">Sign up</a>
+  		</p>
+  		</form>
 
 		 <script>
 			//connect to server here and send msg to console

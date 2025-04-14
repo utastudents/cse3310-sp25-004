@@ -34,12 +34,12 @@ public class PairUp {
             Player p1 = curr.first; //Get the first player
             Player p2 = curr.second; //Get the second player
             if (isInRange(p1, p2)) {
-                db.startGame(p1, p2);
+                //db.startGame(p1, p2);
                 numPlayersInQueue -= 2;
                 return;
             } else {        
-                playerQueue.add(p1);
-                playerQueue.add(p2);
+                //playerQueue.add(p1);
+                //playerQueue.add(p2);
                 break;
              }
          }
