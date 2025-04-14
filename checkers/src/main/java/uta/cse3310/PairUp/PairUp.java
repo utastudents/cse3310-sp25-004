@@ -7,43 +7,58 @@ import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
 import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PageManager.HumanPlayer;
 
 
 public class PairUp {
-    private Queue<Challenge> playerQueue;
+    private LinkedList<Challenge> playerQueue;
     private DB db;
+    private GameManager gm;
     private int numPlayersInQueue;
 
     /**
      * Create a new PairUp object. Should only be called ONCE, and only by Page Manager.
      * @param db
      */
-    public PairUp(DB db) {
+    public PairUp(DB db, GameManager gm) {
         this.playerQueue = new LinkedList<>();//Queue of players waiting to be paired
         this.db = db; //Database object for storing player data
+        this.gm = gm;
         numPlayersInQueue = 0;
 
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
+
     private void pairUp() {
-        if (playerQueue.size() < 2) return; //If there are not enough players in the queue, return
-        while (playerQueue.size() >= 2) {
-            Challenge curr = playerQueue.poll(); //Get the first player in the queue
-            Player p1 = curr.first; //Get the first player
-            Player p2 = curr.second; //Get the second player
-            if (isInRange(p1, p2)) {
-                //db.startGame(p1, p2);
+        if (playerQueue.size() == 0) return; //If there are no players in the queue, return
+        //if (GameManager.numGamesAvailable() <= 0) {return;}
+
+        //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
+        for (int c=0; c<playerQueue.size(); c++) {
+            Challenge curr = playerQueue.get(c);
+            if (curr.hasJustOne) {
+                for (int i=c+1; i<playerQueue.size(); i++) {
+                    Challenge temp = playerQueue.get(i);
+                    if (temp.hasJustOne && isInRange(temp.first, curr.first)) {
+                        //Make a match
+                        playerQueue.remove(temp);
+                        playerQueue.remove(curr);
+                        numPlayersInQueue -= 2;
+                        //GameManager.createGame(curr.first, temp.first);
+                        return;
+                    }
+                }
+            } else {
+                playerQueue.remove(curr);//Remove it from the queue, a match has been found
                 numPlayersInQueue -= 2;
+                //GameManager.createGame(curr.first, curr.second);
                 return;
-            } else {        
-                //playerQueue.add(p1);
-                //playerQueue.add(p2);
-                break;
-             }
-         }
-        
+            }
+            //No match
+        }
+
     } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
 
     /**
