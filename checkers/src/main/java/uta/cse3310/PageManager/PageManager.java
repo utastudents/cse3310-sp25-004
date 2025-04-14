@@ -513,7 +513,7 @@ public class PageManager {
         }
         responseJson.add("player2", player2);
 
-        // Gameplay board = g.getBoard();
+        Gameplay board = g.getBoard();
 
         // responseJson.add("board", boardToJson(board));
 
@@ -522,12 +522,13 @@ public class PageManager {
         userEventReply.recipients.add(clientId);
 
         //transition
-
+        App.sendMessage(transitionPage(userEventReply.recipients, GameState.GAME_DISPLAY));
 
         //send info to new onmessage
         App.sendMessage(userEventReply);
 
-    } 
+    }
+    
 
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
