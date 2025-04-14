@@ -11,6 +11,7 @@ import java.util.List;
 //import uta.cse3310.GameState;
 
 import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
@@ -25,6 +26,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
+    GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -40,9 +42,10 @@ public class PageManager {
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
+        gm = new GameManager();
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(db);
+        pu = new PairUp(db, gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
