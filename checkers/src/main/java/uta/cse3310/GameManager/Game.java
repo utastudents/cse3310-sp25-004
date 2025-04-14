@@ -10,9 +10,10 @@ public class Game{
    private GamePlay board;
    // private boolean isGameActive;
 
-	public Game(int gameID, Player player1){ // might need to handle challenge Q in here too 
+	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
       this.gameID = gameID;
-      this.player1 = player1; // i think pair up needs to make a function to that returns player ID so we can call and store it for whatever we need 
+      this.player1 = player1;
+      this.player2 = player2;
    }
 
    /*public GamePlay getBoard(){        //decide how interacts with gameplay
@@ -48,4 +49,3 @@ public class Game{
       board = new GamePlay(gameID);
    }
 }
-

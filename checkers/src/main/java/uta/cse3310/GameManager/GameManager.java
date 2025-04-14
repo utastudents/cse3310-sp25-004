@@ -33,7 +33,7 @@ public class GameManager {
     // Initialize first 10 games
     public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
-            games.add(new Game(0, -1));
+            games.add(new Game(i, null, null)); // null since unassigned players
             numOfGames.add(i); // marking these as available
         }
     }
@@ -54,7 +54,7 @@ public class GameManager {
         ArrayList<Integer> availableSlots = getNumOfGames();
         if (!availableSlots.isEmpty()) {
             int index = availableSlots.get(0);
-            Game newGame = new Game(index, 1); // Game ID = index, state = 1 (example)
+            Game newGame = new Game(index, p1, p2); // Game ID = index, state = 1 (example)
             /*
              * newGame.setPlayer1(p1);
              * newGame.setPlayer2(p2);

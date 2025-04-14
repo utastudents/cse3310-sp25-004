@@ -7,7 +7,7 @@ import uta.cse3310.DB.DB;
 public class GameTermination {
         // Tells game play game is over. 
         public Game endGame() {
-                Game game = new Game(0, 1); // temp code for compiling purposes 
+                Game game = new Game(0, null, null); // temp code for compiling purposes 
                 return game;
                 // endGame method basic functionality; need to fix errors before committing
                 /*
