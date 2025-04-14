@@ -228,7 +228,7 @@
         </div>
     </div>
     <div id="game_display">
-    game display
+
     </div>
 	<div class="summary">
 		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
@@ -270,12 +270,12 @@
 		</div>
 	</div>
 
-    <div id="stuff">
+    <!-- <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
       <label for="tbox">Received</label>
       <textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div>
+    </div> -->
 </html>
 <script>
     // each of the 'divs' in the html page should have attributes to allow them to be hidden.
@@ -331,7 +331,7 @@
 			}
 		}
 
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+        //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -339,12 +339,12 @@
         msg;
     }
 
-    function msg() {
-        console.log("button clicked");
-        U = new UserEvent();
-        U.msg="i pushed a button";
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
-    }
+    // function msg() {
+    //     console.log("button clicked");
+    //     U = new UserEvent();
+    //     U.msg="i pushed a button";
+    //     connection.send(JSON.stringify(U));
+    //     console.log(JSON.stringify(U))
+    // }
 
 </script>
