@@ -50,7 +50,7 @@ public class DB
         }
     }
     /* if a username is new it will add new player */
-    public void addPlayer(String username, String password) 
+    public boolean addPlayer(String username, String password) 
     {
         if (getPlayerByUsername(username) != null) 
         {
@@ -111,7 +111,7 @@ public class DB
         return null;
     }
 
-    public HumanPlayer getPlayer(string username, string password)
+    public HumanPlayer getPlayer(String username, String password)
      {
          // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
          return null;  /* null when Player not found */
