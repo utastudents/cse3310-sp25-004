@@ -11,12 +11,19 @@ import java.util.List;
 //import uta.cse3310.GameState;
 
 import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.GameManager;
+import uta.cse3310.GameManager.Game;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player;
-
+import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Board;
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.Bot.Bot;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,6 +32,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
+    GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -33,16 +41,18 @@ public class PageManager {
 
     // List to track active players in the subsystem
     Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
-
+    Gson gson = new Gson();
+    GameManager Gm = new GameManager();
     Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
 
     // Track user in which subsytem they are in.
     HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
+        gm = new GameManager();
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(db);
+        pu = new PairUp(db, gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -416,6 +426,96 @@ public class PageManager {
      * Implement a way when a user leaves the website 
      */
 
+    // public void startGameNotifier(Game g, int UserId)
+    // {
+    //     int clientId = userIDToClientID.get(UserId);
+
+    //     UserEventReply userEventReply= new UserEventReply();
+    //     JsonObject responseJson = new JsonObject();
+
+    //     boolean player1IsBot = false;
+    //     boolean player2IsBot = false;
+
+    //     if (g.getPlayer1() instanceof Bot)
+    //     {
+    //         player1IsBot = true;
+    //     }
+
+    //     if (g.getPlayer2() instanceof Bot)
+    //     {
+    //         player2IsBot = true;
+    //     }
+
+    //     // general identification of JSON
+    //     responseJson.addProperty("responseID", "startGame");
+
+    //     if (player1IsBot && player2IsBot)
+    //     {
+    //         responseJson.addProperty("gameType", "bvb");
+    //     }
+    //     else if (player1IsBot || player2IsBot)
+    //     {
+    //         responseJson.addProperty("gameType", "pvb");
+    //     }
+    //     else
+    //     {
+    //         responseJson.addProperty("gameType", "pvp");
+    //     }
+
+    //     // Player 1 info
+    //     JsonObject player1 = new JsonObject();
+    //     if (player1IsBot)
+    //     {
+    //         player1.addProperty("isBot", true);
+    //     }
+    //     else
+    //     {
+    //         HumanPlayer humanPlayer1 = (HumanPlayer) g.getPlayer1();
+    //         player1.addProperty("isBot", false);
+    //         responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
+    //         responseJson.addProperty("username", humanPlayer1.getUsername());
+    //         responseJson.addProperty("elo", humanPlayer1.getELO());
+    //         responseJson.addProperty("gamesWon", humanPlayer1.getWins());
+    //         responseJson.addProperty("gamesLost", humanPlayer1.getLosses());
+    //         responseJson.addProperty("status", humanPlayer1.getStatus().toString());
+    //     }
+    //     responseJson.add("player1", player1);
+
+    //     // Player 2 info
+    //     JsonObject player2 = new JsonObject();
+    //     if (player2IsBot)
+    //     {
+    //         player2.addProperty("isBot", true);
+    //     }
+    //     else
+    //     {
+    //         HumanPlayer humanPlayer2 = (HumanPlayer) g.getPlayer2();
+    //         player2.addProperty("isBot", false);
+    //         responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
+    //         responseJson.addProperty("username", humanPlayer2.getUsername());
+    //         responseJson.addProperty("elo", humanPlayer2.getELO());
+    //         responseJson.addProperty("gamesWon", humanPlayer2.getWins());
+    //         responseJson.addProperty("gamesLost", humanPlayer2.getLosses());
+    //         responseJson.addProperty("status", humanPlayer2.getStatus().toString());
+    //     }
+    //     responseJson.add("player2", player2);
+
+    //     // Gameplay board = g.getBoard();
+
+    //     // responseJson.add("board", boardToJson(board));
+
+
+    //     userEventReply.recipients = new ArrayList<>();
+    //     userEventReply.recipients.add(clientId);
+
+    //     //transition
+
+    //     //send info to new onmessage
+
+
+    // } 
+
+
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
     {
         return null;
@@ -494,19 +594,19 @@ public class PageManager {
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
         
-       /*
-        public UserEventReply GameMove(JsonObject jsonObj, int Id) {
+       
+        
         GameMove move = gson.fromJson(jsonObj, GameMove.class);
         move.setClientId(Id);
-        GameUpdate update = Gm.ProcessMove(move);
+        GameUpdate update = Gm.processMove(move);
         UserEventReply reply = new UserEventReply();
 
         JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
         reply.replyObj = json;
         reply.recipients.add(move.getClientId());
         return reply;
-            */
-        return null;
+            
+        
     }
 
      //removes player who left from queue, active players hashmap, and notifies clients.

@@ -87,7 +87,4 @@ class Player {
 loadData(); // Temporary, should be called only when a request is made to render the leaderboard
 addEventListeners(); // Call the function to add event listeners, basically our main function
 
-// Function to open the leaderboard 
-function openLeaderboard() {
-	window.location.href = "./summary/OLD-reference.html";
-}
+
