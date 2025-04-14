@@ -107,6 +107,7 @@ input::placeholder {
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
+    padding-left: 30px;
 }
 
 input:focus {
@@ -115,6 +116,20 @@ input:focus {
 }
 
 input::placeholder {
+    color: #b8b8b8;
+}
+
+/*ICON LOGIN*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 38%;
+    transform: translateY(-50%);
     color: #b8b8b8;
 }
 
