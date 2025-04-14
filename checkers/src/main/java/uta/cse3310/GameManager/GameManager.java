@@ -55,10 +55,8 @@ public class GameManager {
         if (!availableSlots.isEmpty()) {
             int index = availableSlots.get(0);
             Game newGame = new Game(index, p1, p2); // Game ID = index, state = 1 (example)
-            /*
-             * newGame.setPlayer1(p1);
-             * newGame.setPlayer2(p2);
-             */
+            p1.startGame(newGame);
+            p2.startGame(newGame);
             games.set(index, newGame);
             System.out.println("Game created at index: " + index);
             return true;
