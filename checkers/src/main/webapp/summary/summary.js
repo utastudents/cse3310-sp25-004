@@ -39,8 +39,25 @@ function renderLeaderboard() {
 function fillTable(leaderboard) {
     leaderboard.forEach((player, index) => {
         const row = document.createElement("tr");
+
+        // Show medals on the top three ranks
+        let rankDisplay;
+        switch (index) {
+            case 0:
+                rankDisplay = "🥇";
+                break;
+            case 1:
+                rankDisplay = "🥈";
+                break;
+            case 2:
+                rankDisplay = "🥉";
+                break;
+            default:
+                rankDisplay = index + 1;
+        }
+
         row.innerHTML = `
-        <td>${index + 1}</td>
+        <td>${rankDisplay}</td>
         <td>${player.name}</td>
         <td>${player.elo}</td>
         <td>${player.gamesWon}</td>
