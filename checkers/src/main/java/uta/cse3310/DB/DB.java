@@ -1,7 +1,8 @@
 
 package uta.cse3310.DB;
 
-import java.util.LinkedList;
+import java.sql.*;
+
 import uta.cse3310.DB.PasswordManager;
 import uta.cse3310.PageManager.HumanPlayer;
 
@@ -9,14 +10,10 @@ import uta.cse3310.PageManager.HumanPlayer;
 public class DB 
 {
     /*declaring conn variable with Connection type, Connection will let us SELECT, INSERT, and UPDATE the database*/
-    //private Connection conn;
-    private LinkedList<HumanPlayer> players;
+    private Connection conn;
 
     public DB() 
     {
-        players = new LinkedList<>();
-    }
-    	/*
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:players.db");
             System.out.println("Connected to SQLite database.");
@@ -25,7 +22,7 @@ public class DB
             System.out.println("Connection failed: " + e.getMessage());
         }
     }
-    /*
+    
     
     /*This block will create the "playters.db" if it doesnt already exist.
      * 
@@ -33,8 +30,9 @@ public class DB
      * id: | username: | password: | salt: | wins=0 | losses=0 | elo=1000 | games_played=0
      *  
      *  */
-    /*
-    private void initializeDatabase() {
+  
+    private void initializeDatabase() 
+    {
         String sql = "CREATE TABLE IF NOT EXISTS players (" +
                      "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                      "username TEXT UNIQUE NOT NULL," +
@@ -51,105 +49,114 @@ public class DB
             System.out.println("Failed to create table: " + e.getMessage());
         }
     }
-    */
     /* if a username is new it will add new player */
-
-    // testing if we need to return a boolean or void
-    public boolean addPlayer(String username, String password) 
+    public void addPlayer(String username, String password) 
     {
         if (getPlayerByUsername(username) != null) 
         {
-            return false; /*if username exists it will return */    //Temporary, please fix when you can
+            return; /*if username exists it will return */
         }
         
-        /* 
-        String salt = PasswordManager.generateSalt();
-        String hashedPassword = PasswordManager.hashPassword(password, salt);
-        
+        try {
+            String sql = "INSERT INTO players (username, password, salt) VALUES (?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                byte[] salt = PasswordManager.generateSalt();
+                String hashedPassword = PasswordManager.hashPassword(password, salt);
 
-        HumanPlayer newPlayer = new HumanPlayer(username, hashedPassword, salt);
-        players.add(newPlayer);
-        return true; // successfully added
-        */
-        return false; //Temporary, please fix when you can
-    }
-
-    /* gets a player using playerId, and return if the player is found */
-    public HumanPlayer getPlayerById(int playerId) 
-    {
-        for (HumanPlayer player : players) 
-        {
-            if (player.getPlayerId() == playerId) 
-            {
-                return player;
+                pstmt.setString(1, username);
+                pstmt.setString(2, hashedPassword);
+                pstmt.setBytes(3, salt);
+                pstmt.executeUpdate();
             }
+        } catch (SQLException e) {
+            System.out.println("Failed to add player: " + e.getMessage());
         }
-        return null;  /* null if Player not found */
     }
 
     /* gets player using username and it will return if it found  */
     public HumanPlayer getPlayerByUsername(String username) 
     {
-        for (HumanPlayer player : players) 
-        {
-            if (player.getUsername().equals(username)) 
-            {
-                return player;
-            }
-        }
-        return null;  /* null when Player not found */
-    }
+        try {
+            String sql = "SELECT * FROM players WHERE username = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, username);
+                ResultSet rs = pstmt.executeQuery();
 
-    /* this method will verify password but havenot implemented yet */
-    public boolean verifyPassword(String username, String password) 
-    {
-        HumanPlayer player = getPlayerByUsername(username);
-        if (player == null) 
-        {
-            return false; 
+                if (rs.next()) {
+                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching player by username: " + e.getMessage());
         }
-        //return PasswordManager.verifyPassword(password, player.getPassword(), player.getSalt());
-        return false; /* this will be implemented later */
-        
+        return null;
     }
 
     /* This will calculate the total number of game played by adding the total games played by players*/
     public int getTotalGamesPlayed() 
     {
-        int Total_Games = 0;
-        for (HumanPlayer player : players) 
-        {
-            Total_Games += player.getGamesPlayed();
+        int totalGames = 0;
+        try {
+            String sql = "SELECT SUM(games_played) AS total FROM players";
+            try (Statement stmt = conn.createStatement()) {
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.next()) {
+                    totalGames = rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating total games played: " + e.getMessage());
         }
-        return Total_Games;
+        return totalGames;
     }
+    
     /* This method will update Players status their ID, wins, losses, Elo and gamesPlayed */
-    public boolean updatePlayerStats(int playerId, int wins, int losses, int ELO, int gamesPlayed) 
+    public boolean updatePlayerStats(int playerId, int wins, int losses, int ELO, int gamesPlayed)
     {
-        for (HumanPlayer player : players) 
-        {
-            if (player.getPlayerId() == playerId) 
+        try {
+            String sql = "UPDATE players SET wins = ?, losses = ?, elo = ?, games_played = ? WHERE id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) 
             {
-                player.setWins(wins);
-                player.setLosses(losses);
-                player.setELO(ELO);
-                player.setGamesPlayed(gamesPlayed);
-                return true;  /* if Status are updated with no any issues */
+                pstmt.setInt(1, wins);
+                pstmt.setInt(2, losses);
+                pstmt.setInt(3, ELO);
+                pstmt.setInt(4, gamesPlayed);
+                pstmt.setInt(5, playerId);
+                int rowsUpdated = pstmt.executeUpdate();
+                return rowsUpdated > 0; // Return true if the update was successful
             }
         }
-        return false;
+        catch (SQLException e) 
+        {
+            System.out.println("Error updating player stats: " + e.getMessage());
+            return false;
+        }
     }
-    /* This method will returns top 10 players ordered with their ELO */	
+    
+    // This method returns the top 10 players ordered by their ELO
     public HumanPlayer[] getTop10PlayersByElo()
     {
-	return new HumanPlayer[0];
-    }
-
-    // TODO this method will return the player using username and password
-    public HumanPlayer getPlayer(String username, String password)
-    {
-        // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
-        return null;  /* null when Player not found */
+        HumanPlayer[] topPlayers = new HumanPlayer[10];
+        try {
+            String sql = "SELECT * FROM players ORDER BY elo DESC LIMIT 10";
+            try (Statement stmt = conn.createStatement()) {
+                ResultSet rs = stmt.executeQuery(sql);
+                int index = 0;
+                while (rs.next() && index < 10) {
+                    topPlayers[index++] = new HumanPlayer(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getBytes("salt")
+                    );
+                }
+            }
+        }
+        catch (SQLException e) 
+        {
+            System.out.println("Error fetching top players: " + e.getMessage());
+        }
+    
+        return topPlayers;
     }
 
 }
