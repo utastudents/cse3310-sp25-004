@@ -39,27 +39,27 @@ public class GameManager {
     }
 
     // Track numOfGames[] ArrayList for available game slots
-    public ArrayList<Integer> getNumOfGames() {
-        ArrayList<Integer> availableSlots = new ArrayList<>();
-        for (int i = 0; i < games.size(); i++) {
-            if (games.get(i) == null) {
-                availableSlots.add(i);
+    public int getNumOfGames() {
+        int availableGames = 0;
+        for (Game game : games) {
+            if (games == null) {
+                availableGames++;
             }
         }
-        return availableSlots;
+        return availableGames;
     }
 
     // Create a new game from Pair Up
     public boolean createGame(Player p1, Player p2) {
-        ArrayList<Integer> availableSlots = getNumOfGames();
-        if (!availableSlots.isEmpty()) {
-            int index = availableSlots.get(0);
-            Game newGame = new Game(index, p1, p2); // Game ID = index, state = 1 (example)
-            p1.startGame(newGame);
-            p2.startGame(newGame);
-            games.set(index, newGame);
-            System.out.println("Game created at index: " + index);
-            return true;
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i) == null) { // Found an open slot
+                Game newGame = new Game(i, p1, p2); // Use index as game ID
+                p1.startGame(newGame);
+                p2.startGame(newGame);
+                games.set(i, newGame);
+                System.out.println("Game created at index: " + i);
+                return true;
+            }
         }
         System.out.println("No available game slots.");
         return false;
