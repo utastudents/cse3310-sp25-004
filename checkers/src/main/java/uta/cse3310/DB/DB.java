@@ -111,6 +111,13 @@ public class DB
         return null;
     }
 
+    public HumanPlayer getPlayer(string username, string password)
+     {
+         // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         return null;  /* null when Player not found */
+     }
+ 
+
     /* This will calculate the total number of game played by adding the total games played by players*/
     public int getTotalGamesPlayed() 
     {
