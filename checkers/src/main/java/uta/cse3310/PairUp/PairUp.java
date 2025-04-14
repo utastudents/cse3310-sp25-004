@@ -7,11 +7,12 @@ import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
 import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PageManager.HumanPlayer;
 
 
 public class PairUp {
-    private Queue<Challenge> playerQueue;
+    private LinkedList<Challenge> playerQueue;
     private DB db;
     private int numPlayersInQueue;
 
@@ -27,22 +28,30 @@ public class PairUp {
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
+
     private void pairUp() {
-        if (playerQueue.size() < 2) return; //If there are not enough players in the queue, return
-        while (playerQueue.size() >= 2) {
-            Challenge curr = playerQueue.poll(); //Get the first player in the queue
-            Player p1 = curr.first; //Get the first player
-            Player p2 = curr.second; //Get the second player
-            if (isInRange(p1, p2)) {
-                //db.startGame(p1, p2);
-                numPlayersInQueue -= 2;
-                return;
-            } else {        
-                //playerQueue.add(p1);
-                //playerQueue.add(p2);
-                break;
-             }
-         }
+        if (playerQueue.size() == 0) return; //If there are no players in the queue, return
+
+        //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
+        Challenge first = playerQueue.peek();
+        if (first.hasJustOne) {
+            for (int i=1; i<playerQueue.size(); i++) {
+                Challenge temp = playerQueue.get(i);
+                if (temp.hasJustOne && isInRange(temp.first, first.first)) {
+                    //Make a match
+                    //GameManager.createGame(first.first, first.second);
+                    numPlayersInQueue -= 2;
+                    return;
+                }
+            }
+        } else {
+            playerQueue.poll();//Remove it from the queue, a match has been found
+            numPlayersInQueue -= 2;
+            //GameManager.createGame(first.first, first.second);
+            return;
+        }
+        //No match
+        //TODO: If there are two Challenge objects in the queue, try and match the second one
         
     } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
 
