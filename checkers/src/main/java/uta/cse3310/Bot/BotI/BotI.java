@@ -1,6 +1,8 @@
 package uta.cse3310.Bot.BotI;
 
+import uta.cse3310.GameState;
 import uta.cse3310.Bot.Bot;
+import uta.cse3310.GameManager.Game;
 
 public class BotI extends Bot {
     
@@ -91,27 +93,25 @@ public class BotI extends Bot {
         // TODO: Avoid moving back row pieces unless necessary 
 
     } 
- 
 
-    @Override 
-
-    public boolean makeMove() { 
-
-        // TODO Auto-generated method stub 
-
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'"); 
-
-    } 
+    @Override
+    public boolean makeMove(GameState gs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    }
 
 
-    @Override 
+    @Override
+    public boolean updateBoard(GameState gs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
+    }
 
-    public boolean updateBoard() { 
 
-        // TODO Auto-generated method stub 
-
-        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'"); 
-
+    @Override
+    public boolean startGame(Game g) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'startGame'");
     }   
 
 } 

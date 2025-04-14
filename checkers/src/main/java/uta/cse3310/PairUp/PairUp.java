@@ -3,6 +3,8 @@ package uta.cse3310.PairUp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import uta.cse3310.Bot.BotI.BotI;
+import uta.cse3310.Bot.BotII.BotII;
 
 import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
@@ -25,7 +27,24 @@ public class PairUp {
     }
 
     private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
-    private void pairUp() {} //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
+    private void pairUp() {
+        if (playerQueue.size() < 2) return; //If there are not enough players in the queue, return
+        while (playerQueue.size() >= 2) {
+            Challenge curr = playerQueue.poll(); //Get the first player in the queue
+            Player p1 = curr.first; //Get the first player
+            Player p2 = curr.second; //Get the second player
+            if (isInRange(p1, p2)) {
+                //db.startGame(p1, p2);
+                numPlayersInQueue -= 2;
+                return;
+            } else {        
+                //playerQueue.add(p1);
+                //playerQueue.add(p2);
+                break;
+             }
+         }
+        
+    } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
 
     /**
      * Add a player to the challenge queue. Called by PageManager when a client requests matchmaking
@@ -33,15 +52,6 @@ public class PairUp {
      * @return - false if the player was not added to the queue, true otherwise
      */
     public boolean addToQueue(Player p) {return false;}
-
-    /**
-     * Called by PageManager when a user requests a challenge, but it has not been accepted yet.
-     * The request should be forwarded to the second user.
-     * @param p - The player who requested the challenge
-     * @param c - The player who is being challenged.
-     * @return - false if the player was not notified, true otherwise
-     */
-    public boolean requestChallenge(Player p, Player c) {return false;}
 
     /**
      * Add a player v player challenge to the queue - after it has been accepted
@@ -58,7 +68,7 @@ public class PairUp {
      */
     public boolean challengeBot(Player p, boolean botI) {
         //return challenge(p, botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return false;
+        return challenge(p, botI ? new BotI() : new BotII());
     }
     /**
      * Add a bot v bot challenge to the queue
@@ -68,7 +78,15 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        //return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
+        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII()); //just calls challenge with a bot
+    }
+
+    /**
+     * 
+     * @param p - The player to remove (should be a HumanPlayer)
+     * @return - True if the player was removed from the queue
+     */
+    public boolean removeFromQueue(Player p) {
         return false;
     }
 

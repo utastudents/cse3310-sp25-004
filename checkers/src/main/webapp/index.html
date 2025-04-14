@@ -1,203 +1,245 @@
 <html>
 
-<head>
-	<link rel="stylesheet" href="styles.css">
-</head>
-
-<div id="new_account">
-	<!--Signup screen logo-->
-	<h1>Create New Account</h1>
-	<!--Signup screen logo-->
-
-	<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&"
-		alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-
-	<body style="text-align: center; height: 100vh; display: table; width: 100%;">
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+	<div id = "account-screen-logo" style="text-align: center;">
+		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
+	</div>
+    <div id="new_account" style = "display: none">
+    	<h1>Create New Account</h1>
+	    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
 
 		<div style="margin-bottom: 10px;">
-			<label for="username">Enter new username: </label>
-			<input type="text" id="username" name="username" placeholder="Enter new username"
-				style="border-radius: 100px;">
+				<label for="username">Enter new username: </label>
+				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
+				<span id="username-error" style="display: none; color: red;">Invalid username</span>
+		<!--Span id username-error goes here-->
+				  
 		</div>
 		<div style="margin-bottom: 10px;">
-			<label for="password">Enter new password: </label>
-			<input type="password" id="password" name="password" placeholder="Enter new password"
-				style="border-radius: 100px;">
-		</div>
-
-		<button type="submit" style="display: block; margin: 3 auto;">Register</button>
-
-		<!--Button to return to login from sign up page-->
-		<button id="back-to-login">Login</button>
-
-	</body>
-
-
-</div>
-<div id="login">
-	<h1>Login</h1> <!--before create new account-->
-	<!--Login screen logo DONE-->
-	<img src="https://cdn.discordapp.com/attachments/1344205333568163844/1356392100383559841/logopng.png?ex=67ec6615&is=67eb1495&hm=411f67f79cbf800bd043d62774b59ad9ba6ed38c388e92546480d4b2b8588084&"
-		alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-	<!-- username login box-->
-	<div style="margin-bottom: 10px;">
-		<label for="login-username">Username: </label>
-		<input type="text" id="login-username" name="login-username" placeholder="Enter Username"
-			style="border-radius: 100px;">
-	</div>
-	<!-- password login box-->
-	<div style="margin-bottom: 10px;">
-		<label for="login-password">Password: </label>
-		<input type="text" style="border-radius: 100px;" placeholder="Enter Password">
-	</div>
-	<!-- submit button-->
-	<button type="submit" style="display: block; margin: 3 auto;">Login</button>
-
-	<!--Show signup screen-->
-	<button id="show-signup">Sign Up</button>
-
-	<script>
-		// (On Click) Sign up screen appear, login disappear
-		document.getElementById("show-signup").onclick = function () {
-			document.getElementById("login").style.display = "none";
-			document.getElementById("new_account").style.display = "block";
-		};
-
-		// (On Click) Login screen appear, sign up disappear
-		document.getElementById("back-to-login").onclick = function () {
-			document.getElementById("new_account").style.display = "none";
-			document.getElementById("login").style.display = "block";
-		};
-	</script>
-
-</div>
-
-<div id="join_game">
-	<div class="lobby_lists_container">
-		<!-- have function to get player username and/ or ID -->
-		<h2>Have fun in the lobby :D</h2>
-		<!-- Have function to get amount of players -->
-		<h3>Current players: 3/48</h3>
-		<div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
-			<ol id="lobby_list_items">
-				<!-- Dynamically Created Elements -->
-
-				<!-- UPDATE STATUS INDICATOR (CHASE) -->
-
-				<!-- EXAMPLE: -->
-				<li class="player">
-					<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
-					<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
-					<button id="btn2-UID002" onclick="">View Match</button>
-				</li>
-			</ol>
-		</div>
-
-		<button>
-			<!-- Will always have current player information, parameter is player they want to challenge -->
-			<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
-			<a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
-				Match Making
-			</a>
-		</button>
-		<!-- Will send info to DB and Bots with what bot and person -->
-		<button>
-			<a id="CURRENT_SESSION_BOT" type="button">
-				Request Bot
-			</a>
-		</button>
-		<!-- request to see bots play -->
-		<button>
-			<a id="CURRENT_SESSION_BOTvsBOT" type="button">
-				Watch Bot Vs Bot
-			</a></button>
-	</div>
-	<!-- Send server who is the current player that logged in and request to see the list of active players-->
-	<script>
-		function displayJoinGame() {
-			connection.send(JSON.stringify({ type: "display_join_game", playerID: {} }))
-		}
-
-		function updateJoinGameList(data) {
-			// update to display current player
-			document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
-			//update to display number of players
-			document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
-
-			//update the player lists! - Devin part
-
-		}
-
-		function updateStatus(playerID, status) {
-			// Access the player ID
-			const playerElement = document.getElementById(playerID);
-
-			// access the status span
-			const statusElement = playerElement.querySelector('.status');
-			const challengedBtn = document.getElementById(`btn1-${playerID}`);
+			<label for="password">Enter new password: </label>					
+			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
+			<span id="password-error" style="display: none; color: red;">Invalid password</span>
+		<!--Span id password-error goes here-->
+				  
+			</div>
 			
-			if (!challengedBtn) {
-				console.log("cant find button");
-			}
-			// Change the status to "free"
-			if (status == "busy") {
-				statusElement.classList.remove('free');
-				statusElement.classList.add('busy');
+		<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
 
-				//change button to disabled
-				challengedBtn.disabled = true;
-			}
-			else {
-				statusElement.classList.remove('busy');
-				statusElement.classList.add('free');
-				//change button to normal
-				challengedBtn.disabled = false;
-			}
-		}
-	</script>
-</div>
+									<!--Button to return to login from sign up page-->
+		<button id ="back-to-login">Login</button>
+		
+	    </body>	
+    </div>
+	<div id="login">
+		<h1>Login</h1> 				<!--before create new account-->
+									<!--Login screen logo DONE-->
+		
+									<!-- username login box-->
+		<div style="margin-bottom: 10px;">
+			<label for = "login-username">Username: </label>
+			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
+			<span id="login-username-error" style="color:red; display:none">Username not found. Please try again</span>
+		</div>
+									<!-- password login box-->
+		<div style="margin-bottom: 10px;">
+			<label for = "login-password">Password: </label>
+			<input type ="password" style="border-radius: 100px;" placeholder="Enter Password" >
+			<span id="login-password-error" style="color:red; display:none">Incorrect password. Please try again</span>
+		</div>
+									<!-- submit button-->
+		 <button id = "login-btn" type = "submit" style="display: block; margin: 3 auto;">Submit</button>
 
-<div id="game_display">
-	game display
-</div>
-<div class="summary">
-	<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
-	<!-- visibility hidden -->
-	<div id="summary-leaderboard" style="display: none;">
-		<h1>Leaderboard</h1>
-		<table id="summary-table">
-			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Player</th>
-					<th>Elo</th>
-					<th>Games Won</th>
-					<th>Games Lost</th>
-					<th>Total Number of Games</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- These data will be filled with JSON through a JS script -->
-			</tbody>
-		</table>
-		<!--- <p class= "caption"> Top 10 players.</p> -->
-		<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
-		<script src="./summary/summary.js"></script>
-		<script>
-			// Temporary functions to show/hide the leaderboard until page manager can take over
-			function summaryShow() {
-				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
-				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
-				renderLeaderboard();
+		 							<!--Show signup screen-->
+		 <button id = "show-signup">Sign Up</button>
+
+		 <script>
+			//connect to server here and send msg to console
+			/*let socket = new WebSocket("ws://localhost9080);
+			
+			socket.onopen = function(event){
+			console.log = "Websocket connected"
+			};
+
+			socket.onmessage = function(event){
+			const data = JSON.parse(event.data);
+			if(data.responseID === "login"){
+				alert(data.msg);
+			}
+			else if(data.responseID === "loginSuccess"){
+				alert(data.msg);
+				window.location.href = "join_game.html";
+				}
+			else if(data.responseID ==="new_user"){
+					alert(data.msg);
+					if(data.redirect === "join_game"){
+						window.location.href = "join_game.html";
+					}
+				}
+			};
+			socket.onerror = function(error){
+				console.error("Websocket Error: ", error);
+		 	}
+			socket.onclose = function(event){
+				console.log("Websocket Closed");
 			}
 
-			function summaryHide() {
-				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
-				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+			*/
+					
+									// (On Click) Sign up screen appear, login disappear
+			document.getElementById("show-signup").onclick = function() {
+            document.getElementById("login").style.display = "none";
+            document.getElementById("new_account").style.display = "block";
+                  };
+
+           							// (On Click) Login screen appear, sign up disappear
+            document.getElementById("back-to-login").onclick = function() {
+            document.getElementById("new_account").style.display = "none";
+            document.getElementById("login").style.display = "block";
+             	};
+			
+			//Event Lister for register button
+			document.getElementById("register-btn").onclick = function(){
+				const username = document.getElementById("username").value; //username from signup form
+				const password = document.getElementById("password").value; //password from signup form
+				
+				//Hide error messages by default
+				document.getElementById("username-error").style.display = "none";
+				document.getElementById("password-error").style.display = "none";
+
+
+				let valid = true;
+				if(username.length < 3){
+					document.getElementById("username-error").style.display = "inline";
+					valid = false;
+				}
+				if(password.length < 5){
+					document.getElementById("password-error").style.display = "inline";
+					valid = false;
+				}
+
+				if(!username || !password){
+					alert("Invalid username and/or password.");
+					return;
+				}
+				if(!valid) return;
+
+				const signupData = { 
+					//Data into JSON object
+					type: "signup", 
+					UserName : username, 
+					Password:password
+				};
+			//Send data as JSON string JSON.stringify
+			//socket.send(JSON.stringify(signupData))
 			}
-		</script>
+
+			//Event handler for login button
+			document.getElementById("login-btn").onclick = function(){
+				const loginUsername = document.getElementById("login-username").value; //username from signup form
+				const loginPassword = document.getElementById("login-password").value; //password from signup form
+
+				document.getElementById("login-username-error").style.display = "none";
+				document.getElementById("login-password-error").style.display = "none";
+				
+				// More Data Validation can go here
+				if(!loginUsername || !loginPassword){ //Username or Password not filled in
+					alert("Invalid username and/or password.");
+					return;
+				}
+				/*if(!correctLogin){
+				document.getElelmentbyId("login-password-error").style.display = "inline"}
+				if(!userNotFound){
+				documenet.getElementbyID("login-username-error").style.display = "inline}""
+				*/
+				const loginData = { //Data into JSON object
+					type: "login", 
+					UserName : loginUsername, 
+					Password:loginPassword
+				};
+			//Send data as JSON string JSON.stringify
+			//socket.send(JSON.stringify(loginData))		
+			}
+
+		 </script>
+		
 	</div>
-</div>
+    <div id="join_game">
+        <div class="lobby_lists_container" > 
+            <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
+            <p>Current players: 3/48</p>
+            <div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+                <ol id="lobby_list_items">
+                    <!-- Dynamically Created Elements -->
+        
+                    <!-- EXAMPLE:
+                    <li class="player">
+                        <p id="#UID002"> Player 2 - {ELO} <span class="status busy"></span></p>
+                        <button><a id="btn1-UID002" type="button" href="" onclick="req_challenge(1,2)">Challenge</a></button>
+                        <button><a id="btn2-UID002" type="button" href="">View Match</a></button>
+                    </li> -->
+                </ol>
+            </div>
+        
+            <button>
+                <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+                    Match Making
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOT" type="button">
+                    Request Bot
+                </a>
+            </button>
+            <button>
+                <a id="CURRENT_SESSION_BOTvsBOT" type="button">
+                    Watch Bot Vs Bot
+                </a></button>
+        </div>
+    </div>
+    <div id="game_display">
+    game display
+    </div>
+	<div class="summary">
+		<button id="summary-button-display" onclick="openLeaderboard()">Leaderboard</button>
+
+		<!-- visibility hidden -->
+		<div id="summary-leaderboard" style="display: none;">
+			<h1>Leaderboard</h1>
+			<table id="summary-table">
+				<thead>
+					<tr>
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Elo</th>
+						<th>Games Won</th>
+						<th>Games Lost</th>
+						<th>Total Number of Games</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- These data will be filled with JSON through a JS script -->
+				</tbody>
+			</table>
+			<!--- <p class= "caption"> Top 10 players.</p> -->
+			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+			<script src="./summary/summary.js"></script>
+			<script>
+				// Temporary functions to show/hide the leaderboard until page manager can take over
+				function summaryShow() {
+					document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+					document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
+					renderLeaderboard();
+				}
+				
+				function summaryHide() {
+					document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+					document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				}
+			</script>
+		</div>
+	</div>
 
 <div id="stuff">
 	<input type="button" value="Send Something" onclick="msg()">
@@ -257,6 +299,8 @@
 			// Summary Responses
 			case "summaryTopTenData": {
 				console.log("Received summaryTopTenData!");
+				//ommits the responseID and only sends needed values to loadData
+				loadData(jsonMsg[responseID]); 
 				break;
 			}
 			case "summaryUserJson": {

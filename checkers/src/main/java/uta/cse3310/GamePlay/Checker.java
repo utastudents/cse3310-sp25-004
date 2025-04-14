@@ -8,6 +8,7 @@ public class Checker
 	private boolean isKing = false;
 	private Cord cord;
 	private Color color;
+	private int playerID;
 	
 	public Checker(Cord cord, Color color)
 	{
@@ -39,6 +40,10 @@ public class Checker
 	public Color getColor()
 	{
 		return color;
+	}
+
+	public int getPlayerID(){
+		return playerID;
 	}
 
 

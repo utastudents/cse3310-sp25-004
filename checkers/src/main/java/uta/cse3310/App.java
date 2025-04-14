@@ -113,13 +113,32 @@ public class App extends WebSocketServer {
     conn.send(jsonString);
   }
 
+
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-    System.out.println(conn + " has closed");
-    // need to delete from id2con and con2 at this time ....
-
+      System.out.println(conn + " has closed");
+  
+      Integer Id = con2id.get(conn);
+  
+      if (Id != null) {
+          id2con.remove(Id);
+          con2id.remove(conn);
+  
+          
+          JsonObject Msg = new JsonObject();
+          Msg.addProperty("action", "userLeft");  
+          Msg.addProperty("playerId", Id);
+  
+          onMessage(conn, Msg.toString());
+  
+          System.out.println("Removed player " + Id);
+      } else {
+          System.out.println("No associated player found for this connection.");
+      }
   }
-
+  
+  
+  
   @Override
   public void onMessage(WebSocket conn, String message) {
 
@@ -176,6 +195,12 @@ public class App extends WebSocketServer {
         break;
       case "backToHome":
         Reply = PM.backToHome(Id);
+        break;
+      case "summaryData":
+        Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
+        break;
+      case "userLeft":
+        Reply = PM.userLeave(Id);
         break;
       default:
         System.out.println("Unknown action: " + action);
@@ -246,3 +271,5 @@ public class App extends WebSocketServer {
     System.out.println("Hello World!");
   }
 }
+
+
