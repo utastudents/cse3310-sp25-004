@@ -84,6 +84,11 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean challenge(Player p, Player c, HumanPlayer spectator) {
+        if (gm.getNumOfGames() > 0 && gm.createGame(p, c)) {
+            //Queue was bypassed
+            return false;
+        }
+        //Add players to the queue
         Challenge challenge = new Challenge(p, c, spectator);
         numPlayersInQueue += 2;
         playerQueue.add(challenge);
