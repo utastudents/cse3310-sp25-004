@@ -73,6 +73,7 @@ public class GamePlay
                         board.removeJumpedChecker(piece, newPos);
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
+                        board.kingMe(piece);
                     }  
                     else
                     {
@@ -90,7 +91,7 @@ public class GamePlay
                         board.removeJumpedChecker(piece, newPos);
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
-
+                        board.kingMe(piece);
                     }   
                     else
                     {
@@ -133,6 +134,7 @@ public class GamePlay
                     if(board.moveForwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
+                        board.kingMe(piece);
                         result = 2;
                     }
                     else
@@ -145,6 +147,7 @@ public class GamePlay
                     if(board.moveBackwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
+                        board.kingMe(piece);
                         result = 2;
                     }
                     else

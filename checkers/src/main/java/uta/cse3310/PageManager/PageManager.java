@@ -559,6 +559,7 @@ public class PageManager {
 
         // 5) if the player is null, then the username and password are incorrect
         if (player == null) {
+            status.addProperty("responseID", "login");
             status.addProperty("msg", "Invalid username or password.");
             reply.replyObj = status;
             return reply;
@@ -570,6 +571,7 @@ public class PageManager {
         player.setStatus(HumanPlayer.STATUS.ONLINE);
 
         // 6) if the player is not null, then the username and password are correct
+        status.addProperty("responseID", "loginSuccessful");
         status.addProperty("msg", "Login successful!");
         status.addProperty("playerID", player.getPlayerId());
 
