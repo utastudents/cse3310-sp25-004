@@ -84,3 +84,13 @@ connection.onmessage = function (evt) {
         }
     }
 }
+
+// document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+// document.getElementById("game_display").style.display = "none";
+// document.getElementById("new_account").style.display = "none";
+// document.getElementById("login").style.display = "block"; 
+
+// function updatePageDisplay(displaySettings) { function to update page display 
+  
+// }
+

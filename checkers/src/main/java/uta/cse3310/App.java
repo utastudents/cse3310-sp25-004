@@ -97,33 +97,23 @@ public class App extends WebSocketServer {
   }
 
   @Override
-public void onOpen(WebSocket conn, ClientHandshake handshake) {
-    System.out.println("A new connection has been opened");
-    clientId = clientId + 1;
-    System.out.println("The client id is " + clientId);
-
-    // Save off the ID and connection pointer so they can be easily fetched
-    con2id.put(conn, clientId);
-    id2con.put(clientId, conn);
-
-    // Check if the client ID is 1 to add a dummy player
-    if (clientId == 1) {
-        // Call PageManager's addDummy method to add a dummy player
-        PM.addDummy(clientId);
-        System.out.println("Added dummy player to activePlayers");
-    }
-
-    // Send the clientId as JSON back to the frontend
-    id ID = new id();
-    ID.clientId = clientId;
-    Gson gson = new Gson();
-    String jsonString = gson.toJson(ID);
-    System.out.println("Sending " + jsonString);
-    conn.send(jsonString);
-}
-
+  public void onOpen(WebSocket conn, ClientHandshake handshake) {
+      System.out.println("A new connection has been opened");
+      clientId = clientId + 1;
+      System.out.println("The client id is " + clientId);
   
-
+      // Save off the ID and connection pointer so they can be easily fetched
+      con2id.put(conn, clientId);
+      id2con.put(clientId, conn);
+  
+      // Send the clientId as JSON back to the frontend
+      id ID = new id();
+      ID.clientId = clientId;
+      Gson gson = new Gson();
+      String jsonString = gson.toJson(ID);
+      System.out.println("Sending " + jsonString);
+      conn.send(jsonString);
+  }
 
 
   @Override
