@@ -1,6 +1,8 @@
 package uta.cse3310.GameManager;
 
 import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -76,19 +78,19 @@ public class GameManager {
         // remove here
     }
 
+     // TODO: Calls GamePlay move method to update checker position and return GameUpdate object with new position and player ID
     public GameUpdate processMove(GameMove move) {
-        // call GamePlay Board method to validate move ? and return GameUpdate object
-        // with new position and player ID
         boolean valid = true;
         String status = "In Progress";
         String winner = "";
         boolean capture = false;
         boolean promotion = false;
 
-        String movePath = move.getFromPosition() + " -> " + move.getToPosition();
+        int playerId = move.getClientId();
 
+        String movePath = "Player" + playerId + ":" + move.getFromPosition() + " -> " + move.getToPosition();
+
+        // All info is being sent in movePath
         return new GameUpdate(valid, status, winner, capture, promotion, movePath);
-
     }
-
 }
