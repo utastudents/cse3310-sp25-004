@@ -17,7 +17,10 @@ connection = new WebSocket(serverUrl);
 function sendMessage(json = {}) {
     if (!json.action) {
         console.trace("No ACTION specified in sendMessage!");
+        return;
     }
+    console.log("Sending message " + json.action + " to server");
+    console.log(JSON.stringify(json));
     connection.send(json);
 }
 
