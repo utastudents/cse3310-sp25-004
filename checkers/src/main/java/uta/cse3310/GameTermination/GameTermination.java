@@ -6,6 +6,14 @@ import uta.cse3310.PageManager.HumanPlayer;
 
 public class GameTermination {
         // Tells game play game is over. 
+
+        public void checkGameEnd(GameState gameState) {
+                // Logic to determine if the game has ended
+                if (gameHasEnded) {
+                    GameResult gameResult = new GameResult();
+                    gameResult.generateLeaderboard();
+                }
+            }
         public Game endGame() {
                 Game game = new Game(0, null, null); // temp code for compiling purposes 
                 return game;
