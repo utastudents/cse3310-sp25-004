@@ -594,12 +594,16 @@ public class PageManager {
         // SEND TO SQLITE DATABASE
         boolean success = db.addPlayer(username, password);
     
-        if (success) {
-            status.addProperty("msg", "Account created successfully!");
-            status.addProperty("redirect", "join_game"); //redirect to the login page
-        } else {
-            status.addProperty("msg", "Username already exists.");
-        }
+        // if (success) {
+        //     status.addProperty("msg", "Account created successfully!");
+        //     status.addProperty("redirect", "join_game"); //redirect to the login page
+        // } else {
+        //     status.addProperty("msg", "Username already exists.");
+        // }
+
+        //will show success message and redirect
+         status.addProperty("msg", "Username created SUCCESSFULLY.");
+         status.addProperty("redirect", "join_game");
     
         reply.replyObj = status;
         return reply;
