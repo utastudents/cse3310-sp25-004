@@ -39,7 +39,7 @@ public class GameManager {
     }
 
     // Track numOfGames for available game slots
-    public int getNumOfGames() {
+    public int getNumOfAvailableGames() {
         int availableGames = 0;
         for (Game game : games) {
             if (game == null || !game.isGameActive()) {
