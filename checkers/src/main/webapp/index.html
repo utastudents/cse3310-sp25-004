@@ -237,7 +237,7 @@
         </div>
     </div>
     <div id="game_display">
-    game display
+
     </div>
 	<div class="summary">
 		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
@@ -245,6 +245,7 @@
 		<!-- visibility hidden -->
 		<div id="summary-leaderboard" style="display: none;">
 			<h1>Leaderboard</h1>
+			<div class="scrollable-table">
 			<table id="summary-table">
 				<thead>
 					<tr>
@@ -260,6 +261,7 @@
 					<!-- These data will be filled with JSON through a JS script -->
 				</tbody>
 			</table>
+		</div>
 			<!--- <p class= "caption"> Top 10 players.</p> -->
 			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
 			<script src="./summary/summary.js"></script>
@@ -279,12 +281,12 @@
 		</div>
 	</div>
 
-    <div id="stuff">
+    <!-- <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
       <label for="tbox">Received</label>
       <textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div>
+    </div> -->
 </html>
 <script>
     // each of the 'divs' in the html page should have attributes to allow them to be hidden.
@@ -331,16 +333,12 @@
 				loadData(jsonMsg[responseID]); 
 				break;
 			}
-			case "summaryUserJson":{
-				console.log("Received summaryUserJson!");
-				break;
-			}
 			default:{
 				console.log("Received unexpected responseID! Got: \n"+responseID);
 			}
 		}
 
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+        //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -348,42 +346,12 @@
         msg;
     }
 
-    function msg() {
-        console.log("button clicked");
-        U = new UserEvent();
-        U.msg="i pushed a button";
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
-    }
+    // function msg() {
+    //     console.log("button clicked");
+    //     U = new UserEvent();
+    //     U.msg="i pushed a button";
+    //     connection.send(JSON.stringify(U));
+    //     console.log(JSON.stringify(U))
+    // }
 
-	function summary(/*void*/) {
-    
-		/* DEPRECATED : Code now resides in ./summary.js */
-		
-		/*
-		* Fetches and displays player ranking data in the summary table.
-		*
-		* This function retrieves JSON data for:
-		* - The current player, identified via a session UUID.
-		* - The top 10 ranked players.
-		*
-		* The data is retrieved using:
-		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
-		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-		*
-		* The retrieved data is then written to the HTML table inside the summary div.
-		*
-		* TODO:
-		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-		* - Handle potential errors when fetching data.
-		* - Ensure proper table structure for displaying the data.
-		*/
-		
-		// playerData = retrieveUserJson();
-		// globalData = retrieveTopTenJson();
-
-    // Write top ten to table
-    // Write user to table
-    return;
-}
 </script>
