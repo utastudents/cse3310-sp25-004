@@ -594,6 +594,7 @@ public class PageManager {
 
         // SEND TO SQLITE DATABASE
         boolean success = db.addPlayer(username, password);
+        System.out.println("addPlayer result: " + success);
 
         if(!success){
              status.addProperty("msg", "failed to create player !");
@@ -602,7 +603,14 @@ public class PageManager {
         }
         // fetching new added user form DB
         HumanPlayer player = db.getPlayer(username,password);
-            // Add to active player list and mark as online
+        // check if player was retrieved successfully
+            if (player == null) {
+                System.err.println("ERROR: Failed to retrieve newly added user from DB for username=" + username);
+                status.addProperty("msg", "User creation succeeded, but failed to retrieve user from database.");
+                reply.replyObj = status;
+                return reply;
+            }
+        //     // Add to active player list and mark as online
         activePlayers.put(Id, player);
         userIDToClientID.put(player.getPlayerId(), Id);
         player.setStatus(Player.STATUS.ONLINE);

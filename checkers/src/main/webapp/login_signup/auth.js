@@ -42,7 +42,7 @@ if(!valid) return;
 
 const signupData = { 
     //Data into JSON object
-    type: "new_user", 
+    action: "new_user",
     UserName : username, 
     Password:password
 };
@@ -66,7 +66,7 @@ if(!loginUsername || !loginPassword){ //Username or Password not filled in
     return;
 }
 const loginData = { //Data into JSON object
-    type: "login", 
+    action: "login",
     UserName : loginUsername, 
     Password:loginPassword
 };
