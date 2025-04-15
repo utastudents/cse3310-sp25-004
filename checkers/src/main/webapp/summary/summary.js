@@ -43,13 +43,13 @@ function fillTable(leaderboard) {
         let rankDisplay;
         switch (index) {
             case 0:
-                rankDisplay = "🥇";
+                rankDisplay = "\u{1F947}"; // gold medal
                 break;
             case 1:
-                rankDisplay = "🥈";
+                rankDisplay = "\u{1F948}"; // silver medal
                 break;
             case 2:
-                rankDisplay = "🥉";
+                rankDisplay = "\u{1F949}"; // bronze medal
                 break;
             default:
                 rankDisplay = index + 1;
