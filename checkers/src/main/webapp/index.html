@@ -282,35 +282,6 @@
         console.log(JSON.stringify(U))
     }
 
-	function summary(/*void*/) {
-    
-		/* DEPRECATED : Code now resides in ./summary.js */
-		
-		/*
-		* Fetches and displays player ranking data in the summary table.
-		*
-		* This function retrieves JSON data for:
-		* - The current player, identified via a session UUID.
-		* - The top 10 ranked players.
-		*
-		* The data is retrieved using:
-		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
-		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-		*
-		* The retrieved data is then written to the HTML table inside the summary div.
-		*
-		* TODO:
-		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-		* - Handle potential errors when fetching data.
-		* - Ensure proper table structure for displaying the data.
-		*/
-		
-		// playerData = retrieveUserJson();
-		// globalData = retrieveTopTenJson();
-
-    // Write top ten to table
-    // Write user to table
-
 	// Function to retrieve and display the leaderboard
 async function summary() {
     try {
@@ -362,6 +333,4 @@ function getSessionUUID() {
     return localStorage.getItem('sessionUUID');
 }
 
-    return;
-}
 </script>
