@@ -59,7 +59,7 @@
 	</div>
 </div>
 	</body>
-    <div id="join_game">
+    <div id="join_game" style = "display: none">
         <div class="lobby_lists_container" > 
             <h2>Welcome back {playerID} Have fun in the lobby :D</h2>
             <p>Current players: 3/48</p>
@@ -174,30 +174,38 @@
     connection.onmessage = function (evt) {
         let msg = evt.data; //extract data from websocket response
         console.log("Message received: " + msg);
-		let jsonMsg = JSON.parse(msg); //convert data to JSON
+		let jsonMsg = JSON.parse(msg); 
+
+		if (jsonMsg.clientId) {
+			console.log("Connected with clientId:", jsonMsg.clientId);
+			return;
+		}
+		
+		if (!jsonMsg.responseID) {
+			console.error("Received unexpected responseID! Got:", jsonMsg);
+			return;
+		}
+		//convert data to JSON
 		//Extracts the response identifier from the response, so we can determine whose code it belongs to
 		//See ./INTERFACES/client-server-docs.md for details
-		let responseID = Object.keys(jsonMsg)[0]; 
+		let responseID = Object.keys(jsonMsg)[0];
 		switch (responseID )
 		{
 			// Account Responses
-			/*case "login": {
+			case "login": {
 				document.getElementById("login-username-error").style.display = "none";
 				document.getElementById("login-password-error").style.display = "none";
 
 				if(jsonMsg.msg === "Invalid username or password."){
 					document.getElementById("login-password-error").style.display = "inline";
 				}
-				if(jsonMsg.msg === "Username does not exist."){
-					document.getElementById("login-username-error").style.display = "inline";
-				}
-				else{
-					alert("Invalid username or password.");
-				}
 				break;
 			}
 			case "loginSuccess": {
 				alert(jsonMsg.msg);
+				document.getElementById("login").style.display = "none";
+				document.getElementById("new_user").style.display = "none";
+				document.getElementById("join_game").style.display = "block";
 				//Hide login and signup page, show join_game page
 				break;
 			}
@@ -205,15 +213,19 @@
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
 				if(data.msg === "Username already exists"){
-					alert("Username already Exists") //create new span for username already exists
+					alert("Username already Exists"); //create new span for username already exists
 				}
-				if(jsonMsg.msg === "Account created successfully!"){
+				else if(jsonMsg.msg === "Account created successfully!"){
+					alert("Account created");
+					document.getElementById("login").style.display = "none";
+					document.getElementById("new_user").style.display = "none";
+					document.getElementById("join_game").style.display = "block";
 					//Hide signup and login page, show join_game page
 				}
 				break;
-			}*/
+			}
 			//temporary hardcode
-			case "loginSuccess":
+			/*case "loginSuccess":
             alert(jsonMsg.msg);
             if (jsonMsg.msg === "Login Successful!"){
 				//hide login and signup, show join_game
@@ -225,7 +237,7 @@
         		if(jsonMsg.msg === "Account created successfully!"){
 					//Hide signup and login page, show join_game page
 				} 
-            break;
+            break;*/
 
 			// Game Responses
 
