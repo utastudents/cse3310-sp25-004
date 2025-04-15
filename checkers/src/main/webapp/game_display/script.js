@@ -206,3 +206,107 @@ function startGame() {
 }
 // Start the game when the page loads
 document.addEventListener("DOMContentLoaded", startGame);
+
+
+
+let popupAction = null; // 'quit', 'draw', etc.
+
+// Show the confirmation popup
+function showPopup(actionType) {
+    popupAction = actionType;
+
+    const modal = document.getElementById("popup-modal");
+    const message = document.getElementById("popup-message");
+    const controls = document.getElementById("game-controls"); // Optional button container
+
+    if (!modal || !message) return;
+
+    // Set dynamic message
+    switch (actionType) {
+        case 'quit':
+            message.textContent = "Are you sure you want to quit?";
+            break;
+        case 'draw':
+            message.textContent = "Are you sure you want to request a draw?";
+            break;
+        default:
+            message.textContent = "Are you sure?";
+    }
+
+    // Show modal
+    modal.style.display = "flex";
+
+    // Optional: dim and disable the board
+    document.querySelectorAll("td").forEach(cell => {
+        cell.style.pointerEvents = "none";
+        cell.style.opacity = "0.6";
+    });
+
+    // Optional: disable Quit/Draw buttons if wrapped in a div
+    if (controls) {
+        controls.style.pointerEvents = "none";
+        controls.style.opacity = "0.5";
+    }
+}
+
+// Hide the confirmation popup
+function hidePopup() {
+    const modal = document.getElementById("popup-modal");
+    const controls = document.getElementById("game-controls");
+
+    if (!modal) return;
+
+    // Hide popup
+    modal.style.display = "none";
+    popupAction = null;
+
+    // Restore board
+    document.querySelectorAll("td").forEach(cell => {
+        cell.style.pointerEvents = "auto";
+        cell.style.opacity = "1";
+    });
+
+    // Re-enable buttons
+    if (controls) {
+        controls.style.pointerEvents = "auto";
+        controls.style.opacity = "1";
+    }
+}
+
+// Run when page is loaded
+document.addEventListener("DOMContentLoaded", function () {
+    const cancelBtn = document.getElementById("popup-cancel");
+    const confirmBtn = document.getElementById("popup-confirm");
+
+    // 🪝 Hook up Quit/Draw buttons to popup
+    const quitBtn = document.getElementById("quit");
+    const drawBtn = document.getElementById("draw-request");
+
+    if (quitBtn) quitBtn.onclick = () => showPopup("quit");
+    if (drawBtn) drawBtn.onclick = () => showPopup("draw");
+
+    if (cancelBtn) cancelBtn.onclick = hidePopup;
+
+    if (confirmBtn) {
+        confirmBtn.onclick = function () {
+            if (popupAction === 'quit') {
+                quitGame();
+            } else if (popupAction === 'draw') {
+                sendDrawRequest();
+            }
+            hidePopup();
+        };
+    }
+});
+
+
+// Example placeholder functions:
+function quitGame() {
+    alert("Game will now end. (Placeholder for quit logic)");
+    // Optionally: redirect, send WS message, etc.
+}
+
+function sendDrawRequest() {
+    alert("Draw request sent. (Placeholder for draw logic)");
+    // Optionally: send WebSocket message, notify opponent, etc.
+}
