@@ -66,11 +66,7 @@ public class PairUp {
      * @return - false if the player was not added to the queue, true otherwise
      */
     public boolean addToQueue(Player p) {
-        
-        if (gm.getNumOfGames() > 0) {
-            pairUp(); //Try to pair up the players in the queue
-            return true;
-        } 
+      
         //If there are no games available, add the player to the queue
         Challenge challenge = new Challenge(p);
         numPlayersInQueue++; //Increment the number of players in the queue
