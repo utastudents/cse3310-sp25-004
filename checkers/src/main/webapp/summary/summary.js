@@ -27,6 +27,12 @@ function renderLeaderboard() {
     const table = document.getElementById("summary-table");
     const thead = table.getElementsByTagName("thead")[0];
     const tbody = table.getElementsByTagName("tbody")[0];
+	const dataRequest = 
+	{
+		action : "summaryData"
+	};
+	//sends 
+	connection.send(JSON.stringify(dataRequest));
 
     tbody.innerHTML = ""; // Clear the table body
     leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating

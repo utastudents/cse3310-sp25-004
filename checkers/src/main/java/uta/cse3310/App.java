@@ -97,53 +97,68 @@ public class App extends WebSocketServer {
   }
 
   @Override
-  public void onOpen(WebSocket conn, ClientHandshake handshake) {
+public void onOpen(WebSocket conn, ClientHandshake handshake) {
     System.out.println("A new connection has been opened");
     clientId = clientId + 1;
-    System.out.println("the client id is " + clientId);
+    System.out.println("The client id is " + clientId);
 
-    // save off the ID and conn ptr so they can be easily fetched
+    // Save off the ID and connection pointer so they can be easily fetched
     con2id.put(conn, clientId);
     id2con.put(clientId, conn);
 
+    // Check if the client ID is 1 to add a dummy player
+    if (clientId == 1) {
+        // Call PageManager's addDummy method to add a dummy player
+        PM.addDummy(clientId);
+        System.out.println("Added dummy player to activePlayers");
+    }
+
+    // Send the clientId as JSON back to the frontend
     id ID = new id();
     ID.clientId = clientId;
     Gson gson = new Gson();
-
-    // Note only send to the single connection
     String jsonString = gson.toJson(ID);
-    System.out.println("sending " + jsonString);
+    System.out.println("Sending " + jsonString);
     conn.send(jsonString);
-  }
+}
+
+  
+
 
 
   @Override
-  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-      System.out.println(conn + " has closed");
-  
-      Integer Id = con2id.get(conn); //get Id 
-      if (Id != null) {
-          // Remove mappings between websocket and ID
-          id2con.remove(Id);
-          con2id.remove(conn);
-  
-          // call PM function that removes form queue and active player, generates reply object
-          UserEventReply reply = PM.userLeave(Id);
-  
-          // notify idle players
-          for (Integer recipientId : reply.recipients) {
-              WebSocket recipient = id2con.get(recipientId);
-              if (recipient != null) {
-                  recipient.send(reply.replyObj.toString());
-                  System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
-              }
-          }
-  
-          System.out.println("Removed player " + Id);
-      } else {
-          System.out.println("No associated player found for this connection.");
-      }
-  }
+public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+    System.out.println(conn + " has closed");
+
+    Integer Id = con2id.get(conn); // Get player ID associated with the connection
+    if (Id != null) {
+        // Remove mappings between websocket and ID
+        id2con.remove(Id);
+        con2id.remove(conn);
+
+        // Call PM function to remove player from queue and active players, generates reply object
+        UserEventReply reply = PM.userLeave(Id);
+
+        if (reply != null) {
+            // Notify idle players about the player leaving
+            for (Integer recipientId : reply.recipients) {
+                WebSocket recipient = id2con.get(recipientId);
+                if (recipient != null) {
+                    recipient.send(reply.replyObj.toString()); // Send the "playerLeft" message
+                    System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
+                }
+            }
+        } else {
+            System.out.println("No user event reply for player " + Id);
+        }
+
+        System.out.println("Removed player " + Id);
+    } else {
+        // Log if no associated player is found for this connection
+        System.out.println("No associated player found for this connection.");
+    }
+}
+
   
  
 
@@ -178,10 +193,25 @@ public class App extends WebSocketServer {
     // the function to be called needs to accept (for this example) a
     // UserEvent, and return a ReplyEvent
 
+    //Log the raw incoming WebSocket message
+    System.out.println("Incoming raw message: " + message);
+
     //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
-    String action = jsonObj.get("action").getAsString();
-    //
+    //checj if actiion exist in the Json
+    if (!jsonObj.has("action")) {
+    System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
+    return;
+}
+    // String action = jsonObj.get("action").getAsString();
+      String action = null;
+
+  if (jsonObj.has("action")) {
+      action = jsonObj.get("action").getAsString();
+  } else {
+      System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+      return;
+  }
 
     //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
     UserEventReply Reply = null;
