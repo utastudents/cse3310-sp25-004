@@ -85,55 +85,12 @@ connection.onmessage = function (evt) {
     }
 }
 
-document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
-document.getElementById("game_display").style.display = "none";
-document.getElementById("new_account").style.display = "none";
-document.getElementById("login").style.display = "block"; 
+// document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+// document.getElementById("game_display").style.display = "none";
+// document.getElementById("new_account").style.display = "none";
+// document.getElementById("login").style.display = "block"; 
 
-// Function to update page display based on server instructions
-function updatePageDisplay(displaySettings) {
-  // Handle display_new_account
-  if (displaySettings.hasOwnProperty('display_new_account')) {
-    document.getElementById("new_account").style.display = 
-      displaySettings.display_new_account ? "block" : "none";
-  }
+// function updatePageDisplay(displaySettings) { function to update page display 
   
-  // Handle display_join_game
-  if (displaySettings.hasOwnProperty('display_join_game')) {
-    document.getElementById("join_game").style.display = 
-      displaySettings.display_join_game ? "block" : "none";
-  }
-  
-  // Handle display_game_display
-  if (displaySettings.hasOwnProperty('display_game_display')) {
-    document.getElementById("game_display").style.display = 
-      displaySettings.display_game_display ? "block" : "none";
-  }
-  
-  // Handle display_login
-  if (displaySettings.hasOwnProperty('display_login')) {
-    document.getElementById("login").style.display = 
-      displaySettings.display_login ? "block" : "none";
-  }
-  
-  // Handle display_summary
-  if (displaySettings.hasOwnProperty('display_summary')) {
-    document.getElementById("summary-leaderboard").style.display = 
-      displaySettings.display_summary ? "block" : "none";
-    document.getElementById("summary-button-display").style.display = 
-      displaySettings.display_summary ? "none" : "inline-block";
-  }
-}
+// }
 
-// Update existing login functions to handle display state
-function loginSuccess() {
-  // Update the display state
-  updatePageDisplay({
-    display_login: false,
-    display_new_account: false,
-    display_join_game: true
-  });
-  
-  // Alert the user
-  alert(jsonMsg.msg || "Login successful!");
-}
