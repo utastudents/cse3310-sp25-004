@@ -210,7 +210,7 @@
 				};
 
 				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
-				connection.send(JSON.stringify(botVsBotReq));
+				sendMessage(JSON.stringify(botVsBotReq));
 			}
 
 			document.getElementById("CURRENT_SESSION_BOTvsBOT").onclick = function () {
@@ -280,6 +280,7 @@
 </div> -->
 
 </html>
+<script src="socket.js"></script>
 <script>
 	// each of the 'divs' in the html page should have attributes to allow them to be hidden.
 	// the page manager should send a small json message, that tells which of these are hidden
@@ -291,158 +292,40 @@
 	// or until the user decides to go to another page.
 	// this requires everything to load from this page.
 
-	var connection = null;
 
-	var serverUrl;
-	serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
-	connection = new WebSocket(serverUrl);
+	// WEBSOCKET CALLBACK FUNCTIONS
+	// These functions are called in response to the client receiving websocket messages
 
-	connection.onopen = function (evt) {
-		console.log("open");
-	}
+	function login(message) {
+		document.getElementById("login-username-error").style.display = "none";
+		document.getElementById("login-password-error").style.display = "none";
 
-	connection.onclose = function (evt) {
-		console.log("close");
-	}
-
-
-    connection.onmessage = function (evt) {
-        let msg = evt.data; //extract data from websocket response
-        console.log("Message received: " + msg);
-		let jsonMsg = JSON.parse(msg); 
-
-
-		if (jsonMsg.clientId) {
-			console.log("Connected with clientId:", jsonMsg.clientId);
-			return;
-		}
-		
-		if (!jsonMsg.responseID) {
-			console.error("Received unexpected responseID! Got:", jsonMsg);
-			return;
-		}
-		//convert data to JSON
-		//Extracts the response identifier from the response, so we can determine whose code it belongs to
-		//See ./INTERFACES/client-server-docs.md for details
-		let responseID = jsonMsg.responseID;
-		switch (responseID )
-		{
-			// Account Responses
-			case "login": {
-				document.getElementById("login-username-error").style.display = "none";
-				document.getElementById("login-password-error").style.display = "none";
-
-				if(jsonMsg.msg === "Invalid username or password."){
-					document.getElementById("login-password-error").style.display = "inline";
-				}
-				break;
-			}
-			case "loginSuccess": {
-				alert(jsonMsg.msg);
-				document.getElementById("login").style.display = "none";
-				document.getElementById("new_user").style.display = "none";
-				document.getElementById("join_game").style.display = "block";
-				//Hide login and signup page, show join_game page
-				break;
-			}
-			case "new_user": {
-				document.getElementById("username-error").style.display = "none";
-				document.getElementById("password-error").style.display = "none";
-				document.getElementById("username-exists-error").style.display = "none";
-				if(jsonMsg.msg === "Username already exists"){
-					document.getElementById("username-exists-error").style.display = "block"; //create new span for username already exists
-				}
-				if(jsonMsg.msg === "Account created successfully!"){
-					alert("Account created");
-					document.getElementById("login").style.display = "none";
-					document.getElementById("new_user").style.display = "none";
-					document.getElementById("join_game").style.display = "block";
-					//Hide signup and login page, show join_game page
-				}
-				if(jsonMsg.msg === "failed to create player !"){
-					console.log("displaying error message. ")
-					document.getElementById("database-failure-error").style.display = "inline";
-				}
-				break;
-			}
-			//temporary hardcode
-			/*case "loginSuccess":
-            alert(jsonMsg.msg);
-            if (jsonMsg.msg === "Login Successful!"){
-				//hide login and signup, show join_game
-            break;
-			}
-
-        	case "new_user":
-            	alert(jsonMsg.msg);
-        		if(jsonMsg.msg === "Account created successfully!"){
-					//Hide signup and login page, show join_game page
-				} 
-            break;*/
-
-			// Game Responses
-
-			// Summary Responses
-			case "summaryTopTenData": {
-				console.log("Received summaryTopTenData!");
-				//ommits the responseID and only sends needed values to loadData
-				loadData(jsonMsg[responseID]); 
-				break;
-			}
-			default:{
-				console.log("Received unexpected responseID! Got: \n"+responseID);
-			}
+		if(message === "Invalid username or password."){
+			document.getElementById("login-password-error").style.display = "inline";
 		}
 	}
-//Start of Login/Username Functionality
+
+	function loginSuccess() {
+		alert(jsonMsg.msg);
+		document.getElementById("login").style.display = "none";
+		document.getElementById("new_user").style.display = "none";
+		document.getElementById("join_game").style.display = "block";
+		//Hide login and signup page, show join_game page
+	}
 	
-
-        //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
-        //const obj = JSON.parse(msg);
-
-
-	// class UserEvent {
-	// 	msg;
-	// }
-
-	// function msg() {
-	// 	console.log("button clicked");
-	// 	U = new UserEvent();
-	// 	U.msg = "i pushed a button";
-	// 	connection.send(JSON.stringify(U));
-	// 	console.log(JSON.stringify(U))
-	// }
-
-	
-	// Function to retrieve and display the leaderboard
-	function summary(/*void*/) {
-
-		/* DEPRECATED : Code now resides in ./summary.js */
-
-		/*
-		* Fetches and displays player ranking data in the summary table.
-		*
-		* This function retrieves JSON data for:
-		* - The current player, identified via a session UUID.
-		* - The top 10 ranked players.
-		*
-		* The data is retrieved using:
-		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
-		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
-		*
-		* The retrieved data is then written to the HTML table inside the summary div.
-		*
-		* TODO:
-		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
-		* - Handle potential errors when fetching data.
-		* - Ensure proper table structure for displaying the data.
-		*/
-
-		// playerData = retrieveUserJson();
-		// globalData = retrieveTopTenJson();
-
-		// Write top ten to table
-		// Write user to table
-		return;
+	function newUser(message) {
+		document.getElementById("username-error").style.display = "none";
+		document.getElementById("password-error").style.display = "none";
+		document.getElementById("username-exists-error").style.display = "none";
+		if(message === "Username already exists"){
+			document.getElementById("username-exists-error").style.display = "block"; //create new span for username already exists
+		}
+		if(message === "Account created successfully!"){
+			alert("Account created");
+			document.getElementById("login").style.display = "none";
+			document.getElementById("new_user").style.display = "none";
+			document.getElementById("join_game").style.display = "block";
+			//Hide signup and login page, show join_game page
+		}
 	}
 </script>

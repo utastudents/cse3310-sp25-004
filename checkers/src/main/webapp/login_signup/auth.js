@@ -47,7 +47,7 @@ const signupData = {
     Password:password
 };
 //Send data as JSON string JSON.stringify
-connection.send(JSON.stringify(signupData));
+sendMessage(JSON.stringify(signupData));
 console.log("Signup Data sent: ", signupData)		
 };
 //Event handler for login button
@@ -71,6 +71,6 @@ const loginData = { //Data into JSON object
     Password:loginPassword
 };
 //Send data as JSON string JSON.stringify
-connection.send(JSON.stringify(loginData))
+sendMessage(JSON.stringify(loginData))
 console.log("Login Data sent: ", loginData)		
 }
