@@ -65,7 +65,15 @@ public class PairUp {
      * @param p - the Player who requested the matchmaking
      * @return - false if the player was not added to the queue, true otherwise
      */
-    public boolean addToQueue(Player p) {return false;}
+    public boolean addToQueue(Player p) {
+      
+        //If there are no games available, add the player to the queue
+        Challenge challenge = new Challenge(p);
+        numPlayersInQueue++; //Increment the number of players in the queue
+        playerQueue.add(challenge);
+        pairUp();
+        return true;
+    }
 
     /**
      * Add a player v player challenge to the queue - after it has been accepted
@@ -102,8 +110,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean challengeBot(Player p, boolean botI) {
-        //return challenge(p, botI ? new BotI() : new BotII()); //just calls challenge with a bot
-        return challenge(p, botI ? new BotI() : new BotII(), null);
+        return challenge(p, botI ? new BotI() : new BotII(), null);//just calls challenge with a bot
     }
     /**
      * Add a bot v bot challenge to the queue
@@ -113,7 +120,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue, true otherwise
      */
     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        return challenge(botI ? new BotI() : new BotII(), botI ? new BotI() : new BotII(), spectator); //just calls challenge with a bot
+        return challenge(botI ? new BotI() : new BotII(), botII ? new BotI() : new BotII(), spectator); //just calls challenge with a bot
     }
 
     /**

@@ -1,10 +1,3 @@
-// Initialize leaderboard array with actual data
-let leaderboard = [];
-
-const table = document.getElementById("summary-table");
-const thead = table.getElementsByTagName("thead")[0];
-const tbody = table.getElementsByTagName("tbody")[0];
-
 // Player class definition
 class Player {
     constructor(name, elo, gamesWon, gamesLost, ID) {
@@ -28,40 +21,43 @@ function addEventListeners() {
     });
 }
 
-// Temporary test data
-// Loads data from JSON file/string
-function loadData( jsonData ) {
-	for (const player of jsonData)
-	{
-		//Copy json object into JS class
-		leaderboard.push( new Player(player["username"], player["elo"], player["gamesWon"], player["gamesLost"], player["ID"] ) );
-	}
-	renderLeaderboard();
-
-}
-
 // Function to render the leaderboard
 function renderLeaderboard() {
+	// Leaderboard data
+	let leaderboard = [];
+	const table = document.getElementById("summary-table");
+	const thead = table.getElementsByTagName("thead")[0];
+	const tbody = table.getElementsByTagName("tbody")[0];
 
-    clearTable(); // Clear existing table data
-    sortLeaderboard(); // Sort players by Elo before rendering
-    fillTable(); // Fill the table with player data
-}
+	// GET DATA!
 
-// Function to sort leaderboard by Elo (descending order)
-function sortLeaderboard() {
-    leaderboard.sort((a, b) => b.elo - a.elo); // Sort in descending order based on Elo rating
-}
-
-function clearTable() {
     tbody.innerHTML = ""; // Clear the table body
+    leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
+    fillTable(leaderboard); // Fill the table with player data
 }
 
-function fillTable() {
+function fillTable(leaderboard) {
     leaderboard.forEach((player, index) => {
         const row = document.createElement("tr");
+
+        // Show medals on the top three ranks
+        let rankDisplay;
+        switch (index) {
+            case 0:
+                rankDisplay = "🥇";
+                break;
+            case 1:
+                rankDisplay = "🥈";
+                break;
+            case 2:
+                rankDisplay = "🥉";
+                break;
+            default:
+                rankDisplay = index + 1;
+        }
+
         row.innerHTML = `
-        <td>${index + 1}</td>
+        <td>${rankDisplay}</td>
         <td>${player.name}</td>
         <td>${player.elo}</td>
         <td>${player.gamesWon}</td>
@@ -72,7 +68,15 @@ function fillTable() {
     });
 }
 
-loadData(); // Temporary, should be called only when a request is made to render the leaderboard
+function loadData( jsonData ) {
+	// Loads data from JSON file/string
+	for (const player of jsonData)
+	{
+		//Copy json object into JS class
+		leaderboard.push( new Player(player["username"], player["elo"], player["gamesWon"], player["gamesLost"], player["ID"] ) );
+	}
+}
+
 addEventListeners(); // Call the function to add event listeners, basically our main function
 
 

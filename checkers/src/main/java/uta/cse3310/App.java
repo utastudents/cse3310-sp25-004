@@ -71,15 +71,16 @@ import java.util.Hashtable;
 
 public class App extends WebSocketServer {
 
-  Hashtable<WebSocket, Integer> con2id = new Hashtable<>();
-  Hashtable<Integer, WebSocket> id2con = new Hashtable<>();
+  static Hashtable<WebSocket, Integer> con2id = new Hashtable<>();
+  static Hashtable<Integer, WebSocket> id2con = new Hashtable<>();
 
   int clientId = 0;
   PageManager PM = new PageManager();
-
+  public static PageManager pmInstance;
   class id {
     int clientId;
   }
+
 
   public App(int port) {
     super(new InetSocketAddress(port));
@@ -118,18 +119,23 @@ public class App extends WebSocketServer {
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
       System.out.println(conn + " has closed");
   
-      Integer Id = con2id.get(conn);
-  
+      Integer Id = con2id.get(conn); //get Id 
       if (Id != null) {
+          // Remove mappings between websocket and ID
           id2con.remove(Id);
           con2id.remove(conn);
   
-          
-          JsonObject Msg = new JsonObject();
-          Msg.addProperty("action", "userLeft");  
-          Msg.addProperty("playerId", Id);
+          // call PM function that removes form queue and active player, generates reply object
+          UserEventReply reply = PM.userLeave(Id);
   
-          onMessage(conn, Msg.toString());
+          // notify idle players
+          for (Integer recipientId : reply.recipients) {
+              WebSocket recipient = id2con.get(recipientId);
+              if (recipient != null) {
+                  recipient.send(reply.replyObj.toString());
+                  System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
+              }
+          }
   
           System.out.println("Removed player " + Id);
       } else {
@@ -137,6 +143,21 @@ public class App extends WebSocketServer {
       }
   }
   
+ 
+
+  
+
+  public static void sendMessage(UserEventReply Reply)
+  {
+    
+
+    for (Integer id : Reply.recipients) {
+      WebSocket destination = id2con.get(id);
+
+      destination.send(Reply.replyObj.toString());
+      System.out.println("sending " + Reply.replyObj.toString() + " to " + id);
+    }
+  }
   
   
   @Override
@@ -268,6 +289,7 @@ public class App extends WebSocketServer {
 
     PageManager pm;
     pm = new PageManager();
+    pmInstance = pm;
     System.out.println("Hello World!");
   }
 }
