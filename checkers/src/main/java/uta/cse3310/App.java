@@ -97,57 +97,60 @@ public class App extends WebSocketServer {
   }
 
   @Override
-  public void onOpen(WebSocket conn, ClientHandshake handshake) {
-      System.out.println("A new connection has been opened");
-      clientId = clientId + 1;
-      System.out.println("The client id is " + clientId);
-  
-      // Save off the ID and connection pointer so they can be easily fetched
-      con2id.put(conn, clientId);
-      id2con.put(clientId, conn);
-  
-      // Send the clientId as JSON back to the frontend
-      id ID = new id();
-      ID.clientId = clientId;
-      Gson gson = new Gson();
-      String jsonString = gson.toJson(ID);
-      System.out.println("Sending " + jsonString);
-      conn.send(jsonString);
-  }
+public void onOpen(WebSocket conn, ClientHandshake handshake) {
+    System.out.println("A new connection has been opened");
+    clientId = clientId + 1;
+    System.out.println("The client id is " + clientId);
+
+    // Save off the ID and connection pointer so they can be easily fetched
+    con2id.put(conn, clientId);
+    id2con.put(clientId, conn);
+
+    // Add a dummy player for client 1 or 2
+    if (clientId == 1 || clientId == 2) {
+        PM.addDummy(clientId);
+        System.out.println("Added dummy player to activePlayers: dummy" + clientId);
+    }
+
+    // Send the clientId as JSON back to the frontend
+    id ID = new id();
+    ID.clientId = clientId;
+    Gson gson = new Gson();
+    String jsonString = gson.toJson(ID);
+    System.out.println("Sending " + jsonString);
+    conn.send(jsonString);
+}
 
 
-  @Override
+
+@Override
 public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
 
-    Integer Id = con2id.get(conn); // Get player ID associated with the connection
-    if (Id != null) {
-        // Remove mappings between websocket and ID
-        id2con.remove(Id);
-        con2id.remove(conn);
-
-        // Call PM function to remove player from queue and active players, generates reply object
-        UserEventReply reply = PM.userLeave(Id);
-
-        if (reply != null) {
-            // Notify idle players about the player leaving
-            for (Integer recipientId : reply.recipients) {
-                WebSocket recipient = id2con.get(recipientId);
-                if (recipient != null) {
-                    recipient.send(reply.replyObj.toString()); // Send the "playerLeft" message
-                    System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
-                }
-            }
-        } else {
-            System.out.println("No user event reply for player " + Id);
-        }
-
-        System.out.println("Removed player " + Id);
-    } else {
-        // Log if no associated player is found for this connection
+    Integer id = con2id.remove(conn);
+    if (id == null) {
         System.out.println("No associated player found for this connection.");
+        return;
     }
+
+    id2con.remove(id);
+
+    UserEventReply reply = PM.userLeave(id);
+    if (reply == null) {
+        System.out.println("No user event reply for player " + id);
+    } else {
+        for (Integer recipientId : reply.recipients) {
+            WebSocket recipient = id2con.get(recipientId);
+            if (recipient != null) {
+                recipient.send(reply.replyObj.toString());
+                System.out.println("Notified player " + recipientId + " that player " + id + " has left.");
+            }
+        }
+    }
+
+    System.out.println("Removed player " + id);
 }
+
 
   
  
