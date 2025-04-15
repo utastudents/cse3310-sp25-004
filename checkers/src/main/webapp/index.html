@@ -178,11 +178,11 @@
 					<!-- UPDATE STATUS INDICATOR (CHASE) -->
 	
 					<!-- EXAMPLE: -->
-					<li class="player">
+					<!-- <li class="player">
 						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
 						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
 						<button id="btn2-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
-					</li>
+					</li> -->
 				</ol>
 			</div>
 	
@@ -201,24 +201,80 @@
 			</button>
 			<!-- request to see bots play -->
 			<button>
-				<a id="CURRENT_SESSION_BOTvsBOT" type="button" onclick="watchBotVsBot()">
+				<a id="CURRENT_SESSION_BOTvsBOT" type="button" > <!-- onclick in script section -->
 					Watch Bot Vs Bot
 				</a></button>
 		</div>
 		<!-- Send server who is the current player that logged in and request to see the list of active players-->
 		<script>
-			function displayJoinGame() {
-				connection.send(JSON.stringify({ type: "display_join_game", playerID: {} }))
-			}
+			const currentPlayerInfo = {};
+
+			function displayJoinGame(player_info) {
+					// Remove JSON.parse since player_info is already an object
+					const listEl = document.getElementById("lobby_list_items");
+
+					// list item
+					const li = document.createElement("li");
+					li.className = "player";
+
+					// paragraph w/ span indicator
+					const paragraph = document.createElement("p");
+					paragraph.id = `UID${player_info.ClientID}`;
+					paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
+
+					const span = document.createElement("span");
+					if (player_info.status == "ONLINE"){
+						span.className = "status free"; 
+					} else {
+						span.className = "status busy"; 
+					}
+					paragraph.appendChild(span);
+
+					// buttons
+					const challenge_btn = document.createElement("button");
+					challenge_btn.id = `chall_btn-${player_info.ClientID}`;
+					challenge_btn.innerText = "Challenge";
+					challenge_btn.onclick = function () {
+						// req_challenge(1, player_info.ClientID);
+						console.log("Requesting challenge to player: {player_id}");
+					};
+
+					const view_btn = document.createElement("button");
+					view_btn.id = `view_btn-${player_info.ClientID}`;
+					view_btn.innerText = "View Match";
+					if (player_info.status == "ONLINE"){
+						view_btn.disabled = true; 
+					} else {
+						view_btn.disabled = false; 
+					}
+					view_btn.disabled = true; 
+					view_btn.onclick = function () {
+						console.log("Requesting to spectate match");
+					};
+				
+					li.appendChild(paragraph);
+					li.appendChild(challenge_btn);
+					li.appendChild(view_btn);
+
+					listEl.appendChild(li);
+			};
 
 			function updateJoinGameList(data) {
-				// update to display current player
-				document.querySelector("#join_game h2").textContent = `Welcome back, Player ${currentPlayerId}! Have fun in the lobby :D`;
-				//update to display number of players
-				document.querySelector("#join_game h3").textContent = `Current players: ${data.totalPlayers}/48`;
+				clearLobbyList(); 
+				const current_player_id = data["MyClientID"];
+				const online_players = data["activePlayers"];
 
-				//update the player lists! - Devin part
+				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;
 
+				online_players.forEach(player => {
+					if (player.ClientID === current_player_id) {
+						Object.assign(currentPlayerInfo, player); 
+
+						document.querySelector("#join_game h2").textContent = `Welcome back, ${player.username}! Have fun in the lobby :D`;
+					} else {
+						displayJoinGame(player);
+					}
+				});
 			}
 
 			function updateStatus(playerID, status) {
@@ -252,14 +308,23 @@
 				}
 			}
 
-			function watchBotVsBot() {
+			function watchBotVsBot(player_info) {
 				const botVsBotReq = {
 					type: "request_bot_vs_bot",
-					playerID: {}
+					playerID: player_info.ClientID, 
 				};
 
 				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
 				connection.send(JSON.stringify(botVsBotReq));
+			}
+
+			document.getElementById("CURRENT_SESSION_BOTvsBOT").onclick = function () {
+				watchBotVsBot(currentPlayerInfo); 
+			};
+
+			function clearLobbyList() {
+				const listEl = document.getElementById("lobby_list_items");
+				listEl.innerHTML = ""; // clear child elements
 			}
 		</script>
 	</div>
