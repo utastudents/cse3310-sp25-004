@@ -46,7 +46,7 @@ public class PairUp {
     //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
     private void pairUp() {
         if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
-        if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
+        if (gm.getNumOfAvailableGames() <= 0) return; // If there aren't any open boards, return
 
         //Try and match the first Challenge in the queue. If the first can't, try the second, etc.
         for (int c=0; c<playerQueue.size(); c++) {
@@ -107,7 +107,7 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue or a game, true otherwise
      */
     public boolean challenge(Player p, Player c, HumanPlayer spectator) {
-        if (gm.getNumOfGames() > 0 && gm.createGame(p, c)) {
+        if (gm.getNumOfAvailableGames() > 0 && gm.createGame(p, c)) {
             //Queue was bypassed
             return true;
         }
