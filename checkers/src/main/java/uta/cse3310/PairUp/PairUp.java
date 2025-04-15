@@ -16,6 +16,8 @@ public class PairUp {
     private GameManager gm;
     private int numPlayersInQueue;
 
+    private static final int MAX_ELO_DISPARITY = 300;
+
     /**
      * Create a new PairUp object. Should only be called ONCE, and only by Page Manager.
      * @param db
@@ -28,31 +30,22 @@ public class PairUp {
 
     }
 
-   //Compares elo scores. If either is not a HumanPlayer, return true
- private boolean isInRange(Player p1, Player p2) {
-    // If either player is not a HumanPlayer, return true
-    if (!(p1 instanceof HumanPlayer) || !(p2 instanceof HumanPlayer)) {
-        return true;
+    //Compares elo scores. If either is not a HumanPlayer, return true
+    private boolean isInRange(Player p1, Player p2) {
+        // If either player is not a HumanPlayer, return true
+        if (!(p1 instanceof HumanPlayer) || !(p2 instanceof HumanPlayer)) {
+            return true;
+        }
+
+        int elo1 = p1.getELO();
+        int elo2 = p2.getELO();
+
+        int diff = Math.abs(elo1 - elo2);
+
+        // If elo difference is within 300, return true
+        return diff <= MAX_ELO_DISPARITY;
     }
-
-    // Cast to HumanPlayer
-    HumanPlayer hp1 = (HumanPlayer) p1;
-    HumanPlayer hp2 = (HumanPlayer) p2;
-
-    // Compare their ELO
-    //   i cannot imagine how code that uses these symbols
-    //   can be checked in when the symbols do not exist.
-    //int elo1 = hp1.getElo();
-    //int elo2 = hp2.getElo();
-
-    // same here.  if it does not compile, why are you checking it in?
-    //int diff = Math.abs(elo1 - elo2);
-
-    // If elo difference is within 300, return true
-    //return diff <= 300;
-    return true;
-
-}
+    
     private void pairUp() {
         if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
         if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
