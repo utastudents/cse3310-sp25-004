@@ -16,12 +16,13 @@ connection = new WebSocket(serverUrl);
 // Messenger - This is how ALL outgoing messages will be sent to the server. ALL OF THEM. 
 function sendMessage(json = {}) {
     if (!json.action) {
-        console.trace("No ACTION specified in sendMessage!");
+        console.trace("No ACTION specified in sendMessage! Msg:");
+        console.log(json);
         return;
     }
     console.log("Sending message " + json.action + " to server");
     console.log(JSON.stringify(json));
-    connection.send(json);
+    connection.send(JSON.stringify(json));
 }
 
 
@@ -37,22 +38,27 @@ connection.onclose = function (evt) {
 connection.onmessage = function (evt) {
     let msg = evt.data; //extract data from websocket response
     console.log("Message received: " + msg);
-    let jsonMsg = JSON.parse(msg); 
+    let jsonMsg = JSON.parse(msg);
 
+    console.log(jsonMsg);
+
+    let responseID = jsonMsg.responseID;
+
+    console.log("Response ID: " + responseID);
 
     if (jsonMsg.clientId) {
         console.log("Connected with clientId:", jsonMsg.clientId);
         return;
     }
     
-    if (!jsonMsg.responseID) {
+    if (!responseID) {
         console.error("Received unexpected responseID! Got:", jsonMsg);
         return;
     }
     //convert data to JSON
     //Extracts the response identifier from the response, so we can determine whose code it belongs to
     //See ./INTERFACES/client-server-docs.md for details
-    let responseID = Object.keys(jsonMsg)[0];
+    
     switch (responseID )
     {
         // Account Responses - Login Team
@@ -73,10 +79,10 @@ connection.onmessage = function (evt) {
         // Game Responses
 
         // Summary Responses
-        case "summaryTopTenData": {
+        case "summaryData": {
             console.log("Received summaryTopTenData!");
             //ommits the responseID and only sends needed values to loadData
-            loadData(jsonMsg[responseID]); 
+            loadData(jsonMsg.top10);
             break;
         }
         default:{
