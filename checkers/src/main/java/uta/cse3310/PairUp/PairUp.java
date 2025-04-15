@@ -5,14 +5,12 @@ import java.util.LinkedList;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
-import uta.cse3310.DB.DB;
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PageManager.HumanPlayer;
 
 
 public class PairUp {
     private LinkedList<Challenge> playerQueue;
-    private DB db;
     private GameManager gm;
     private int numPlayersInQueue;
 
@@ -20,11 +18,10 @@ public class PairUp {
 
     /**
      * Create a new PairUp object. Should only be called ONCE, and only by Page Manager.
-     * @param db
+     * @param gm
      */
-    public PairUp(DB db, GameManager gm) {
+    public PairUp(GameManager gm) {
         this.playerQueue = new LinkedList<>();//Queue of players waiting to be paired
-        this.db = db; //Database object for storing player data
         this.gm = gm;
         numPlayersInQueue = 0;
 
