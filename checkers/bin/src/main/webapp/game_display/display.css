@@ -1,0 +1,213 @@
+body {
+  background-image: url("Navy Yellow Bold Online Gaming Pro League Flyer (1).png");
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+}
+
+#title {
+    text-align: center;
+    /*color: #333;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;*/
+}
+
+
+#live-box {
+  height: 50vh; /* tall enough for logs */
+  width: 40vh; /* proportional width */
+  background-color: #f4f4f4; /* Light background for readability */
+  border: 2px solid #333; /* Dark border for contrast */
+  border-radius: 10px; /* rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* adds depth */
+  margin: 10px;
+  padding: 10px; /*space inside the box */
+  overflow-y: auto; /* Enables scrolling for long logs */
+  font-family: 'Courier New', Courier, monospace; 
+  font-size: 0.9rem; 
+  color: #333; 
+  position: relative;
+  top: -5vh;
+}
+
+/* styling for individual log entries */
+#live-box p {
+  margin: 5px 0; /* spacing between log entries */
+  padding: 5px;
+  background-color: #eaeaea; 
+  border-radius: 5px; /* Rounded corners for logs */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /*  inset shadow */
+}
+
+#players {
+  color: white;                   
+  padding: 0;                   
+  text-align: center;           
+}
+
+#game-container {
+  display: flex;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#board-container {
+    display:flex;
+    padding: 5vh;
+    position: relative;
+  
+    width: 90vh; /*increased size*/
+    height: 90vh;
+  
+    max-width: 100vw;
+    max-height: 100vw;
+  }
+
+#players-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: #f4f4f4;
+  border: 2px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 45vh;
+  height: auto;
+  margin: 10px;
+  padding: 10px;
+  
+}
+
+#players-container {
+  display: flex;                /* Enable flexbox */
+  justify-content: center;      /* Center horizontally */
+  align-items: center;          /* Center vertically */
+  background-color: #333; /* Match the live box background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds depth */
+  margin-bottom: 20px;
+  padding: 10px;
+
+  font-family: 'Courier New', Courier, monospace; /* Match the live box font */
+  font-size: 1rem; /* Slightly larger font for visibility */
+  color: #333; /* Match the live box text color */
+  height: auto;
+  position: relative;
+  top:0;
+  width: 100%;
+}
+
+#buttons-cont {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  
+  margin: 0 auto;
+  padding-bottom: 1vh;
+  padding-top:3vh;
+
+  width: 100%;
+  height: 4vh;
+}
+
+
+.button {
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 5px, grey, outline;
+  align-content: center;
+  padding: 1px;
+  background-color: #545861;
+  color:white;
+  font-size:1rem;
+  font-weight:bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /*smooth hover effect*/
+
+}
+
+.button:hover {
+  background-color: #feb47b;
+  transform:scale(1.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+
+}
+
+  table {
+    /*border: 15px solid #545861;*/
+    border-collapse: collapse; /*no gaps between the cells*/
+    background-color: #545861;
+    border-radius: 5px;
+  
+    width: 100%;
+    height: 100%;
+  }
+
+  td {
+    text-align: center;
+    cursor: pointer; /*Pointer cursor so it's interactive*/
+    background-color: #C5D5EA;
+  
+    width: 12.50%; /*adjusted for 8x8 grid*/
+    height: 12.50%;
+    border:none; /*no border around squares*/
+  }
+
+  /*light beige squares*/
+  .emptySquare {
+    background-color: #f0d9b5;
+  }
+
+  /*dark brown squares*/
+  td:not(.emptySquare) {
+    background-color: #b58863;
+  }
+
+/* Styling for red pieces (Player 1) */
+.red-piece {
+  position: relative;
+}
+
+.red-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #FF0000; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+/* Styling for black pieces (Player 2) */
+.black-piece {
+  position: relative;
+}
+
+.black-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #000000; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
