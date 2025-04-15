@@ -5,14 +5,12 @@ import java.util.LinkedList;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
-import uta.cse3310.DB.DB;
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PageManager.HumanPlayer;
 
 
 public class PairUp {
     private LinkedList<Challenge> playerQueue;
-    private DB db;
     private GameManager gm;
     private int numPlayersInQueue;
 
@@ -20,11 +18,10 @@ public class PairUp {
 
     /**
      * Create a new PairUp object. Should only be called ONCE, and only by Page Manager.
-     * @param db
+     * @param gm
      */
-    public PairUp(DB db, GameManager gm) {
+    public PairUp(GameManager gm) {
         this.playerQueue = new LinkedList<>();//Queue of players waiting to be paired
-        this.db = db; //Database object for storing player data
         this.gm = gm;
         numPlayersInQueue = 0;
 
@@ -45,7 +42,8 @@ public class PairUp {
         // If elo difference is within 300, return true
         return diff <= MAX_ELO_DISPARITY;
     }
-    
+
+    //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
     private void pairUp() {
         if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
         if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
@@ -74,7 +72,7 @@ public class PairUp {
             //No match
         }
 
-    } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
+    } 
 
     /**
      * Add a player to the challenge queue. Called by PageManager when a client requests matchmaking
@@ -100,6 +98,7 @@ public class PairUp {
     public boolean challenge(Player p, Player c) {
         return challenge(p, c, null);
     }
+
     /**
      * Add a player v player challenge to the queue - after it has been accepted
      * @param p - the player who requested the challenge
@@ -119,6 +118,7 @@ public class PairUp {
         pairUp();
         return true;
     }
+
     /**
      * Add a player v bot challenge to the queue
      * @param p - The player who requested the challenge
@@ -128,6 +128,20 @@ public class PairUp {
     public boolean challengeBot(Player p, boolean botI) {
         return challenge(p, botI ? new BotI() : new BotII(), null);//just calls challenge with a bot
     }
+
+
+public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
+   
+   Player b1 = botI ? new BotI() : new BotII();
+
+
+   Player b2 = botII ? new BotI() : new BotII();
+
+ 
+   return challenge(b1, b2, spectator);
+}
+
+
     /**
      * Add a bot v bot challenge to the queue
      * @param botI - True for bot I, false for bot II
@@ -135,27 +149,7 @@ public class PairUp {
      * @param spectator - the player who requested to watch
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-    // Create the first bot (BotI or BotII based on input)
-    Player b1 = botI ? new BotI() : new BotII();
-
-    // Create the second bot (BotI or BotII based on input)
-    Player b2 = botII ? new BotI() : new BotII();
-
-    // Create a new Challenge with both bots
-    Challenge challenge = new Challenge(b1, b2);
-
-    // Initialize spectators list
-    challenge.spectators = new ArrayList<>();
-
-    // Add the provided spectator to the challenge
-    challenge.spectators.add(spectator);
-
-    // Add this challenge to the player queue
-    playerQueue.add(challenge);
-
-    return true; // Successfully created and added bot vs bot challenge
-}
+     
     /**
      * 
      * @param p - The player to remove (should be a HumanPlayer)

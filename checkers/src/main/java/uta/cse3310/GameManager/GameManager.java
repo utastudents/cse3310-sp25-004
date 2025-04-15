@@ -3,6 +3,8 @@ package uta.cse3310.GameManager;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -78,9 +80,15 @@ public class GameManager {
         // remove here
     }
 
-    public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
+    public GameUpdate processMove(GameMove move) {
         // call GamePlay Board method to validate move ? and return GameUpdate object
         // with new position and player ID
+        boolean valid = true;
+        String status = "In Progress";
+        String winner = "";
+        boolean capture = false;
+        boolean promotion = false;
+
         int playerId = move.getClientId();
         String fromStr = move.getFromPosition();
         String toStr = move.getToPosition();
@@ -96,16 +104,8 @@ public class GameManager {
 
         String movePath = "Player" + playerId + ":" + fromStr + " -> " + toStr;
 
-        // All info is being sent through movePath
-        return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
+        // All info is being sent in movePath
+        return new GameUpdate(valid, status, winner, capture, promotion, movePath);
 
     }
-
-    private Cord stringToCord(String pos) {
-
-        int x = pos.charAt(0) - 'a';
-        int y = 8 - Character.getNumericValue(pos.charAt(1));
-        return new Cord(x, y);
-    }
-
 }
