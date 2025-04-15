@@ -6,11 +6,185 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to right,#ffffff,#BBDEFB); 
+    background: whitesmoke; 
     color: 333333;
 }
 
-h2 {
+/*SIGN UP*/
+.signup-box {
+    background-color: #fff;
+    border-radius: 9px;
+    width: 250px;
+    height: 300px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+}
+
+.signup-box img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 5px;
+} 
+
+.signup-box input[type="text"],
+.signup-box input[type="password"] {
+    margin-bottom: 8px;
+    width: 75%;
+    padding: 5px;
+    border: 2px solid #39393959;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding-left: 30px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: #000;
+    box-shadow: 0 0 0 1.4px #000000;
+}
+
+input::placeholder {
+    color: #b8b8b8;
+}
+
+
+.signup-box button {
+    background-color: #39393959;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 15px;
+    width: 75%;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 2px;
+
+}
+
+.signup-box button:hover {
+    color: rgb(255, 255, 255);
+    background: #000;
+}
+
+.signup-text {
+    font-size: 13px;
+    color: #39393959;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.signup-text a{
+    color: #39393959;
+    text-decoration: underline;
+}
+
+.signup-text a:hover {
+    color: #000; 
+}
+
+/*ICON SIGNUP*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
+}
+
+/*LOGIN*/
+.login-box {
+    background-color: #fff;
+    border-radius: 9px;
+    width: 250px;
+    height: 270px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+    cursor: pointer;
+}
+
+.login-box img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 5px;
+} 
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    margin-bottom: 8px;
+    width: 75%;
+    padding: 5px;
+    border: 2px solid #39393959;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding-left: 30px;
+}
+
+input:focus {
+    outline: #000;
+    box-shadow: 0 0 0 1.4px #000000;
+}
+
+input::placeholder {
+    color: #b8b8b8;
+}
+
+/*ICON LOGIN*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 38%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
+}
+
+
+.login-box button {
+    background-color: #39393959;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 15px;
+    width: 75%;
+    padding: 5px;
+    border-radius: 6px;
+
+}
+
+.login-box button:hover {
+    color: rgb(255, 255, 255);
+    background: #000;
+
+}
+
+.signup-text {
+    font-size: 13px;
+    color: #39393959;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.signup-text a{
+    color: #39393959;
+    text-decoration: underline;
+}
+
+.signup-text a:hover {
+    color: #000; 
+}
+
+
+/* LEADERBOARD*/
+h2 { 
     text-align: center;
     font-size: 2.5em;
     margin-top: 20px;
@@ -107,3 +281,112 @@ button a {
 .busy {
     background-color: #F44336;
 }
+<<<<<<< HEAD
+.error-msg {
+    color: red;
+    font-size: 10px;
+    display: block;
+    height: 12px;
+    margin-top: 2px 0 4px 0;
+    line-height: 1; 
+}
+
+/*Styling for the leaderboard */
+.button:hover{
+    background-color: rgb(54, 17, 204);
+    color: white;
+}
+
+.medal-emoji {
+	font-size: 1.3em;
+	margin-right: 5px;
+}
+
+.scrollable-table {
+	max-height: 450px; 
+	overflow-y: auto;
+	border: 1px solid #ccc;
+}
+
+.scrollable-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+=======
+
+
+
+/* Fullscreen background overlay */
+#popup-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal content box */
+#popup-modal-content {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* Optional animation */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Message text */
+#popup-message {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Modal buttons */
+#popup-confirm, #popup-cancel {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#popup-confirm {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#popup-confirm:hover {
+    background-color: #45a049;
+}
+
+#popup-cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+#popup-cancel:hover {
+    background-color: #d32f2f;
+}
+>>>>>>> c395486 (confirmation popup for draw/quit)

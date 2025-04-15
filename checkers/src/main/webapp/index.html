@@ -2,79 +2,146 @@
 
     <head>
         <link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
-	<div id = "account-screen-logo" style="text-align: center;">
-		<img src="final_logo.png" alt="Super Fancy Checkers Logo" style="width: 200px; height: 200px; display: block; margin: auto;">
-	</div>
-    <div id="new_account" style = "display: none">
-    	<h1>Create New Account</h1>
-	    <body style="text-align: center; height: 100vh; display: table; width: 100%;">
-
-		<div style="margin-bottom: 10px;">
-				<label for="username">Enter new username: </label>
-				<input type="text" id="username" name="username" placeholder="Enter new username" style="border-radius: 100px;">
-				<span id="username-error" style="display: none; color: red;">Invalid username</span>
-		<!--Span id username-error goes here-->
-				  
-		</div>
-		<div style="margin-bottom: 10px;">
-			<label for="password">Enter new password: </label>					
-			<input type="password" id="password" name="password" placeholder="Enter new password" style="border-radius: 100px;">
-			<span id="password-error" style="display: none; color: red;">Invalid password</span>
-		<!--Span id password-error goes here-->
-				  
-			</div>
-			
-		<button id = "register-btn" type="submit" style="display: block; margin: 3 auto;">Register</button>
-
-									<!--Button to return to login from sign up page-->
-		<button id ="back-to-login">Login</button>
 		
-	    </body>	
-    </div>
-	<div id="login">
-		<h1>Login</h1> 				<!--before create new account-->
-									<!--Login screen logo DONE-->
-		
-									<!-- username login box-->
-		<div style="margin-bottom: 10px;">
-			<label for = "login-username">Username: </label>
-			<input type = "text" id ="login-username" name = "login-username" placeholder = "Enter Username"style="border-radius: 100px;">
-			<span id="username-error" style="color:red; display:none">Username not found. Please try again</span>
+    <!--SIGNUP GOES HERE-->
+    <div id="new_account" class="signup-box" style = "display: none;">
+      <form action="signup-info">
+      <img src="final_logo.png" alt="CHECKERS LOGO">
+	  <div class="input-icon">
+		<i class="fas fa-user"></i>
+		<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
 		</div>
-									<!-- password login box-->
-		<div style="margin-bottom: 10px;">
-			<label for = "login-password">Password: </label>
-			<input type ="text" style="border-radius: 100px;" placeholder="Enter Password" >
-			<span id="password-error" style="color:red; display:none">Incorrect password. Please try again</span>
-		</div>
-									<!-- submit button-->
-		 <button type = "submit" style="display: block; margin: 3 auto;">Submit</button>
 
-		 							<!--Show signup screen-->
-		 <button id = "show-signup">Sign Up</button>
+		<span id="username-error" class = "error-msg" style="display: none;">Username must be at least 4 characters.</span>
+		<div class="input-icon">
+		<i class="fas fa-lock"></i>
+		<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
+		</div>
+		<span id="password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
+
+		<div class="input-icon">
+		<i class="fas fa-lock"></i>
+		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
+		</div>
+		<span id="confirm-password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
+
+		<button id="signup-btn" type="submit">SIGN UP</button>
+		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
+      </form>
+  	</div>
+      
+	<div id="login" class="login-box">
+        <form action="login-info">
+            <img src="final_logo.png" alt="CHECKERS LOGO">
+
+            <div class="input-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
+            </div>
+            <span id="login-username-error" class = "error-msg" style="display: none;">Username not found. Please try again</span>
+
+            <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" name="psw" placeholder="PASSWORD" required>
+            </div>
+            <span id="login-password-error" class = "error-msg" style="display: none;">Incorrect password. Please try again</span>
+
+            <button id="login-btn" type="submit">LOGIN</button>
+
+            <p class="signup-text">
+                Don't have an account? <a href="#" id="show-signup">Sign up</a>
+            </p>
+        </form>
 
 		 <script>
-									// (On Click) Sign up screen appear, login disappear
+			connection.onopen = function(event){
+			console.log("Websocket Connected")
+			};			
+			
+			/*connection.onmessage = function(event){
+			const data = JSON.parse(event.data);
+			console.log("Message from server: ", data);
+			if(data.responseID === "login"){
+				document.elementById("login-username-error").style.display = "none";
+				document.elementById("login-password-error").style.display = "none";
+
+				if(data.msg === "Invalid password."){
+					document.elementById("login-password-error").style.display = "inline";
+				}
+				if(data.msg === "Username does not exist."){
+					document.elementById("login-username-error").style.display = "inline";
+				}
+				else{
+					alert("Invalid username or password.");
+				}
+			}
+			else if(data.responseID === "loginSuccess"){
+				alert(data.msg);
+				window.location.href = "join_game.html";
+				}
+			else if(data.responseID ==="new_user"){
+					document.elementById("username-error").style.display = "none";
+					document.elementById("password-error").style.display = "none";
+					if(data.msg === "Username already exists"){
+						alert("Username already Exists")
+					}
+					if(data.redirect === "join_game"){
+						window.location.href = "join_game.html";
+					}
+				}
+			};
+			connection.onerror = function(error){
+				console.error("Websocket Error: ", error);
+		 	}
+			connection.onclose = function(event){
+				console.log("Websocket Closed");
+			}	
+				*/	
+
+			//temporary hardcode
+			connection.onmessage = function(event){
+				const data = JSON.parse(event.data);
+				console.log("Recieved data: ", data);
+
+				if(data.responseID === "loginSuccess"){
+					alert(data.msg);
+					if(data.redirect === "join_game"){
+						window.location.href = "join_game.html";
+					}
+				}
+				else if(data.responseID === "new_user"){
+					alert(data.msg);
+					if(data.redirect === "join_game"){
+						window.location.href = "join_game.html";
+					}
+				}
+				else if(data.responseID === "login"){
+					alert("Login failed: " + data.msg)
+				}
+			};
+
 			document.getElementById("show-signup").onclick = function() {
             document.getElementById("login").style.display = "none";
             document.getElementById("new_account").style.display = "block";
                   };
 
-           							// (On Click) Login screen appear, sign up disappear
             document.getElementById("back-to-login").onclick = function() {
             document.getElementById("new_account").style.display = "none";
             document.getElementById("login").style.display = "block";
              	};
 			
-			//Event Lister for register button
-			document.getElementById("register-btn").onclick = function(){
-				const username = document.getElementById("username").value; //username from signup form
-				const password = document.getElementById("password").value; //password from signup form
+			document.getElementById("signup-btn").onclick = function(e){
+				e.preventDefault();
 				
+				const username = document.getElementById("signup-username").value; //username from signup form
+				const password = document.getElementById("signup-password").value; //password from signup form
+				const confirmPassword = document.getElementById("signup-confirm-password").value;
 				//Hide error messages by default
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
+				document.getElementById("confirm-password-error").style.display = "none";
 
 
 				let valid = true;
@@ -86,45 +153,51 @@
 					document.getElementById("password-error").style.display = "inline";
 					valid = false;
 				}
+				if(password != confirmPassword){
+					document.getElementById("confirm-password-error").style.display = "inline";
+					valid = false;
+					return;
+				}
+				if(!username || !password || !confirmPassword){
+					alert("All fields are required.");
+					return;
+				}
+				if(!valid) return;
 
-				if(!username || !password){
-					alert("Invalid username and/or password.");
-					return;
-				}
-				if(valid == false){
-					return;
-				}
 				const signupData = { 
 					//Data into JSON object
-					type: "signup", 
-					username : username, 
-					password:password
+					type: "new_user", 
+					UserName : username, 
+					Password:password
 				};
 			//Send data as JSON string JSON.stringify
-			//Placeholder until datahandling added	PageManager.PageManager.(method)(JSON.stringify(signupData));
-			}
-
+			connection.send(JSON.stringify(signupData));
+			console.log("Signup Data sent: ", signupData)		
+			};
 			//Event handler for login button
-			document.getElementById("login-btn").onclick = function(){
+			document.getElementById("login-btn").onclick = function(e){
+				e.preventDefault();
+
 				const loginUsername = document.getElementById("login-username").value; //username from signup form
 				const loginPassword = document.getElementById("login-password").value; //password from signup form
 
-				document.getElementById("username-error").style.display = "none";
-				document.getElementById("password-error").style.display = "none";
+				document.getElementById("login-username-error").style.display = "none";
+				document.getElementById("login-password-error").style.display = "none";
 				
 				// More Data Validation can go here
-				if(!loginUsername || !loginPassword){
+				if(!loginUsername || !loginPassword){ //Username or Password not filled in
 					alert("Invalid username and/or password.");
 					return;
 				}
+
 				const loginData = { //Data into JSON object
 					type: "login", 
 					UserName : loginUsername, 
 					Password:loginPassword
 				};
-			//Send data as JSON string JSON.stringify			
-			//Placeholder until datahandling added	PageManager.PageManager.handleLogin(JSON.stringify(loginData));
-
+			//Send data as JSON string JSON.stringify
+			connection.send(JSON.stringify(loginData))
+			console.log("Login Data sent: ", loginData)		
 			}
 
 		 </script>
@@ -164,13 +237,15 @@
         </div>
     </div>
     <div id="game_display">
-    game display
+
     </div>
 	<div class="summary">
 		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+
 		<!-- visibility hidden -->
 		<div id="summary-leaderboard" style="display: none;">
 			<h1>Leaderboard</h1>
+			<div class="scrollable-table">
 			<table id="summary-table">
 				<thead>
 					<tr>
@@ -186,6 +261,7 @@
 					<!-- These data will be filled with JSON through a JS script -->
 				</tbody>
 			</table>
+		</div>
 			<!--- <p class= "caption"> Top 10 players.</p> -->
 			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
 			<script src="./summary/summary.js"></script>
@@ -205,12 +281,12 @@
 		</div>
 	</div>
 
-    <div id="stuff">
+    <!-- <div id="stuff">
      <input type="button" value="Send Something" onclick="msg()">
       <label for="tbox">Received</label>
       <textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div>
+    </div> -->
 </html>
 <script>
     // each of the 'divs' in the html page should have attributes to allow them to be hidden.
@@ -257,16 +333,12 @@
 				loadData(jsonMsg[responseID]); 
 				break;
 			}
-			case "summaryUserJson":{
-				console.log("Received summaryUserJson!");
-				break;
-			}
 			default:{
 				console.log("Received unexpected responseID! Got: \n"+responseID);
 			}
 		}
 
-        document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
+        //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
     }
 
@@ -274,14 +346,15 @@
         msg;
     }
 
-    function msg() {
-        console.log("button clicked");
-        U = new UserEvent();
-        U.msg="i pushed a button";
-        connection.send(JSON.stringify(U));
-        console.log(JSON.stringify(U))
-    }
+    // function msg() {
+    //     console.log("button clicked");
+    //     U = new UserEvent();
+    //     U.msg="i pushed a button";
+    //     connection.send(JSON.stringify(U));
+    //     console.log(JSON.stringify(U))
+    // }
 
+<<<<<<< HEAD
 	// Function to retrieve and display the leaderboard
 async function summary() {
     try {
@@ -333,4 +406,6 @@ function getSessionUUID() {
     return localStorage.getItem('sessionUUID');
 }
 
+=======
+>>>>>>> 7344d5b3518d74b9a7909d114f3ab6278078796c
 </script>
