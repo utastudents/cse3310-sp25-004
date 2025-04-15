@@ -77,15 +77,19 @@ public class GameManager {
         // remove here
     }
 
-    // public GameUpdate processMove(GameMove move) {
-    // call GamePlay Board method to validate move ? and return GameUpdate object
-    // with new position and player ID
+    public GameUpdate processMove(GameMove move) {
+        // call GamePlay Board method to validate move ? and return GameUpdate object
+        // with new position and player ID
+        boolean valid = true;
+        String status = "In Progress";
+        String winner = "";
+        boolean capture = false;
+        boolean promotion = false;
 
-    // Making new gameUpdate object
-    // GameUpdate newStats = new GameUpdate(true," ", " ", false, true, " " );
+        String movePath = move.getFromPosition() + " -> " + move.getToPosition();
 
-    // return;
+        return new GameUpdate(valid, status, winner, capture, promotion, movePath);
 
-    // }
+    }
 
 }
