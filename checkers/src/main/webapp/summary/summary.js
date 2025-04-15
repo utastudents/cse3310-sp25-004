@@ -5,7 +5,7 @@ class Player {
         this.elo = elo;
         this.gamesWon = gamesWon;
         this.gamesLost = gamesLost;
-		this.ID = ID;
+        this.ID = ID;
     }
 
     // Calculate total games played
@@ -23,13 +23,10 @@ function addEventListeners() {
 
 // Function to render the leaderboard
 function renderLeaderboard() {
-	// Leaderboard data
-	let leaderboard = [];
-	const table = document.getElementById("summary-table");
-	const thead = table.getElementsByTagName("thead")[0];
-	const tbody = table.getElementsByTagName("tbody")[0];
-
-	// GET DATA!
+    // Leaderboard data
+    const table = document.getElementById("summary-table");
+    const thead = table.getElementsByTagName("thead")[0];
+    const tbody = table.getElementsByTagName("tbody")[0];
 
     tbody.innerHTML = ""; // Clear the table body
     leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
@@ -37,6 +34,8 @@ function renderLeaderboard() {
 }
 
 function fillTable(leaderboard) {
+    const tbody = document.getElementById("summary-table").getElementsByTagName("tbody")[0];
+
     leaderboard.forEach((player, index) => {
         const row = document.createElement("tr");
 
@@ -68,15 +67,52 @@ function fillTable(leaderboard) {
     });
 }
 
-function loadData( jsonData ) {
-	// Loads data from JSON file/string
-	for (const player of jsonData)
-	{
-		//Copy json object into JS class
-		leaderboard.push( new Player(player["username"], player["elo"], player["gamesWon"], player["gamesLost"], player["ID"] ) );
-	}
+// Loads data from JSON file/string
+function loadData(jsonData) {
+    leaderboard = []; // Reset
+    let leaderboardIndex = 0;
+    for (const player of jsonData) {
+        //Copy json object into JS class
+        leaderboard[leaderboardIndex] = new Player(
+            player["username"],
+            player["elo"],
+            player["gamesWon"],
+            player["gamesLost"],
+            player["ID"]
+        );
+        leaderboardIndex++;
+    }
 }
 
-addEventListeners(); // Call the function to add event listeners, basically our main function
+// NEW: This function sends a request to the server for leaderboard data
+function initSummaryWebSocket() {
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+        console.warn("WebSocket is not open. Cannot request leaderboard data.");
+        return;
+    }
 
+    // Remove any previous duplicate listener
+    socket.removeEventListener("message", handleSummaryMessage);
+    socket.addEventListener("message", handleSummaryMessage);
 
+    // Send a request to get leaderboard
+    socket.send(JSON.stringify({
+        type: "summaryRequestTopTen"
+    }));
+}
+
+// NEW: Handle WebSocket messages related to leaderboard
+function handleSummaryMessage(event) {
+    const data = JSON.parse(event.data);
+
+    if (data.summaryTopTenData) {
+        console.log("Received summaryTopTenData!");
+        loadData(data.summaryTopTenData); // Load new data into leaderboard
+        renderLeaderboard(); // Render updated leaderboard
+    }
+}
+
+// Initialize leaderboard array with actual data
+let leaderboard = [];
+
+// addEventListeners(); // Call the function to add event listeners, basically our main function
