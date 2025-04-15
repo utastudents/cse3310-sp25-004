@@ -178,10 +178,25 @@ public class App extends WebSocketServer {
     // the function to be called needs to accept (for this example) a
     // UserEvent, and return a ReplyEvent
 
+    //Log the raw incoming WebSocket message
+    System.out.println("Incoming raw message: " + message);
+
     //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
-    String action = jsonObj.get("action").getAsString();
-    //
+    //checj if actiion exist in the Json
+    if (!jsonObj.has("action")) {
+    System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
+    return;
+}
+    // String action = jsonObj.get("action").getAsString();
+      String action = null;
+
+  if (jsonObj.has("action")) {
+      action = jsonObj.get("action").getAsString();
+  } else {
+      System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+      return;
+  }
 
     //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
     UserEventReply Reply = null;
