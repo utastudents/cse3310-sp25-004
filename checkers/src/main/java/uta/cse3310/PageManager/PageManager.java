@@ -82,7 +82,7 @@ public class PageManager {
         }
     
         // Add current player (even if not in top 10)
-        HumanPlayer currentPlayer = db.getPlayerById(id);
+        HumanPlayer currentPlayer = activePlayers.get(id);
         if (currentPlayer != null) {
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", currentPlayer.getPlayerId());
