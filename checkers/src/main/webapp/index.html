@@ -270,12 +270,12 @@
 		</div>
 	</div>
 
-<div id="stuff">
+<!-- <div id="stuff">
 	<input type="button" value="Send Something" onclick="msg()">
 	<label for="tbox">Received</label>
 	<textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-</div>
+</div> -->
 
 </html>
 <script>
@@ -308,6 +308,7 @@
         let msg = evt.data; //extract data from websocket response
         console.log("Message received: " + msg);
 		let jsonMsg = JSON.parse(msg); 
+
 
 		if (jsonMsg.clientId) {
 			console.log("Connected with clientId:", jsonMsg.clientId);
@@ -393,17 +394,17 @@
         //const obj = JSON.parse(msg);
 
 
-	class UserEvent {
-		msg;
-	}
+	// class UserEvent {
+	// 	msg;
+	// }
 
-	function msg() {
-		console.log("button clicked");
-		U = new UserEvent();
-		U.msg = "i pushed a button";
-		connection.send(JSON.stringify(U));
-		console.log(JSON.stringify(U))
-	}
+	// function msg() {
+	// 	console.log("button clicked");
+	// 	U = new UserEvent();
+	// 	U.msg = "i pushed a button";
+	// 	connection.send(JSON.stringify(U));
+	// 	console.log(JSON.stringify(U))
+	// }
 
 	
 	// Function to retrieve and display the leaderboard
