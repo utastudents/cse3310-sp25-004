@@ -40,13 +40,13 @@ public class PageManager {
 
     
     // List to track active players in the subsystem
-    Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
+    public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
     Gson gson = new Gson();
     GameManager Gm = new GameManager();
-    Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+    public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
 
     // Track user in which subsytem they are in.
-    HashMap<Integer, GameState> clientStates = new HashMap<>();
+    public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
         gm = new GameManager();
