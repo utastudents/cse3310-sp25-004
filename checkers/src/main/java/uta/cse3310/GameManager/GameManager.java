@@ -78,7 +78,7 @@ public class GameManager {
             }
         }
     }
-
+/* 
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         int playerId = move.getClientId();
@@ -96,7 +96,7 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
     }
-
+*/
     private Cord stringToCord(String pos) {
 
         int x = pos.charAt(0) - 'a';
