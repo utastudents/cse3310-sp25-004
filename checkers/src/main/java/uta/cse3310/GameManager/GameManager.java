@@ -32,7 +32,9 @@ public class GameManager {
     // Initialize first 10 games, gameID's are the game's index number in ArrayList
     public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
-            games.add(new Game(i, null, null)); // null since unassigned players
+            Game game = new Game(i, null, null);
+            game.setGameActive(false);
+            games.add(game);
         }
     }
 
@@ -57,7 +59,7 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 System.out.println("Game created at index: " + i);
-                game.setGameActive(true);
+                newGame.setGameActive(true);
                 return true;
             }
         }
