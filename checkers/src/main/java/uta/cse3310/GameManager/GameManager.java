@@ -1,5 +1,7 @@
 package uta.cse3310.GameManager;
 
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
@@ -76,22 +78,34 @@ public class GameManager {
         // remove here
     }
 
-    public GameUpdate processMove(GameMove move) {
+    public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         // call GamePlay Board method to validate move ? and return GameUpdate object
         // with new position and player ID
-        boolean valid = true;
-        String status = "In Progress";
-        String winner = "";
-        boolean capture = false;
-        boolean promotion = false;
-
         int playerId = move.getClientId();
+        String fromStr = move.getFromPosition();
+        String toStr = move.getToPosition();
 
-        String movePath = "Player" + playerId + ":" + move.getFromPosition() + " -> " + move.getToPosition();
+        Cord from = stringToCord(fromStr);
+        Cord to = stringToCord(toStr);
 
-        // All info is being sent in movePath
-        return new GameUpdate(valid, status, winner, capture, promotion, movePath);
+        Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
 
+        int result = gamePlay.move(piece, to);
+
+        boolean valid = (result == 2);
+
+        String movePath = "Player" + playerId + ":" + fromStr + " -> " + toStr;
+
+        // All info is being sent through movePath
+        return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
+
+    }
+
+    private Cord stringToCord(String pos) {
+
+        int x = pos.charAt(0) - 'a';
+        int y = 8 - Character.getNumericValue(pos.charAt(1));
+        return new Cord(x, y);
     }
 
 }
