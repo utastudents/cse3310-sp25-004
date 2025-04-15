@@ -86,8 +86,11 @@ public class GameManager {
         boolean capture = false;
         boolean promotion = false;
 
-        String movePath = move.getFromPosition() + " -> " + move.getToPosition();
+        int playerId = move.getClientId();
 
+        String movePath = "Player" + playerId + ":" + move.getFromPosition() + " -> " + move.getToPosition();
+
+        // All info is being sent in movePath
         return new GameUpdate(valid, status, winner, capture, promotion, movePath);
     }
 }

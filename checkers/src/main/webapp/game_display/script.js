@@ -1,3 +1,7 @@
+//API call to fetch users
+let playerRed = "bot 1";
+let playerBlack = "bot 2";
+
 // Initialize the game state
 let currentPlayer = "red"; // Red starts first
 let selectedPieceId = null;
@@ -7,7 +11,8 @@ const initialBlackPieceRows = [5, 6, 7];
 // Update the player turn display
 function updatePlayerTurn() {
     const playerDisplay = document.getElementById("players");
-    playerDisplay.textContent = currentPlayer === "red" ? "Player 1's Turn (Red)" : "Player 2's Turn (Black)";
+    playerDisplay.textContent = currentPlayer === "red"
+     ? `${window.playerRed}'s Turn (Red)` : `${window.playerBlack}'s Turn (Black)`;
 }
 // Switch the current player
 function switchPlayer() {
@@ -310,3 +315,5 @@ function sendDrawRequest() {
     alert("Draw request sent. (Placeholder for draw logic)");
     // Optionally: send WebSocket message, notify opponent, etc.
 }
+
+
