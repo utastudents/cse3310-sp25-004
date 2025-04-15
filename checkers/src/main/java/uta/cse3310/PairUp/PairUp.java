@@ -28,8 +28,27 @@ public class PairUp {
 
     }
 
-    private boolean isInRange(Player p1, Player p2) {return true;} //Compares elo scores. If either is not a HumanPlayer, return true
+   //Compares elo scores. If either is not a HumanPlayer, return true
+ private boolean isInRange(Player p1, Player p2) {
+    // If either player is not a HumanPlayer, return true
+    if (!(p1 instanceof HumanPlayer) || !(p2 instanceof HumanPlayer)) {
+        return true;
+    }
 
+    // Cast to HumanPlayer
+    HumanPlayer hp1 = (HumanPlayer) p1;
+    HumanPlayer hp2 = (HumanPlayer) p2;
+
+    // Compare their ELO
+    int elo1 = hp1.getElo();
+    int elo2 = hp2.getElo();
+
+    int diff = Math.abs(elo1 - elo2);
+
+    // If elo difference is within 300, return true
+    return diff <= 300;
+
+}
     private void pairUp() {
         if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
         if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
@@ -119,10 +138,27 @@ public class PairUp {
      * @param spectator - the player who requested to watch
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-    public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-        return challenge(botI ? new BotI() : new BotII(), botII ? new BotI() : new BotII(), spectator); //just calls challenge with a bot
-    }
+     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
+    // Create the first bot (BotI or BotII based on input)
+    Player b1 = botI ? new BotI() : new BotII();
 
+    // Create the second bot (BotI or BotII based on input)
+    Player b2 = botII ? new BotI() : new BotII();
+
+    // Create a new Challenge with both bots
+    Challenge challenge = new Challenge(b1, b2);
+
+    // Initialize spectators list
+    challenge.spectators = new ArrayList<>();
+
+    // Add the provided spectator to the challenge
+    challenge.spectators.add(spectator);
+
+    // Add this challenge to the player queue
+    playerQueue.add(challenge);
+
+    return true; // Successfully created and added bot vs bot challenge
+}
     /**
      * 
      * @param p - The player to remove (should be a HumanPlayer)
