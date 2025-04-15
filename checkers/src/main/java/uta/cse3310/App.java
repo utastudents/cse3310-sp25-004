@@ -116,39 +116,34 @@ public class App extends WebSocketServer {
 
 
   @Override
-public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-    System.out.println(conn + " has closed");
-
-    // Get the player ID tied to this connection
-    Integer Id = con2id.get(conn);
-
-    if (Id != null) {
-        // Remove the mapping between connection and player ID
-        id2con.remove(Id);
-        con2id.remove(conn);
-
-        // Handle the player leaving (like removing from active players or queue)
-        JsonObject jsonObj = new JsonObject();
-        jsonObj.addProperty("action", "playerLeft");
-        jsonObj.addProperty("clientID", Id);
-
-        // Handle the actual player leave
-        UserEventReply reply = PM.userLeave(Id);
-
-        // Send the notification about player leaving
-        for (Integer recipientId : reply.recipients) {
-            WebSocket recipient = id2con.get(recipientId);
-            if (recipient != null) {
-                recipient.send(reply.replyObj.toString());
-                System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
-            }
-        }
-
-        System.out.println("Removed player " + Id);
-    } else {
-        System.out.println("No associated player found for this connection.");
-    }
-}
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+      System.out.println(conn + " has closed");
+  
+      Integer Id = con2id.get(conn); //get Id 
+      if (Id != null) {
+          // Remove mappings between websocket and ID
+          id2con.remove(Id);
+          con2id.remove(conn);
+  
+          // call PM function that removes form queue and active player, generates reply object
+          UserEventReply reply = PM.userLeave(Id);
+  
+          // notify idle players
+          for (Integer recipientId : reply.recipients) {
+              WebSocket recipient = id2con.get(recipientId);
+              if (recipient != null) {
+                  recipient.send(reply.replyObj.toString());
+                  System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
+              }
+          }
+  
+          System.out.println("Removed player " + Id);
+      } else {
+          System.out.println("No associated player found for this connection.");
+      }
+  }
+  
+ 
 
   
 

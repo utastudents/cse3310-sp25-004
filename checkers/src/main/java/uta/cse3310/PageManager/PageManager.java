@@ -629,17 +629,18 @@ public class PageManager {
         
     }
 
+     
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      public UserEventReply userLeave(int Id) {
+
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
-            activePlayers.remove(Id); //rm from active players 
-            boolean removed = pu.removeFromQueue(player); //rm from queue
+            activePlayers.remove(Id); //rm from out list of active players
+            boolean removed = pu.removeFromQueue(player); //rm from pairUp's queue 
     
-            JsonObject msg = new JsonObject();
+            JsonObject msg = new JsonObject(); //create the json
             msg.addProperty("action", "playerLeft");
-            msg.addProperty("playerId", Id);
             msg.addProperty("username", player.getUsername());
     
             UserEventReply reply = new UserEventReply();
@@ -650,11 +651,14 @@ public class PageManager {
                 reply.recipients.add(otherId);
             }
     
-            return reply;
+            return reply; //return reply to onClose
         } else {
             return null;
         }
     }
+    
+    
+    
 
 
     // Method to transition between pages
