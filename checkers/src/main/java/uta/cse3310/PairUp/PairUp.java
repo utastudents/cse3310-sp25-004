@@ -45,7 +45,8 @@ public class PairUp {
         // If elo difference is within 300, return true
         return diff <= MAX_ELO_DISPARITY;
     }
-    
+
+    //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
     private void pairUp() {
         if (playerQueue.size() <= 1) return; //If there are no players in the queue, return
         if (gm.getNumOfGames() <= 0) return; // If there aren't any open boards, return
@@ -74,7 +75,7 @@ public class PairUp {
             //No match
         }
 
-    } //This is where the actual pairing will take place. Will be called by boardAvailable, challenge, and addToQueue
+    } 
 
     /**
      * Add a player to the challenge queue. Called by PageManager when a client requests matchmaking
@@ -100,6 +101,7 @@ public class PairUp {
     public boolean challenge(Player p, Player c) {
         return challenge(p, c, null);
     }
+
     /**
      * Add a player v player challenge to the queue - after it has been accepted
      * @param p - the player who requested the challenge
@@ -119,6 +121,7 @@ public class PairUp {
         pairUp();
         return true;
     }
+
     /**
      * Add a player v bot challenge to the queue
      * @param p - The player who requested the challenge
@@ -128,6 +131,7 @@ public class PairUp {
     public boolean challengeBot(Player p, boolean botI) {
         return challenge(p, botI ? new BotI() : new BotII(), null);//just calls challenge with a bot
     }
+
     /**
      * Add a bot v bot challenge to the queue
      * @param botI - True for bot I, false for bot II
@@ -156,6 +160,7 @@ public class PairUp {
 
     return true; // Successfully created and added bot vs bot challenge
 }
+
     /**
      * 
      * @param p - The player to remove (should be a HumanPlayer)
