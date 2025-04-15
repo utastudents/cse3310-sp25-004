@@ -80,6 +80,7 @@ public class GameManager {
         // remove here
     }
 
+    /* This code does not compile - please fix AND TEST COMPILE before pushing
     public GameUpdate processMove(GameMove move) {
         // call GamePlay Board method to validate move ? and return GameUpdate object
         // with new position and player ID
@@ -108,4 +109,5 @@ public class GameManager {
         return new GameUpdate(valid, status, winner, capture, promotion, movePath);
 
     }
+         */
 }
