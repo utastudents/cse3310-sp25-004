@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="styles.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="icon" type="image/png" href="/final_logo.png">
     </head>
 	<body>	
     <!--SIGNUP GOES HERE-->
@@ -56,6 +57,169 @@
         </form>
 
 		<script src="login_signup/auth.js"></script>
+	</div>
+    <div id="join_game">
+		<div class="lobby_lists_container" style = "width:100%;">
+			<!-- have function to get player username and/ or ID -->
+			<h2>Have fun in the lobby :D</h2>
+			<!-- Have function to get amount of players -->
+			<h3>Current players: 3/48</h3>
+			<div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
+				<ol id="lobby_list_items">
+					<!-- Dynamically Created Elements -->
+	
+					<!-- UPDATE STATUS INDICATOR (CHASE) -->
+	
+					<!-- EXAMPLE: -->
+					<!-- <li class="player">
+						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
+						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
+						<button id="btn2-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
+					</li> -->
+				</ol>
+			</div>
+	
+			<button>
+				<!-- Will always have current player information, parameter is player they want to challenge -->
+				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
+				<a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+					Match Making
+				</a>
+			</button>
+			<!-- Will send info to DB and Bots with what bot and person -->
+			<button>
+				<a id="CURRENT_SESSION_BOT" type="button">
+					Request Bot
+				</a>
+			</button>
+			<!-- request to see bots play -->
+			<button>
+				<a id="CURRENT_SESSION_BOTvsBOT" type="button" > <!-- onclick in script section -->
+					Watch Bot Vs Bot
+				</a></button>
+		</div>
+		<!-- Send server who is the current player that logged in and request to see the list of active players-->
+		<script>
+			const currentPlayerInfo = {};
+
+			function displayJoinGame(player_info) {
+					// Remove JSON.parse since player_info is already an object
+					const listEl = document.getElementById("lobby_list_items");
+
+					// list item
+					const li = document.createElement("li");
+					li.className = "player";
+
+					// paragraph w/ span indicator
+					const paragraph = document.createElement("p");
+					paragraph.id = `UID${player_info.ClientID}`;
+					paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
+
+					const span = document.createElement("span");
+					if (player_info.status == "ONLINE"){
+						span.className = "status free"; 
+					} else {
+						span.className = "status busy"; 
+					}
+					paragraph.appendChild(span);
+
+					// buttons
+					const challenge_btn = document.createElement("button");
+					challenge_btn.id = `chall_btn-${player_info.ClientID}`;
+					challenge_btn.innerText = "Challenge";
+					challenge_btn.onclick = function () {
+						// req_challenge(1, player_info.ClientID);
+						console.log("Requesting challenge to player: {player_id}");
+					};
+
+					const view_btn = document.createElement("button");
+					view_btn.id = `view_btn-${player_info.ClientID}`;
+					view_btn.innerText = "View Match";
+					if (player_info.status == "ONLINE"){
+						view_btn.disabled = true; 
+					} else {
+						view_btn.disabled = false; 
+					}
+					view_btn.disabled = true; 
+					view_btn.onclick = function () {
+						console.log("Requesting to spectate match");
+					};
+				
+					li.appendChild(paragraph);
+					li.appendChild(challenge_btn);
+					li.appendChild(view_btn);
+
+					listEl.appendChild(li);
+			};
+
+			function updateJoinGameList(data) {
+				clearLobbyList(); 
+				const current_player_id = data["MyClientID"];
+				const online_players = data["activePlayers"];
+
+				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;
+
+				online_players.forEach(player => {
+					if (player.ClientID === current_player_id) {
+						Object.assign(currentPlayerInfo, player); 
+
+						document.querySelector("#join_game h2").textContent = `Welcome back, ${player.username}! Have fun in the lobby :D`;
+					} else {
+						displayJoinGame(player);
+					}
+				});
+			}
+
+			function updateStatus(playerID, status) {
+				// Access the player ID
+				const playerElement = document.getElementById(playerID);
+
+				// access the status span
+				const statusElement = playerElement.querySelector('.status');
+				const challengedBtn = document.getElementById(`btn1-${playerID}`);
+				const viewBtn = document.getElementById(`btn2-${playerID}`);
+
+				if (!challengedBtn) {
+					console.log("cant find button");
+				}
+				// Change the status to "free"
+				if (status == "busy") {
+					statusElement.classList.remove('free');
+					statusElement.classList.add('busy');
+
+					//change challenge button to disabled, view match to True
+					challengedBtn.disabled = true;
+					viewBtn.disabled = false;
+				}
+				// welp you not gonna spectate an idle player 
+				else {
+					statusElement.classList.remove('busy');
+					statusElement.classList.add('free');
+					//change button to normal
+					challengedBtn.disabled = false;
+					viewBtn.disabled = true;
+				}
+			}
+
+			function watchBotVsBot(player_info) {
+				const botVsBotReq = {
+					type: "request_bot_vs_bot",
+					playerID: player_info.ClientID, 
+				};
+
+				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
+				connection.send(JSON.stringify(botVsBotReq));
+			}
+
+			document.getElementById("CURRENT_SESSION_BOTvsBOT").onclick = function () {
+				watchBotVsBot(currentPlayerInfo); 
+			};
+
+			function clearLobbyList() {
+				const listEl = document.getElementById("lobby_list_items");
+				listEl.innerHTML = ""; // clear child elements
+			}
+		</script>
 	</div>
 </div>
 	</body>
@@ -137,39 +301,39 @@
 		</div>
 	</div>
 
-    <!-- <div id="stuff">
-     <input type="button" value="Send Something" onclick="msg()">
-      <label for="tbox">Received</label>
-      <textarea id="tbox" name="tbox" rows="4" cols="50">
+<div id="stuff">
+	<input type="button" value="Send Something" onclick="msg()">
+	<label for="tbox">Received</label>
+	<textarea id="tbox" name="tbox" rows="4" cols="50">
      </textarea>
-    </div> -->
+</div>
+
 </html>
 <script>
-    // each of the 'divs' in the html page should have attributes to allow them to be hidden.
-    // the page manager should send a small json message, that tells which of these are hidden
-    // and which are visible when there is a change
-    // something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
+	// each of the 'divs' in the html page should have attributes to allow them to be hidden.
+	// the page manager should send a small json message, that tells which of these are hidden
+	// and which are visible when there is a change
+	// something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
 
 
-    // a reminder.  we want to create one websocket connection, and use if, basically forever.
-    // or until the user decides to go to another page.
-    // this requires everything to load from this page.
+	// a reminder.  we want to create one websocket connection, and use if, basically forever.
+	// or until the user decides to go to another page.
+	// this requires everything to load from this page.
+
 	var connection = null;
-    var serverUrl;
-	if (location.port) {
-		serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
-		connection = new WebSocket(serverUrl);
-	} else {
-		console.log("No port detected, skipping WebSocket setup for now.");
+
+	var serverUrl;
+	serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
+	connection = new WebSocket(serverUrl);
+
+	connection.onopen = function (evt) {
+		console.log("open");
 	}
 
-    connection.onopen = function (evt) {
-        console.log("open");
-    }
+	connection.onclose = function (evt) {
+		console.log("close");
+	}
 
-    connection.onclose = function (evt) {
-        console.log("close");
-    }
 
     connection.onmessage = function (evt) {
         let msg = evt.data; //extract data from websocket response
@@ -242,7 +406,7 @@
 			// Game Responses
 
 			// Summary Responses
-			case "summaryTopTenData":{
+			case "summaryTopTenData": {
 				console.log("Received summaryTopTenData!");
 				//ommits the responseID and only sends needed values to loadData
 				loadData(jsonMsg[responseID]); 
@@ -260,49 +424,48 @@
         //const obj = JSON.parse(msg);
 
 
-    class UserEvent {
-        msg;
-    }
+	class UserEvent {
+		msg;
+	}
 
-    // function msg() {
-    //     console.log("button clicked");
-    //     U = new UserEvent();
-    //     U.msg="i pushed a button";
-    //     connection.send(JSON.stringify(U));
-    //     console.log(JSON.stringify(U))
-    // }
+	function msg() {
+		console.log("button clicked");
+		U = new UserEvent();
+		U.msg = "i pushed a button";
+		connection.send(JSON.stringify(U));
+		console.log(JSON.stringify(U))
+	}
 
 	
 	// Function to retrieve and display the leaderboard
 	function summary(/*void*/) {
-    
-	/* DEPRECATED : Code now resides in ./summary.js */
-	
-	/*
-	* Fetches and displays player ranking data in the summary table.
-	*
-	* This function retrieves JSON data for:
-	* - The current player, identified via a session UUID.
-	* - The top 10 ranked players.
-	*
-	* The data is retrieved using:
-	* - retrieveUserJson(uuid): Fetches the current player's data.
-	* - retrieveTopTenJson(): Fetches the top 10 ranked players.
-	*
-	* The retrieved data is then written to the HTML table inside the summary div.
-	*
-	* TODO:
-	* - Implement a method to obtain the session UUID to call retrieveUserJson(uuid).
-	* - Handle potential errors when fetching data.
-	* - Ensure proper table structure for displaying the data.
-	*/
-	
-	// playerData = retrieveUserJson();
-	// globalData = retrieveTopTenJson();
 
-// Write top ten to table
-// Write user to table
-return;
-}
+		/* DEPRECATED : Code now resides in ./summary.js */
 
+		/*
+		* Fetches and displays player ranking data in the summary table.
+		*
+		* This function retrieves JSON data for:
+		* - The current player, identified via a session UUID.
+		* - The top 10 ranked players.
+		*
+		* The data is retrieved using:
+		* - `retrieveUserJson(uuid)`: Fetches the current player's data.
+		* - `retrieveTopTenJson()`: Fetches the top 10 ranked players.
+		*
+		* The retrieved data is then written to the HTML table inside the summary div.
+		*
+		* TODO:
+		* - Implement a method to obtain the session UUID to call `retrieveUserJson(uuid)`.
+		* - Handle potential errors when fetching data.
+		* - Ensure proper table structure for displaying the data.
+		*/
+
+		// playerData = retrieveUserJson();
+		// globalData = retrieveTopTenJson();
+
+		// Write top ten to table
+		// Write user to table
+		return;
+	}
 </script>
