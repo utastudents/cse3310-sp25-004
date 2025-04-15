@@ -57,11 +57,12 @@ return !canPlayerMove(board, getOpponent(playerID));
 //Board gameState = new Board();
 
 //checks gameState after each move to see if a player is winning
-public int checkForWinningPlayer(Board board, Game game1, Game game2){
+public int checkForWinningPlayer(Board board, Game game){
+    //put single game in parameter due to parameters in game.java (Group 21)
 
     //added by Game.java to fix compiling issue
-    int player1ID = game1.getPlayer1().getPlayerId();
-    int player2ID = game2.getPlayer2().getPlayerId();
+    int player1ID = game.getPlayer1().getPlayerId();
+    int player2ID = game.getPlayer2().getPlayerId();
 
     if (hasPlayerWon(board, player1ID)) {
         return player1ID;
@@ -69,16 +70,18 @@ public int checkForWinningPlayer(Board board, Game game1, Game game2){
     else if (hasPlayerWon(board, player2ID)) {
         return player2ID;
     }
-    return -1;
+    else {
+        return -1;
+    }
 }
 
 //checks gameState for a draw
-public boolean gameStateDraw(Board board, Game game1, Game game2) {
+public boolean gameStateDraw(Board board, Game game) {
 
 
     //added by game.java to fix compiling issue
-    int player1ID = game1.getPlayer1().getPlayerId();
-    int player2ID = game2.getPlayer2().getPlayerId();
+    int player1ID = game.getPlayer1().getPlayerId();
+    int player2ID = game.getPlayer2().getPlayerId();
 
     return !canPlayerMove(board, player1ID) &&
     !canPlayerMove(board, player2ID);
