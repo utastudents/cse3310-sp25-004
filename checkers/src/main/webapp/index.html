@@ -143,7 +143,7 @@
 					}
 					view_btn.disabled = true; 
 					view_btn.onclick = function () {
-						console.log("Requesting to spectate match");
+						viewMatch(player_info.ClientID);
 					};
 				
 					li.appendChild(paragraph);
@@ -152,7 +152,27 @@
 
 					listEl.appendChild(li);
 			};
+  					//view match function
+			  		function viewMatch(playerID) {
+					const viewMatchRequest = {
+					type: "request_view_match",
+				    playerID: playerID 
+					};
 
+					console.log("Requesting to view match for player:", playerID);
+					sendMessage(JSON.stringify(viewMatchRequest));
+					}
+
+					function watchBotVsBot(player_info) {
+					const botVsBotReq = {
+					type: "request_bot_vs_bot",
+					playerID: player_info.ClientID, 
+					};
+
+					console.log("Requesting Bot vs Bot Match:", botVsBotReq);
+					sendMessage(JSON.stringify(botVsBotReq));
+					}
+				// end
 			function updateJoinGameList(data) {
 				clearLobbyList(); 
 				const current_player_id = data["MyClientID"];
