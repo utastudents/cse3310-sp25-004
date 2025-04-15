@@ -47,9 +47,6 @@ public class GameTermination {
                 */
         }
 
-        // updates each player stats based on match results sends to db
-// public void saveResults(Game player1, Game player2){
-
         public HumanPlayer[] saveResults(Game game){
                 DB database = new DB();
                 gameState state = new gameState();
@@ -67,32 +64,43 @@ public class GameTermination {
                 HumanPlayer player2 = database.getPlayerById(player2Id);
                 
                 //if no games have ever been played start with 0
-                int p1Wins = 0, p1Losses = 0, p1Games = 0;
-                int p2Wins = 0, p2Losses = 0, p2Games = 0;
+                int p1Wins = 0, p1Losses = 0, p1Games = 0, p1Elo = 1000;
+                int p2Wins = 0, p2Losses = 0, p2Games = 0, p2Elo = 1000;
                 
                 //check incase players aren't detected
                 if(player1 != null && player2 != null){
                         p1Wins = player1.getWins();
                         p1Losses = player1.getLosses();
                         p1Games = player1.getGamesPlayed();
+                        p1Elo = player1.getELO();
 
                         p2Wins = player2.getWins();
                         p2Losses = player2.getLosses();
                         p2Games = player2.getGamesPlayed();
+                        p2Elo = player2.getELO();
                 }
+
+                int updatedElo1 = p1Elo;
+                int updatedElo2 = p2Elo;
 
                 //Handles player draw
                 if (winnerID == -1){
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses, 0, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p2Losses, 0, p2Games + 1);
+                        database.updatePlayerStats(player1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
+                        database.updatePlayerStats(player2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
                 //Handles Player 1 Win
                 }else if(winnerID == player1Id){
-                        database.updatePlayerStats(player1Id, p1Wins + 1, p1Losses, 0, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p1Losses + 1, 0, p2Games + 2);
+                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
+
+                        database.updatePlayerStats(player1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
+                        database.updatePlayerStats(player2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 2);
                 //Handles Player 2 Win
                 }else if(winnerID == player2Id){
-                        database.updatePlayerStats(player2Id, p2Wins + 1, p2Losses, 0, p2Games + 1);
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses + 1, 0, p1Games + 1);
+                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
+                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+
+                        database.updatePlayerStats(player2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
+                        database.updatePlayerStats(player1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
                 }
 
                 //return updated player stats
@@ -105,49 +113,6 @@ public class GameTermination {
 
         }
 
-        //    public GameResult evaluate(GameState gameState) {
-
-        // boolean p1HasPieces = gameState.hasPieces("P1");
-
-        // boolean p2HasPieces = gameState.hasPieces("P2");
-
-
-
-        // boolean p1CanMove = gameState.hasValidMoves("P1");
-
-        // boolean p2CanMove = gameState.hasValidMoves("P2");
-
-
-
-        /**i
-
-         * f (!p1HasPieces || !p1CanMove) {
-
-            if (!p2HasPieces || !p2CanMove) {
-
-                return GameResult.DRAW;
-
-            }
-
-            return GameResult.PLAYER_TWO_WINS;
-
-        }
-
-
-
-        if (!p2HasPieces || !p2CanMove) {
-
-            return GameResult.PLAYER_ONE_WINS;
-
-        }
-
-
-
-        return GameResult.IN_PROGRESS;
-
-         }
-
-        } */
 
 
 
