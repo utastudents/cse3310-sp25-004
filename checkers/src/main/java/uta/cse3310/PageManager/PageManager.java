@@ -486,12 +486,12 @@ public class PageManager {
         {
             HumanPlayer humanPlayer1 = (HumanPlayer) g.getPlayer1();
             player1.addProperty("isBot", false);
-            responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
-            responseJson.addProperty("username", humanPlayer1.getUsername());
-            responseJson.addProperty("elo", humanPlayer1.getELO());
-            responseJson.addProperty("gamesWon", humanPlayer1.getWins());
-            responseJson.addProperty("gamesLost", humanPlayer1.getLosses());
-            responseJson.addProperty("status", humanPlayer1.getStatus().toString());
+            player1.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
+            player1.addProperty("username", humanPlayer1.getUsername());
+            player1.addProperty("elo", humanPlayer1.getELO());
+            player1.addProperty("gamesWon", humanPlayer1.getWins());
+            player1.addProperty("gamesLost", humanPlayer1.getLosses());
+            player1.addProperty("status", humanPlayer1.getStatus().toString());
         }
         responseJson.add("player1", player1);
 
@@ -505,19 +505,20 @@ public class PageManager {
         {
             HumanPlayer humanPlayer2 = (HumanPlayer) g.getPlayer2();
             player2.addProperty("isBot", false);
-            responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
-            responseJson.addProperty("username", humanPlayer2.getUsername());
-            responseJson.addProperty("elo", humanPlayer2.getELO());
-            responseJson.addProperty("gamesWon", humanPlayer2.getWins());
-            responseJson.addProperty("gamesLost", humanPlayer2.getLosses());
-            responseJson.addProperty("status", humanPlayer2.getStatus().toString());
+            player2.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
+            player2.addProperty("username", humanPlayer2.getUsername());
+            player2.addProperty("elo", humanPlayer2.getELO());
+            player2.addProperty("gamesWon", humanPlayer2.getWins());
+            player2.addProperty("gamesLost", humanPlayer2.getLosses());
+            player2.addProperty("status", humanPlayer2.getStatus().toString());
         }
         responseJson.add("player2", player2);
 
+        //According to game display, they will have the game setup
 
-        GamePlay board = g.getBoard();
+        // GamePlay board = g.getBoard();
 
-        // responseJson.add("board", boardToJson(board));
+        // // responseJson.add("board", boardToJson(board));
 
 
         userEventReply.recipients = new ArrayList<>();

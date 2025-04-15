@@ -56,95 +56,92 @@
         </form>
 
 		 <script>
-			connection.onopen = function(event){
-			console.log("Websocket Connected")
-			};			
-			
-			/*connection.onmessage = function(event){
-			const data = JSON.parse(event.data);
-			console.log("Message from server: ", data);
-			if(data.responseID === "login"){
-				document.elementById("login-username-error").style.display = "none";
-				document.elementById("login-password-error").style.display = "none";
 
-				if(data.msg === "Invalid password."){
-					document.elementById("login-password-error").style.display = "inline";
-				}
-				if(data.msg === "Username does not exist."){
-					document.elementById("login-username-error").style.display = "inline";
-				}
-				else{
-					alert("Invalid username or password.");
-				}
-			}
-			else if(data.responseID === "loginSuccess"){
-				alert(data.msg);
-				window.location.href = "join_game.html";
-				}
-			else if(data.responseID ==="new_user"){
-					document.elementById("username-error").style.display = "none";
-					document.elementById("password-error").style.display = "none";
-					if(data.msg === "Username already exists"){
-						alert("Username already Exists")
-					}
-					if(data.redirect === "join_game"){
-						window.location.href = "join_game.html";
-					}
-				}
-			};
-			connection.onerror = function(error){
-				console.error("Websocket Error: ", error);
-		 	}
-			connection.onclose = function(event){
-				console.log("Websocket Closed");
-			}	
-				*/	
-
-			//temporary hardcode
-			connection.onmessage = function(event){
+				/*connection.onmessage = function(event){
 				const data = JSON.parse(event.data);
-				console.log("Recieved data: ", data);
+				console.log("Message from server: ", data);
+				if(data.responseID === "login"){
+					document.elementById("login-username-error").style.display = "none";
+					document.elementById("login-password-error").style.display = "none";
 
-				if(data.responseID === "loginSuccess"){
-					alert(data.msg);
-					if(data.redirect === "join_game"){
-						window.location.href = "join_game.html";
+					if(data.msg === "Invalid password."){
+						document.elementById("login-password-error").style.display = "inline";
+					}
+					if(data.msg === "Username does not exist."){
+						document.elementById("login-username-error").style.display = "inline";
+					}
+					else{
+						alert("Invalid username or password.");
 					}
 				}
-				else if(data.responseID === "new_user"){
+				else if(data.responseID === "loginSuccess"){
 					alert(data.msg);
-					if(data.redirect === "join_game"){
-						window.location.href = "join_game.html";
+					window.location.href = "join_game.html";
 					}
+				else if(data.responseID ==="new_user"){
+						document.elementById("username-error").style.display = "none";
+						document.elementById("password-error").style.display = "none";
+						if(data.msg === "Username already exists"){
+							alert("Username already Exists")
+						}
+						if(data.redirect === "join_game"){
+							window.location.href = "join_game.html";
+						}
+					}
+				};
+				connection.onerror = function(error){
+					console.error("Websocket Error: ", error);
 				}
-				else if(data.responseID === "login"){
-					alert("Login failed: " + data.msg)
-				}
-			};
+				connection.onclose = function(event){
+					console.log("Websocket Closed");
+				}	
+					*/	
 
-			document.getElementById("show-signup").onclick = function() {
-            document.getElementById("login").style.display = "none";
-            document.getElementById("new_account").style.display = "block";
-                  };
+				//temporary hardcode
+				/*connection.onmessage = function(event){
+					const data = JSON.parse(event.data);
+					console.log("Recieved data: ", data);
 
-            document.getElementById("back-to-login").onclick = function() {
-            document.getElementById("new_account").style.display = "none";
-            document.getElementById("login").style.display = "block";
-             	};
-			
-			document.getElementById("signup-btn").onclick = function(e){
-				e.preventDefault();
+					if(data.responseID === "loginSuccess"){
+						alert(data.msg);
+						if(data.redirect === "join_game"){
+							window.location.href = "join_game.html";
+						}
+					}
+					else if(data.responseID === "new_user"){
+						alert(data.msg);
+						if(data.redirect === "join_game"){
+							window.location.href = "join_game.html";
+						}
+					}
+					else if(data.responseID === "login"){
+						alert("Login failed: " + data.msg)
+					}
+				};
+
+				document.getElementById("show-signup").onclick = function() {
+					document.getElementById("login").style.display = "none";
+					document.getElementById("new_account").style.display = "block";
+				};
+
+				document.getElementById("back-to-login").onclick = function() {
+					document.getElementById("new_account").style.display = "none";
+					document.getElementById("login").style.display = "block";
+				};
 				
-				const username = document.getElementById("signup-username").value; //username from signup form
-				const password = document.getElementById("signup-password").value; //password from signup form
-				const confirmPassword = document.getElementById("signup-confirm-password").value;
-				//Hide error messages by default
-				document.getElementById("username-error").style.display = "none";
-				document.getElementById("password-error").style.display = "none";
-				document.getElementById("confirm-password-error").style.display = "none";
+				document.getElementById("signup-btn").onclick = function(e){
+					e.preventDefault();
+					
+					const username = document.getElementById("signup-username").value; //username from signup form
+					const password = document.getElementById("signup-password").value; //password from signup form
+					const confirmPassword = document.getElementById("signup-confirm-password").value;
+					//Hide error messages by default
+					document.getElementById("username-error").style.display = "none";
+					document.getElementById("password-error").style.display = "none";
+					document.getElementById("confirm-password-error").style.display = "none";
 
 
-				let valid = true;
+					let valid = true;
 				if(username.length < 3){
 					document.getElementById("username-error").style.display = "inline";
 					valid = false;
@@ -159,11 +156,11 @@
 					return;
 				}
 				if(!username || !password || !confirmPassword){
-					alert("All fields are required.");
-					return;
-				}
-				if(!valid) return;
-
+				alert("All fields are required.");
+				return;
+			}
+			if(!valid) return;
+				
 				const signupData = { 
 					//Data into JSON object
 					type: "new_user", 
@@ -183,13 +180,12 @@
 
 				document.getElementById("login-username-error").style.display = "none";
 				document.getElementById("login-password-error").style.display = "none";
-				
+					
 				// More Data Validation can go here
 				if(!loginUsername || !loginPassword){ //Username or Password not filled in
 					alert("Invalid username and/or password.");
 					return;
 				}
-
 				const loginData = { //Data into JSON object
 					type: "login", 
 					UserName : loginUsername, 
@@ -199,9 +195,8 @@
 			connection.send(JSON.stringify(loginData))
 			console.log("Login Data sent: ", loginData)		
 			}
-
-		 </script>
-		
+*/
+		</script>
 	</div>
     <div id="join_game">
         <div class="lobby_lists_container" > 
@@ -298,12 +293,14 @@
     // a reminder.  we want to create one websocket connection, and use if, basically forever.
     // or until the user decides to go to another page.
     // this requires everything to load from this page.
-
-    var connection = null;
-
+	var connection = null;
     var serverUrl;
-    serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
-    connection = new WebSocket(serverUrl);
+	if (location.port) {
+		serverUrl = "ws://" + window.location.hostname + ":" + (parseInt(location.port) + 100);
+		connection = new WebSocket(serverUrl);
+	} else {
+		console.log("No port detected, skipping WebSocket setup for now.");
+	}
 
     connection.onopen = function (evt) {
         console.log("open");
@@ -320,10 +317,55 @@
 		//Extracts the response identifier from the response, so we can determine whose code it belongs to
 		//See ./INTERFACES/client-server-docs.md for details
 		let responseID = Object.keys(jsonMsg)[0]; 
-		switch ( responseID )
+		switch (responseID )
 		{
 			// Account Responses
-			
+			/*case "login": {
+				document.getElementById("login-username-error").style.display = "none";
+				document.getElementById("login-password-error").style.display = "none";
+
+				if(jsonMsg.msg === "Invalid username or password."){
+					document.getElementById("login-password-error").style.display = "inline";
+				}
+				if(jsonMsg.msg === "Username does not exist."){
+					document.getElementById("login-username-error").style.display = "inline";
+				}
+				else{
+					alert("Invalid username or password.");
+				}
+				break;
+			}
+			case "loginSuccess": {
+				alert(jsonMsg.msg);
+				//Hide login and signup page, show join_game page
+				break;
+			}
+			case "new_user": {
+				document.getElementById("username-error").style.display = "none";
+				document.getElementById("password-error").style.display = "none";
+				if(data.msg === "Username already exists"){
+					alert("Username already Exists") //create new span for username already exists
+				}
+				if(jsonMsg.msg === "Account created successfully!"){
+					//Hide signup and login page, show join_game page
+				}
+				break;
+			}*/
+			//temporary hardcode
+			case "loginSuccess":
+            alert(jsonMsg.msg);
+            if (jsonMsg.msg === "Login Successful!"){
+				//hide login and signup, show join_game
+            break;
+			}
+
+        	case "new_user":
+            	alert(jsonMsg.msg);
+        		if(jsonMsg.msg === "Account created successfully!"){
+					//Hide signup and login page, show join_game page
+				} 
+            break;
+
 			// Game Responses
 
 			// Summary Responses
@@ -337,10 +379,89 @@
 				console.log("Received unexpected responseID! Got: \n"+responseID);
 			}
 		}
+	}
+//Start of Login/Username Functionality
+	document.getElementById("show-signup").onclick = function() {
+		document.getElementById("login").style.display = "none";
+		document.getElementById("new_account").style.display = "block";
+	};
+
+	document.getElementById("back-to-login").onclick = function() {
+		document.getElementById("new_account").style.display = "none";
+		document.getElementById("login").style.display = "block";
+	};
+
+	document.getElementById("signup-btn").onclick = function(e){
+		e.preventDefault();
+		
+		const username = document.getElementById("signup-username").value; //username from signup form
+		const password = document.getElementById("signup-password").value; //password from signup form
+		const confirmPassword = document.getElementById("signup-confirm-password").value;
+		//Hide error messages by default
+		document.getElementById("username-error").style.display = "none";
+		document.getElementById("password-error").style.display = "none";
+		document.getElementById("confirm-password-error").style.display = "none";
+
+
+		let valid = true;
+	if(username.length < 3){
+		document.getElementById("username-error").style.display = "inline";
+		valid = false;
+	}
+	if(password.length < 5){
+		document.getElementById("password-error").style.display = "inline";
+		valid = false;
+	}
+	if(password !== confirmPassword){
+		document.getElementById("confirm-password-error").style.display = "inline";
+		valid = false;
+		return;
+	}
+	if(!username || !password || !confirmPassword){
+	alert("All fields are required.");
+	return;
+	}
+	if(!valid) return;
+
+	const signupData = { 
+		//Data into JSON object
+		type: "new_user", 
+		UserName : username, 
+		Password:password
+	};
+	//Send data as JSON string JSON.stringify
+	connection.send(JSON.stringify(signupData));
+	console.log("Signup Data sent: ", signupData)		
+	};
+	//Event handler for login button
+	document.getElementById("login-btn").onclick = function(e){
+	e.preventDefault();
+
+	const loginUsername = document.getElementById("login-username").value; //username from signup form
+	const loginPassword = document.getElementById("login-password").value; //password from signup form
+
+	document.getElementById("login-username-error").style.display = "none";
+	document.getElementById("login-password-error").style.display = "none";
+		
+	// More Data Validation can go here
+	if(!loginUsername || !loginPassword){ //Username or Password not filled in
+		alert("Invalid username and/or password.");
+		return;
+	}
+	const loginData = { //Data into JSON object
+		type: "login", 
+		UserName : loginUsername, 
+		Password:loginPassword
+	};
+	//Send data as JSON string JSON.stringify
+	connection.send(JSON.stringify(loginData))
+	console.log("Login Data sent: ", loginData)		
+	}
+
 
         //document.getElementById("tbox").innerHTML = msg + '\n' + document.getElementById("tbox").innerHTML; //what does this do??
         //const obj = JSON.parse(msg);
-    }
+
 
     class UserEvent {
         msg;
