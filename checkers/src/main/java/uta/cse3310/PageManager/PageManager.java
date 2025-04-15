@@ -53,7 +53,7 @@ public class PageManager {
         gm = new GameManager();
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(db, gm);
+        pu = new PairUp(gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
