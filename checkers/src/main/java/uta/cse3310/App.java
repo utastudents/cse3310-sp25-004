@@ -238,7 +238,27 @@ public class App extends WebSocketServer {
       destination.send(Reply.replyObj.toString());
       System.out.println("sending " + Reply.replyObj.toString() + " to " + id);
     }
-  }
+
+      // Send page transition and active players only on success
+        if ((action.equals("login") || action.equals("new_user")) &&
+            Reply.replyObj.has("msg") &&
+            Reply.replyObj.get("msg").getAsString().contains("successfully")) {
+
+            UserEventReply transition = PM.transitionPage(Id);
+            for (Integer id : transition.recipients) {
+                WebSocket destination = id2con.get(id);
+                destination.send(transition.replyObj.toString());
+                System.out.println("Transitioning client " + id + " to join_game");
+            }
+
+            UserEventReply playerList = PM.getActivePlayers(new JsonObject(), Id);
+            for (Integer id : playerList.recipients) {
+                WebSocket destination = id2con.get(id);
+                destination.send(playerList.replyObj.toString());
+                System.out.println("Sending active players to " + id);
+            }
+        }
+    }
 
   @Override
   public void onMessage(WebSocket conn, ByteBuffer message) {

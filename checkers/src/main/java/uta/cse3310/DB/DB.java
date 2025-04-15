@@ -67,6 +67,8 @@ public class DB
                 pstmt.setString(2, hashedPassword);
                 pstmt.setBytes(3, salt);
                 pstmt.executeUpdate();
+
+                return true;
             }
         } catch (SQLException e) {
             System.out.println("Failed to add player: " + e.getMessage());
