@@ -66,21 +66,27 @@ public class PageManager {
         responseJson.addProperty("responseID", "summaryData");
     
         // Get the top10 players by elo from db
-        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();  
+        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
+
+        JsonArray top10 = new JsonArray(10);
     
-        int count = 1;
+        //int count = 1;
         for (HumanPlayer player : topPlayers) {
+            if (player == null) {continue;}
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", player.getPlayerId());
             playerData.addProperty("Username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
+
+            top10.add(playerData);
     
-            String userKey = "userID" + count;
-            responseJson.add(userKey, playerData);
-            count++;
+            //String userKey = "userID" + count;
+            //responseJson.add(userKey, playerData);
+            //count++;
         }
+        responseJson.add("top10", top10);
     
         // Add current player (even if not in top 10)
         HumanPlayer currentPlayer = activePlayers.get(id);

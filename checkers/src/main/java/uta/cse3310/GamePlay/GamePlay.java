@@ -1,5 +1,5 @@
 package uta.cse3310.GamePlay;
-//import uta.cse3310.GameTermination.GameTermination;
+
 
 import java.util.ArrayList;
 
@@ -17,16 +17,19 @@ public class GamePlay
         //Initialize class with GameID and create starting board
     }
 
-    /*public idkyet gameTermCheck(Board board)
+    /*public int gameTermCheck(Board board)
     {
+
+        //return 0 if game does not end
         //call for endGame method
-        var return=endGame(board);
+        if ()
 
         //could do a try and catch method if they decide to use a throw to make terminate
 
 
-    }
-    */
+    } */
+   //we don't use the game object so we'll let manager handle this
+    
 
     public int move(Checker piece, Cord dest) 
     {
