@@ -1,6 +1,12 @@
 package uta.cse3310.GameTermination;
 
 import java.util.HashMap;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 
 import uta.cse3310.GameManager.Game;
 
@@ -35,7 +41,14 @@ public class gameResult{
     }
 
     // Proceed to send this list to the frontend
-    
+    JSONObject msg = new JSONObject();
+    msg.put("type", "leaderboard");
+    msg.put("data", new JSONArray(topPlayers));
+
+    // Send the JSON message to frontend (placeholder method)
+    // Replace these with actual player/client socket methods if available
+    WebSocketManager.sendToAllClients(msg.toString());
+
 }
 
 
