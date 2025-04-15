@@ -72,6 +72,7 @@ public class DB
             System.out.println("Failed to add player: " + e.getMessage());
             return false;
         }
+        return true; // ????
     }
     /* gets a player using playerId, and return if the player is found */
     public HumanPlayer getPlayerById(int playerId) 

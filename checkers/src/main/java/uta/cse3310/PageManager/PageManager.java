@@ -513,7 +513,7 @@ public class PageManager {
         }
         responseJson.add("player2", player2);
 
-        Gameplay board = g.getBoard();
+        //Gameplay board = g.getBoard();
 
         // responseJson.add("board", boardToJson(board));
 
@@ -617,12 +617,13 @@ public class PageManager {
         
         GameMove move = gson.fromJson(jsonObj, GameMove.class);
         move.setClientId(Id);
-        GameUpdate update = Gm.processMove(move);
+        //GameUpdate update = Gm.processMove(move);
         UserEventReply reply = new UserEventReply();
-
-        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
-        reply.replyObj = json;
-        reply.recipients.add(move.getClientId());
+// none of this stuff compiles....
+//
+        //JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+        //reply.replyObj = json;
+        //reply.recipients.add(move.getClientId());
         return reply;
             
         
