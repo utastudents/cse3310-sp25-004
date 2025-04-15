@@ -77,7 +77,7 @@ public class DB
         return false; // if something fails
     }
     /* gets a player using playerId, and return if the player is found */
-    public HumanPlayer getPlayerById(int playerId) 
+    /*public HumanPlayer getPlayerById(int playerId) 
     {
         try {
             String sql = "SELECT * FROM players WHERE id = ?";
@@ -94,7 +94,7 @@ public class DB
             System.err.println("Error fetching player: " + e.getMessage());
         }
         return null;
-    }
+    }*/
     
     /* gets player using username and it will return if it found  */
     public HumanPlayer getPlayerByUsername(String username) 
@@ -115,9 +115,27 @@ public class DB
         return null;
     }
 
+    /* verifies player login & returns if valid */
     public HumanPlayer getPlayer(String username, String password)
      {
-         // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         String sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String storedHash = rs.getString("password");
+                byte[] salt = rs.getBytes("salt");
+
+                //checks password
+                if (PasswordManager.verifyPassword(password, storedHash, salt)) {
+                    return new HumanPlayer(rs.getString("username"), storedHash, salt);
+                }
+            }
+         } catch (SQLException e) {
+            System.out.println("Error fetching player: " + e.getMessage());
+         }
+         
          return null;  /* null when Player not found */
      }
  
