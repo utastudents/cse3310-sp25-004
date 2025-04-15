@@ -5,18 +5,26 @@ import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.List;
-
+import uta.cse3310.App;
 
 
 //import uta.cse3310.GameState;
 
 import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.GameManager;
+import uta.cse3310.GameManager.Game;
+import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player;
-
+import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Board;
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.Bot.Bot;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,24 +33,27 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
+    GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
                       // is not unique per client (or game)
 
-
+    
     // List to track active players in the subsystem
-    Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
-
-    Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+    public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
+    Gson gson = new Gson();
+    GameManager Gm = new GameManager();
+    public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
 
     // Track user in which subsytem they are in.
-    HashMap<Integer, GameState> clientStates = new HashMap<>();
+    public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
+        gm = new GameManager();
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(db);
+        pu = new PairUp(gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -72,7 +83,7 @@ public class PageManager {
         }
     
         // Add current player (even if not in top 10)
-        HumanPlayer currentPlayer = db.getPlayerById(id);
+        HumanPlayer currentPlayer = activePlayers.get(id);
         if (currentPlayer != null) {
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", currentPlayer.getPlayerId());
@@ -103,7 +114,7 @@ public class PageManager {
         JsonObject responseJson = new JsonObject();
 
         // general identification of JSON
-        responseJson.addProperty("responseID", "getActivePlayers");
+        responseJson.addProperty("responseID", "join_game");
         responseJson.addProperty("MyClientID", Id);
         responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
@@ -142,7 +153,7 @@ public class PageManager {
 
         /* JSON STRUCTURE
     {
-  "responseID": "getActivePlayers",
+  "responseID": "join_game",
   "MyClientID": 123,
   "playersInQueue": 3,
   "activePlayers": [
@@ -183,7 +194,11 @@ public class PageManager {
         if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
             responseJson.addProperty("inQueue", true);
-            activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+
+            if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
+            {
+                activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+            }
         }
         else
         {
@@ -273,8 +288,11 @@ public class PageManager {
             if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
             {
                 responseJson.addProperty("inQueue", true);
-                activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
-                activePlayers.get(opponentClientId).setStatus(Player.STATUS.IN_QUEUE);
+                if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
+                {
+                    activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+                    activePlayers.get(opponentClientId).setStatus(Player.STATUS.IN_QUEUE);
+                }
             }
             else
             {
@@ -340,7 +358,10 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
-            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+            if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
+            {
+                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+            }
         }
         else
         {
@@ -384,7 +405,10 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
-            activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+            if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
+            {
+                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+            }
         }
         else
         {
@@ -416,6 +440,100 @@ public class PageManager {
      * Implement a way when a user leaves the website 
      */
 
+    public void startGameNotifier(Game g, int UserId)
+    {
+        int clientId = userIDToClientID.get(UserId);
+
+        UserEventReply userEventReply= new UserEventReply();
+        JsonObject responseJson = new JsonObject();
+
+        boolean player1IsBot = false;
+        boolean player2IsBot = false;
+
+        if (g.getPlayer1() instanceof Bot)
+        {
+            player1IsBot = true;
+        }
+
+        if (g.getPlayer2() instanceof Bot)
+        {
+            player2IsBot = true;
+        }
+
+        // general identification of JSON
+        responseJson.addProperty("responseID", "startGame");
+
+        if (player1IsBot && player2IsBot)
+        {
+            responseJson.addProperty("gameType", "bvb");
+        }
+        else if (player1IsBot || player2IsBot)
+        {
+            responseJson.addProperty("gameType", "pvb");
+        }
+        else
+        {
+            responseJson.addProperty("gameType", "pvp");
+        }
+
+        // Player 1 info
+        JsonObject player1 = new JsonObject();
+        if (player1IsBot)
+        {
+            player1.addProperty("isBot", true);
+        }
+        else
+        {
+            HumanPlayer humanPlayer1 = (HumanPlayer) g.getPlayer1();
+            player1.addProperty("isBot", false);
+            player1.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
+            player1.addProperty("username", humanPlayer1.getUsername());
+            player1.addProperty("elo", humanPlayer1.getELO());
+            player1.addProperty("gamesWon", humanPlayer1.getWins());
+            player1.addProperty("gamesLost", humanPlayer1.getLosses());
+            player1.addProperty("status", humanPlayer1.getStatus().toString());
+        }
+        responseJson.add("player1", player1);
+
+        // Player 2 info
+        JsonObject player2 = new JsonObject();
+        if (player2IsBot)
+        {
+            player2.addProperty("isBot", true);
+        }
+        else
+        {
+            HumanPlayer humanPlayer2 = (HumanPlayer) g.getPlayer2();
+            player2.addProperty("isBot", false);
+            player2.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
+            player2.addProperty("username", humanPlayer2.getUsername());
+            player2.addProperty("elo", humanPlayer2.getELO());
+            player2.addProperty("gamesWon", humanPlayer2.getWins());
+            player2.addProperty("gamesLost", humanPlayer2.getLosses());
+            player2.addProperty("status", humanPlayer2.getStatus().toString());
+        }
+        responseJson.add("player2", player2);
+
+        //According to game display, they will have the game setup
+
+        // GamePlay board = g.getBoard();
+
+        // // responseJson.add("board", boardToJson(board));
+
+
+        userEventReply.recipients = new ArrayList<>();
+        userEventReply.recipients.add(clientId);
+
+        //transition
+        App.sendMessage(transitionPage(userEventReply.recipients, GameState.GAME_DISPLAY));
+
+        //send info to new onmessage
+        App.sendMessage(userEventReply);
+
+    }
+    
+
+
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
     {
         return null;
@@ -432,94 +550,111 @@ public class PageManager {
         UserEventReply reply = new UserEventReply();
         reply.recipients = new ArrayList<>();
         reply.recipients.add(Id);
+        // 3) create a new json object to send back to the client
+        JsonObject status = new JsonObject();
 
-        // 3) check if the username and password are correct by checking the database
+        // 4) check if the username and password are correct by checking the database
         HumanPlayer player = db.getPlayer(username, password);
 
-        // 4) create a new json object to send back to the client
-        JsonObject status = new JsonObject();
-        status.addProperty("responseID", "login");
 
         // 5) if the player is null, then the username and password are incorrect
         if (player == null) {
             status.addProperty("msg", "Invalid username or password.");
-            //add the status to the reply object and return it
             reply.replyObj = status;
             return reply;
         }
+
+        // ADDING PLAYER TO ACTIVE PLAYER MAP
+        activePlayers.put(Id,player);
+        userIDToClientID.put(player.getPlayerId(),Id);
+        player.setStatus(HumanPlayer.STATUS.ONLINE);
+
         // 6) if the player is not null, then the username and password are correct
-        status.addProperty("responseID", "loginSuccess"); // response for frontend
         status.addProperty("msg", "Login successful!");
         status.addProperty("playerID", player.getPlayerId());
-        status.addProperty("redirect", "join_game");  // redirect to the join game page
-
 
         //transition to the home page
+
         reply.replyObj = status;
-        transitionPage(List.of(Id), GameState.JOIN_GAME);
-        // need to add
-        //. public enum GameState {
-        //   HOME,  // Add this constant
-        // Include other game states as needed
+
 
         return reply;
     }
-    // method handle new user registration from frontend 
+    // method handle new user registration from frontend
     public UserEventReply handleNewUser(JsonObject jsonObj, int Id) {
         String username = jsonObj.get("UserName").getAsString();
         String password = jsonObj.get("Password").getAsString();
-    
+
         UserEventReply reply = new UserEventReply();
         reply.recipients = new ArrayList<>();
         reply.recipients.add(Id);
-    
+
         JsonObject status = new JsonObject();
         status.addProperty("responseID", "new_user");
-    
+
         // SEND TO SQLITE DATABASE
         boolean success = db.addPlayer(username, password);
-    
-        if (success) {
-            status.addProperty("msg", "Account created successfully!");
-            status.addProperty("redirect", "join_game"); //redirect to the login page
-        } else {
-            status.addProperty("msg", "Username already exists.");
+
+        if(!success){
+             status.addProperty("msg", "failed to create player !");
+             reply.replyObj = status;
+             return reply;
         }
-    
+        // fetching new added user form DB
+        HumanPlayer player = db.getPlayer(username,password);
+            // Add to active player list and mark as online
+        activePlayers.put(Id, player);
+        userIDToClientID.put(player.getPlayerId(), Id);
+        player.setStatus(Player.STATUS.ONLINE);
+
+        // Respond to frontend
+        status.addProperty("msg", "Account created successfully!");
+        status.addProperty("playerID", player.getPlayerId());
+
         reply.replyObj = status;
         return reply;
     }
-    
+    public void makeMove (int UserID){
+        int userId = UserID;
+        int clientId = userIDToClientID.get(userId);
+        JsonObject obj = new JsonObject ();
+        obj.addProperty("action", "requestMove");
+        UserEventReply reply = new UserEventReply();
+        reply.recipients.add(clientId);
+        App.sendMessage(reply);
+    }
 
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
         
-       /*
-        public UserEventReply GameMove(JsonObject jsonObj, int Id) {
+       
+        
         GameMove move = gson.fromJson(jsonObj, GameMove.class);
         move.setClientId(Id);
-        GameUpdate update = Gm.ProcessMove(move);
+        //GameUpdate update = Gm.processMove(move);
         UserEventReply reply = new UserEventReply();
-
-        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
-        reply.replyObj = json;
-        reply.recipients.add(move.getClientId());
+// none of this stuff compiles....
+//
+        //JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+        //reply.replyObj = json;
+        //reply.recipients.add(move.getClientId());
         return reply;
-            */
-        return null;
+            
+        
     }
 
+     
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      public UserEventReply userLeave(int Id) {
+
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
-            activePlayers.remove(Id); //rm from active players 
-            boolean removed = pu.removeFromQueue(player); //rm from queue
+            activePlayers.remove(Id); //rm from out list of active players
+            boolean removed = pu.removeFromQueue(player); //rm from pairUp's queue 
     
-            JsonObject msg = new JsonObject();
+            JsonObject msg = new JsonObject(); //create the json
             msg.addProperty("action", "playerLeft");
-            msg.addProperty("playerId", Id);
             msg.addProperty("username", player.getUsername());
     
             UserEventReply reply = new UserEventReply();
@@ -530,16 +665,19 @@ public class PageManager {
                 reply.recipients.add(otherId);
             }
     
-            return reply;
+            return reply; //return reply to onClose
         } else {
             return null;
         }
     }
+    
+    
+    
 
 
     // Method to transition between pages
    // Transition all given clients to a new game state and notify them
-    private UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
+    public UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
         response.addProperty("action", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());

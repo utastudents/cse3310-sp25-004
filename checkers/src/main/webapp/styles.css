@@ -6,11 +6,185 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to right,#ffffff,#BBDEFB); 
+    background: whitesmoke; 
     color: 333333;
 }
 
-h2 {
+/*SIGN UP*/
+.signup-box {
+    background-color: #fff;
+    border-radius: 9px;
+    width: 250px;
+    height: 300px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+}
+
+.signup-box img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 5px;
+} 
+
+.signup-box input[type="text"],
+.signup-box input[type="password"] {
+    margin-bottom: 8px;
+    width: 75%;
+    padding: 5px;
+    border: 2px solid #39393959;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding-left: 30px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: #000;
+    box-shadow: 0 0 0 1.4px #000000;
+}
+
+input::placeholder {
+    color: #b8b8b8;
+}
+
+
+.signup-box button {
+    background-color: #39393959;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 15px;
+    width: 75%;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 2px;
+
+}
+
+.signup-box button:hover {
+    color: rgb(255, 255, 255);
+    background: #000;
+}
+
+.signup-text {
+    font-size: 13px;
+    color: #39393959;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.signup-text a{
+    color: #39393959;
+    text-decoration: underline;
+}
+
+.signup-text a:hover {
+    color: #000; 
+}
+
+/*ICON SIGNUP*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 40%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
+}
+
+/*LOGIN*/
+.login-box {
+    background-color: #fff;
+    border-radius: 9px;
+    width: 250px;
+    height: 270px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+    cursor: pointer;
+}
+
+.login-box img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 5px;
+} 
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    margin-bottom: 8px;
+    width: 75%;
+    padding: 5px;
+    border: 2px solid #39393959;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding-left: 30px;
+}
+
+input:focus {
+    outline: #000;
+    box-shadow: 0 0 0 1.4px #000000;
+}
+
+input::placeholder {
+    color: #b8b8b8;
+}
+
+/*ICON LOGIN*/
+.input-icon {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 43px;
+    top: 38%;
+    transform: translateY(-50%);
+    color: #b8b8b8;
+}
+
+
+.login-box button {
+    background-color: #39393959;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 15px;
+    width: 75%;
+    padding: 5px;
+    border-radius: 6px;
+
+}
+
+.login-box button:hover {
+    color: rgb(255, 255, 255);
+    background: #000;
+
+}
+
+.signup-text {
+    font-size: 13px;
+    color: #39393959;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.signup-text a{
+    color: #39393959;
+    text-decoration: underline;
+}
+
+.signup-text a:hover {
+    color: #000; 
+}
+
+
+/* LEADERBOARD*/
+h2 { 
     text-align: center;
     font-size: 2.5em;
     margin-top: 20px;
@@ -106,4 +280,163 @@ button a {
 
 .busy {
     background-color: #F44336;
+}
+.error-msg {
+    color: red;
+    font-size: 10px;
+    display: block;
+    height: 12px;
+    margin-top: 2px 0 4px 0;
+    line-height: 1; 
+}
+
+/*Styling for the leaderboard */
+
+#summary-leaderboard {
+    display: none;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  #summary-leaderboard h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  #summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  #summary-table thead {
+    background-color: #004080;
+    color: white;
+  }
+  
+  #summary-table th,
+  #summary-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #summary-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  #summary-table tbody tr:hover {
+    background-color: #d9ebff;
+    transition: background-color 0.3s ease;
+  }
+  
+  #summary-button-hide {
+    display: block;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  #summary-button-hide:hover {
+    background-color: #0066cc;
+  }
+
+
+.scrollable-table {
+	max-height: 450px; 
+	overflow-y: auto;
+	border: 1px solid #ccc;
+}
+
+.scrollable-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+
+
+/* Fullscreen background overlay */
+#popup-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal content box */
+#popup-modal-content {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* Optional animation */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Message text */
+#popup-message {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Modal buttons */
+#popup-confirm, #popup-cancel {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#popup-confirm {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#popup-confirm:hover {
+    background-color: #45a049;
+}
+
+#popup-cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+#popup-cancel:hover {
+    background-color: #d32f2f;
 }

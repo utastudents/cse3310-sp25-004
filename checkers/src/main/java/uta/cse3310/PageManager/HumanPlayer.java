@@ -5,22 +5,26 @@ import uta.cse3310.GameManager.Game;
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
+import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.App;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class HumanPlayer extends Player{
 
    
     private String username;
     private String password;
-    private String salt;
+    private byte[] salt;
     private int wins;
     private int losses;
-    private int ELO;
     private int gamesPlayed;
+
+    
 
     //private socketId potentially here
 
     // constructors
-    public HumanPlayer(String username, String password, String salt)
+    public HumanPlayer(String username, String password, byte[] salt)
     {
         this.playerId = nextId();
         this.username = username;
@@ -51,7 +55,9 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
-        return false;
+       // App.pmInstance.makeMove(playerId);
+        
+        return true;
     }
 
     @Override
@@ -67,6 +73,7 @@ public class HumanPlayer extends Player{
 
         // Need game board to be sent over
 
+        App.pmInstance.startGameNotifier(g, playerId);
         //call a static method in page manager to make UserEventReply then send it to App.java to send the info to the players
     
 
@@ -88,7 +95,7 @@ public class HumanPlayer extends Player{
         return password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
@@ -102,10 +109,6 @@ public class HumanPlayer extends Player{
 
     public int getLosses(){
         return losses;
-    }
-
-    public int getELO(){
-        return ELO;
     }
 
     public int getGamesPlayed(){
@@ -124,10 +127,6 @@ public class HumanPlayer extends Player{
 
     public void setLosses(int losses){
         this.losses = losses;
-    }
-
-    public void setELO(int ELO){
-        this.ELO = ELO;
     }
 
     public void setGamesPlayed(int gamesPlayed){

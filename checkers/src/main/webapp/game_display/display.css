@@ -211,3 +211,79 @@ body {
   border-radius: 50%; /* Makes it circular */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
 }
+
+
+/* Fullscreen background overlay */
+#popup-modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal content box */
+#popup-modal-content {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 300px;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+/* Optional animation */
+@keyframes fadeInScale {
+  from {
+      opacity: 0;
+      transform: scale(0.8);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+/* Message text */
+#popup-message {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Modal buttons */
+#popup-confirm, #popup-cancel {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#popup-confirm {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#popup-confirm:hover {
+  background-color: #45a049;
+}
+
+#popup-cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+#popup-cancel:hover {
+  background-color: #d32f2f;
+}
+
