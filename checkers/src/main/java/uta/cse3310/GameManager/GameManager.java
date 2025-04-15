@@ -26,7 +26,7 @@ public class GameManager {
         games = new ArrayList<>(MAX_GAMES);
     }
 
-    // Initialize first 10 games
+    // Initialize first 10 games, gameID's are the game's index number in ArrayList
     public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
             games.add(new Game(i, null, null)); // null since unassigned players
@@ -63,6 +63,7 @@ public class GameManager {
         // return boardAvailable(p1, p2, spectator); (?)
     }
 
+    // Removes game once GameTermination concludes game is over
     public void removeGame() {
         Game gameToRemove = gt.endGame();
         for (int i = 0; i < games.size(); i++) {
