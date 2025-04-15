@@ -80,7 +80,7 @@ public class GameManager {
         // remove here
     }
 
-    public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
+    public GameUpdate processMove(GameMove move) {
         // call GamePlay Board method to validate move ? and return GameUpdate object
         // with new position and player ID
         int playerId = move.getClientId();
@@ -106,5 +106,4 @@ public class GameManager {
         return new Cord(x, y);
 
     }
-
 }
