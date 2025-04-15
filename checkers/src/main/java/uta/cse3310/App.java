@@ -61,6 +61,8 @@ import java.util.TimerTask;
 import java.util.Vector;
 import java.time.Instant;
 import java.time.Duration;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -244,7 +246,7 @@ public class App extends WebSocketServer {
             Reply.replyObj.has("msg") &&
             Reply.replyObj.get("msg").getAsString().contains("successfully")) {
 
-            UserEventReply transition = PM.transitionPage(Id);
+            UserEventReply transition = PM.transitionPage(List.of(clientId), uta.cse3310.PageManager.GameState.JOIN_GAME);
             for (Integer id : transition.recipients) {
                 WebSocket destination = id2con.get(id);
                 destination.send(transition.replyObj.toString());
