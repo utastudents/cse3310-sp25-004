@@ -20,6 +20,7 @@ public class GameManager {
     private static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
+    PairUp pu;
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
 
@@ -64,7 +65,6 @@ public class GameManager {
         }
         System.out.println("No available game slots.");
         return false;
-        // return boardAvailable(p1, p2, spectator); (?)
     }
 
     // Removes game once GameTermination concludes game is over
@@ -74,10 +74,10 @@ public class GameManager {
             Game g = games.get(i);
             if (g != null && g.getGameID() == gameToRemove.getGameID()) {
                 games.set(i, null);
+                pu.boardAvailable();
             }
         }
-        // if GameTermination sends a Game object that should end, check Game ID and
-        // remove here
+        // if GameTermination sends a Game object that should end, check Game ID and remove here
     }
 
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
