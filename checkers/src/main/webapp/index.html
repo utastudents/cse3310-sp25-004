@@ -149,17 +149,17 @@
         
             <button>
                 <a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
-                    Match Making
+                    MATCH MAKING
                 </a>
             </button>
             <button>
                 <a id="CURRENT_SESSION_BOT" type="button">
-                    Request Bot
+                    REQUEST BOT
                 </a>
             </button>
             <button>
                 <a id="CURRENT_SESSION_BOTvsBOT" type="button">
-                    Watch Bot Vs Bot
+                    WATCH BOT VS BOT
                 </a></button>
         </div>
     </div>
@@ -310,6 +310,58 @@
 
     // Write top ten to table
     // Write user to table
+
+	// Function to retrieve and display the leaderboard
+async function summary() {
+    try {
+        // Fetch current player's data (assumes session UUID is needed)
+        const uuid = getSessionUUID(); // Ensure you have this function implemented
+        const playerData = await retrieveUserJson(uuid); // Retrieve current player data
+
+        // Fetch the top 10 ranked players
+        const globalData = await retrieveTopTenJson(); // Retrieve top 10 ranked players
+
+        // Clear the table before populating with fresh data
+        const tbody = document.querySelector('#summary-table tbody');
+        tbody.innerHTML = ''; // Clear any existing rows
+
+        // Insert the current player's data at the top (optional)
+        const currentPlayerRow = document.createElement('tr');
+        currentPlayerRow.innerHTML = `
+            <td>-</td>
+            <td>${playerData.name}</td>
+            <td>${playerData.elo}</td>
+            <td>${playerData.gamesWon}</td>
+            <td>${playerData.gamesLost}</td>
+            <td>${playerData.totalGames}</td>
+        `;
+        tbody.appendChild(currentPlayerRow);
+
+        // Display top 10 players in the table
+        globalData.forEach((player, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${player.name}</td>
+                <td>${player.elo}</td>
+                <td>${player.gamesWon}</td>
+                <td>${player.gamesLost}</td>
+                <td>${player.totalGames}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error('Error fetching leaderboard data:', error);
+    }
+}
+
+// Implementing function to get the session UUID (you might already have this)
+function getSessionUUID() {
+    // Retrieve from sessionStorage, cookies, or any storage mechanism you use
+    return localStorage.getItem('sessionUUID');
+}
+
     return;
 }
 </script>
