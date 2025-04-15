@@ -16,7 +16,6 @@ import uta.cse3310.PageManager.GameMove;
 import java.util.ArrayList;
 
 public class GameManager {
-    // GamePlay gp;
     private static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
@@ -25,7 +24,6 @@ public class GameManager {
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
 
     public GameManager() {
-        // gp = new GamePlay();
         gt = new GameTermination();
 
         games = new ArrayList<>(MAX_GAMES);
@@ -59,7 +57,7 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 System.out.println("Game created at index: " + i);
-                game.setGameActive(false);
+                game.setGameActive(true);
                 return true;
             }
         }
@@ -77,12 +75,10 @@ public class GameManager {
                 pu.boardAvailable();
             }
         }
-        // if GameTermination sends a Game object that should end, check Game ID and remove here
     }
 
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
-        // call GamePlay Board method to validate move ? and return GameUpdate object
-        // with new position and player ID
         int playerId = move.getClientId();
         String fromStr = move.getFromPosition();
         String toStr = move.getToPosition();
