@@ -129,6 +129,19 @@ public class PairUp {
         return challenge(p, botI ? new BotI() : new BotII(), null);//just calls challenge with a bot
     }
 
+
+public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
+   
+   Player b1 = botI ? new BotI() : new BotII();
+
+
+   Player b2 = botII ? new BotI() : new BotII();
+
+ 
+   return challenge(b1, b2, spectator);
+}
+
+
     /**
      * Add a bot v bot challenge to the queue
      * @param botI - True for bot I, false for bot II
@@ -136,28 +149,7 @@ public class PairUp {
      * @param spectator - the player who requested to watch
      * @return - false if the challengers were not added to the queue, true otherwise
      */
-     public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-    // Create the first bot (BotI or BotII based on input)
-    Player b1 = botI ? new BotI() : new BotII();
-
-    // Create the second bot (BotI or BotII based on input)
-    Player b2 = botII ? new BotI() : new BotII();
-
-    // Create a new Challenge with both bots
-    Challenge challenge = new Challenge(b1, b2);
-
-    // Initialize spectators list
-    challenge.spectators = new ArrayList<>();
-
-    // Add the provided spectator to the challenge
-    challenge.spectators.add(spectator);
-
-    // Add this challenge to the player queue
-    playerQueue.add(challenge);
-
-    return true; // Successfully created and added bot vs bot challenge
-}
-
+     
     /**
      * 
      * @param p - The player to remove (should be a HumanPlayer)

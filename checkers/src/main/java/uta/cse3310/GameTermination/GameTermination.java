@@ -46,7 +46,7 @@ public class GameTermination {
                           }
                 */
         }
-
+/*
         public HumanPlayer[] saveResults(Game game){
                 DB database = new DB();
                 gameState state = new gameState();
@@ -110,7 +110,7 @@ public class GameTermination {
 
                 return updatedStats;
         }
-
+*/
         }
 
 
