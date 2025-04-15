@@ -365,6 +365,26 @@ button a {
 	border-collapse: collapse;
 }
 
+#summary-table tbody tr:nth-child(1) {
+    background-color: gold;
+    color: #000; 
+}
+
+#summary-table tbody tr:nth-child(2) {
+    background-color: silver;
+    color: #000;
+}
+
+#summary-table tbody tr:nth-child(3) {
+    background-color: #cd7f32; 
+    color: #000;
+}
+
+#summary-table tbody tr:hover {
+    background-color: #a3c653 !important; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
 
 /* Fullscreen background overlay */
