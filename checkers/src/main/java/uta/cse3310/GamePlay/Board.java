@@ -22,7 +22,7 @@ public class Board
 		initCheckers();
 	}
 
-	private Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
+	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
 		return checkerBoard[Cord.getX()][Cord.getY()]; 
@@ -30,7 +30,6 @@ public class Board
 	
 	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
-	// TODO Refactor initCheckers function to use loops instead of hardcoding the values
 	{
 		int nums[] = {1,3,5,7};
 
@@ -313,17 +312,17 @@ public class Board
 		}
 	}
 
-	public static int moveValidation(Checker piece, Cord dest)
-	// The main logic for movement. 
-	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
+	//UNUSED
+	// public static int moveValidation(Checker piece, Cord dest)
+	// // The main logic for movement. 
+	// // This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
 
-	{
-		// TODO: Finish Board moveValidation function
-		int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
+	// {
+	// 	// TODO: Finish Board moveValidation function
+	// 	int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
 
 
 
-		return result;
-	}
-
+	// 	return result;
+	// }
 }
