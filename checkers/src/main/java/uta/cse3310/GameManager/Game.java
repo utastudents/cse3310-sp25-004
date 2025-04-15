@@ -11,13 +11,13 @@ public class Game{
    private boolean isAvailable;
 
 	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
-      this.gameID = gameID;
+      this.gameID = gameID; // gameID is index number in ArrayList
       this.player1 = player1;
       this.player2 = player2;
       this.isAvailable = true;
    }
 
-   // Getting available game boolean
+   // Getting available game boolean value, true via constructor
    public boolean isGameActive(){
       return isAvailable;
    }
@@ -36,6 +36,7 @@ public class Game{
       this.player2 = player;
    }
 
+   // Setting the first player after the game is created
    public void setPlayer1(Player player) {
       this.player1 = player;
    }
@@ -58,10 +59,5 @@ public class Game{
    // initializing the board gameplay logic
    public void startGame(Game game) {
       board = new GamePlay(gameID);
-   }
-
-   public boolean isAvailable() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isAvailable'");
    }
 }
