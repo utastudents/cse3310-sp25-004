@@ -608,7 +608,15 @@ public class PageManager {
         reply.replyObj = status;
         return reply;
     }
-    
+    public void makeMove (int UserID){
+        int userId = UserID;
+        int clientId = userIDToClientID.get(userId);
+        JsonObject obj = new JsonObject ();
+        obj.addProperty("action", "requestMove");
+        UserEventReply reply = new UserEventReply();
+        reply.recipients.add(clientId);
+        App.sendMessage(reply);
+    }
 
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
