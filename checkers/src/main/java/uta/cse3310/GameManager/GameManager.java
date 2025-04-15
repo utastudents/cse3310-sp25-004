@@ -22,8 +22,6 @@ public class GameManager {
     public GameManager() {
         // gp = new GamePlay();
         gt = new GameTermination();
-        b1 = new BotI();
-        b2 = new BotII();
 
         games = new ArrayList<>(MAX_GAMES);
     }
