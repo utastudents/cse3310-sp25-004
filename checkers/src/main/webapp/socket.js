@@ -91,12 +91,17 @@ connection.onmessage = function (evt) {
     }
 }
 
-// document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
-// document.getElementById("game_display").style.display = "none";
-// document.getElementById("new_account").style.display = "none";
-// document.getElementById("login").style.display = "block"; 
+document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+document.getElementById("game_display").style.display = "none";
+document.getElementById("new_account").style.display = "none";
+document.getElementById("login").style.display = "block"; 
 
-// function updatePageDisplay(displaySettings) { function to update page display 
-  
-// }
+function handleJoinGame(data) { //function to update when join team
+    console.log("Join team response received", data);
+
+    document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+    document.getElementById("game_display").style.display = "none";
+    document.getElementById("new_account").style.display = "none";
+    document.getElementById("login").style.display = "block"; 
+}
 
