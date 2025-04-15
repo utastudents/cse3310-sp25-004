@@ -712,6 +712,19 @@ public class PageManager {
     public void resetClient(int clientId) {
         clientStates.remove(clientId);
     }
+
+    public void addDummy(int clientId) {
+        // Create a dummy HumanPlayer instance with predefined values
+        HumanPlayer dummyPlayer = new HumanPlayer("dummy", "123", clientId, Player.STATUS.ONLINE, 0, 0, 0, 0);
+    
+        // Add the dummy player to the active player list
+        activePlayers.put(clientId, dummyPlayer);
+        userIDToClientID.put(dummyPlayer.getPlayerId(), clientId);
+    
+        // Optionally log or send a message confirming the player was added
+        System.out.println("Added dummy player to activePlayers: " + dummyPlayer.getUsername());
+    }
+    
  
    
 }
