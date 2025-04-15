@@ -2,154 +2,70 @@ package uta.cse3310.Bot.BotII;
 
 import uta.cse3310.GameState;
 import uta.cse3310.Bot.Bot;
-import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Checker;
-import uta.cse3310.GamePlay.Color;
-import uta.cse3310.GamePlay.Cord;
-import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameManager.Game;
 
-import java.util.ArrayList;
-
-public class BotII {
-
-    private GamePlay gamePlay;
-    private Color botColor; // Define whether Bot II is RED or BLACK
+public class BotII extends Bot {
+	
+	private GamePlay gamePlay;
+    private Color botColor = Color.BLACK; // Default color for the bot
 
     public BotII(GamePlay gamePlay, Color botColor) {
-        this.gamePlay = gamePlay;
-        this.botColor = botColor;
+        this.gamePlay = gamePlay; // Initialize the game play
+        this.botColor = botColor; // Set the bot's color
     }
-
-    // Method to make a defensive move
-    public void makeDefensiveMove() {
-        Board board = gamePlay.getBoard();  // Get the current board
-        ArrayList<Checker> botCheckers = getBotCheckers(board); // Get the bot's pieces
-        boolean moveMade = false;
-
-        for (Checker checker : botCheckers) {
-            if (!moveMade) {
-                // Try to move each piece defensively
-                moveMade = attemptDefensiveMove(checker, board);
-            }
-        }
+    
+    public void makeValidMove() {
+        // TODO: Logic to choose and make a legal move
     }
-
-    // Get all the Bot II's checkers (either RED or BLACK)
-    private ArrayList<Checker> getBotCheckers(Board board) {
-        ArrayList<Checker> botCheckers = new ArrayList<>();
-
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Checker checker = board.checkSpace(new Cord(col, row));
-                if (checker != null && checker.getColor() == botColor) {
-                    botCheckers.add(checker);
-                }
-            }
-        }
-        return botCheckers;
+    public void promoteToKing() {
+        // TODO: Check if a piece reached the end and promote to king / Allow more than one king on board
     }
-
-    // Attempt to make a defensive move for a given checker
-    private boolean attemptDefensiveMove(Checker checker, Board board) {
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-
-        // Generate possible defensive moves based on the piece type (man or king)
-        if (checker.isKing()) {
-            possibleMoves = getPossibleKingMoves(checker, board);
-        } else {
-            possibleMoves = getPossibleManMoves(checker, board);
-        }
-
-        // Try each move and choose the safest one
-        for (Cord dest : possibleMoves) {
-            if (isMoveSafe(checker, dest, board)) {
-                board.updatePosition(checker, dest);  // Execute the move
-                return true;
-            }
-        }
-
+    public void defendPieces() {
+        // TODO: Prioritize defending own pieces over offense
+        // TODO: Try to block opponent from advancing or jumping
+    }
+    public void capturePiece() {
+        // TODO: Capture opponent piece by jumping diagonally (Call method)
+    }
+    public void checkMultipleJumps() {
+        // TODO: If multiple jumps are possible, do them
+    }
+    public void moveChecker() {
+        // TODO: Move a non-king piece diagonally one square
+    }
+    public void moveKing() {
+        // TODO: Move a king piece diagonally one square in any direction
+    }
+    public boolean isMoveLegal() {
+        // TODO: Validate if a move is legal
+        return true;
+    }
+    public void waitForOpponent() {
+        // TODO: Wait for opponent to make a move before acting
+    }
+      public void adjustStrategy() {
+        // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
+        // TODO: Change strategy based on early, mid, or late game
+        // Early: Moving first row pieces?
+        // Second: A King comes into play?
+        // Late: A select # of pieces left on the board?
+    }
+    public void findOffensiveMove() {
+        // TODO: Decide if it's safe and smart to attack
+    }
+     public boolean isPieceCaptured(int pieceId) {
+        // TODO: Check if a piece has been captured
         return false;
     }
-
-    // Get possible moves for a king piece
-    private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-        Cord cord = checker.getCord();
-
-        // Check both forward and backward diagonals
-        for (int x = -1; x <= 1; x += 2) {
-            for (int y = -1; y <= 1; y += 2) {
-                Cord newCord = new Cord(cord.getX() + x, cord.getY() + y);
-                if (board.moveForwardCheck(checker, newCord) || board.moveBackwardCheck(checker, newCord)) {
-                    possibleMoves.add(newCord);
-                }
-            }
-        }
-
-        return possibleMoves;
+    public void protectBackLine() {
+        // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
     }
 
-    // Get possible moves for a man piece
-    private ArrayList<Cord> getPossibleManMoves(Checker checker, Board board) {
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-        Cord cord = checker.getCord();
-
-        // If the piece is black, it moves forward (up the board)
-        if (checker.getColor() == Color.BLACK) {
-            Cord newCord = new Cord(cord.getX() + 1, cord.getY() - 1);
-            if (board.moveForwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-            newCord = new Cord(cord.getX() - 1, cord.getY() - 1);
-            if (board.moveForwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-        } 
-        // If the piece is red, it moves backward (down the board)
-        else if (checker.getColor() == Color.RED) {
-            Cord newCord = new Cord(cord.getX() + 1, cord.getY() + 1);
-            if (board.moveBackwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-            newCord = new Cord(cord.getX() - 1, cord.getY() + 1);
-            if (board.moveBackwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-        }
-
-        return possibleMoves;
-    }
-
-    // Check if the move is safe (the piece is not exposed to being captured)
-    private boolean isMoveSafe(Checker checker, Cord dest, Board board) {
-        // Check if the move does not leave the piece vulnerable to the opponent's jumps
-        ArrayList<Cord> possibleJumps = new ArrayList<>();
-
-        if (checker.getColor() == Color.BLACK) {
-            possibleJumps = board.getPossibleForwardJump(checker);
-        } else if (checker.getColor() == Color.RED) {
-            possibleJumps = board.getPossibleBackwardJump(checker);
-        }
-
-        // If no opponent can jump this position, it's safe
-        for (Cord jump : possibleJumps) {
-            if (jump.equals(dest)) {
-                return false; // The destination is vulnerable
-            }
-        }
-
-        return true; // The move is safe
-    }
-
-
-    
-
-    /*@Override
+    @Override
     public boolean makeMove(GameState gs) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
-    }*/
+    }
     @Override
     public boolean updateBoard(GameState gs) {
         // TODO Auto-generated method stub
