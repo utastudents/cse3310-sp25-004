@@ -16,6 +16,7 @@
 		</div>
 
 		<span id="username-error" class = "error-msg" style="display: none;">Username must be at least 4 characters.</span>
+		<span id="username-exists-error" class = "error-msg" style="display: none;">Username already exists.</span>
 		<div class="input-icon">
 		<i class="fas fa-lock"></i>
 		<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
@@ -26,7 +27,7 @@
 		<i class="fas fa-lock"></i>
 		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
 		</div>
-		<span id="confirm-password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
+		<span id="confirm-password-error" class = "error-msg" style="display: none;">Passwords do not match.</span>
 
 		<button id="signup-btn" type="submit">SIGN UP</button>
 		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
@@ -47,7 +48,7 @@
             <i class="fas fa-lock"></i>
             <input type="password" id="login-password" name="psw" placeholder="PASSWORD" required>
             </div>
-            <span id="login-password-error" class = "error-msg" style="display: none;">Incorrect password. Please try again</span>
+            <span id="login-password-error" class = "error-msg" style="display: none;">Incorrect username and/or password.</span>
 
             <button id="login-btn" type="submit">LOGIN</button>
 
@@ -346,10 +347,11 @@
 			case "new_user": {
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
+				document.getElementById("username-exists-error").style.display = "none";
 				if(data.msg === "Username already exists"){
-					alert("Username already Exists"); //create new span for username already exists
+					document.getElementById("username-exists-error").style.display = "block"; //create new span for username already exists
 				}
-				else if(jsonMsg.msg === "Account created successfully!"){
+				if(jsonMsg.msg === "Account created successfully!"){
 					alert("Account created");
 					document.getElementById("login").style.display = "none";
 					document.getElementById("new_user").style.display = "none";
@@ -372,7 +374,7 @@
 					//Hide signup and login page, show join_game page
 				} 
             break;*/
-
+			
 			// Game Responses
 
 			// Summary Responses
