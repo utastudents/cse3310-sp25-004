@@ -7,6 +7,7 @@ import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.App;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class HumanPlayer extends Player{
 
@@ -17,6 +18,8 @@ public class HumanPlayer extends Player{
     private int wins;
     private int losses;
     private int gamesPlayed;
+
+    
 
     //private socketId potentially here
 
@@ -52,7 +55,9 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
-        return false;
+        App.pmInstance.makeMove(playerId);
+        
+        return true;
     }
 
     @Override
