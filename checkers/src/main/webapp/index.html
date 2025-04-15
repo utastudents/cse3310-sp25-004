@@ -28,6 +28,7 @@
 		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
 		</div>
 		<span id="confirm-password-error" class = "error-msg" style="display: none;">Passwords do not match.</span>
+		<span id="database-failure-error" class = "error-msg" style="display: none;">Database failed to retrieve player.</span>
 
 		<button id="signup-btn" type="submit">SIGN UP</button>
 		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
@@ -323,7 +324,7 @@
 		//convert data to JSON
 		//Extracts the response identifier from the response, so we can determine whose code it belongs to
 		//See ./INTERFACES/client-server-docs.md for details
-		let responseID = Object.keys(jsonMsg)[0];
+		let responseID = jsonMsg.responseID;
 		switch (responseID )
 		{
 			// Account Responses
@@ -348,7 +349,7 @@
 				document.getElementById("username-error").style.display = "none";
 				document.getElementById("password-error").style.display = "none";
 				document.getElementById("username-exists-error").style.display = "none";
-				if(data.msg === "Username already exists"){
+				if(jsonMsg.msg === "Username already exists"){
 					document.getElementById("username-exists-error").style.display = "block"; //create new span for username already exists
 				}
 				if(jsonMsg.msg === "Account created successfully!"){
@@ -357,6 +358,10 @@
 					document.getElementById("new_user").style.display = "none";
 					document.getElementById("join_game").style.display = "block";
 					//Hide signup and login page, show join_game page
+				}
+				if(jsonMsg.msg === "failed to create player !"){
+					console.log("displaying error message. ")
+					document.getElementById("database-failure-error").style.display = "inline";
 				}
 				break;
 			}
@@ -374,7 +379,7 @@
 					//Hide signup and login page, show join_game page
 				} 
             break;*/
-			
+
 			// Game Responses
 
 			// Summary Responses
