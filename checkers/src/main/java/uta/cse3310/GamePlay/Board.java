@@ -78,7 +78,7 @@ public class Board
 
 	}
 
-	private void kingMe(Checker piece)
+	public void kingMe(Checker piece)
 	{
 		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
 		{
