@@ -47,7 +47,7 @@ const signupData = {
     Password:password
 };
 //Send data as JSON string JSON.stringify
-sendMessage(JSON.stringify(signupData));
+sendMessage(signupData);
 console.log("Signup Data sent: ", signupData)		
 };
 //Event handler for login button
@@ -67,10 +67,10 @@ if(!loginUsername || !loginPassword){ //Username or Password not filled in
 }
 const loginData = { //Data into JSON object
     action: "login",
-    UserName : loginUsername, 
+    UserName : loginUsername,
     Password:loginPassword
 };
 //Send data as JSON string JSON.stringify
-sendMessage(JSON.stringify(loginData))
+sendMessage(loginData)
 console.log("Login Data sent: ", loginData)		
 }
