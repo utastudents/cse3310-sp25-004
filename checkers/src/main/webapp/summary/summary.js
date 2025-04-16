@@ -31,11 +31,30 @@ function renderLeaderboard() {
 	{
 		action : "summaryData"
 	};
-	//sends 
+	//send request to page manager
 	sendMessage(dataRequest);
 
     tbody.innerHTML = ""; // Clear the table body
-    leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
+}
+
+// Loads data from JSON file/string
+function loadData(jsonData) {
+    console.log("Loading data! " + JSON.stringify(jsonData));
+    let leaderboard = [];
+    let leaderboardIndex = 0;
+    for (const player of jsonData) {
+        //Copy json object into JS class
+        //{"ID":7,"Username":"test","elo":0,"gamesWon":0,"gamesLost":0}
+        leaderboard[leaderboardIndex] = new Player(
+            player["Username"],
+            player["elo"],
+            player["gamesWon"],
+            player["gamesLost"],
+            player["ID"]
+        );
+        leaderboardIndex++;
+    }
+	leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
     fillTable(leaderboard); // Fill the table with player data
 }
 
@@ -73,25 +92,7 @@ function fillTable(leaderboard) {
     });
 }
 
-// Loads data from JSON file/string
-function loadData(jsonData) {
-    console.log("Loading data! " + JSON.stringify(jsonData));
-    leaderboard = []; // Reset
-    let leaderboardIndex = 0;
-    for (const player of jsonData) {
-        //Copy json object into JS class
-        //{"ID":7,"Username":"test","elo":0,"gamesWon":0,"gamesLost":0}
-        leaderboard[leaderboardIndex] = new Player(
-            player["Username"],
-            player["elo"],
-            player["gamesWon"],
-            player["gamesLost"],
-            player["ID"]
-        );
-        leaderboardIndex++;
-    }
-    fillTable(leaderboard);
-}
+/* These functions are never called? */
 
 // NEW: This function sends a request to the server for leaderboard data
 function initSummaryWebSocket() {
@@ -115,13 +116,14 @@ function handleSummaryMessage(event) {
     const data = JSON.parse(event.data);
 
     if (data.summaryTopTenData) {
-        console.log("Received summaryTopTenData!");
+        console.log("Received summary data for leaderboard!");
         loadData(data.summaryTopTenData); // Load new data into leaderboard
         renderLeaderboard(); // Render updated leaderboard
     }
+	else
+	{
+		console.log("Expected to receive summary data for leader board, but was not found in json data!")
+	}
 }
-
-// Initialize leaderboard array with actual data
-let leaderboard = [];
 
 // addEventListeners(); // Call the function to add event listeners, basically our main function

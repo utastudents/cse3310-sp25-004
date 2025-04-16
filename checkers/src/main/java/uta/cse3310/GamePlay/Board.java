@@ -295,6 +295,10 @@ public class Board
 	{
 		int newX = dest.getX();
 		int newY = dest.getY();
+		Cord oldCord = piece.getCord();
+		int oldX = oldCord.getX();
+		int oldY = oldCord.getY();
+		checkerBoard[oldX][oldY] = null;
 		piece.setCord(newX, newY);
 		checkerBoard[newY][newX] = piece;
 	}

@@ -34,6 +34,7 @@ connection.onclose = function (evt) {
     console.log("close");
 }
 
+var globalClientID = null;
 
 connection.onmessage = function (evt) {
     let msg = evt.data; //extract data from websocket response
@@ -47,7 +48,8 @@ connection.onmessage = function (evt) {
     console.log("Response ID: " + responseID);
 
     if (jsonMsg.clientId) {
-        console.log("Connected with clientId:", jsonMsg.clientId);
+        globalClientID = jsonMsg.clientId;
+        console.log("Connected with clientId:", globalClientID);
         return;
     }
     
@@ -79,7 +81,13 @@ connection.onmessage = function (evt) {
     
     switch (responseID )
     {
-    // Account Responses - Login Team
+        // Page Manager
+        case "updateVisibility": {
+            alert("Switch to page " + jsonMsg.visible);
+            break;
+        }
+
+        // Account Responses - Login Team
         case "login": {
             login(jsonMsg.msg);
             break;
@@ -100,11 +108,24 @@ connection.onmessage = function (evt) {
             newUser(jsonMsg.msg);
             break;
         }  
+
+        // Join Game Responses
+        case "challengeBot": {
+            botChallenged(jsonMsg.inQueue);
+            break;
+        }
+
         // Game Responses
+        case "startGame": {
+            //Start the actual game!
+            //{"responseID":"startGame","gameType":"pvb","player1":{"isBot":false,"playerClientId":1,"username":"test","elo":0,"gamesWon":0,"gamesLost":0,"status":"IN_GAME"},"player2":{"isBot":true}}
+            alert("Starting the game! " + JSON.stringify(jsonMsg));
+            break;
+        }
 
         // Summary Responses
         case "summaryData": {
-            console.log("Received summaryTopTenData!");
+            console.log("Received summary data for leaderboard!");
             //ommits the responseID and only sends needed values to loadData
             loadData(jsonMsg.top10);
             break;

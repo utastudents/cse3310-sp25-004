@@ -83,7 +83,7 @@ public class GamePlayTest{
     }
 
     @Test
-    void removeJumpedCheckerTest() {
+    void updatePositionTest() {
         var testBoard = new Board();
         var testCord = new Cord(3,4);
         var pieceTest1 = testBoard.checkerBoard[3][2]; //create a copy of the piexe we're moving
@@ -96,7 +96,7 @@ public class GamePlayTest{
         //change the position of a checker to a position where it can be jumped
         testBoard.updatePosition( testBoard.checkerBoard[3][2], testCord );
         
-        //assertEquals(null, testBoard.checkerBoard[2][3]);   
+        assertEquals(null, testBoard.checkerBoard[2][3]);   
         
         //NOTE: need to implement way to set old position to NULL
         
@@ -104,13 +104,6 @@ public class GamePlayTest{
         //next we want to assert that the new position does not equal null
 
         assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
-        //if assert is successful, the checker has moved to the new position
-
-        var jumpDest = new Cord(3, 3);
-        
-        testBoard.removeJumpedChecker( testBoard.checkerBoard[2][5], jumpDest);
-        //assertEquals(null, testBoard.checkerBoard[3][4]);
-        //test if the spot is null? There is no exact return type to test
         
        
     }

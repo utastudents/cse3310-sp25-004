@@ -33,7 +33,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
-    GameManager gm;
+    //GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -50,10 +50,10 @@ public class PageManager {
     public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
-        gm = new GameManager();
+        //gm = new GameManager(); //already created??
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(gm);
+        pu = new PairUp(Gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -489,10 +489,13 @@ public class PageManager {
 
     public void startGameNotifier(Game g, int UserId)
     {
+        System.out.println("Getting client id from pid " + UserId);
         int clientId = userIDToClientID.get(UserId);
 
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
+
+        userEventReply.replyObj = responseJson;
 
         boolean player1IsBot = false;
         boolean player2IsBot = false;
@@ -619,6 +622,8 @@ public class PageManager {
         activePlayers.put(Id,player);
         userIDToClientID.put(player.getPlayerId(),Id);
         player.setStatus(HumanPlayer.STATUS.ONLINE);
+
+        System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
 
         // 6) if the player is not null, then the username and password are correct
         status.addProperty("responseID", "loginSuccessful");
@@ -749,7 +754,7 @@ public class PageManager {
    // Transition all given clients to a new game state and notify them
     public UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
-        response.addProperty("action", "updateVisibility");
+        response.addProperty("responseID", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());
 
         UserEventReply reply = new UserEventReply();
