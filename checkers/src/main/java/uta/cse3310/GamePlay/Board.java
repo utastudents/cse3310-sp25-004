@@ -99,7 +99,7 @@ public class Board
 			return false; // Invalid move, out of bounds
 		}
 
-		if(checkerBoard[dest.getY()][dest.getX()] != null)
+		if(checkerBoard[dest.getY()][dest.getX()] == null)
 		{
 			return false; // Cannot move to a square already occupied by another piece
 		}
@@ -296,7 +296,7 @@ public class Board
 		int newX = dest.getX();
 		int newY = dest.getY();
 		piece.setCord(newX, newY);
-		checkerBoard[newX][newY] = piece;
+		checkerBoard[newY][newX] = piece;
 	}
 	
 	/* 
@@ -307,26 +307,31 @@ public class Board
 	*/
 	void removeJumpedChecker(Checker piece, Cord dest)
 	{
+		Cord originalCord = piece.getCord();
+		int origX = originalCord.getX();
+		int origY = originalCord.getY();
+
 		int destX = dest.getX();
 		int destY = dest.getY();
 
-		// remove piece in the top right
-		if (checkerBoard[destX-2][destY-2] == piece)
+		// check which location piece moved too by comparing the cords piece original location the location of the jump
+		// remove piece in the bottom left (in terms of dest)
+		if (origX == destX-2 && origY == destY-2)
 		{
 			deleteChecker(new Cord(destX-1, destY-1));
 		}
-		// remove piece in the top left
-		else if (checkerBoard[destX+2][destY-2] == piece)
+		// remove piece in the bottom right (in terms of dest)
+		else if (origX == destX+2 && origY == destY-2)
 		{
 			deleteChecker(new Cord(destX+1, destY-1));
 		}
-		// remove piece in the bottom right
-		else if (checkerBoard[destX-2][destY+2] == piece)
+		// remove piece in the top left (in terms of dest)
+		else if (origX == destX-2 && origY == destY+2)
 		{
 			deleteChecker(new Cord(destX-1, destY+1));
 		}
-		// remove piece in the bottom left
-		else if (checkerBoard[destX+2][destY+2] == piece)
+		// remove piece in the top right (in terms of dest)
+		else if (origX == destX+2 && origY == destY+2)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
