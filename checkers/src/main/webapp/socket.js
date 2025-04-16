@@ -51,12 +51,6 @@ connection.onmessage = function (evt) {
         return;
     }
     
-    //message from onClose that a player has abrubtly left the game
-    if (jsonMsg.action === "playerLeft") {
-        console.log("Player left:", jsonMsg.username);
-        return;
-    }
-
     
     if (!responseID) {
         //check namespace
@@ -105,6 +99,11 @@ connection.onmessage = function (evt) {
             console.log("Received summaryTopTenData!");
             //ommits the responseID and only sends needed values to loadData
             loadData(jsonMsg.top10);
+            break;
+        }
+        //app.Java Responses (Signals a user left)
+        case "playerLeft": {
+            console.log("Player left:", jsonMsg.username);
             break;
         }
         default:{
