@@ -102,18 +102,19 @@ public class BotI extends Bot {
         throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
     }
 
-
     @Override
     public boolean updateBoard(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
+        return true; //Can be ignored
     }
-
 
     @Override
     public boolean startGame(Game g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startGame'");
-    }   
+        return true; //Can be ignored
+    }
+
+    @Override
+    public boolean endGame(GameState gs) {
+        return true; //Can be ignored
+    }
 
 } 
