@@ -71,7 +71,10 @@ connection.onmessage = function (evt) {
         
         
         // Game Responses
-
+        case "join_game": {
+            updateJoinGameList(jsonMsg);
+            break;
+        }
         // Summary Responses
         case "summaryTopTenData": {
             console.log("Received summaryTopTenData!");
