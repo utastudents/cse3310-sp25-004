@@ -9,6 +9,38 @@ public class GameTermination {
         public Game endGame() {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;
+        // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
+        /*public Game endGame(Game currentGame) {
+                gameState state = new gameState();
+                int winnerID = -1; // -1 for draw
+
+                Board myBoard = new Board(); 
+                // Check if player 1 has won
+                if (state.hasPlayerWon(myBoard, currentGame.getPlayer1().getPlayerId())) {
+                        winnerID = currentGame.getPlayer1().getPlayerId(); // lowercase 'd'
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
+
+                // Check if player 2 has won
+                if (state.hasPlayerWon(myBoard, currentGame.getPlayer2().getPlayerId())) {
+                        winnerID = currentGame.getPlayer2().getPlayerId(); // lowercase 'd'
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
+
+                // Check for draw
+                if (state.gameStateDraw(myBoard, currentGame)) {
+                        winnerID = -1;
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
+
+                return null;
+        }*/
         }
 /*
         public HumanPlayer[] saveResults(Game game){
