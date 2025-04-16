@@ -86,14 +86,17 @@ public class App extends WebSocketServer {
 
   public App(int port) {
     super(new InetSocketAddress(port));
+    pmInstance = PM;
   }
 
   public App(InetSocketAddress address) {
     super(address);
+    pmInstance = PM;
   }
 
   public App(int port, Draft_6455 draft) {
     super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
+    pmInstance = PM;
   }
 
   @Override
@@ -324,9 +327,6 @@ public class App extends WebSocketServer {
     A.start();
     System.out.println("websocket Server started on port: " + port);
 
-    PageManager pm;
-    pm = new PageManager();
-    pmInstance = pm;
     System.out.println("Hello World!");
   }
 }
