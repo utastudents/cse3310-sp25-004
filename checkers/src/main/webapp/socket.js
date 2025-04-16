@@ -108,6 +108,12 @@ connection.onmessage = function (evt) {
         }
 
         // Game Responses
+        case "startGame": {
+            //Start the actual game!
+            //{"responseID":"startGame","gameType":"pvb","player1":{"isBot":false,"playerClientId":1,"username":"test","elo":0,"gamesWon":0,"gamesLost":0,"status":"IN_GAME"},"player2":{"isBot":true}}
+            alert("Starting the game! " + JSON.stringify(jsonMsg));
+            break;
+        }
 
         // Summary Responses
         case "summaryData": {
