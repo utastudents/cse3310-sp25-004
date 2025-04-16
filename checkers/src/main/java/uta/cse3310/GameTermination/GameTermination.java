@@ -10,6 +10,7 @@ public class GameTermination {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;
         // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
+                // Also need to tell GameManager that a parameter was added to this method. 
         /*public Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
