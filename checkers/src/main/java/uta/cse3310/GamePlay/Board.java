@@ -99,7 +99,7 @@ public class Board
 			return false; // Invalid move, out of bounds
 		}
 
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
 			return false; // Cannot move to a square already occupied by another piece
 		}
