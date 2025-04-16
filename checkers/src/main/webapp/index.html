@@ -425,4 +425,27 @@
 
 		}
 	}
+
+	//Page transition functions!
+	function handleJoinGame(data) { //function to update when join team
+		console.log("Join team response received", data);
+
+		document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+		document.getElementById("game_display").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
+		document.getElementById("login").style.display = "none"; 
+		document.getElementById("summary").style.display = "none"; 
+	}
+
+	function swapToPage(page) {
+		console.log("Switching to page " + page);
+
+		document.getElementById("join_game").style.display = "none";
+		document.getElementById("game_display").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
+		document.getElementById("login").style.display = "none"; 
+		document.getElementById("summary").style.display = "none"; 
+
+		document.getElementById(page).style.display = "block"; 
+	}
 </script>
