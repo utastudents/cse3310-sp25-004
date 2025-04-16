@@ -194,15 +194,15 @@ public class App extends WebSocketServer {
       System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
       return;
     }
-    // String action = jsonObj.get("action").getAsString();
-    String action = null;
+    String action = jsonObj.get("action").getAsString();
+    // String action = null;
 
-    if (jsonObj.has("action")) {
-        action = jsonObj.get("action").getAsString();
-    } else {
-        System.err.println("ERROR: 'action' field is missing in JSON: " + message);
-        return;
-    }
+    // if (jsonObj.has("action")) {
+    //     action = jsonObj.get("action").getAsString();
+    // } else {
+    //     System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+    //     return;
+    // }
 
     //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
     UserEventReply Reply = null;
