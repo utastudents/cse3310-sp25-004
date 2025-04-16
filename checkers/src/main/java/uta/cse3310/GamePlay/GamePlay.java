@@ -69,7 +69,8 @@ public class GamePlay
                 if(piece.getColor() == Color.BLACK ) // Black Man piece jump code
                 {
                     int cordIter = board.checkForwardJump(possibleJumpsForward, dest);
-    
+
+                    // requested destination is a valid jump
                     if (cordIter != -1)
                     {
                         Cord newPos = possibleJumpsForward.get(cordIter);
@@ -87,7 +88,7 @@ public class GamePlay
                 if(piece.getColor() == Color.RED ) // Red Man piece jump code
                 {
                     int cordIter = board.checkBackwardJump(possibleJumpsBackward, dest);
-    
+
                     if (cordIter != -1)
                     {
                         Cord newPos = possibleJumpsBackward.get(cordIter);
