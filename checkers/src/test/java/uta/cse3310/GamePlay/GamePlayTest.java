@@ -85,19 +85,31 @@ public class GamePlayTest{
     @Test
     void removeJumpedCheckerTest() {
         var testBoard = new Board();
-        var testCord = new Cord(2,4);
+        var testCord = new Cord(3,4);
+        var pieceTest1 = testBoard.checkerBoard[3][2]; //create a copy of the piexe we're moving
+        pieceTest1.setCord(3, 4);
+        //this fails since pieceTest1 = null somewhere
+        //could be initializing problem
 
         //manually set new board positions somehow
 
         //change the position of a checker to a position where it can be jumped
-        testBoard.updatePosition( testBoard.checkerBoard[2][2], testCord );
-        //assertEquals(null, testBoard.checkerBoard[2][2]);   
+        testBoard.updatePosition( testBoard.checkerBoard[3][2], testCord );
+        
+        //assertEquals(null, testBoard.checkerBoard[2][3]);   
+        
         //NOTE: need to implement way to set old position to NULL
         
         //assert that the piece has been removed from the old spot
+        //next we want to assert that the new position does not equal null
 
+        assertEquals(pieceTest1, testBoard.checkerBoard[4][3]);
+        //if assert is successful, the checker has moved to the new position
+        //this is an interesting bug, update position does piece[y][x] instead of piece[x][y] like how we initialized it
+
+        var jumpDest = new Cord(3, 3);
         
-        //testBoard.removeJumpedChecker( testBoard.checkBoard[1][5], new Cord(x:3, y:3));
+        testBoard.removeJumpedChecker( testBoard.checkerBoard[2][5], jumpDest);
         //assertEquals(null, testBoard.checkerBoard[2][4]);
         //test if the spot is null? There is no exact return type to test
         
