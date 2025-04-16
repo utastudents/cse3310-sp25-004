@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertTrue;
 
 import uta.cse3310.GameState;
+import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 
 /**
@@ -92,12 +93,39 @@ public class GameTest {
         // Making game manager object
         GameManager manager = new GameManager();
         manager.initializeGames();
+
         // Player objects
         Player p1 = new MockPlayer(0);
         Player p2 = new MockPlayer(1);
+
         // Setting to boolean
         boolean result = manager.createGame(p1, p2);
+
         // Will return true if executed correctly
         assertTrue("Game was created successfully!", result); //Causes an error
+    }
+
+    @Test
+    void testRemoveGame(){
+        // Making game manager object
+        GameManager manager = new GameManager();
+        manager.initializeGames();
+
+        manager.pu = new PairUp(manager);
+
+        // Player objects
+        Player p1 = new MockPlayer(0);
+        Player p2 = new MockPlayer(1);
+
+        // Setting to boolean
+        boolean result = manager.createGame(p1, p2);
+        
+        // Will return true if executed correctly
+        assertTrue("Game was created successfully!", result); //Causes an error
+        assertEquals(9, manager.getNumOfAvailableGames(), "Game is now active after creation!");
+
+        manager.removeGame();
+
+        assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
     }
 }
