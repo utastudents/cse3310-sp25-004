@@ -125,7 +125,7 @@ connection.onmessage = function (evt) {
 
         // Summary Responses
         case "summaryData": {
-            console.log("Received summaryTopTenData!");
+            console.log("Received summary data for leaderboard!");
             //ommits the responseID and only sends needed values to loadData
             loadData(jsonMsg.top10);
             break;
