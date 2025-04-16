@@ -671,6 +671,12 @@ public class PageManager {
             pu.removeFromQueue(player);
             userIDToClientID.remove(Id);
             clientStates.remove(Id);
+            
+            Game g = player.getGame(); //get game object from that player
+
+            if(g!= null){ //if the player is in a game
+            g.setGameActive(false); //signal the game must end due to player leaving.
+            }
     
             // message
             JsonObject msg = new JsonObject();
@@ -691,10 +697,7 @@ public class PageManager {
             return null;
         }
     }
-    
-    
-    
-    
+
     
 
 
