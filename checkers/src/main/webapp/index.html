@@ -104,75 +104,76 @@
 			const currentPlayerInfo = {};
 
 			function displayJoinGame(player_info) {
-					// Remove JSON.parse since player_info is already an object
-					const listEl = document.getElementById("lobby_list_items");
+				// Remove JSON.parse since player_info is already an object
+				const listEl = document.getElementById("lobby_list_items");
 
-					// list item
-					const li = document.createElement("li");
-					li.className = "player";
+				// list item
+				const li = document.createElement("li");
+				li.className = "player";
 
-					// paragraph w/ span indicator
-					const paragraph = document.createElement("p");
-					paragraph.id = `UID${player_info.ClientID}`;
-					paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
+				// paragraph w/ span indicator
+				const paragraph = document.createElement("p");
+				paragraph.id = `UID${player_info.ClientID}`;
+				paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
 
-					const span = document.createElement("span");
-					if (player_info.status == "ONLINE"){
-						span.className = "status free"; 
-					} else {
-						span.className = "status busy"; 
-					}
-					paragraph.appendChild(span);
+				const span = document.createElement("span");
+				if (player_info.status == "ONLINE"){
+					span.className = "status free"; 
+				} else {
+					span.className = "status busy"; 
+				}
+				paragraph.appendChild(span);
 
-					// buttons
-					const challenge_btn = document.createElement("button");
-					challenge_btn.id = `chall_btn-${player_info.ClientID}`;
-					challenge_btn.innerText = "Challenge";
-					challenge_btn.onclick = function () {
-						// req_challenge(1, player_info.ClientID);
-						console.log("Requesting challenge to player: {player_id}");
-					};
+				// buttons
+				const challenge_btn = document.createElement("button");
+				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
+				challenge_btn.innerText = "Challenge";
+				challenge_btn.onclick = function () {
+					// req_challenge(1, player_info.ClientID);
+					console.log("Requesting challenge to player: {player_id}");
+				};
 
-					const view_btn = document.createElement("button");
-					view_btn.id = `view_btn-${player_info.ClientID}`;
-					view_btn.innerText = "View Match";
-					if (player_info.status == "ONLINE"){
-						view_btn.disabled = true; 
-					} else {
-						view_btn.disabled = false; 
-					}
+				const view_btn = document.createElement("button");
+				view_btn.id = `view_btn-${player_info.ClientID}`;
+				view_btn.innerText = "View Match";
+				if (player_info.status == "ONLINE"){
 					view_btn.disabled = true; 
-					view_btn.onclick = function () {
-						viewMatch(player_info.ClientID);
-					};
-				
-					li.appendChild(paragraph);
-					li.appendChild(challenge_btn);
-					li.appendChild(view_btn);
+				} else {
+					view_btn.disabled = false; 
+				}
+				view_btn.disabled = true; 
+				view_btn.onclick = function () {
+					viewMatch(player_info.ClientID);
+				};
+			
+				li.appendChild(paragraph);
+				li.appendChild(challenge_btn);
+				li.appendChild(view_btn);
 
-					listEl.appendChild(li);
+				listEl.appendChild(li);
 			};
-  					//view match function
-			  		function viewMatch(playerID) {
-					const viewMatchRequest = {
+			
+			//view match function
+			function viewMatch(playerID) {
+				const viewMatchRequest = {
 					type: "request_view_match",
-				    playerID: playerID 
-					};
+					playerID: playerID 
+				};
 
-					console.log("Requesting to view match for player:", playerID);
+				console.log("Requesting to view match for player:", playerID);
 					sendMessage(JSON.stringify(viewMatchRequest));
-					}
+			}
 
-					function watchBotVsBot(player_info) {
-					const botVsBotReq = {
+			function watchBotVsBot(player_info) {
+				const botVsBotReq = {
 					type: "request_bot_vs_bot",
 					playerID: player_info.ClientID, 
-					};
+				};
 
-					console.log("Requesting Bot vs Bot Match:", botVsBotReq);
-					sendMessage(JSON.stringify(botVsBotReq));
-					}
-				// end
+				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
+				sendMessage(JSON.stringify(botVsBotReq));
+			}
+				
 			function updateJoinGameList(data) {
 				clearLobbyList(); 
 				const current_player_id = data["MyClientID"];

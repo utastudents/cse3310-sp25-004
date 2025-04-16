@@ -15,13 +15,16 @@ connection = new WebSocket(serverUrl);
 
 // Messenger - This is how ALL outgoing messages will be sent to the server. ALL OF THEM. 
 function sendMessage(json = {}) {
-    if (!json.action) {
+    jsonMsg = JSON.parse(json);
+
+    if (!jsonMsg.action) {
         console.trace("No ACTION specified in sendMessage!");
         return;
     }
-    console.log("Sending message " + json.action + " to server");
-    console.log(JSON.stringify(json));
-    connection.send(json);
+    
+    console.log("Sending message " + jsonMsg.action + " to server");
+    console.log(JSON.stringify(jsonMsg));
+    connection.send(jsonMsg);
 }
 
 
@@ -35,10 +38,9 @@ connection.onclose = function (evt) {
 
 
 connection.onmessage = function (evt) {
-    let msg = evt.data; //extract data from websocket response
+    let msg = evt; //extract data from websocket response
     console.log("Message received: " + msg);
     let jsonMsg = JSON.parse(msg); 
-
 
     if (jsonMsg.clientId) {
         console.log("Connected with clientId:", jsonMsg.clientId);
@@ -52,7 +54,7 @@ connection.onmessage = function (evt) {
     //convert data to JSON
     //Extracts the response identifier from the response, so we can determine whose code it belongs to
     //See ./INTERFACES/client-server-docs.md for details
-    let responseID = Object.keys(jsonMsg)[0];
+    let responseID = jsonMsg.responseID;
     switch (responseID )
     {
         // Account Responses - Login Team
@@ -71,7 +73,7 @@ connection.onmessage = function (evt) {
         
         
         // Game Responses
-        case "join_game": {
+        case "getActivePlayers": {
             updateJoinGameList(jsonMsg);
             break;
         }
@@ -88,17 +90,17 @@ connection.onmessage = function (evt) {
     }
 }
 
-document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
-document.getElementById("game_display").style.display = "none";
-document.getElementById("new_account").style.display = "none";
-document.getElementById("login").style.display = "block"; 
+// document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+// document.getElementById("game_display").style.display = "none";
+// document.getElementById("new_account").style.display = "none";
+// document.getElementById("login").style.display = "block"; 
 
-function handleJoinGame(data) { //function to update when join team
-    console.log("Join team response received", data);
+// function handleJoinGame(data) { //function to update when join team
+//     console.log("Join team response received", data);
 
-    document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
-    document.getElementById("game_display").style.display = "none";
-    document.getElementById("new_account").style.display = "none";
-    document.getElementById("login").style.display = "block"; 
-}
+//     document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+//     document.getElementById("game_display").style.display = "none";
+//     document.getElementById("new_account").style.display = "none";
+//     document.getElementById("login").style.display = "block"; 
+// }
 
