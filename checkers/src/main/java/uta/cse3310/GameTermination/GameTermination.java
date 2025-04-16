@@ -9,42 +9,6 @@ public class GameTermination {
         public Game endGame() {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;
-                // endGame method basic functionality; need to fix errors before committing
-                /*
-                        // Tells game play game is over.
-                        public Game endGame(Game currentGame)
-                        {
-                                gameState state = new gameState();
-                                gameResult result = new gameResult();
-
-                                // Check if player 1 is winning player.
-                                if (state.hasPlayerWon(currentGame.Board, currentGame.player1))
-                                {
-                                        currentGame.playerID = currentGame.player1;
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
-
-                                // Check if player 2 is winning player.
-                                if (state.hasPlayerWon(currentGame.Board, currentGame.player2))
-                                {
-                                        currentGame.playerID = currentGame.player2;
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
-
-                                // Check if draw
-                                if (state.gameStateDraw(currentGame.Board, currentGame.player2))
-                                {
-                                        currentGame.playerID = -1; // -1 denotes a draw
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
-
-                                // Game still ongoing
-                                return null;
-                          }
-                */
         }
 /*
         public HumanPlayer[] saveResults(Game game){
