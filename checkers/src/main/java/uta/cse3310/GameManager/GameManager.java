@@ -58,12 +58,10 @@ public class GameManager {
                 p1.startGame(newGame);
                 p2.startGame(newGame);
                 games.set(i, newGame);
-                System.out.println("Game created at index: " + i);
                 newGame.setGameActive(true);
                 return true;
             }
         }
-        System.out.println("No available game slots.");
         return false;
     }
 
