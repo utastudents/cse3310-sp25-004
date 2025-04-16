@@ -14,39 +14,69 @@ public class GamePlayTest{
 		// assertEquals(true, board.moveForwardCheck(checker, cord));
 	}
 
-    // testing piece will become a king piece once it reaches the end
+    // This will test if piece becomea a king piece once it reaches the end
     @Test
     void kingMeTest() {
         var board = new Board();
 
         /* for every possible Black checker piece position, 
-            test checker is not a king if not on the last row
-            test checker is a king if on the last row */
+            test that checker is not a king if it's not on the last opposing row
+            test that checker is a king if it's on the last opposing row */
 
-        var checker = new Checker(new Cord(0,0), Color.BLACK);
+        var blackChecker = new Checker(new Cord(0,0), Color.BLACK);
         // parse through each row
         for (int y = 0; y < 8; y++) {
-            // parse through each column and for each possible location, run kingMe
+            // parse through each possible column and for each possible location, run kingMe
             if (y%2 == 1){
-                // parse
                 for (int x = 0; x < 8; x += 2) {
-                    checker.setCord(x, y);
-                    board.kingMe(checker);
+                    blackChecker.setCord(x, y);
+                    board.kingMe(blackChecker);
                 }
             }
             else if (y%2 == 0){
                 for (int x = 1; x < 8; x += 2) {
-                    checker.setCord(x, y);
-                    board.kingMe(checker);
+                    blackChecker.setCord(x, y);
+                    board.kingMe(blackChecker);
                 }
             }
             // if location is not on the last row, checker should not be king
             if (y != 7){
-                assertEquals(false, checker.isKing());
+                assertEquals(false, blackChecker.isKing());
             }
             // if location is on the last row, checker should be king
             else{
-                assertEquals(true, checker.isKing());
+                assertEquals(true, blackChecker.isKing());
+            }
+            
+        }
+
+         /* for every possible Red checker piece position, 
+            test that checker is not a king if it's not on the last opposing row
+            test that checker is a king if it's on the last opposing row */
+
+        var redChecker = new Checker(new Cord(0,0), Color.RED);
+        // parse through each row
+        for (int y = 7; y >= 0; y--) {
+            // parse through each possible column and for each possible location, run kingMe
+            if (y%2 == 1){
+                for (int x = 0; x < 8; x += 2) {
+                    redChecker.setCord(x, y);
+                    board.kingMe(redChecker);
+                }
+            }
+            else if (y%2 == 0){
+                for (int x = 1; x < 8; x += 2) {
+                    redChecker.setCord(x, y);
+                    board.kingMe(redChecker);
+                }
+            }
+            // if location is not on the last row, checker should not be king
+            if (y != 0){
+                assertEquals(false, redChecker.isKing());
+            }
+            // if location is on the last row, checker should be king
+            else{
+                assertEquals(true, redChecker.isKing());
             }
             
         }
