@@ -13,6 +13,7 @@ import uta.cse3310.App;
 import uta.cse3310.DB.DB;
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
@@ -52,7 +53,7 @@ public class PageManager {
         gm = new GameManager();
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(db, gm);
+        pu = new PairUp(gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -65,21 +66,27 @@ public class PageManager {
         responseJson.addProperty("responseID", "summaryData");
     
         // Get the top10 players by elo from db
-        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();  
+        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
+
+        JsonArray top10 = new JsonArray(10);
     
-        int count = 1;
+        //int count = 1;
         for (HumanPlayer player : topPlayers) {
+            if (player == null) {continue;}
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", player.getPlayerId());
             playerData.addProperty("Username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
+
+            top10.add(playerData);
     
-            String userKey = "userID" + count;
-            responseJson.add(userKey, playerData);
-            count++;
+            //String userKey = "userID" + count;
+            //responseJson.add(userKey, playerData);
+            //count++;
         }
+        responseJson.add("top10", top10);
     
         // Add current player (even if not in top 10)
         HumanPlayer currentPlayer = activePlayers.get(id);
@@ -485,12 +492,12 @@ public class PageManager {
         {
             HumanPlayer humanPlayer1 = (HumanPlayer) g.getPlayer1();
             player1.addProperty("isBot", false);
-            responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
-            responseJson.addProperty("username", humanPlayer1.getUsername());
-            responseJson.addProperty("elo", humanPlayer1.getELO());
-            responseJson.addProperty("gamesWon", humanPlayer1.getWins());
-            responseJson.addProperty("gamesLost", humanPlayer1.getLosses());
-            responseJson.addProperty("status", humanPlayer1.getStatus().toString());
+            player1.addProperty("playerClientId", userIDToClientID.get(humanPlayer1.getPlayerId()));
+            player1.addProperty("username", humanPlayer1.getUsername());
+            player1.addProperty("elo", humanPlayer1.getELO());
+            player1.addProperty("gamesWon", humanPlayer1.getWins());
+            player1.addProperty("gamesLost", humanPlayer1.getLosses());
+            player1.addProperty("status", humanPlayer1.getStatus().toString());
         }
         responseJson.add("player1", player1);
 
@@ -504,18 +511,20 @@ public class PageManager {
         {
             HumanPlayer humanPlayer2 = (HumanPlayer) g.getPlayer2();
             player2.addProperty("isBot", false);
-            responseJson.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
-            responseJson.addProperty("username", humanPlayer2.getUsername());
-            responseJson.addProperty("elo", humanPlayer2.getELO());
-            responseJson.addProperty("gamesWon", humanPlayer2.getWins());
-            responseJson.addProperty("gamesLost", humanPlayer2.getLosses());
-            responseJson.addProperty("status", humanPlayer2.getStatus().toString());
+            player2.addProperty("playerClientId", userIDToClientID.get(humanPlayer2.getPlayerId()));
+            player2.addProperty("username", humanPlayer2.getUsername());
+            player2.addProperty("elo", humanPlayer2.getELO());
+            player2.addProperty("gamesWon", humanPlayer2.getWins());
+            player2.addProperty("gamesLost", humanPlayer2.getLosses());
+            player2.addProperty("status", humanPlayer2.getStatus().toString());
         }
         responseJson.add("player2", player2);
 
-        //Gameplay board = g.getBoard();
+        //According to game display, they will have the game setup
 
-        // responseJson.add("board", boardToJson(board));
+        // GamePlay board = g.getBoard();
+
+        // // responseJson.add("board", boardToJson(board));
 
 
         userEventReply.recipients = new ArrayList<>();
@@ -547,64 +556,77 @@ public class PageManager {
         UserEventReply reply = new UserEventReply();
         reply.recipients = new ArrayList<>();
         reply.recipients.add(Id);
+        // 3) create a new json object to send back to the client
+        JsonObject status = new JsonObject();
 
-        // 3) check if the username and password are correct by checking the database
+        // 4) check if the username and password are correct by checking the database
         HumanPlayer player = db.getPlayer(username, password);
 
-        // 4) create a new json object to send back to the client
-        JsonObject status = new JsonObject();
-        status.addProperty("responseID", "login");
 
         // 5) if the player is null, then the username and password are incorrect
         if (player == null) {
+            status.addProperty("responseID", "login");
             status.addProperty("msg", "Invalid username or password.");
-            //add the status to the reply object and return it
             reply.replyObj = status;
             return reply;
         }
+
+        // ADDING PLAYER TO ACTIVE PLAYER MAP
+        activePlayers.put(Id,player);
+        userIDToClientID.put(player.getPlayerId(),Id);
+        player.setStatus(HumanPlayer.STATUS.ONLINE);
+
         // 6) if the player is not null, then the username and password are correct
-        status.addProperty("responseID", "loginSuccess"); // response for frontend
+        status.addProperty("responseID", "loginSuccessful");
         status.addProperty("msg", "Login successful!");
         status.addProperty("playerID", player.getPlayerId());
-        status.addProperty("redirect", "join_game");  // redirect to the join game page
-
 
         //transition to the home page
+
         reply.replyObj = status;
-        transitionPage(List.of(Id), GameState.JOIN_GAME);
-        // need to add
-        //. public enum GameState {
-        //   HOME,  // Add this constant
-        // Include other game states as needed
+
 
         return reply;
     }
-    // method handle new user registration from frontend 
+    // method handle new user registration from frontend
     public UserEventReply handleNewUser(JsonObject jsonObj, int Id) {
         String username = jsonObj.get("UserName").getAsString();
         String password = jsonObj.get("Password").getAsString();
-    
+
         UserEventReply reply = new UserEventReply();
         reply.recipients = new ArrayList<>();
         reply.recipients.add(Id);
-    
+
         JsonObject status = new JsonObject();
         status.addProperty("responseID", "new_user");
-    
+
         // SEND TO SQLITE DATABASE
         boolean success = db.addPlayer(username, password);
-    
-        // if (success) {
-        //     status.addProperty("msg", "Account created successfully!");
-        //     status.addProperty("redirect", "join_game"); //redirect to the login page
-        // } else {
-        //     status.addProperty("msg", "Username already exists.");
-        // }
+        System.out.println("addPlayer result: " + success);
 
-        //will show success message and redirect
-         status.addProperty("msg", "Username created SUCCESSFULLY.");
-         status.addProperty("redirect", "join_game");
-    
+        if(!success){
+             status.addProperty("msg", "failed to create player !");
+             reply.replyObj = status;
+             return reply;
+        }
+        // fetching new added user form DB
+        HumanPlayer player = db.getPlayer(username,password);
+        // check if player was retrieved successfully
+            if (player == null) {
+                System.err.println("ERROR: Failed to retrieve newly added user from DB for username=" + username);
+                status.addProperty("msg", "User creation succeeded, but failed to retrieve user from database.");
+                reply.replyObj = status;
+                return reply;
+            }
+        //     // Add to active player list and mark as online
+        activePlayers.put(Id, player);
+        userIDToClientID.put(player.getPlayerId(), Id);
+        player.setStatus(Player.STATUS.ONLINE);
+
+        // Respond to frontend
+        status.addProperty("msg", "Account created successfully!");
+        status.addProperty("playerID", player.getPlayerId());
+
         reply.replyObj = status;
         return reply;
     }
@@ -640,16 +662,17 @@ public class PageManager {
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
+     //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
      public UserEventReply userLeave(int Id) {
-
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
-            activePlayers.remove(Id); //rm from out list of active players
-            boolean removed = pu.removeFromQueue(player); //rm from pairUp's queue 
+            activePlayers.remove(Id);
+            boolean removed = pu.removeFromQueue(player);
     
-            JsonObject msg = new JsonObject(); //create the json
-            msg.addProperty("action", "playerLeft");
+            JsonObject msg = new JsonObject();
+            msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
+            msg.addProperty("ID", player.getPlayerId());
     
             UserEventReply reply = new UserEventReply();
             reply.replyObj = msg;
@@ -659,7 +682,7 @@ public class PageManager {
                 reply.recipients.add(otherId);
             }
     
-            return reply; //return reply to onClose
+            return reply;
         } else {
             return null;
         }
@@ -667,11 +690,12 @@ public class PageManager {
     
     
     
+    
 
 
     // Method to transition between pages
    // Transition all given clients to a new game state and notify them
-    private UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
+    public UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
         response.addProperty("action", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());
@@ -706,6 +730,20 @@ public class PageManager {
     public void resetClient(int clientId) {
         clientStates.remove(clientId);
     }
+
+    //test method for handling case a user suddenly
+    public void addDummy(int clientId) {
+        // Create a dummy HumanPlayer instance with predefined values
+        HumanPlayer dummyPlayer = new HumanPlayer("dummy", "123", clientId, Player.STATUS.ONLINE, 0, 0, 0, 0);
+    
+        // Add the dummy player to the active player list
+        activePlayers.put(clientId, dummyPlayer);
+        userIDToClientID.put(dummyPlayer.getPlayerId(), clientId);
+    
+        // Optionally log or send a message confirming the player was added
+        System.out.println("Added dummy player to activePlayers: " + dummyPlayer.getUsername());
+    }
+    
  
    
 }

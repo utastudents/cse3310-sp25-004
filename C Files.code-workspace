@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../../C Files"
+		},
+		{
+			"path": "../../OneDrive/Documents/GitHub/CSE3302"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdio.h": "c"
+		}
+	}
+}

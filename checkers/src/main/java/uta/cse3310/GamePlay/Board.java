@@ -22,7 +22,7 @@ public class Board
 		initCheckers();
 	}
 
-	private Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
+	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
 		return checkerBoard[Cord.getX()][Cord.getY()]; 
@@ -30,7 +30,6 @@ public class Board
 	
 	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
-	// TODO Refactor initCheckers function to use loops instead of hardcoding the values
 	{
 		int nums[] = {1,3,5,7};
 
@@ -78,7 +77,7 @@ public class Board
 
 	}
 
-	private void kingMe(Checker piece)
+	public void kingMe(Checker piece)
 	{
 		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
 		{
@@ -242,6 +241,16 @@ public class Board
 		return jumpList;
 	}
 
+	/* 
+		Definition: checkBackwardJump checks if the requested detination by the user is a valid jump
+		Arguments:
+			jumpList : List of possible backwards jumps gathered after running getPossibleBackwardJump
+			cord : destination cord that the player click/request to move to
+
+		Returns:
+			i (int) : index of the cord in the list of possible backward jumps
+			-1 : cord is not found in list and is not a valid backward jump
+	*/
 	int checkBackwardJump(ArrayList<Cord> jumpList, Cord cord)
 	{
 		//base case for our check
@@ -262,8 +271,8 @@ public class Board
 			}
 		}
 		
-		//if true return index of cord in list
-		//else return -1, same as null
+		//if found return index of cord in list
+		//if cord is not found in possibleBackwardJumps list, return -1 (same as null)
 		if(check)
 		{
 			return i;
@@ -290,40 +299,50 @@ public class Board
 		checkerBoard[newY][newX] = piece;
 	}
 	
+	/* 
+		Definition: 
+		Arguments:
+			piece : checker piece chosen by the player, the piece that is jumping
+			dest : new destination of the chosen checker piece after the jump
+	*/
 	void removeJumpedChecker(Checker piece, Cord dest)
 	{
 		int destX = dest.getX();
 		int destY = dest.getY();
 
+		// remove piece in the top right
 		if (checkerBoard[destX-2][destY-2] == piece)
 		{
 			deleteChecker(new Cord(destX-1, destY-1));
 		}
+		// remove piece in the top left
 		else if (checkerBoard[destX+2][destY-2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY-1));
 		}
+		// remove piece in the bottom right
 		else if (checkerBoard[destX-2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX-1, destY+1));
 		}
+		// remove piece in the bottom left
 		else if (checkerBoard[destX+2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
 	}
 
-	public static int moveValidation(Checker piece, Cord dest)
-	// The main logic for movement. 
-	// This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
+	//UNUSED
+	// public static int moveValidation(Checker piece, Cord dest)
+	// // The main logic for movement. 
+	// // This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
 
-	{
-		// TODO: Finish Board moveValidation function
-		int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
+	// {
+	// 	// TODO: Finish Board moveValidation function
+	// 	int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
 
 
 
-		return result;
-	}
-
+	// 	return result;
+	// }
 }

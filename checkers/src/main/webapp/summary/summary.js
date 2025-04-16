@@ -27,6 +27,12 @@ function renderLeaderboard() {
     const table = document.getElementById("summary-table");
     const thead = table.getElementsByTagName("thead")[0];
     const tbody = table.getElementsByTagName("tbody")[0];
+	const dataRequest = 
+	{
+		action : "summaryData"
+	};
+	//sends 
+	sendMessage(dataRequest);
 
     tbody.innerHTML = ""; // Clear the table body
     leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
@@ -43,13 +49,13 @@ function fillTable(leaderboard) {
         let rankDisplay;
         switch (index) {
             case 0:
-                rankDisplay = "🥇";
+                rankDisplay = "\u{1F947}"; // gold medal
                 break;
             case 1:
-                rankDisplay = "🥈";
+                rankDisplay = "\u{1F948}"; // silver medal
                 break;
             case 2:
-                rankDisplay = "🥉";
+                rankDisplay = "\u{1F949}"; // bronze medal
                 break;
             default:
                 rankDisplay = index + 1;
@@ -69,12 +75,14 @@ function fillTable(leaderboard) {
 
 // Loads data from JSON file/string
 function loadData(jsonData) {
+    console.log("Loading data! " + JSON.stringify(jsonData));
     leaderboard = []; // Reset
     let leaderboardIndex = 0;
     for (const player of jsonData) {
         //Copy json object into JS class
+        //{"ID":7,"Username":"test","elo":0,"gamesWon":0,"gamesLost":0}
         leaderboard[leaderboardIndex] = new Player(
-            player["username"],
+            player["Username"],
             player["elo"],
             player["gamesWon"],
             player["gamesLost"],
@@ -82,6 +90,7 @@ function loadData(jsonData) {
         );
         leaderboardIndex++;
     }
+    fillTable(leaderboard);
 }
 
 // NEW: This function sends a request to the server for leaderboard data

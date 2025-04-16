@@ -6,6 +6,7 @@ import uta.cse3310.PageManager.UserEvent;
 import uta.cse3310.PageManager.UserEventReply;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.PageManager.GameState;
 import uta.cse3310.PairUp.Player;
 
 import static org.mockito.Mockito.*;
@@ -18,6 +19,8 @@ import org.mockito.Mock;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +55,9 @@ public class PageManagerTest
 
         pm.activePlayers.put(1, human1);
         pm.activePlayers.put(2, human2);
+
+        pm.clientStates.put(1, GameState.GAME_DISPLAY);
+        pm.clientStates.put(2, GameState.JOIN_GAME);
 
 
     }
@@ -144,6 +150,22 @@ public class PageManagerTest
 
     }
 
+    @Test
+    public void transitionPageTest()
+    {
+        // Only using Alice for this test
 
+        ArrayList<Integer> recipients = new ArrayList();
+        recipients.add(1);
+
+        UserEventReply reply = pm.transitionPage(recipients, GameState.SUMMARY);
+
+        JsonObject response = reply.replyObj;
+
+        assertEquals("updateVisibility", response.get("action").getAsString());
+        assertEquals("summary", response.get("visible").getAsString());
+        assertTrue(pm.clientStates.get(1) == GameState.SUMMARY, "status is not in queue");
+
+    }    
 
 }
