@@ -1,6 +1,10 @@
 package uta.cse3310.GameManager;
 
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -12,31 +16,30 @@ import uta.cse3310.PageManager.GameMove;
 import java.util.ArrayList;
 
 public class GameManager {
-    // GamePlay gp;
     private static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
+    PairUp pu;
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
 
     public GameManager() {
-        // gp = new GamePlay();
         gt = new GameTermination();
-        b1 = new BotI();
-        b2 = new BotII();
 
         games = new ArrayList<>(MAX_GAMES);
     }
 
-    // Initialize first 10 games
+    // Initialize first 10 games, gameID's are the game's index number in ArrayList
     public void initializeGames() {
         for (int i = 0; i < MAX_GAMES; i++) {
-            games.add(new Game(i, null, null)); // null since unassigned players
+            Game game = new Game(i, null, null);
+            game.setGameActive(false);
+            games.add(game);
         }
     }
 
     // Track numOfGames for available game slots
-    public int getNumOfGames() {
+    public int getNumOfAvailableGames() {
         int availableGames = 0;
         for (Game game : games) {
             if (game == null || !game.isGameActive()) {
@@ -56,36 +59,49 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 System.out.println("Game created at index: " + i);
-                game.setGameActive(false);
+                newGame.setGameActive(true);
                 return true;
             }
         }
         System.out.println("No available game slots.");
         return false;
-        // return boardAvailable(p1, p2, spectator); (?)
     }
 
+    // Removes game once GameTermination concludes game is over
     public void removeGame() {
         Game gameToRemove = gt.endGame();
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
             if (g != null && g.getGameID() == gameToRemove.getGameID()) {
                 games.set(i, null);
+                pu.boardAvailable();
             }
         }
-        // if GameTermination sends a Game object that should end, check Game ID and
-        // remove here
     }
+/* 
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
+    public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
+        int playerId = move.getClientId();
+        String fromStr = move.getFromPosition();
+        String toStr = move.getToPosition();
 
-    // public GameUpdate processMove(GameMove move) {
-    // call GamePlay Board method to validate move ? and return GameUpdate object
-    // with new position and player ID
+        Cord from = stringToCord(fromStr);
+        Cord to = stringToCord(toStr);
 
-    // Making new gameUpdate object
-    // GameUpdate newStats = new GameUpdate(true," ", " ", false, true, " " );
+        Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
+        int result = gamePlay.move(piece, to);
+        boolean valid = (result == 2);
 
-    // return;
+        String movePath = "Playerid " + playerId + ":" + fromStr + " -> " + toStr;
 
-    // }
+        return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
+    }
+*/
+    private Cord stringToCord(String pos) {
 
+        int x = pos.charAt(0) - 'a';
+        int y = 8 - Character.getNumericValue(pos.charAt(1));
+        return new Cord(x, y);
+
+    }
 }

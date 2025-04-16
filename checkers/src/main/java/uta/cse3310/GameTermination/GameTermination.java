@@ -2,99 +2,120 @@ package uta.cse3310.GameTermination;
 
 import uta.cse3310.GameManager.Game;
 import uta.cse3310.DB.DB;
-
+import uta.cse3310.PageManager.HumanPlayer;
 
 public class GameTermination {
-        // Tells game play game is over. 
+        // Tells game play game is over.
         public Game endGame() {
-                Game game = new Game(0, null, null); // temp code for compiling purposes 
+                Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;
                 // endGame method basic functionality; need to fix errors before committing
                 /*
-                        // Tells game play game is over. 
-                        public Game endGame(Game currentGame) 
+                        // Tells game play game is over.
+                        public Game endGame(Game currentGame)
                         {
-                                gameState state = new gameState(); 
-                                gameResult result = new gameResult(); 
+                                gameState state = new gameState();
+                                gameResult result = new gameResult();
 
-                                // Check if player 1 is winning player.  
+                                // Check if player 1 is winning player.
                                 if (state.hasPlayerWon(currentGame.Board, currentGame.player1))
                                 {
-                                        currentGame.playerID = currentGame.player1; 
-                                        saveResults(currentGame); 
-                                        return currentGame; 
+                                        currentGame.playerID = currentGame.player1;
+                                        saveResults(currentGame);
+                                        return currentGame;
                                 }
 
-                                // Check if player 2 is winning player. 
+                                // Check if player 2 is winning player.
                                 if (state.hasPlayerWon(currentGame.Board, currentGame.player2))
                                 {
-                                        currentGame.playerID = currentGame.player2; 
-                                        saveResults(currentGame); 
-                                        return currentGame; 
+                                        currentGame.playerID = currentGame.player2;
+                                        saveResults(currentGame);
+                                        return currentGame;
                                 }
 
-                                // Check if draw 
+                                // Check if draw
                                 if (state.gameStateDraw(currentGame.Board, currentGame.player2))
                                 {
                                         currentGame.playerID = -1; // -1 denotes a draw
-                                        saveResults(currentGame); 
-                                        return currentGame; 
+                                        saveResults(currentGame);
+                                        return currentGame;
                                 }
 
                                 // Game still ongoing
-                                return null; 
+                                return null;
                           }
                 */
         }
+/*
+        public HumanPlayer[] saveResults(Game game){
+                DB database = new DB();
+                gameState state = new gameState();
 
-        // updates each player stats based on match results sends to db
-     /*   public void saveResults(HumanPlayer p1, HumanPlayer p2, String resultType){
 
-                // retrieves p1 stats
-                int p1Wins = p1.getWins();
-                int p1Lossees = p1.getLosses();
-                int p1ELO = p1.getELO();
-                int p1Games = p1.getGamesPlayed();
-                // retrieves p2 stats
-                int p2Wins = p2.getWins();
-                int p2Lossees = p2.getLosses();
-                int p2ELO = p2.getELO();
-                int p2Games = p2.getGamesPlayed();
-                // changes stats based on result
-                switch (resultType){
-                        case "P1_WIN":
-                                p1Wins++;
-                                p1Games++;
-                                p2Lossees++;
-                                p2Games++;
-                                break;
-                        case "P2_WIN":
-                                p2Wins++;
-                                p2Games++;
-                                p1Lossees++;
-                                p1Games++;
-                                break;
-                        case "DRAW":
-                                p1Games++;
-                                p2Games++;
-                                break;
+                //retrieves playerId
+                int player1Id = game.getPlayer1().getPlayerId();
+                int player2Id = game.getPlayer2().getPlayerId();
+
+                //Determine which player is winning
+                int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game, game);
+
+                //retrieve players current stats
+                HumanPlayer player1 = database.getPlayerById(player1Id);
+                HumanPlayer player2 = database.getPlayerById(player2Id);
+
+                //if no games have ever been played start with 0
+                int p1Wins = 0, p1Losses = 0, p1Games = 0, p1Elo = 1000;
+                int p2Wins = 0, p2Losses = 0, p2Games = 0, p2Elo = 1000;
+
+                //check incase players aren't detected
+                if(player1 != null && player2 != null){
+                        p1Wins = player1.getWins();
+                        p1Losses = player1.getLosses();
+                        p1Games = player1.getGamesPlayed();
+                        p1Elo = player1.getELO();
+
+                        p2Wins = player2.getWins();
+                        p2Losses = player2.getLosses();
+                        p2Games = player2.getGamesPlayed();
+                        p2Elo = player2.getELO();
                 }
-                // update p1 HumanPlayer object
-                p1.setWins(p1Wins);
-                p1.setLosses(p1Lossees);
-                p1.setGamesPlayed(p1Games);
-                // update p2 HumanPlayer object
-                p2.setWins(p2Wins);
-                p2.setLosses(p2Lossees);
-                p2.setGamesPlayed(p2Games);
 
-                //send p1 updated val to db
-                database.updatePlayerStats(p1.getPlayerId(), p1Wins, p1Lossees, p1ELO, p1Games);
-                //send p2 updated val to db
-                database.updatePlayerStats(p2.getPlayerId(), p2Wins, p2Lossees, p2ELO, p2Games);
+                int updatedElo1 = p1Elo;
+                int updatedElo2 = p2Elo;
 
-        } */
+                //Handles player draw
+                if (winnerID == -1){
+                        database.updatePlayerStats(player1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
+                        database.updatePlayerStats(player2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
+                //Handles Player 1 Win
+                }else if(winnerID == player1Id){
+                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
 
-}
-        
+                        database.updatePlayerStats(player1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
+                        database.updatePlayerStats(player2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 2);
+                //Handles Player 2 Win
+                }else if(winnerID == player2Id){
+                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
+                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+
+                        database.updatePlayerStats(player2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
+                        database.updatePlayerStats(player1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
+                }
+
+                //return updated player stats
+                HumanPlayer[] updatedStats = new HumanPlayer[2];
+                updatedStats[0] = database.getPlayerById(player1Id);
+                updatedStats[1] = database.getPlayerById(player2Id);
+
+                return updatedStats;
+        }
+*/
+        }
+
+
+
+
+
+
 

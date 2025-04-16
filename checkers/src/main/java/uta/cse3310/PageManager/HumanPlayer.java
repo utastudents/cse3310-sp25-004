@@ -6,6 +6,8 @@ import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.App;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class HumanPlayer extends Player{
 
@@ -16,6 +18,8 @@ public class HumanPlayer extends Player{
     private int wins;
     private int losses;
     private int gamesPlayed;
+
+    
 
     //private socketId potentially here
 
@@ -51,7 +55,9 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
-        return false;
+       // App.pmInstance.makeMove(playerId);
+        
+        return true;
     }
 
     @Override
@@ -67,7 +73,7 @@ public class HumanPlayer extends Player{
 
         // Need game board to be sent over
 
-        // PageManager.startGameNotifier(g, playerId);
+        App.pmInstance.startGameNotifier(g, playerId);
         //call a static method in page manager to make UserEventReply then send it to App.java to send the info to the players
     
 

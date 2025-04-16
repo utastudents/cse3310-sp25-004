@@ -67,30 +67,14 @@ public class DB
                 pstmt.setString(2, hashedPassword);
                 pstmt.setBytes(3, salt);
                 pstmt.executeUpdate();
+
+                return true;
             }
         } catch (SQLException e) {
             System.out.println("Failed to add player: " + e.getMessage());
-            return false;
-        }
-    }
-    /* gets a player using playerId, and return if the player is found */
-    public HumanPlayer getPlayerById(int playerId) 
-    {
-        try {
-            String sql = "SELECT * FROM players WHERE id = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, playerId);
-                ResultSet rs = pstmt.executeQuery();
 
-                if (rs.next()) {
-                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
-                }
-            }
-        } catch (SQLException e) 
-        {
-            System.err.println("Error fetching player: " + e.getMessage());
         }
-        return null;
+        return false; // if something fails
     }
     
     /* gets player using username and it will return if it found  */
@@ -112,9 +96,27 @@ public class DB
         return null;
     }
 
+    /* verifies player login & returns if valid */
     public HumanPlayer getPlayer(String username, String password)
      {
-         // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         String sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String storedHash = rs.getString("password");
+                byte[] salt = rs.getBytes("salt");
+
+                //checks password
+                if (PasswordManager.verifyPassword(password, storedHash, salt)) {
+                    return new HumanPlayer(rs.getString("username"), storedHash, salt);
+                }
+            }
+         } catch (SQLException e) {
+            System.out.println("Error fetching player: " + e.getMessage());
+         }
+         
          return null;  /* null when Player not found */
      }
  
