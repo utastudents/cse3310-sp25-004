@@ -2,6 +2,8 @@ package uta.cse3310.PairUp;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import uta.cse3310.Bot.Bot;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
@@ -129,19 +131,6 @@ public class PairUp {
         return challenge(p, botI ? new BotI() : new BotII(), null);//just calls challenge with a bot
     }
 
-
-public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
-   
-   Player b1 = botI ? new BotI() : new BotII();
-
-
-   Player b2 = botII ? new BotI() : new BotII();
-
- 
-   return challenge(b1, b2, spectator);
-}
-
-
     /**
      * Add a bot v bot challenge to the queue
      * @param botI - True for bot I, false for bot II
@@ -149,6 +138,12 @@ public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
      * @param spectator - the player who requested to watch
      * @return - false if the challengers were not added to the queue, true otherwise
      */
+    public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
+        Player b1 = botI ? new BotI() : new BotII();
+        Player b2 = botII ? new BotI() : new BotII();
+
+        return challenge(b1, b2, spectator);
+    }
      
     /**
      * 
@@ -156,7 +151,7 @@ public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
      * @return - True if the player was removed from the queue
      */
     public boolean removeFromQueue(Player p) {
-        if (p instanceof HumanPlayer) {
+        if (!(p instanceof Bot)) {
             //Find player p in the queue
             for (int c=0; c<playerQueue.size(); c++) {
                 Challenge challenge = playerQueue.get(c);
@@ -180,8 +175,15 @@ public boolean botVBot(boolean botI, boolean botII, HumanPlayer spectator) {
      * Called by GameManager when a game is ended and the board is clear.
      * @return - false if there was an error, true otherwise
      */
-    public boolean boardAvailable() {return false;}
-
+    public boolean boardAvailable() {
+        try {
+            pairUp(); // Attempt to make a new match
+            return true;
+        } catch (Exception e) { //excpetion thrown when match could not be made by pairUp()
+            return false;
+        }
+    }
+    
     /**
      * Returns the number of players in the queue.
      * For Join Game page to display to users.

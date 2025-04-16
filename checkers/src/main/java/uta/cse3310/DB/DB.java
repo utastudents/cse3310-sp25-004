@@ -54,6 +54,7 @@ public class DB
     {
         if (getPlayerByUsername(username) != null) 
         {
+            System.out.println("User " + username + " already exists!");
             return false; /*if username exists it will return */
         }
         
@@ -68,11 +69,12 @@ public class DB
                 pstmt.setBytes(3, salt);
                 pstmt.executeUpdate();
 
+                System.out.println("User " + username + " inserted into DB succesfully");
+
                 return true;
             }
         } catch (SQLException e) {
             System.out.println("Failed to add player: " + e.getMessage());
-
         }
         return false; // if something fails
     }
@@ -99,7 +101,7 @@ public class DB
     /* verifies player login & returns if valid */
     public HumanPlayer getPlayer(String username, String password)
      {
-         String sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         String sql = "SELECT * FROM players WHERE username = ?"; //Hi, we removed "AND password = ?" so that we could simulate creating and logging in to accounts.
          try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();

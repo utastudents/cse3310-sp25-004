@@ -71,6 +71,8 @@ public class HumanPlayer extends Player{
         this.game = g;
         this.status = STATUS.IN_GAME;
 
+        System.out.println("Player " + playerId + "'s game is starting!");
+
         // Need game board to be sent over
 
         App.pmInstance.startGameNotifier(g, playerId);
@@ -117,6 +119,10 @@ public class HumanPlayer extends Player{
 
     public STATUS getStatus(){
         return status;
+    }
+
+    public Game getGame(){
+        return game;
     }
 
 

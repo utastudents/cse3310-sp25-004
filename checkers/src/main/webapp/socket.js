@@ -15,6 +15,7 @@ connection = new WebSocket(serverUrl);
 
 // Messenger - This is how ALL outgoing messages will be sent to the server. ALL OF THEM. 
 function sendMessage(json = {}) {
+<<<<<<< HEAD
     jsonMsg = JSON.parse(json);
 
     if (!jsonMsg.action) {
@@ -25,6 +26,16 @@ function sendMessage(json = {}) {
     console.log("Sending message " + jsonMsg.action + " to server");
     console.log(JSON.stringify(jsonMsg));
     connection.send(jsonMsg);
+=======
+    if (!json.action) {
+        console.trace("No ACTION specified in sendMessage! Msg:");
+        console.log(json);
+        return;
+    }
+    console.log("Sending message " + json.action + " to server");
+    console.log(JSON.stringify(json));
+    connection.send(JSON.stringify(json));
+>>>>>>> main
 }
 
 
@@ -36,52 +47,119 @@ connection.onclose = function (evt) {
     console.log("close");
 }
 
+var globalClientID = null;
 
 connection.onmessage = function (evt) {
     let msg = evt; //extract data from websocket response
     console.log("Message received: " + msg);
-    let jsonMsg = JSON.parse(msg); 
+    let jsonMsg = JSON.parse(msg);
 
+<<<<<<< HEAD
+=======
+    console.log(jsonMsg);
+
+    let responseID = jsonMsg.responseID;
+
+    console.log("Response ID: " + responseID);
+
+>>>>>>> main
     if (jsonMsg.clientId) {
-        console.log("Connected with clientId:", jsonMsg.clientId);
+        globalClientID = jsonMsg.clientId;
+        console.log("Connected with clientId:", globalClientID);
         return;
     }
     
-    if (!jsonMsg.responseID) {
-        console.error("Received unexpected responseID! Got:", jsonMsg);
-        return;
+    
+    if (!responseID) {
+        //check namespace
+        const nameKey = Object.keys(jsonMsg);
+        if(nameKey.length > 0){
+            const namespace = nameKey[0];
+            const nestedJson = jsonMsg[namespace];
+
+            if(nestedJson && nestedJson.responseID){
+                responseID = nestedJson.responseID;
+
+                console.log("Found nested namespace from: ", namespace);
+                console.log("ResponseID: ", responseID);
+
+                jsonMsg = nestedJson;
+            } else{
+                console.error("Received unexpected responseID! Got:", jsonMsg);
+                return;
+            }
+        }
     }
+
     //convert data to JSON
     //Extracts the response identifier from the response, so we can determine whose code it belongs to
     //See ./INTERFACES/client-server-docs.md for details
+<<<<<<< HEAD
     let responseID = jsonMsg.responseID;
+=======
+    
+>>>>>>> main
     switch (responseID )
     {
+        // Page Manager
+        case "updateVisibility": {
+            alert("Switch to page " + jsonMsg.visible);
+            break;
+        }
+
         // Account Responses - Login Team
         case "login": {
             login(jsonMsg.msg);
             break;
         }
-        case "loginSuccess": {
+        case "loginSuccessful": {
             loginSuccess();
+            sendMessage({action:"getActivePlayers"});
             break;
         }
+
+        case "join_game":{
+            console.log("Join Game Received: ", jsonMsg);
+            updateJoinGameList(jsonMsg);
+            break;
+        }
+
         case "new_user": {
             newUser(jsonMsg.msg);
             break;
+        }  
+
+        // Join Game Responses
+        case "challengeBot": {
+            botChallenged(jsonMsg.inQueue);
+            break;
         }
-        
-        
+
         // Game Responses
+<<<<<<< HEAD
         case "getActivePlayers": {
             updateJoinGameList(jsonMsg);
             break;
         }
+=======
+        case "startGame": {
+            //Start the actual game!
+            //{"responseID":"startGame","gameType":"pvb","player1":{"isBot":false,"playerClientId":1,"username":"test","elo":0,"gamesWon":0,"gamesLost":0,"status":"IN_GAME"},"player2":{"isBot":true}}
+            alert("Starting the game! " + JSON.stringify(jsonMsg));
+            break;
+        }
+
+>>>>>>> main
         // Summary Responses
-        case "summaryTopTenData": {
-            console.log("Received summaryTopTenData!");
+        case "summaryData": {
+            console.log("Received summary data for leaderboard!");
             //ommits the responseID and only sends needed values to loadData
-            loadData(jsonMsg[responseID]); 
+            loadData(jsonMsg.top10);
+            break;
+        }
+        //Signals that a user has abrubtly left
+        case "playerLeft": {
+            console.log("Player left:", jsonMsg.username);
             break;
         }
         default:{
@@ -90,17 +168,32 @@ connection.onmessage = function (evt) {
     }
 }
 
+<<<<<<< HEAD
 // document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
 // document.getElementById("game_display").style.display = "none";
 // document.getElementById("new_account").style.display = "none";
 // document.getElementById("login").style.display = "block"; 
+=======
+/*document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+document.getElementById("game_display").style.display = "none";
+document.getElementById("new_account").style.display = "none";
+document.getElementById("login").style.display = "block"; */
+>>>>>>> main
 
 // function handleJoinGame(data) { //function to update when join team
 //     console.log("Join team response received", data);
 
+<<<<<<< HEAD
 //     document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
 //     document.getElementById("game_display").style.display = "none";
 //     document.getElementById("new_account").style.display = "none";
 //     document.getElementById("login").style.display = "block"; 
 // }
+=======
+    document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+    document.getElementById("game_display").style.display = "none";
+    document.getElementById("new_account").style.display = "none";
+    document.getElementById("login").style.display = "none"; 
+}
+>>>>>>> main
 

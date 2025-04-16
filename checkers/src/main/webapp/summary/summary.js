@@ -32,7 +32,7 @@ function renderLeaderboard() {
 		action : "summaryData"
 	};
 	//sends 
-	connection.send(JSON.stringify(dataRequest));
+	sendMessage(dataRequest);
 
     tbody.innerHTML = ""; // Clear the table body
     leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
@@ -75,12 +75,14 @@ function fillTable(leaderboard) {
 
 // Loads data from JSON file/string
 function loadData(jsonData) {
+    console.log("Loading data! " + JSON.stringify(jsonData));
     leaderboard = []; // Reset
     let leaderboardIndex = 0;
     for (const player of jsonData) {
         //Copy json object into JS class
+        //{"ID":7,"Username":"test","elo":0,"gamesWon":0,"gamesLost":0}
         leaderboard[leaderboardIndex] = new Player(
-            player["username"],
+            player["Username"],
             player["elo"],
             player["gamesWon"],
             player["gamesLost"],
@@ -88,6 +90,7 @@ function loadData(jsonData) {
         );
         leaderboardIndex++;
     }
+    fillTable(leaderboard);
 }
 
 // NEW: This function sends a request to the server for leaderboard data

@@ -47,7 +47,7 @@ const signupData = {
     Password:password
 };
 //Send data as JSON string JSON.stringify
-sendMessage(JSON.stringify(signupData));
+sendMessage(signupData);
 console.log("Signup Data sent: ", signupData)		
 };
 //Event handler for login button
@@ -67,10 +67,61 @@ if(!loginUsername || !loginPassword){ //Username or Password not filled in
 }
 const loginData = { //Data into JSON object
     action: "login",
-    UserName : loginUsername, 
+    UserName : loginUsername,
     Password:loginPassword
 };
 //Send data as JSON string JSON.stringify
-sendMessage(JSON.stringify(loginData))
+sendMessage(loginData)
 console.log("Login Data sent: ", loginData)		
+}
+
+
+
+
+const chaosButton = document.getElementById("chaos-button");
+
+const imageUrls = [
+    "login_signup/blue_guy.png", 
+    "login_signup/freddy.png",
+    "login_signup/platy.png",
+    "login_signup/cj.png"
+
+];
+const sound = new Audio("login_signup/chicken-jockey.mp3");
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+chaosButton.addEventListener("click", () => {
+    const randomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    const img = document.createElement("img");
+    img.src = randomImage
+    img.style.position = "absolute";
+    img.style.width = "80px";
+    img.style.height = "80px";
+    img.style.top = `${getRandomInt(0, window.innerHeight - 80)}px`;
+    img.style.left = `${getRandomInt(0, window.innerWidth - 80)}px`;
+    img.style.zIndex = 998;
+    document.body.appendChild(img);
+    if (randomImage.endsWith("cj.png")) {
+        sound.play();
+    }
+});
+
+const loginScreen = document.getElementById("login");
+const observer = new MutationObserver(() => {
+    const displayStyle = window.getComputedStyle(loginScreen).display;
+    chaosButton.style.display = displayStyle === "none" ? "none" : "block";
+});
+
+observer.observe(loginScreen, { attributes: true, attributeFilter: ['style'] });
+document.getElementById("showDragonBtn").onclick = function() {
+    var dragon = document.getElementById("dragon");
+    if(dragon.style.display === "none" || dragon.style.display === ""){
+        dragon.style.display = "block";
+    }
+    else {
+        dragon.style.display = "none";
+    }
 }

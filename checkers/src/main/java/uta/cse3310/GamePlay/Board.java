@@ -99,7 +99,7 @@ public class Board
 			return false; // Invalid move, out of bounds
 		}
 
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
 			return false; // Cannot move to a square already occupied by another piece
 		}
@@ -241,6 +241,16 @@ public class Board
 		return jumpList;
 	}
 
+	/* 
+		Definition: checkBackwardJump checks if the requested detination by the user is a valid jump
+		Arguments:
+			jumpList : List of possible backwards jumps gathered after running getPossibleBackwardJump
+			cord : destination cord that the player click/request to move to
+
+		Returns:
+			i (int) : index of the cord in the list of possible backward jumps
+			-1 : cord is not found in list and is not a valid backward jump
+	*/
 	int checkBackwardJump(ArrayList<Cord> jumpList, Cord cord)
 	{
 		//base case for our check
@@ -261,8 +271,8 @@ public class Board
 			}
 		}
 		
-		//if true return index of cord in list
-		//else return -1, same as null
+		//if found return index of cord in list
+		//if cord is not found in possibleBackwardJumps list, return -1 (same as null)
 		if(check)
 		{
 			return i;
@@ -286,26 +296,36 @@ public class Board
 		int newX = dest.getX();
 		int newY = dest.getY();
 		piece.setCord(newX, newY);
-		checkerBoard[newY][newX] = piece;
+		checkerBoard[newX][newY] = piece;
 	}
 	
+	/* 
+		Definition: 
+		Arguments:
+			piece : checker piece chosen by the player, the piece that is jumping
+			dest : new destination of the chosen checker piece after the jump
+	*/
 	void removeJumpedChecker(Checker piece, Cord dest)
 	{
 		int destX = dest.getX();
 		int destY = dest.getY();
 
+		// remove piece in the top right
 		if (checkerBoard[destX-2][destY-2] == piece)
 		{
 			deleteChecker(new Cord(destX-1, destY-1));
 		}
+		// remove piece in the top left
 		else if (checkerBoard[destX+2][destY-2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY-1));
 		}
+		// remove piece in the bottom right
 		else if (checkerBoard[destX-2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX-1, destY+1));
 		}
+		// remove piece in the bottom left
 		else if (checkerBoard[destX+2][destY+2] == piece)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));

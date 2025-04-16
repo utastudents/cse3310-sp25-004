@@ -27,6 +27,8 @@ public class GameManager {
         gt = new GameTermination();
 
         games = new ArrayList<>(MAX_GAMES);
+
+        initializeGames();
     }
 
     // Initialize first 10 games, gameID's are the game's index number in ArrayList
@@ -51,6 +53,7 @@ public class GameManager {
 
     // Create a new game from Pair Up
     public boolean createGame(Player p1, Player p2) {
+        System.out.println("Creating a new game");
         for (int i = 0; i < games.size(); i++) {
             Game game = games.get(i);
             if (game == null || !game.isGameActive()) { // Found an open slot
@@ -58,12 +61,11 @@ public class GameManager {
                 p1.startGame(newGame);
                 p2.startGame(newGame);
                 games.set(i, newGame);
-                System.out.println("Game created at index: " + i);
                 newGame.setGameActive(true);
                 return true;
             }
         }
-        System.out.println("No available game slots.");
+        System.out.println("Failed to create a new game!");
         return false;
     }
 
@@ -79,29 +81,23 @@ public class GameManager {
         }
     }
 
-    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back
+    // to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
-        int playerId = move.getClientId();
-        String fromStr = move.getFromPosition();
-        String toStr = move.getToPosition();
+        // Getter is misspelled in other class
+        int playerId = move.getClietId();
 
-        Cord from = stringToCord(fromStr);
-        Cord to = stringToCord(toStr);
+        Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
+        Cord to = new Cord(move.getToPosition_X(), move.getToPosition_Y());
 
         Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
         int result = gamePlay.move(piece, to);
         boolean valid = (result == 2);
 
-        String movePath = "Playerid " + playerId + ":" + fromStr + " -> " + toStr;
+        // Sending all important information through movePath
+        String movePath = "Playerid " + playerId + ":" + "(" + from.getX() + "," + from.getY() + ")" + " -> " + "("
+                + to.getX() + "," + to.getY() + ")";
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
-    }
-
-    private Cord stringToCord(String pos) {
-
-        int x = pos.charAt(0) - 'a';
-        int y = 8 - Character.getNumericValue(pos.charAt(1));
-        return new Cord(x, y);
-
     }
 }

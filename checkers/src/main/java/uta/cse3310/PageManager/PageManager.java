@@ -33,7 +33,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
-    GameManager gm;
+    //GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -50,10 +50,10 @@ public class PageManager {
     public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
-        gm = new GameManager();
+        //gm = new GameManager(); //already created??
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(gm);
+        pu = new PairUp(Gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -66,21 +66,27 @@ public class PageManager {
         responseJson.addProperty("responseID", "summaryData");
     
         // Get the top10 players by elo from db
-        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();  
+        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
+
+        JsonArray top10 = new JsonArray(10);
     
-        int count = 1;
+        //int count = 1;
         for (HumanPlayer player : topPlayers) {
+            if (player == null) {continue;}
             JsonObject playerData = new JsonObject();
             playerData.addProperty("ID", player.getPlayerId());
             playerData.addProperty("Username", player.getUsername());
             playerData.addProperty("elo", player.getELO());
             playerData.addProperty("gamesWon", player.getWins());
             playerData.addProperty("gamesLost", player.getLosses());
+
+            top10.add(playerData);
     
-            String userKey = "userID" + count;
-            responseJson.add(userKey, playerData);
-            count++;
+            //String userKey = "userID" + count;
+            //responseJson.add(userKey, playerData);
+            //count++;
         }
+        responseJson.add("top10", top10);
     
         // Add current player (even if not in top 10)
         HumanPlayer currentPlayer = activePlayers.get(id);
@@ -122,12 +128,14 @@ public class PageManager {
         // to have an array of active players
         JsonArray playersArray = new JsonArray();
 
+        userEventReply.recipients = new ArrayList<>();
+        
         // loop through active players and add info onto the players array
         while (e.hasMoreElements())
         {
             JsonObject playerData = new JsonObject();
             int key = e.nextElement();
-
+            
             HumanPlayer player = activePlayers.get(key);
             playerData.addProperty("ClientID", key);
             playerData.addProperty("username", player.getUsername());
@@ -136,8 +144,12 @@ public class PageManager {
             playerData.addProperty("gamesLost", player.getLosses());
             playerData.addProperty("status", player.getStatus().toString());
 
-
             playersArray.add(playerData);
+
+            if (player.getStatus() == Player.STATUS.ONLINE)
+            {
+                userEventReply.recipients.add(key);
+            }
         }
 
 
@@ -145,9 +157,6 @@ public class PageManager {
         responseJson.add("activePlayers", playersArray);
 
         userEventReply.replyObj = responseJson;
-
-        userEventReply.recipients = new ArrayList<>();
-        userEventReply.recipients.add(Id);
 
         return userEventReply;
 
@@ -177,8 +186,46 @@ public class PageManager {
     } */
     }
 
-     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
-     {
+    // used whenever a person updates their status (send to all online players)
+    public UserEventReply statusUpdate(Player.STATUS status, int Id)
+    {
+        JsonObject responseJson = new JsonObject();
+        UserEventReply userEventReply=  new UserEventReply();
+
+        responseJson.addProperty("responseID", "statusUpdate");
+        responseJson.addProperty("MyClientID", Id);
+        responseJson.addProperty("statusChange", status.toString());
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+
+        //send to every player that is online
+        Enumeration<Integer> e = activePlayers.keys();
+        while (e.hasMoreElements())
+        {   
+            int key = e.nextElement();
+            userEventReply.recipients.add(key);
+        }
+
+        return userEventReply;
+        
+        // {
+        //     "responseID": "statusUpdate",
+        //     "MyClientID": 123,
+        //     "statusChange": "IN_QUEUE"
+        // }
+    } 
+    
+    // just a wrapper for ease of use
+    private void changePlayerStatus(Player.STATUS status, int Id)
+    {
+        activePlayers.get(Id).setStatus(status);
+        App.sendMessage(statusUpdate(status, Id));  
+    } 
+
+    public UserEventReply joinQueue(JsonObject jsonObj, int Id)
+    {
 
         JsonObject responseJson = new JsonObject();
         UserEventReply userEventReply=  new UserEventReply();
@@ -197,7 +244,7 @@ public class PageManager {
 
             if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
             }
         }
         else
@@ -227,7 +274,7 @@ public class PageManager {
         // }
         
 
-     }
+    }
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
     {
@@ -290,8 +337,8 @@ public class PageManager {
                 responseJson.addProperty("inQueue", true);
                 if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
                 {
-                    activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
-                    activePlayers.get(opponentClientId).setStatus(Player.STATUS.IN_QUEUE);
+                    changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
+                    changePlayerStatus(Player.STATUS.IN_QUEUE, opponentClientId);
                 }
             }
             else
@@ -360,7 +407,7 @@ public class PageManager {
             responseJson.addProperty("inQueue", true);
             if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
             }
         }
         else
@@ -407,7 +454,7 @@ public class PageManager {
             responseJson.addProperty("inQueue", true);
             if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
             }
         }
         else
@@ -442,10 +489,13 @@ public class PageManager {
 
     public void startGameNotifier(Game g, int UserId)
     {
+        System.out.println("Getting client id from pid " + UserId);
         int clientId = userIDToClientID.get(UserId);
 
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
+
+        userEventReply.replyObj = responseJson;
 
         boolean player1IsBot = false;
         boolean player2IsBot = false;
@@ -524,6 +574,9 @@ public class PageManager {
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(clientId);
 
+        // change status of the player that called this method (the other player will also start the game and change their status)
+        changePlayerStatus(Player.STATUS.IN_GAME, clientId);
+
         //transition
         App.sendMessage(transitionPage(userEventReply.recipients, GameState.GAME_DISPLAY));
 
@@ -569,6 +622,8 @@ public class PageManager {
         activePlayers.put(Id,player);
         userIDToClientID.put(player.getPlayerId(),Id);
         player.setStatus(HumanPlayer.STATUS.ONLINE);
+
+        System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
 
         // 6) if the player is not null, then the username and password are correct
         status.addProperty("responseID", "loginSuccessful");
@@ -656,16 +711,27 @@ public class PageManager {
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
+     //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
      public UserEventReply userLeave(int Id) {
-
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
-            activePlayers.remove(Id); //rm from out list of active players
-            boolean removed = pu.removeFromQueue(player); //rm from pairUp's queue 
+            // Remove from all the maps and stuff I know of
+            activePlayers.remove(Id);
+            pu.removeFromQueue(player);
+            userIDToClientID.remove(Id);
+            clientStates.remove(Id);
+            
+            Game g = player.getGame(); //get game object from that player
+
+            if(g!= null){ //if the player is in a game
+            g.setGameActive(false); //signal the game must end due to player leaving.
+            }
     
-            JsonObject msg = new JsonObject(); //create the json
-            msg.addProperty("action", "playerLeft");
+            // message
+            JsonObject msg = new JsonObject();
+            msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
+            msg.addProperty("ID", player.getPlayerId());
     
             UserEventReply reply = new UserEventReply();
             reply.replyObj = msg;
@@ -675,13 +741,12 @@ public class PageManager {
                 reply.recipients.add(otherId);
             }
     
-            return reply; //return reply to onClose
+            return reply;
         } else {
             return null;
         }
     }
-    
-    
+
     
 
 
@@ -689,7 +754,7 @@ public class PageManager {
    // Transition all given clients to a new game state and notify them
     public UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
-        response.addProperty("action", "updateVisibility");
+        response.addProperty("responseID", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());
 
         UserEventReply reply = new UserEventReply();
@@ -723,6 +788,7 @@ public class PageManager {
         clientStates.remove(clientId);
     }
 
+    //test method for handling case a user suddenly
     public void addDummy(int clientId) {
         // Create a dummy HumanPlayer instance with predefined values
         HumanPlayer dummyPlayer = new HumanPlayer("dummy", "123", clientId, Player.STATUS.ONLINE, 0, 0, 0, 0);

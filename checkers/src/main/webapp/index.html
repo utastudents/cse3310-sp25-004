@@ -7,37 +7,37 @@
     </head>
 	<body>	
     <!--SIGNUP GOES HERE-->
+	<div class="center-container">
     <div id="new_account" class="signup-box" style = "display: none;">
       <form action="signup-info">
       <img src="final_logo.png" alt="CHECKERS LOGO">
-	  <div class="input-icon">
-		<i class="fas fa-user"></i>
-		<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
+	  	<div class="input-icon">
+			<i class="fas fa-user"></i>
+			<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
 		</div>
 
 		<span id="username-error" class = "error-msg" style="display: none;">Username must be at least 4 characters.</span>
 		<span id="username-exists-error" class = "error-msg" style="display: none;">Username already exists.</span>
 		<div class="input-icon">
-		<i class="fas fa-lock"></i>
-		<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
+			<i class="fas fa-lock"></i>
+			<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
 		</div>
 		<span id="password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
 
 		<div class="input-icon">
-		<i class="fas fa-lock"></i>
-		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
+			<i class="fas fa-lock"></i>
+			<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
 		</div>
 		<span id="confirm-password-error" class = "error-msg" style="display: none;">Passwords do not match.</span>
-
+		<span id="database-failure-error" class = "error-msg" style="display: none;">Database failed to retrieve player.</span>
 		<button id="signup-btn" type="submit">SIGN UP</button>
 		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
       </form>
   	</div>
-      
+
 	<div id="login" class="login-box">
         <form action="login-info">
             <img src="final_logo.png" alt="CHECKERS LOGO">
-
             <div class="input-icon">
             <i class="fas fa-user"></i>
             <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
@@ -56,10 +56,16 @@
                 Don't have an account? <a href="#" id="show-signup">Sign up</a>
             </p>
         </form>
-
+		<div>
+			<button id="showDragonBtn"></button>
+			<img id="dragon" class="dragon" src="transparent_dragon.png" style="display:none;">
+		</div>
+		
+		<button id="chaos-button" style="position: absolute; top: 10px; left: 10px; width: 50px; height: 50px; opacity: 0; z-index: 999;">Click</button>
+	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
-    <div id="join_game">
+    <div id="join_game" style = "display: none">
 		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
@@ -89,7 +95,7 @@
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
 			<button>
-				<a id="CURRENT_SESSION_BOT" type="button">
+				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
 					Request Bot
 				</a>
 			</button>
@@ -176,10 +182,10 @@
 				
 			function updateJoinGameList(data) {
 				clearLobbyList(); 
-				const current_player_id = data["MyClientID"];
+				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
-				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;
+				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
 
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
@@ -190,6 +196,14 @@
 						displayJoinGame(player);
 					}
 				});
+			}
+
+			function countPlayersInGame(data_arr){
+				let player_count = 0;
+				for (let i = 0; i < data_arr.length; i++){
+					player_count++;
+				}
+				return player_count;
 			}
 
 			function updateStatus(playerID, status) {
@@ -241,6 +255,16 @@
 				const listEl = document.getElementById("lobby_list_items");
 				listEl.innerHTML = ""; // clear child elements
 			}
+
+			function botChallenged(inQueue) {
+				if (inQueue) {
+					// TODO: Display the queue here
+					alert("In queue! Waiting for game to start...")
+				} else {
+					// TODO: Display the game board
+					alert("Challenge accepted! Too bad no one has displayed the board :/");
+				}
+			}
 		</script>
 	</div>
 </div>
@@ -250,7 +274,7 @@
 
     </div>
 	<div class="summary">
-		<button id="summary-button-display" onclick="summaryShow()">Leaderboard</button>
+		<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>
 
 		<!-- visibility hidden -->
 		<div id="summary-leaderboard" style="display: none;">
@@ -260,18 +284,54 @@
 			<table id="summary-table">
 				<thead>
 					<tr>
-						<th>Rank</th>
-						<th>Player</th>
-						<th>Elo</th>
-						<th>Games Won</th>
-						<th>Games Lost</th>
-						<th>Total Number of Games</th>
-					</tr>
+						<th onclick="sortTable(0)">Rank</th>
+                    	<th onclick="sortTable(1)">Player</th>
+   					 	<th onclick="sortTable(2)">Elo</th>
+   					 	<th onclick="sortTable(3)">Games Won</th>
+   					 	<th onclick="sortTable(4)">Games Lost</th>
+   					 	<th onclick="sortTable(5)">Total Number of Games</th>
+						</tr>
 				</thead>
 				<tbody>
 					<!-- These data will be filled with JSON through a JS script -->
 				</tbody>
 			</table>
+
+			<script>
+				let sortDirections = {};
+			//Toggle function to toggle sort the columns
+				function sortTable(columnIndex) {
+					const table = document.getElementById("summary-table");
+					const tbody = table.tBodies[0];
+					const rows = Array.from(tbody.rows);
+			
+					// Determine if this column is currently sorted descending
+					const descending = sortDirections[columnIndex] = !sortDirections[columnIndex];
+			
+					rows.sort((a, b) => {
+						let valA = a.cells[columnIndex].textContent.trim();
+						let valB = b.cells[columnIndex].textContent.trim();
+			
+						// Try to parse numbers, otherwise compare as strings
+						const numA = parseFloat(valA);
+						const numB = parseFloat(valB);
+						const isNumeric = !isNaN(numA) && !isNaN(numB);
+			
+						if (isNumeric) {
+							return descending ? numB - numA : numA - numB;
+						} else {
+							return descending 
+								? valB.localeCompare(valA)
+								: valA.localeCompare(valB);
+						}
+					});
+			
+					// Re-render sorted rows
+					tbody.innerHTML = '';
+					rows.forEach(row => tbody.appendChild(row));
+				}
+			</script>
+
 		</div>
 			<!--- <p class= "caption"> Top 10 players.</p> -->
 			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
@@ -326,11 +386,12 @@
 	}
 
 	function loginSuccess() {
-		alert(jsonMsg.msg);
 		document.getElementById("login").style.display = "none";
-		document.getElementById("new_user").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
 		document.getElementById("join_game").style.display = "block";
 		//Hide login and signup page, show join_game page
+		document.querySelector('.center-container').style.display = 'none';
+
 	}
 	
 	function newUser(message) {
@@ -338,14 +399,15 @@
 		document.getElementById("password-error").style.display = "none";
 		document.getElementById("username-exists-error").style.display = "none";
 		if(message === "Username already exists"){
-			document.getElementById("username-exists-error").style.display = "block"; //create new span for username already exists
+			document.getElementById("username-exists-error").style.display = "block";
 		}
 		if(message === "Account created successfully!"){
-			alert("Account created");
 			document.getElementById("login").style.display = "none";
-			document.getElementById("new_user").style.display = "none";
+			document.getElementById("new_account").style.display = "none";
 			document.getElementById("join_game").style.display = "block";
 			//Hide signup and login page, show join_game page
+			document.querySelector('.center-container').style.display = 'none';
+
 		}
 	}
 </script>

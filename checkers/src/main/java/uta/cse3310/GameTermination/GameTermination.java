@@ -5,46 +5,54 @@ import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
 
 public class GameTermination {
+//<<<<<<< HEAD
+        // Tells game play game is over. 
+/*
+        public void checkGameEnd(GameState gameState) {
+                // Logic to determine if the game has ended
+                if (gameHasEnded) {
+                    GameResult gameResult = new GameResult();
+                    gameResult.generateLeaderboard();
+                }
+            } */
         // Tells game play game is over.
+//>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
         public Game endGame() {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;
-                // endGame method basic functionality; need to fix errors before committing
-                /*
-                        // Tells game play game is over.
-                        public Game endGame(Game currentGame)
-                        {
-                                gameState state = new gameState();
-                                gameResult result = new gameResult();
+        // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
+                // Also need to tell GameManager that a parameter was added to this method. 
+        /*public Game endGame(Game currentGame) {
+                gameState state = new gameState();
+                int winnerID = -1; // -1 for draw
 
-                                // Check if player 1 is winning player.
-                                if (state.hasPlayerWon(currentGame.Board, currentGame.player1))
-                                {
-                                        currentGame.playerID = currentGame.player1;
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
+                Board myBoard = new Board(); 
+                // Check if player 1 has won
+                if (state.hasPlayerWon(myBoard, currentGame.getPlayer1().getPlayerId())) {
+                        winnerID = currentGame.getPlayer1().getPlayerId(); // lowercase 'd'
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
 
-                                // Check if player 2 is winning player.
-                                if (state.hasPlayerWon(currentGame.Board, currentGame.player2))
-                                {
-                                        currentGame.playerID = currentGame.player2;
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
+                // Check if player 2 has won
+                if (state.hasPlayerWon(myBoard, currentGame.getPlayer2().getPlayerId())) {
+                        winnerID = currentGame.getPlayer2().getPlayerId(); // lowercase 'd'
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
 
-                                // Check if draw
-                                if (state.gameStateDraw(currentGame.Board, currentGame.player2))
-                                {
-                                        currentGame.playerID = -1; // -1 denotes a draw
-                                        saveResults(currentGame);
-                                        return currentGame;
-                                }
+                // Check for draw
+                if (state.gameStateDraw(myBoard, currentGame)) {
+                        winnerID = -1;
+                        currentGame.setGameActive(false);
+                        saveResults(currentGame, winnerID);
+                        return currentGame;
+                }
 
-                                // Game still ongoing
-                                return null;
-                          }
-                */
+                return null;
+        }*/
         }
 /*
         public HumanPlayer[] saveResults(Game game){

@@ -86,18 +86,21 @@ public class App extends WebSocketServer {
 
   public App(int port) {
     super(new InetSocketAddress(port));
+    pmInstance = PM;
   }
 
   public App(InetSocketAddress address) {
     super(address);
+    pmInstance = PM;
   }
 
   public App(int port, Draft_6455 draft) {
     super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
+    pmInstance = PM;
   }
 
   @Override
-public void onOpen(WebSocket conn, ClientHandshake handshake) {
+  public void onOpen(WebSocket conn, ClientHandshake handshake) {
     System.out.println("A new connection has been opened");
     clientId = clientId + 1;
     System.out.println("The client id is " + clientId);
@@ -106,11 +109,11 @@ public void onOpen(WebSocket conn, ClientHandshake handshake) {
     con2id.put(conn, clientId);
     id2con.put(clientId, conn);
 
-    // Add a dummy player for client 1 or 2
-    if (clientId == 1 || clientId == 2) {
-        PM.addDummy(clientId);
-        System.out.println("Added dummy player to activePlayers: dummy" + clientId);
-    }
+    // Add a dummy player for client 1 or 2 (for testing purposes only)
+    // if (clientId == 1 || clientId == 2) {
+    //     PM.addDummy(clientId);
+    //     System.out.println("Added dummy player to activePlayers: dummy" + clientId);
+    // }
 
     // Send the clientId as JSON back to the frontend
     id ID = new id();
@@ -119,43 +122,38 @@ public void onOpen(WebSocket conn, ClientHandshake handshake) {
     String jsonString = gson.toJson(ID);
     System.out.println("Sending " + jsonString);
     conn.send(jsonString);
-}
+  }
 
 
 
-@Override
-public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-    System.out.println(conn + " has closed");
 
-    Integer id = con2id.remove(conn);
-    if (id == null) {
-        System.out.println("No associated player found for this connection.");
-        return;
-    }
+  @Override
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+      System.out.println(conn + " has closed");
 
-    id2con.remove(id);
+      Integer id = con2id.remove(conn);
+      if (id == null) {
+          System.out.println("No associated player found for this connection.");
+          return;
+      }
 
-    UserEventReply reply = PM.userLeave(id);
-    if (reply == null) {
-        System.out.println("No user event reply for player " + id);
-    } else {
-        for (Integer recipientId : reply.recipients) {
-            WebSocket recipient = id2con.get(recipientId);
-            if (recipient != null) {
-                recipient.send(reply.replyObj.toString());
-                System.out.println("Notified player " + recipientId + " that player " + id + " has left.");
-            }
-        }
-    }
+      id2con.remove(id);
 
-    System.out.println("Removed player " + id);
-}
+      UserEventReply reply = PM.userLeave(id);
+      if (reply == null) {
+          System.out.println("No user event reply for player " + id);
+      } else {
+          for (Integer recipientId : reply.recipients) {
+              WebSocket recipient = id2con.get(recipientId);
+              if (recipient != null) {
+                  recipient.send(reply.replyObj.toString());
+                  System.out.println("Notified player " + recipientId + " that player " + id + " has left.");
+              }
+          }
+      }
 
-
-  
- 
-
-  
+      System.out.println("Removed player " + id);
+  }
 
   public static void sendMessage(UserEventReply Reply)
   {
@@ -193,18 +191,18 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
     //checj if actiion exist in the Json
     if (!jsonObj.has("action")) {
-    System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
-    return;
-}
-    // String action = jsonObj.get("action").getAsString();
-      String action = null;
-
-  if (jsonObj.has("action")) {
-      action = jsonObj.get("action").getAsString();
-  } else {
-      System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+      System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
       return;
-  }
+    }
+    String action = jsonObj.get("action").getAsString();
+    // String action = null;
+
+    // if (jsonObj.has("action")) {
+    //     action = jsonObj.get("action").getAsString();
+    // } else {
+    //     System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+    //     return;
+    // }
 
     //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
     UserEventReply Reply = null;
@@ -244,9 +242,6 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         break;
       case "summaryData":
         Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
-        break;
-      case "userLeft":
-        Reply = PM.userLeave(Id);
         break;
       default:
         System.out.println("Unknown action: " + action);
@@ -332,9 +327,6 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     A.start();
     System.out.println("websocket Server started on port: " + port);
 
-    PageManager pm;
-    pm = new PageManager();
-    pmInstance = pm;
     System.out.println("Hello World!");
   }
 }
