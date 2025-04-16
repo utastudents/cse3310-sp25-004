@@ -662,6 +662,7 @@ public class PageManager {
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
+     //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
      public UserEventReply userLeave(int Id) {
 
         HumanPlayer player = activePlayers.get(Id);
@@ -729,6 +730,7 @@ public class PageManager {
         clientStates.remove(clientId);
     }
 
+    //test method for handling case a user suddenly
     public void addDummy(int clientId) {
         // Create a dummy HumanPlayer instance with predefined values
         HumanPlayer dummyPlayer = new HumanPlayer("dummy", "123", clientId, Player.STATUS.ONLINE, 0, 0, 0, 0);

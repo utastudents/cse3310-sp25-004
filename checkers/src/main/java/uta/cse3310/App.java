@@ -106,11 +106,11 @@ public void onOpen(WebSocket conn, ClientHandshake handshake) {
     con2id.put(conn, clientId);
     id2con.put(clientId, conn);
 
-    // Add a dummy player for client 1 or 2
-    if (clientId == 1 || clientId == 2) {
-        PM.addDummy(clientId);
-        System.out.println("Added dummy player to activePlayers: dummy" + clientId);
-    }
+    // Add a dummy player for client 1 or 2 (for testing purposes only)
+    // if (clientId == 1 || clientId == 2) {
+    //     PM.addDummy(clientId);
+    //     System.out.println("Added dummy player to activePlayers: dummy" + clientId);
+    // }
 
     // Send the clientId as JSON back to the frontend
     id ID = new id();
@@ -120,6 +120,7 @@ public void onOpen(WebSocket conn, ClientHandshake handshake) {
     System.out.println("Sending " + jsonString);
     conn.send(jsonString);
 }
+
 
 
 

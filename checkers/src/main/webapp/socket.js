@@ -51,6 +51,13 @@ connection.onmessage = function (evt) {
         return;
     }
     
+    //message from onClose that a player has abrubtly left the game
+    if (jsonMsg.action === "playerLeft") {
+        console.log("Player left:", jsonMsg.username);
+        return;
+    }
+
+    
     if (!responseID) {
         //check namespace
         const nameKey = Object.keys(jsonMsg);
