@@ -103,14 +103,13 @@ public class GamePlayTest{
         //assert that the piece has been removed from the old spot
         //next we want to assert that the new position does not equal null
 
-        assertEquals(pieceTest1, testBoard.checkerBoard[4][3]);
+        assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
         //if assert is successful, the checker has moved to the new position
-        //this is an interesting bug, update position does piece[y][x] instead of piece[x][y] like how we initialized it
 
         var jumpDest = new Cord(3, 3);
         
         testBoard.removeJumpedChecker( testBoard.checkerBoard[2][5], jumpDest);
-        //assertEquals(null, testBoard.checkerBoard[2][4]);
+        //assertEquals(null, testBoard.checkerBoard[3][4]);
         //test if the spot is null? There is no exact return type to test
         
        

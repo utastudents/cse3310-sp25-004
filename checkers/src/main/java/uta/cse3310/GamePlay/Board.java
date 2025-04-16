@@ -296,7 +296,7 @@ public class Board
 		int newX = dest.getX();
 		int newY = dest.getY();
 		piece.setCord(newX, newY);
-		checkerBoard[newY][newX] = piece;
+		checkerBoard[newX][newY] = piece;
 	}
 	
 	/* 
