@@ -76,6 +76,8 @@ console.log("Login Data sent: ", loginData)
 }
 
 
+
+
 const chaosButton = document.getElementById("chaos-button");
 
 const imageUrls = [
@@ -108,3 +110,6 @@ const observer = new MutationObserver(() => {
 });
 
 observer.observe(loginScreen, { attributes: true, attributeFilter: ['style'] });
+document.getElementById("showDragonBtn").onclick = function() {
+    document.getElementById("dragon").style.display = "block";
+}
