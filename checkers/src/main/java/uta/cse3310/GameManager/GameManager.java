@@ -14,6 +14,7 @@ import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.PageManager.GameMove;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameManager {
     private static final int MAX_GAMES = 10;
@@ -29,6 +30,11 @@ public class GameManager {
         games = new ArrayList<>(MAX_GAMES);
 
         initializeGames();
+    }
+
+    // Used for GameTest since games is private
+    public List<Game> getGames() {
+        return games;
     }
 
     // Initialize first 10 games, gameID's are the game's index number in ArrayList
@@ -70,8 +76,8 @@ public class GameManager {
     }
 
     // Removes game once GameTermination concludes game is over
-    public void removeGame() {
-        Game gameToRemove = gt.endGame();
+    public void removeGame(Game currentGame) {
+        Game gameToRemove = gt.endGame(currentGame);
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
             if (g != null && g.getGameID() == gameToRemove.getGameID()) {
