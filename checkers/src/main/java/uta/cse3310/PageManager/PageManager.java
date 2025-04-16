@@ -662,16 +662,17 @@ public class PageManager {
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
+     //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
      public UserEventReply userLeave(int Id) {
-
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
-            activePlayers.remove(Id); //rm from out list of active players
-            boolean removed = pu.removeFromQueue(player); //rm from pairUp's queue 
+            activePlayers.remove(Id);
+            boolean removed = pu.removeFromQueue(player);
     
-            JsonObject msg = new JsonObject(); //create the json
-            msg.addProperty("action", "playerLeft");
+            JsonObject msg = new JsonObject();
+            msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
+            msg.addProperty("ID", player.getPlayerId());
     
             UserEventReply reply = new UserEventReply();
             reply.replyObj = msg;
@@ -681,11 +682,12 @@ public class PageManager {
                 reply.recipients.add(otherId);
             }
     
-            return reply; //return reply to onClose
+            return reply;
         } else {
             return null;
         }
     }
+    
     
     
     
@@ -729,6 +731,7 @@ public class PageManager {
         clientStates.remove(clientId);
     }
 
+    //test method for handling case a user suddenly
     public void addDummy(int clientId) {
         // Create a dummy HumanPlayer instance with predefined values
         HumanPlayer dummyPlayer = new HumanPlayer("dummy", "123", clientId, Player.STATUS.ONLINE, 0, 0, 0, 0);

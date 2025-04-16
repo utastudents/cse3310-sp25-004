@@ -74,3 +74,48 @@ const loginData = { //Data into JSON object
 sendMessage(loginData)
 console.log("Login Data sent: ", loginData)		
 }
+
+
+
+
+const chaosButton = document.getElementById("chaos-button");
+
+const imageUrls = [
+    "login_signup/blue_guy.png", 
+    "login_signup/freddy.png",
+    "login_signup/platy.png"
+
+];
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+chaosButton.addEventListener("click", () => {
+    const img = document.createElement("img");
+    img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    img.style.position = "absolute";
+    img.style.width = "80px";
+    img.style.height = "80px";
+    img.style.top = `${getRandomInt(0, window.innerHeight - 80)}px`;
+    img.style.left = `${getRandomInt(0, window.innerWidth - 80)}px`;
+    img.style.zIndex = 998;
+    document.body.appendChild(img);
+});
+
+const loginScreen = document.getElementById("login");
+const observer = new MutationObserver(() => {
+    const displayStyle = window.getComputedStyle(loginScreen).display;
+    chaosButton.style.display = displayStyle === "none" ? "none" : "block";
+});
+
+observer.observe(loginScreen, { attributes: true, attributeFilter: ['style'] });
+document.getElementById("showDragonBtn").onclick = function() {
+    var dragon = document.getElementById("dragon");
+    if(dragon.style.display === "none" || dragon.style.display === ""){
+        dragon.style.display = "block";
+    }
+    else {
+        dragon.style.display = "none";
+    }
+}

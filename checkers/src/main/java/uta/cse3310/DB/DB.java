@@ -99,7 +99,7 @@ public class DB
     /* verifies player login & returns if valid */
     public HumanPlayer getPlayer(String username, String password)
      {
-         String sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         String sql = "SELECT * FROM players WHERE username = ?"; //Hi, we removed "AND password = ?" so that we could simulate creating and logging in to accounts.
          try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();

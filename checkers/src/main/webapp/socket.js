@@ -51,6 +51,7 @@ connection.onmessage = function (evt) {
         return;
     }
     
+    
     if (!responseID) {
         //check namespace
         const nameKey = Object.keys(jsonMsg);
@@ -83,7 +84,7 @@ connection.onmessage = function (evt) {
             login(jsonMsg.msg);
             break;
         }
-        case "loginSuccess": {
+        case "loginSuccessful": {
             loginSuccess();
             break;
         }
@@ -100,16 +101,21 @@ connection.onmessage = function (evt) {
             loadData(jsonMsg.top10);
             break;
         }
+        //app.Java Responses (Signals a user left)
+        case "playerLeft": {
+            console.log("Player left:", jsonMsg.username);
+            break;
+        }
         default:{
             console.log("Received unexpected responseID! Got: \n"+responseID);
         }
     }
 }
 
-document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
+/*document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
 document.getElementById("game_display").style.display = "none";
 document.getElementById("new_account").style.display = "none";
-document.getElementById("login").style.display = "block"; 
+document.getElementById("login").style.display = "block"; */
 
 function handleJoinGame(data) { //function to update when join team
     console.log("Join team response received", data);
@@ -117,6 +123,6 @@ function handleJoinGame(data) { //function to update when join team
     document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
     document.getElementById("game_display").style.display = "none";
     document.getElementById("new_account").style.display = "none";
-    document.getElementById("login").style.display = "block"; 
+    document.getElementById("login").style.display = "none"; 
 }
 
