@@ -7,11 +7,11 @@ public class GamePlayTest{
 
 	@Test
 	void moveForwardCheckTest() {
-		// var checker = new Checker(new Cord(4, 1), Color.BLACK);
-		// var cord = new Cord(5, 2);
-		// var board = new Board();
+		var checker = new Checker(new Cord(3, 2), Color.BLACK);
+		var cord = new Cord(4, 3);
+		var board = new Board();
 		
-		// assertEquals(true, board.moveForwardCheck(checker, cord));
+		assertEquals(true, board.moveForwardCheck(checker, cord));
 	}
 
     // This will test if piece becomea a king piece once it reaches the end
