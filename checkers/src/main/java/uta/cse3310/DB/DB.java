@@ -215,8 +215,8 @@ public class DB
 
             int k = 32; //Elo constant (can be adjusted)
 
-            int newLoserElo = (int) (loserElo + k * (1 - (1.0 / (1.0 + Math.pow(10, (winnerElo - loserElo) / 400.0)))));
-            int newWinnerElo = (int) (winnerElo + k * (0 - (1.0 / (1.0 + Math.pow(10, (loserElo - winnerElo) / 400.0)))));
+            int newLoserElo =  (int) (loserElo  + k * (0 - (1.0 / (1.0 + Math.pow(10, (winnerElo - loserElo ) / 400.0)))));
+            int newWinnerElo = (int) (winnerElo + k * (1 - (1.0 / (1.0 + Math.pow(10, (loserElo  - winnerElo) / 400.0)))));
     
             updatePlayerStats(winnerId, winnerWins, rs1.getInt("losses"), newWinnerElo, winnerGames);
     
