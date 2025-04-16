@@ -666,9 +666,13 @@ public class PageManager {
      public UserEventReply userLeave(int Id) {
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
+            // Remove from all the maps and stuff I know of
             activePlayers.remove(Id);
-            boolean removed = pu.removeFromQueue(player);
+            pu.removeFromQueue(player);
+            userIDToClientID.remove(Id);
+            clientStates.remove(Id);
     
+            // message
             JsonObject msg = new JsonObject();
             msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
@@ -687,6 +691,7 @@ public class PageManager {
             return null;
         }
     }
+    
     
     
     

@@ -246,9 +246,6 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
       case "summaryData":
         Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
         break;
-      case "userLeft":
-        Reply = PM.userLeave(Id);
-        break;
       default:
         System.out.println("Unknown action: " + action);
         break;
