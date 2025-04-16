@@ -162,7 +162,7 @@ public class PageManagerTest
 
         JsonObject response = reply.replyObj;
 
-        assertEquals("updateVisibility", response.get("action").getAsString());
+        assertEquals("updateVisibility", response.get("responseID").getAsString());
         assertEquals("summary", response.get("visible").getAsString());
         assertTrue(pm.clientStates.get(1) == GameState.SUMMARY, "status is not in queue");
 
