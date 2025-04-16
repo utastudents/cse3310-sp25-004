@@ -213,11 +213,10 @@ public class DB
             int winnerGames = rs1.getInt("games_played") + 1;  // Winner's total games incremented by 1
             int loserGames = rs2.getInt("games_played") + 1;  // Loser's total games incremented by 1
 
-            int eloChange = 8; //arbitrary elo value right now
-    
-            //calculate the new elo value for both the winner and the loser
-            int newWinnerElo = winnerElo + eloChange;  //add 8 elo to winner
-            int newLoserElo = Math.max(100, loserElo - eloChange);  //subtracts 8 elo from the loser
+            int k = 32; //Elo constant (can be adjusted)
+
+            int newLoserElo = (int) (loserElo + k * (1 - (1.0 / (1.0 + Math.pow(10, (winnerElo - loserElo) / 400.0)))));
+            int newWinnerElo = (int) (winnerElo + k * (0 - (1.0 / (1.0 + Math.pow(10, (loserElo - winnerElo) / 400.0)))));
     
             updatePlayerStats(winnerId, winnerWins, rs1.getInt("losses"), newWinnerElo, winnerGames);
     
