@@ -38,7 +38,6 @@
 	<div id="login" class="login-box">
         <form action="login-info">
             <img src="final_logo.png" alt="CHECKERS LOGO">
-
             <div class="input-icon">
             <i class="fas fa-user"></i>
             <input type="text" id="login-username" name="usr" placeholder="USERNAME" required>
@@ -57,6 +56,10 @@
                 Don't have an account? <a href="#" id="show-signup">Sign up</a>
             </p>
         </form>
+		<div>
+			<button id="showDragonBtn">Surprise?</button>
+			<img id="dragon" class="dragon" src="transparent_dragon.png" style="display:none;">
+		</div>
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
@@ -363,7 +366,7 @@
 
 	function loginSuccess() {
 		document.getElementById("login").style.display = "none";
-		document.getElementById("new_user").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
 		document.getElementById("join_game").style.display = "block";
 		//Hide login and signup page, show join_game page
 	}
@@ -377,7 +380,7 @@
 		}
 		if(message === "Account created successfully!"){
 			document.getElementById("login").style.display = "none";
-			document.getElementById("new_user").style.display = "none";
+			document.getElementById("new_account").style.display = "none";
 			document.getElementById("join_game").style.display = "block";
 			//Hide signup and login page, show join_game page
 		}

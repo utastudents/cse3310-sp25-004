@@ -74,3 +74,7 @@ const loginData = { //Data into JSON object
 sendMessage(loginData)
 console.log("Login Data sent: ", loginData)		
 }
+
+document.getElementById("showDragonBtn").onclick = function() {
+    document.getElementById("dragon").style.display = "block";
+}

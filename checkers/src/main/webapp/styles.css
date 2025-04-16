@@ -173,6 +173,18 @@ input::placeholder {
 
 }
 
+#showDragonBtn {
+    background-color: #39393959;
+    color: white;
+    border: none;
+    font-size: 5px;
+    width: 50px;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 15px;
+}
+
 .login-box button:hover {
     color: rgb(255, 255, 255);
     background: #000;
@@ -379,6 +391,15 @@ button a {
 .scrollable-table table {
 	width: 100%;
 	border-collapse: collapse;
+}
+
+.login-box img.dragon {
+    position: absolute;
+    width: 400px;
+    height: auto;
+    top: -20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #summary-table tbody tr:nth-child(1) {
