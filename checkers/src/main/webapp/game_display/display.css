@@ -1,23 +1,10 @@
-body {
-  background-image: url("Navy Yellow Bold Online Gaming Pro League Flyer (1).png");
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  margin: 0;
-  padding: 0;
+#game_display {
   min-height: 100vh; 
   display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: center; 
 }
-
-#title {
-    text-align: center;
-    /*color: #333;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;*/
-}
-
 
 #live-box {
   height: 50vh; /* tall enough for logs */

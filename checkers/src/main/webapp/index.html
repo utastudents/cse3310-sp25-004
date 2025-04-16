@@ -57,7 +57,7 @@
             </p>
         </form>
 		<div>
-			<button id="showDragonBtn">Surprise?</button>
+			<button id="showDragonBtn"></button>
 			<img id="dragon" class="dragon" src="transparent_dragon.png" style="display:none;">
 		</div>
 		
@@ -65,6 +65,7 @@
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
+
     <div id="join_game" style = "display: none">
 		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
@@ -95,7 +96,7 @@
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
 			<button>
-				<a id="CURRENT_SESSION_BOT" type="button">
+				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
 					Request Bot
 				</a>
 			</button>
@@ -181,10 +182,10 @@
 				// end
 			function updateJoinGameList(data) {
 				clearLobbyList(); 
-				const current_player_id = data["MyClientID"];
+				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
-				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;
+				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
 
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
@@ -195,6 +196,14 @@
 						displayJoinGame(player);
 					}
 				});
+			}
+
+			function countPlayersInGame(data_arr){
+				let player_count = 0;
+				for (let i = 0; i < data_arr.length; i++){
+					player_count++;
+				}
+				return player_count;
 			}
 
 			function updateStatus(playerID, status) {
@@ -246,13 +255,38 @@
 				const listEl = document.getElementById("lobby_list_items");
 				listEl.innerHTML = ""; // clear child elements
 			}
+
+			function botChallenged(inQueue) {
+				if (inQueue) {
+					// TODO: Display the queue here
+					alert("In queue! Waiting for game to start...")
+				} else {
+					// TODO: Display the game board
+					alert("Challenge accepted! Too bad no one has displayed the board :/");
+				}
+			}
 		</script>
 	</div>
 </div>
 	</body>
     
     <div id="game_display">
-
+		<div id="game-container">
+			<div id="board-container">
+			  <table id="game-board"></table>
+		  </div>
+			<div id="players-table">
+			  <div id="players-container">
+				<p id="players">Player 1 vs. Player 2</p>
+			  </div>
+			  <div id="live-box"></div>
+			  <div id="buttons-cont">
+				<button class="button" id="quit">Quit</button>
+				<button class="button" id="draw-request">Draw</button>
+			  </div>
+			</div>
+		  </div>
+		  <script src="./game_display/script.js"></script>
     </div>
 	<div class="summary">
 		<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>

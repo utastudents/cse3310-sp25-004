@@ -174,15 +174,15 @@ input::placeholder {
 }
 
 #showDragonBtn {
-    background-color: #39393959;
-    color: white;
+    background: transparent;
+    color: transparent;
     border: none;
-    font-size: 5px;
     width: 50px;
     padding: 6px;
     border-radius: 4px;
     cursor: pointer;
     margin: 15px;
+    box-shadow: none;
 }
 
 .login-box button:hover {

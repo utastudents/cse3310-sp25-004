@@ -5,7 +5,18 @@ import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
 
 public class GameTermination {
+//<<<<<<< HEAD
+        // Tells game play game is over. 
+/*
+        public void checkGameEnd(GameState gameState) {
+                // Logic to determine if the game has ended
+                if (gameHasEnded) {
+                    GameResult gameResult = new GameResult();
+                    gameResult.generateLeaderboard();
+                }
+            } */
         // Tells game play game is over.
+//>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
         public Game endGame() {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
                 return game;

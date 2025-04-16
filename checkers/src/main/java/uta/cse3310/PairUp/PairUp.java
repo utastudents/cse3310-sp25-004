@@ -2,6 +2,8 @@ package uta.cse3310.PairUp;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import uta.cse3310.Bot.Bot;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 
@@ -149,7 +151,7 @@ public class PairUp {
      * @return - True if the player was removed from the queue
      */
     public boolean removeFromQueue(Player p) {
-        if (p instanceof HumanPlayer) {
+        if (!(p instanceof Bot)) {
             //Find player p in the queue
             for (int c=0; c<playerQueue.size(); c++) {
                 Challenge challenge = playerQueue.get(c);
