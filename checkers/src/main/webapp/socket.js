@@ -79,7 +79,13 @@ connection.onmessage = function (evt) {
     
     switch (responseID )
     {
-    // Account Responses - Login Team
+        // Page Manager
+        case "updateVisibility": {
+            alert("Switch to page " + jsonMsg.visible);
+            break;
+        }
+
+        // Account Responses - Login Team
         case "login": {
             login(jsonMsg.msg);
             break;

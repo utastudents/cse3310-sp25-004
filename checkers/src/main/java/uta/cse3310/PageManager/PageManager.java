@@ -754,7 +754,7 @@ public class PageManager {
    // Transition all given clients to a new game state and notify them
     public UserEventReply transitionPage(List<Integer> clientIds, GameState newState) {
         JsonObject response = new JsonObject();
-        response.addProperty("action", "updateVisibility");
+        response.addProperty("responseID", "updateVisibility");
         response.addProperty("visible", newState.name().toLowerCase());
 
         UserEventReply reply = new UserEventReply();
