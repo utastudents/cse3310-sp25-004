@@ -52,16 +52,33 @@ connection.onmessage = function (evt) {
     }
     
     if (!responseID) {
-        console.error("Received unexpected responseID! Got:", jsonMsg);
-        return;
+        //check namespace
+        const nameKey = Object.keys(jsonMsg);
+        if(nameKey.length > 0){
+            const namespace = nameKey[0];
+            const nestedJson = jsonMsg[namespace];
+
+            if(nestedJson && nestedJson.responseID){
+                responseID = nestedJson.responseID;
+
+                console.log("Found nested namespace from: ", namespace);
+                console.log("ResponseID: ", responseID);
+
+                jsonMsg = nestedJson;
+            } else{
+                console.error("Received unexpected responseID! Got:", jsonMsg);
+                return;
+            }
+        }
     }
+
     //convert data to JSON
     //Extracts the response identifier from the response, so we can determine whose code it belongs to
     //See ./INTERFACES/client-server-docs.md for details
     
     switch (responseID )
     {
-        // Account Responses - Login Team
+    // Account Responses - Login Team
         case "login": {
             login(jsonMsg.msg);
             break;
@@ -73,9 +90,7 @@ connection.onmessage = function (evt) {
         case "new_user": {
             newUser(jsonMsg.msg);
             break;
-        }
-        
-        
+        }  
         // Game Responses
 
         // Summary Responses

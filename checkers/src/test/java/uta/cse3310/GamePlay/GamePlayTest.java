@@ -84,6 +84,16 @@ public class GamePlayTest{
 
     @Test
     void removeJumpedCheckerTest() {
+        var testBoard = new Board();
+
+        //manually set new board positions somehow
+
+        //testBoard.updatePosition( testBoard.checkerBoard[2][2], new Cord(x:2, y:4) );
+        //change the position of a checker to a position where it can eb jumped
+        
+        //assertEquals(testBoard.checkerBoard[2][4]==null, testBoard.removeJumpedChecker( testBoard.checkBoard[1][5], new Cord(x:3, y:3) ))
+        //test if the spot is null? There is no exact return type to test
+        
 
     }
 
