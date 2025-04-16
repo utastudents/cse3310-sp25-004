@@ -184,7 +184,7 @@
 				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
-				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;
+				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
 
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
@@ -195,6 +195,14 @@
 						displayJoinGame(player);
 					}
 				});
+			}
+
+			function countPlayersInGame(data_arr){
+				let player_count = 0;
+				for (let i = 0; i < data_arr.length; i++){
+					player_count++;
+				}
+				return player_count;
 			}
 
 			function updateStatus(playerID, status) {
