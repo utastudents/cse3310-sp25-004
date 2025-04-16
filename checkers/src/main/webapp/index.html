@@ -57,6 +57,8 @@
                 Don't have an account? <a href="#" id="show-signup">Sign up</a>
             </p>
         </form>
+		
+		<button id="chaos-button" style="position: absolute; top: 10px; left: 10px; width: 50px; height: 50px; opacity: 0; z-index: 999;">Click</button>
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
@@ -363,7 +365,7 @@
 
 	function loginSuccess() {
 		document.getElementById("login").style.display = "none";
-		document.getElementById("new_user").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
 		document.getElementById("join_game").style.display = "block";
 		//Hide login and signup page, show join_game page
 	}
@@ -377,7 +379,7 @@
 		}
 		if(message === "Account created successfully!"){
 			document.getElementById("login").style.display = "none";
-			document.getElementById("new_user").style.display = "none";
+			document.getElementById("new_account").style.display = "none";
 			document.getElementById("join_game").style.display = "block";
 			//Hide signup and login page, show join_game page
 		}

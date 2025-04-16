@@ -124,6 +124,6 @@ function handleJoinGame(data) { //function to update when join team
     document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
     document.getElementById("game_display").style.display = "none";
     document.getElementById("new_account").style.display = "none";
-    document.getElementById("login").style.display = "block"; 
+    document.getElementById("login").style.display = "none"; 
 }
 
