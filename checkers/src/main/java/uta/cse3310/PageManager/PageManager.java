@@ -495,6 +495,8 @@ public class PageManager {
         UserEventReply userEventReply= new UserEventReply();
         JsonObject responseJson = new JsonObject();
 
+        userEventReply.replyObj = responseJson;
+
         boolean player1IsBot = false;
         boolean player2IsBot = false;
 
