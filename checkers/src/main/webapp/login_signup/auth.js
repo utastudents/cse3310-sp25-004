@@ -83,17 +83,20 @@ const chaosButton = document.getElementById("chaos-button");
 const imageUrls = [
     "login_signup/blue_guy.png", 
     "login_signup/freddy.png",
-    "login_signup/platy.png"
+    "login_signup/platy.png",
+    "login_signup/cj.png"
 
 ];
+const sound = new Audio("login_signup/chicken-jockey.mp3");
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 chaosButton.addEventListener("click", () => {
+    const randomImage = imageUrls[Math.floor(Math.random() * imageUrls.length)];
     const img = document.createElement("img");
-    img.src = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    img.src = randomImage
     img.style.position = "absolute";
     img.style.width = "80px";
     img.style.height = "80px";
@@ -101,6 +104,9 @@ chaosButton.addEventListener("click", () => {
     img.style.left = `${getRandomInt(0, window.innerWidth - 80)}px`;
     img.style.zIndex = 998;
     document.body.appendChild(img);
+    if (randomImage.endsWith("cj.png")) {
+        sound.play();
+    }
 });
 
 const loginScreen = document.getElementById("login");
