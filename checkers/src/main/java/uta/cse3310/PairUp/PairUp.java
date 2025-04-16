@@ -146,8 +146,15 @@ public class PairUp {
      * Called by GameManager when a game is ended and the board is clear.
      * @return - false if there was an error, true otherwise
      */
-    public boolean boardAvailable() {return false;}
-
+    public boolean boardAvailable() {
+        try {
+            pairUp(); // Attempt to make a new match
+            return true;
+        } catch (Exception e) { //excpetion thrown when match could not be made by pairUp()
+            return false;
+        }
+    }
+    
     /**
      * Returns the number of players in the queue.
      * For Join Game page to display to users.
