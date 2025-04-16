@@ -92,7 +92,7 @@ public class GameTest {
     void testCreateGame() {
         // Making game manager object
         GameManager manager = new GameManager();
-        manager.initializeGames();
+        //manager.initializeGames(); //Moved initialization into constructor
 
         // Player objects
         Player p1 = new MockPlayer(0);
@@ -109,7 +109,7 @@ public class GameTest {
     void testRemoveGame(){
         // Making game manager object
         GameManager manager = new GameManager();
-        manager.initializeGames();
+        //manager.initializeGames(); //Moved initialization into constructor
 
         manager.pu = new PairUp(manager);
 
