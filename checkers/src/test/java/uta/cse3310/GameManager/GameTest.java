@@ -109,7 +109,6 @@ public class GameTest {
     void testRemoveGame(){
         // Making game manager object
         GameManager manager = new GameManager();
-        //manager.initializeGames(); //Moved initialization into constructor
 
         manager.pu = new PairUp(manager);
 
@@ -124,7 +123,14 @@ public class GameTest {
         assertTrue("Game was created successfully!", result); //Causes an error
         assertEquals(9, manager.getNumOfAvailableGames(), "Game is now active after creation!");
 
-        manager.removeGame();
+        Game currentGame = null;
+        for (Game g : manager.getGames()) {
+            if (g != null && g.getPlayer1() == p1 && g.getPlayer2() == p2) {
+                currentGame = g;
+                break;
+            }
+        }
+        manager.removeGame(currentGame);
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
     }
