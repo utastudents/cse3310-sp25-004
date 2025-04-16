@@ -109,7 +109,7 @@ connection.onmessage = function (evt) {
             loadData(jsonMsg.top10);
             break;
         }
-        //app.Java Responses (Signals a user left)
+        //Signals that a user has abrubtly left
         case "playerLeft": {
             console.log("Player left:", jsonMsg.username);
             break;
