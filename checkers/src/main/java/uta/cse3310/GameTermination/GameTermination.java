@@ -23,6 +23,7 @@ public class GameTermination {
         // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
                 // Also need to tell GameManager that a parameter was added to this method. 
         public Game endGame(Game currentGame) {
+                /*
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
 
@@ -49,7 +50,7 @@ public class GameTermination {
                         currentGame.setGameActive(false);
                         saveResults(currentGame, winnerID);
                         return currentGame;
-                }
+                } */
 
                 return null;
         }
@@ -119,7 +120,7 @@ public class GameTermination {
                 return updatedStats;
         }
 */
-        }
+       // }
 
 
 
