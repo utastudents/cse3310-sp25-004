@@ -86,8 +86,16 @@ connection.onmessage = function (evt) {
         }
         case "loginSuccessful": {
             loginSuccess();
+            sendMessage({action:"getActivePlayers"});
             break;
         }
+
+        case "join_game":{
+            console.log("Join Game Received: ", jsonMsg);
+            updateJoinGameList(jsonMsg);
+            break;
+        }
+
         case "new_user": {
             newUser(jsonMsg.msg);
             break;
@@ -101,7 +109,7 @@ connection.onmessage = function (evt) {
             loadData(jsonMsg.top10);
             break;
         }
-        //app.Java Responses (Signals a user left)
+        //Signals that a user has abrubtly left
         case "playerLeft": {
             console.log("Player left:", jsonMsg.username);
             break;

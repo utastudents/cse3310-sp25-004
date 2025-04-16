@@ -128,12 +128,14 @@ public class PageManager {
         // to have an array of active players
         JsonArray playersArray = new JsonArray();
 
+        userEventReply.recipients = new ArrayList<>();
+        
         // loop through active players and add info onto the players array
         while (e.hasMoreElements())
         {
             JsonObject playerData = new JsonObject();
             int key = e.nextElement();
-
+            
             HumanPlayer player = activePlayers.get(key);
             playerData.addProperty("ClientID", key);
             playerData.addProperty("username", player.getUsername());
@@ -142,8 +144,12 @@ public class PageManager {
             playerData.addProperty("gamesLost", player.getLosses());
             playerData.addProperty("status", player.getStatus().toString());
 
-
             playersArray.add(playerData);
+
+            if (player.getStatus() == Player.STATUS.ONLINE)
+            {
+                userEventReply.recipients.add(key);
+            }
         }
 
 
@@ -151,9 +157,6 @@ public class PageManager {
         responseJson.add("activePlayers", playersArray);
 
         userEventReply.replyObj = responseJson;
-
-        userEventReply.recipients = new ArrayList<>();
-        userEventReply.recipients.add(Id);
 
         return userEventReply;
 
@@ -183,8 +186,46 @@ public class PageManager {
     } */
     }
 
-     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
-     {
+    // used whenever a person updates their status (send to all online players)
+    public UserEventReply statusUpdate(Player.STATUS status, int Id)
+    {
+        JsonObject responseJson = new JsonObject();
+        UserEventReply userEventReply=  new UserEventReply();
+
+        responseJson.addProperty("responseID", "statusUpdate");
+        responseJson.addProperty("MyClientID", Id);
+        responseJson.addProperty("statusChange", status.toString());
+
+        userEventReply.replyObj = responseJson;
+
+        userEventReply.recipients = new ArrayList<>();
+
+        //send to every player that is online
+        Enumeration<Integer> e = activePlayers.keys();
+        while (e.hasMoreElements())
+        {   
+            int key = e.nextElement();
+            userEventReply.recipients.add(key);
+        }
+
+        return userEventReply;
+        
+        // {
+        //     "responseID": "statusUpdate",
+        //     "MyClientID": 123,
+        //     "statusChange": "IN_QUEUE"
+        // }
+    } 
+    
+    // just a wrapper for ease of use
+    private void changePlayerStatus(Player.STATUS status, int Id)
+    {
+        activePlayers.get(Id).setStatus(status);
+        App.sendMessage(statusUpdate(status, Id));  
+    } 
+
+    public UserEventReply joinQueue(JsonObject jsonObj, int Id)
+    {
 
         JsonObject responseJson = new JsonObject();
         UserEventReply userEventReply=  new UserEventReply();
@@ -203,7 +244,7 @@ public class PageManager {
 
             if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
             }
         }
         else
@@ -233,7 +274,7 @@ public class PageManager {
         // }
         
 
-     }
+    }
 
     public UserEventReply challengePlayer(JsonObject jsonObj, int Id)
     {
@@ -296,8 +337,8 @@ public class PageManager {
                 responseJson.addProperty("inQueue", true);
                 if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
                 {
-                    activePlayers.get(playerClientId).setStatus(Player.STATUS.IN_QUEUE);
-                    activePlayers.get(opponentClientId).setStatus(Player.STATUS.IN_QUEUE);
+                    changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
+                    changePlayerStatus(Player.STATUS.IN_QUEUE, opponentClientId);
                 }
             }
             else
@@ -366,7 +407,7 @@ public class PageManager {
             responseJson.addProperty("inQueue", true);
             if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
             }
         }
         else
@@ -413,7 +454,7 @@ public class PageManager {
             responseJson.addProperty("inQueue", true);
             if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
             {
-                activePlayers.get(Id).setStatus(Player.STATUS.IN_QUEUE);
+                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
             }
         }
         else
@@ -529,6 +570,9 @@ public class PageManager {
 
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(clientId);
+
+        // change status of the player that called this method (the other player will also start the game and change their status)
+        changePlayerStatus(Player.STATUS.IN_GAME, clientId);
 
         //transition
         App.sendMessage(transitionPage(userEventReply.recipients, GameState.GAME_DISPLAY));
@@ -666,9 +710,19 @@ public class PageManager {
      public UserEventReply userLeave(int Id) {
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
+            // Remove from all the maps and stuff I know of
             activePlayers.remove(Id);
-            boolean removed = pu.removeFromQueue(player);
+            pu.removeFromQueue(player);
+            userIDToClientID.remove(Id);
+            clientStates.remove(Id);
+            
+            Game g = player.getGame(); //get game object from that player
+
+            if(g!= null){ //if the player is in a game
+            g.setGameActive(false); //signal the game must end due to player leaving.
+            }
     
+            // message
             JsonObject msg = new JsonObject();
             msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
@@ -687,9 +741,7 @@ public class PageManager {
             return null;
         }
     }
-    
-    
-    
+
     
 
 

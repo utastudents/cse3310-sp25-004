@@ -119,6 +119,10 @@ public class HumanPlayer extends Player{
         return status;
     }
 
+    public Game getGame(){
+        return game;
+    }
+
 
     // setters
     public void setWins(int wins){
