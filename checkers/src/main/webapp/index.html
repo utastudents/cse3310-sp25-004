@@ -7,35 +7,34 @@
     </head>
 	<body>	
     <!--SIGNUP GOES HERE-->
+	<div class="center-container">
     <div id="new_account" class="signup-box" style = "display: none;">
       <form action="signup-info">
       <img src="final_logo.png" alt="CHECKERS LOGO">
-	  <div class="input-icon">
-		<i class="fas fa-user"></i>
-		<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
+	  	<div class="input-icon">
+			<i class="fas fa-user"></i>
+			<input type="text" id="signup-username" name="usr" placeholder="USERNAME" required>
 		</div>
 
 		<span id="username-error" class = "error-msg" style="display: none;">Username must be at least 4 characters.</span>
 		<span id="username-exists-error" class = "error-msg" style="display: none;">Username already exists.</span>
 		<div class="input-icon">
-		<i class="fas fa-lock"></i>
-		<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
+			<i class="fas fa-lock"></i>
+			<input type="password" id="signup-password" name="psw" placeholder="PASSWORD" required>
 		</div>
 		<span id="password-error" class = "error-msg" style="display: none;">Password must be at least 6 characters.</span>
 
 		<div class="input-icon">
-		<i class="fas fa-lock"></i>
-		<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
+			<i class="fas fa-lock"></i>
+			<input type="password" id="signup-confirm-password" name="psw" placeholder="CONFIRM PASSWORD" required>
 		</div>
 		<span id="confirm-password-error" class = "error-msg" style="display: none;">Passwords do not match.</span>
 		<span id="database-failure-error" class = "error-msg" style="display: none;">Database failed to retrieve player.</span>
-
 		<button id="signup-btn" type="submit">SIGN UP</button>
 		<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
       </form>
   	</div>
-    
-	<div class="login-center-container">
+
 	<div id="login" class="login-box">
         <form action="login-info">
             <img src="final_logo.png" alt="CHECKERS LOGO">
