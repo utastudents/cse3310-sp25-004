@@ -35,8 +35,6 @@ function renderLeaderboard() {
 	sendMessage(dataRequest);
 
     tbody.innerHTML = ""; // Clear the table body
-    leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
-    fillTable(leaderboard); // Fill the table with player data
 }
 
 function fillTable(leaderboard) {
@@ -90,7 +88,8 @@ function loadData(jsonData) {
         );
         leaderboardIndex++;
     }
-    fillTable(leaderboard);
+	leaderboard.sort((a, b) => b.elo - a.elo); // Sort players in descending order based on Elo rating
+    fillTable(leaderboard); // Fill the table with player data
 }
 
 // NEW: This function sends a request to the server for leaderboard data
@@ -115,10 +114,14 @@ function handleSummaryMessage(event) {
     const data = JSON.parse(event.data);
 
     if (data.summaryTopTenData) {
-        console.log("Received summaryTopTenData!");
+        console.log("Received summary data for leaderboard!");
         loadData(data.summaryTopTenData); // Load new data into leaderboard
         renderLeaderboard(); // Render updated leaderboard
     }
+	else
+	{
+		console.log("Expected to receive summary data for leader board, but was not found in json data!")
+	}
 }
 
 // Initialize leaderboard array with actual data
