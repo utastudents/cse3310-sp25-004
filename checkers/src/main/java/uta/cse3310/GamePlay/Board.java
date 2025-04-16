@@ -241,6 +241,16 @@ public class Board
 		return jumpList;
 	}
 
+	/* 
+		Definition: checkBackwardJump checks if the requested detination by the user is a valid jump
+		Arguments:
+			jumpList : List of possible backwards jumps gathered after running getPossibleBackwardJump
+			cord : destination cord that the player click/request to move to
+
+		Returns:
+			i (int) : index of the cord in the list of possible backward jumps
+			-1 : cord is not found in list and is not a valid backward jump
+	*/
 	int checkBackwardJump(ArrayList<Cord> jumpList, Cord cord)
 	{
 		//base case for our check
@@ -261,8 +271,8 @@ public class Board
 			}
 		}
 		
-		//if true return index of cord in list
-		//else return -1, same as null
+		//if found return index of cord in list
+		//if cord is not found in possibleBackwardJumps list, return -1 (same as null)
 		if(check)
 		{
 			return i;
@@ -289,24 +299,39 @@ public class Board
 		checkerBoard[newY][newX] = piece;
 	}
 	
+	/* 
+		Definition: 
+		Arguments:
+			piece : checker piece chosen by the player, the piece that is jumping
+			dest : new destination of the chosen checker piece after the jump
+	*/
 	void removeJumpedChecker(Checker piece, Cord dest)
 	{
+		Cord originalCord = piece.getCord();
+		int origX = originalCord.getX();
+		int origY = originalCord.getY();
+
 		int destX = dest.getX();
 		int destY = dest.getY();
 
-		if (checkerBoard[destX-2][destY-2] == piece)
+		// check which location piece moved too by comparing the cords piece original location the location of the jump
+		// remove piece in the bottom left
+		if (origX-2 == destX && origY-2 == destY)
 		{
 			deleteChecker(new Cord(destX-1, destY-1));
 		}
-		else if (checkerBoard[destX+2][destY-2] == piece)
+		// remove piece in the bottom right
+		else if (origX+2 == destX && origY-2 == destY)
 		{
 			deleteChecker(new Cord(destX+1, destY-1));
 		}
-		else if (checkerBoard[destX-2][destY+2] == piece)
+		// remove piece in the top left
+		else if (origX-2 == destX && origY+2 == destY)
 		{
 			deleteChecker(new Cord(destX-1, destY+1));
 		}
-		else if (checkerBoard[destX+2][destY+2] == piece)
+		// remove piece in the top right
+		else if (origX+2 == destX && origY+2 == destY)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
