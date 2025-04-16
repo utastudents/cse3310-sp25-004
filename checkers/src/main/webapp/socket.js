@@ -100,6 +100,13 @@ connection.onmessage = function (evt) {
             newUser(jsonMsg.msg);
             break;
         }  
+
+        // Join Game Responses
+        case "challengeBot": {
+            botChallenged(jsonMsg.inQueue);
+            break;
+        }
+
         // Game Responses
 
         // Summary Responses

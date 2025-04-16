@@ -95,7 +95,7 @@
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
 			<button>
-				<a id="CURRENT_SESSION_BOT" type="button">
+				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
 					Request Bot
 				</a>
 			</button>
@@ -245,6 +245,16 @@
 			function clearLobbyList() {
 				const listEl = document.getElementById("lobby_list_items");
 				listEl.innerHTML = ""; // clear child elements
+			}
+
+			function botChallenged(inQueue) {
+				if (inQueue) {
+					// TODO: Display the queue here
+					alert("In queue! Waiting for game to start...")
+				} else {
+					// TODO: Display the game board
+					alert("Challenge accepted! Too bad no one has displayed the board :/");
+				}
 			}
 		</script>
 	</div>
