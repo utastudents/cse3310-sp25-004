@@ -260,18 +260,54 @@
 			<table id="summary-table">
 				<thead>
 					<tr>
-						<th>Rank</th>
-						<th>Player</th>
-						<th>Elo</th>
-						<th>Games Won</th>
-						<th>Games Lost</th>
-						<th>Total Number of Games</th>
-					</tr>
+						<th onclick="sortTable(0)">Rank</th>
+                    	<th onclick="sortTable(1)">Player</th>
+   					 	<th onclick="sortTable(2)">Elo</th>
+   					 	<th onclick="sortTable(3)">Games Won</th>
+   					 	<th onclick="sortTable(4)">Games Lost</th>
+   					 	<th onclick="sortTable(5)">Total Number of Games</th>
+						</tr>
 				</thead>
 				<tbody>
 					<!-- These data will be filled with JSON through a JS script -->
 				</tbody>
 			</table>
+
+			<script>
+				let sortDirections = {};
+			//Toggle function to toggle sort the columns
+				function sortTable(columnIndex) {
+					const table = document.getElementById("summary-table");
+					const tbody = table.tBodies[0];
+					const rows = Array.from(tbody.rows);
+			
+					// Determine if this column is currently sorted descending
+					const descending = sortDirections[columnIndex] = !sortDirections[columnIndex];
+			
+					rows.sort((a, b) => {
+						let valA = a.cells[columnIndex].textContent.trim();
+						let valB = b.cells[columnIndex].textContent.trim();
+			
+						// Try to parse numbers, otherwise compare as strings
+						const numA = parseFloat(valA);
+						const numB = parseFloat(valB);
+						const isNumeric = !isNaN(numA) && !isNaN(numB);
+			
+						if (isNumeric) {
+							return descending ? numB - numA : numA - numB;
+						} else {
+							return descending 
+								? valB.localeCompare(valA)
+								: valA.localeCompare(valB);
+						}
+					});
+			
+					// Re-render sorted rows
+					tbody.innerHTML = '';
+					rows.forEach(row => tbody.appendChild(row));
+				}
+			</script>
+
 		</div>
 			<!--- <p class= "caption"> Top 10 players.</p> -->
 			<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
