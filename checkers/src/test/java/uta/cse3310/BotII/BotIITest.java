@@ -37,7 +37,26 @@ public class BotIITest {
     }
 
     @Test
-    void capturePieces() {
+    void TestcapturePiece() {
+	//Arange
+	/*
+ 	// Set up the board with a black checker
+  	Board board = new Board();
+     	Checker blackChecker = new Checker(new Cord(2, 2), Color.BLACK);
+      	board.checkerBoard[2][2] = blackChecker;
+
+	//Simulate a red piece in a position that can get jumped by the black piece
+       Checker redChecker = new Checker(new Cord(3, 3), Color.RED);
+       board.checkerBoard[3][3] = redChecker;
+
+	//Checks to see if the landing spot is empty
+    	board.checkerBoard[4][4] = null;
+     
+     	//Capture the piece
+      	BotII.capturePiece(board);
+
+       //
+     */
 
     }
     
