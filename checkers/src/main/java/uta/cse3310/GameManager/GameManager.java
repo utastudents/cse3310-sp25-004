@@ -27,6 +27,8 @@ public class GameManager {
         gt = new GameTermination();
 
         games = new ArrayList<>(MAX_GAMES);
+
+        initializeGames();
     }
 
     // Initialize first 10 games, gameID's are the game's index number in ArrayList
