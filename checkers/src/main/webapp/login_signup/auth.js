@@ -111,5 +111,11 @@ const observer = new MutationObserver(() => {
 
 observer.observe(loginScreen, { attributes: true, attributeFilter: ['style'] });
 document.getElementById("showDragonBtn").onclick = function() {
-    document.getElementById("dragon").style.display = "block";
+    var dragon = document.getElementById("dragon");
+    if(dragon.style.display === "none" || dragon.style.display === ""){
+        dragon.style.display = "block";
+    }
+    else {
+        dragon.style.display = "none";
+    }
 }
