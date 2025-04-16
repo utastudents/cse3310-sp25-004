@@ -181,7 +181,7 @@
 				// end
 			function updateJoinGameList(data) {
 				clearLobbyList(); 
-				const current_player_id = data["MyClientID"];
+				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
 				document.querySelector("#join_game h3").textContent = `Current players: ${data.playersInQueue}/48`;

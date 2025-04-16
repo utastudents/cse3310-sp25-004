@@ -34,6 +34,7 @@ connection.onclose = function (evt) {
     console.log("close");
 }
 
+var globalClientID = null;
 
 connection.onmessage = function (evt) {
     let msg = evt.data; //extract data from websocket response
@@ -47,7 +48,8 @@ connection.onmessage = function (evt) {
     console.log("Response ID: " + responseID);
 
     if (jsonMsg.clientId) {
-        console.log("Connected with clientId:", jsonMsg.clientId);
+        globalClientID = jsonMsg.clientId;
+        console.log("Connected with clientId:", globalClientID);
         return;
     }
     
