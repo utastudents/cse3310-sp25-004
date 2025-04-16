@@ -17,12 +17,12 @@ public class GameTermination {
             } */
         // Tells game play game is over.
 //>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
-        /*public Game endGame() {
+        public Game endGame(Game game) {
                 Game game = new Game(0, null, null); // temp code for compiling purposes
-                return game;*/
+                return game;
         // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
                 // Also need to tell GameManager that a parameter was added to this method. 
-        public Game endGame(Game currentGame) {
+      /*  public Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
 
@@ -52,7 +52,7 @@ public class GameTermination {
                 }
 
                 return null;
-        }
+        }*/
         }
 /*
         public HumanPlayer[] saveResults(Game game){
