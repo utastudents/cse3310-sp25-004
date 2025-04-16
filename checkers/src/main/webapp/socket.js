@@ -86,8 +86,16 @@ connection.onmessage = function (evt) {
         }
         case "loginSuccessful": {
             loginSuccess();
+            sendMessage({action:"getActivePlayers"});
             break;
         }
+
+        case "join_game":{
+            console.log("Join Game Received: ", jsonMsg);
+            updateJoinGameList(jsonMsg);
+            break;
+        }
+
         case "new_user": {
             newUser(jsonMsg.msg);
             break;
