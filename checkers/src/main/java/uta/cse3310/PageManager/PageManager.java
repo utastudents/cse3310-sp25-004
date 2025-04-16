@@ -489,6 +489,7 @@ public class PageManager {
 
     public void startGameNotifier(Game g, int UserId)
     {
+        System.out.println("Getting client id from pid " + UserId);
         int clientId = userIDToClientID.get(UserId);
 
         UserEventReply userEventReply= new UserEventReply();
@@ -619,6 +620,8 @@ public class PageManager {
         activePlayers.put(Id,player);
         userIDToClientID.put(player.getPlayerId(),Id);
         player.setStatus(HumanPlayer.STATUS.ONLINE);
+
+        System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
 
         // 6) if the player is not null, then the username and password are correct
         status.addProperty("responseID", "loginSuccessful");
