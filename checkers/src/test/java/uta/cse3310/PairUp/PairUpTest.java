@@ -25,6 +25,11 @@ public class PairUpTest {
         public boolean updateBoard(GameState gs) {
             return true;
         }
+
+        @Override
+        public boolean endGame(GameState gs) {
+            return true;
+        }
     }
 
 	@Test

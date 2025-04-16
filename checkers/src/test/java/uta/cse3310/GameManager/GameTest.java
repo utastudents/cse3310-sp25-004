@@ -28,6 +28,11 @@ public class GameTest {
         public boolean updateBoard(GameState gs) {
             return true;
         }
+
+        @Override
+        public boolean endGame(GameState gs) {
+            return true;
+        }
     }
 
     /**
