@@ -85,13 +85,20 @@ public class GamePlayTest{
     @Test
     void removeJumpedCheckerTest() {
         var testBoard = new Board();
+        var testCord = new Cord(2,4);
 
         //manually set new board positions somehow
 
-        //testBoard.updatePosition( testBoard.checkerBoard[2][2], new Cord(x:2, y:4) );
         //change the position of a checker to a position where it can be jumped
+        testBoard.updatePosition( testBoard.checkerBoard[2][2], testCord );
+        //assertEquals(null, testBoard.checkerBoard[2][2]);   
+        //NOTE: need to implement way to set old position to NULL
         
-        //assertEquals(testBoard.checkerBoard[2][4]==null, testBoard.removeJumpedChecker( testBoard.checkBoard[1][5], new Cord(x:3, y:3) ))
+        //assert that the piece has been removed from the old spot
+
+        
+        //testBoard.removeJumpedChecker( testBoard.checkBoard[1][5], new Cord(x:3, y:3));
+        //assertEquals(null, testBoard.checkerBoard[2][4]);
         //test if the spot is null? There is no exact return type to test
         
        
