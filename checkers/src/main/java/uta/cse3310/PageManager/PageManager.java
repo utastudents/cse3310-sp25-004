@@ -33,7 +33,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 
 public class PageManager {
-    GameManager gm;
+    //GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -50,10 +50,10 @@ public class PageManager {
     public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
-        gm = new GameManager();
+        //gm = new GameManager(); //already created??
         db = new DB();
         // pass over a pointer to the single database object in this system
-        pu = new PairUp(gm);
+        pu = new PairUp(Gm);
     }
 
     //gets top10 playersfirst , 11th is the current player
