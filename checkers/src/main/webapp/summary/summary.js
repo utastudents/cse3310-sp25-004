@@ -94,36 +94,36 @@ function fillTable(leaderboard) {
 
 /* These functions are never called? */
 
-// NEW: This function sends a request to the server for leaderboard data
-function initSummaryWebSocket() {
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-        console.warn("WebSocket is not open. Cannot request leaderboard data.");
-        return;
-    }
+// // NEW: This function sends a request to the server for leaderboard data
+// function initSummaryWebSocket() {
+//     if (!socket || socket.readyState !== WebSocket.OPEN) {
+//         console.warn("WebSocket is not open. Cannot request leaderboard data.");
+//         return;
+//     }
 
-    // Remove any previous duplicate listener
-    socket.removeEventListener("message", handleSummaryMessage);
-    socket.addEventListener("message", handleSummaryMessage);
+//     // Remove any previous duplicate listener
+//     socket.removeEventListener("message", handleSummaryMessage);
+//     socket.addEventListener("message", handleSummaryMessage);
 
-    // Send a request to get leaderboard
-    socket.send(JSON.stringify({
-        type: "summaryRequestTopTen"
-    }));
-}
+//     // Send a request to get leaderboard
+//     socket.send(JSON.stringify({
+//         type: "summaryRequestTopTen"
+//     }));
+// }
 
-// NEW: Handle WebSocket messages related to leaderboard
-function handleSummaryMessage(event) {
-    const data = JSON.parse(event.data);
+// // NEW: Handle WebSocket messages related to leaderboard
+// function handleSummaryMessage(event) {
+//     const data = JSON.parse(event.data);
 
-    if (data.summaryTopTenData) {
-        console.log("Received summary data for leaderboard!");
-        loadData(data.summaryTopTenData); // Load new data into leaderboard
-        renderLeaderboard(); // Render updated leaderboard
-    }
-	else
-	{
-		console.log("Expected to receive summary data for leader board, but was not found in json data!")
-	}
-}
+//     if (data.summaryTopTenData) {
+//         console.log("Received summary data for leaderboard!");
+//         loadData(data.summaryTopTenData); // Load new data into leaderboard
+//         renderLeaderboard(); // Render updated leaderboard
+//     }
+// 	else
+// 	{
+// 		console.log("Expected to receive summary data for leader board, but was not found in json data!")
+// 	}
+// }
 
 // addEventListeners(); // Call the function to add event listeners, basically our main function
