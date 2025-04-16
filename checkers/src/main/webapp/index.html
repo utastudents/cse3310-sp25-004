@@ -60,7 +60,7 @@
 
 		<script src="login_signup/auth.js"></script>
 	</div>
-    <div id="join_game">
+    <div id="join_game" style = "display: none">
 		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
@@ -362,7 +362,6 @@
 	}
 
 	function loginSuccess() {
-		alert(jsonMsg.msg);
 		document.getElementById("login").style.display = "none";
 		document.getElementById("new_user").style.display = "none";
 		document.getElementById("join_game").style.display = "block";
@@ -377,7 +376,6 @@
 			document.getElementById("username-exists-error").style.display = "block";
 		}
 		if(message === "Account created successfully!"){
-			alert("Account created");
 			document.getElementById("login").style.display = "none";
 			document.getElementById("new_user").style.display = "none";
 			document.getElementById("join_game").style.display = "block";
