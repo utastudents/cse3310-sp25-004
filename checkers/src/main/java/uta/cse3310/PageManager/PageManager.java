@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.App;
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.DB.DB;
@@ -706,7 +707,29 @@ public class PageManager {
         App.sendMessage(reply);
     
     }
+    public String[][] To2DstringArray (Checker[][] board){
+     
+        String[][] Sboard = new String[8][8];
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; i < 8; j++){
+                Checker c = board[i][j];
+                if(c == null){
+                    Sboard[i][j]="empty";
+                }
+                else{
+                    String type = c.isKing()?"king" : "pawn";
+                    String color = c.getColor().toString().toLowerCase();
+                    Sboard[i][j] = color + "_" + type;
+                }
 
+            }
+
+        }
+
+
+
+        return null;
+    }
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
         
@@ -716,8 +739,7 @@ public class PageManager {
         move.setClientId(Id);
         //GameUpdate update = Gm.processMove(move);
         UserEventReply reply = new UserEventReply();
-// none of this stuff compiles....
-//
+
         //JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
         //reply.replyObj = json;
         //reply.recipients.add(move.getClientId());
