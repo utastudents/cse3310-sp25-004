@@ -36,8 +36,22 @@ public class BotITestI {
 
     //@Test
     public void testUpdateBoard() {
-
+    	for (int y = 0; y < 8; y++) {
+	    for (int x = 0; x < 8; x++) {
+ 	        board.removePiece(new Cord(x, y));
+        }
     }
+
+    Checker blackPiece = new Checker(Color.BLACK, new Cord(1, 1));
+    board.placePiece(blackPiece);
+
+    boolean updateResult = bot.updateBoard(GameState.GAME_DISPLAY);
+
+    assertTrue("Board update should be successful", updateResult);
+
+    boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
+    assertTrue("Bot should be able to make a move after board update", moveResult);
+}
 
     //@Test
     public void testEndGame() {
