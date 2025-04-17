@@ -5,7 +5,7 @@ let playerBlack = "bot 2";
 // Initialize the game state
 let currentPlayer = "red"; // Red starts first
 let selectedPieceId = null;
-const board = document.getElementById("game-board");
+let board = document.getElementById("game-board");
 const initialRedPieceRows = [0, 1, 2];
 const initialBlackPieceRows = [5, 6, 7];
 // Update the player turn display
@@ -69,6 +69,7 @@ function addEventListeners() {
 }
 //Game Board Setup
 function createBoard() {
+    if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
     for (let row = 0; row < 8; row++) {
         const tr = document.createElement("tr");
 
@@ -188,17 +189,14 @@ function sendGameMove(fromId, toId) {
     const clientId = currentPlayer === "red" ? 1 : 2;
 
     const movePayload = {
-        clientId,
+        action: "GameMove",
+        color: currentPlayer,
         fromPosition: fromPos,
         toPosition: toPos,
-        pieceType
+        //pieceType
     };
     
-    fetch("/game/move", {/*THIS IS SUBJECT TO CHANGE!!! IM NOT SURE HOW TO DO A WEB SOCKEEEEET*/
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(movePayload)
-    });
+    sendMessage(movePayload);
 
     console.log("Sent GameMove:", movePayload);
 }
