@@ -106,4 +106,5 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
     }
+
 }
