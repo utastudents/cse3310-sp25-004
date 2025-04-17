@@ -63,21 +63,19 @@ public class BotIITest {
     }
 
     @Test
-    public void testDefendPieces() {
-        // Set up the board with a black checker
+    public void testIsInDanger() {
+        // Set up a simple test scenario
         Board board = new Board();
         Checker blackChecker = new Checker(new Cord(3, 3), Color.BLACK);
         board.checkerBoard[3][3] = blackChecker;
 
-        // Simulate a red piece in a position that can jump the black piece
+        // Simulate a red piece that could jump the black piece
         Checker redChecker = new Checker(new Cord(4, 4), Color.RED);
         board.checkerBoard[4][4] = redChecker;
 
-        // Call the defendPieces method to find a safe move
-        BotII.Move bestMove = BotII.defendPieces(board);
-
-        // Check if the bot finds a valid move
-        assertTrue("A defensive move should be found", bestMove != null);
+        // Run the method and check if the checker is in danger
+        boolean result = BotII.isInDanger(blackChecker, board);
+        assertTrue("Checker should be in danger", result);
     }
 
 
