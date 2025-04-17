@@ -50,6 +50,7 @@ connection.onmessage = function (evt) {
     if (jsonMsg.clientId) {
         globalClientID = jsonMsg.clientId;
         console.log("Connected with clientId:", globalClientID);
+        swapToPage("login"); //added this to init display for login for every client connection
         return;
     }
     
