@@ -3,8 +3,6 @@ package uta.cse3310.GameManager;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
-import uta.cse3310.GamePlay.Checker;
-import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
@@ -26,9 +24,7 @@ public class GameManager {
 
     public GameManager() {
         gt = new GameTermination();
-
         games = new ArrayList<>(MAX_GAMES);
-
         initializeGames();
     }
 
@@ -62,7 +58,7 @@ public class GameManager {
         System.out.println("Creating a new game");
         for (int i = 0; i < games.size(); i++) {
             Game game = games.get(i);
-            if (game == null || !game.isGameActive()) { // Found an open slot
+            if (game == null || !game.isGameActive()) {
                 Game newGame = new Game(i, p1, p2); // Use index as game ID
                 p1.startGame(newGame);
                 p2.startGame(newGame);
@@ -87,8 +83,7 @@ public class GameManager {
         }
     }
 
-    // Retrieves move by PageManager, passes to GamePlay to update, pass update back
-    // to caller
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         // Getter is misspelled in other class
         int playerId = move.getClietId();
