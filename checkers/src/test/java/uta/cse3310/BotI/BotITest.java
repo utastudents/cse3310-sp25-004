@@ -31,6 +31,26 @@ public class BotITestI {
     
     //@Test
     public void testMakeMove() {
+    	for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            board.removePiece(new Cord(x, y));
+        }
+    }
+
+    Checker blackPiece = new Checker(Color.BLACK, new Cord(1, 1));
+    board.placePiece(blackPiece);
+
+    Checker redPiece = new Checker(Color.RED, new Cord(2, 2));
+    board.placePiece(redPiece);
+
+    bot.updateBoard(GameState.GAME_DISPLAY);
+
+    boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
+
+    assertTrue("Bot should make a valid move", moveResult);
+
+    Checker pieceAtOriginalPosition = board.checkSpace(new Cord(1, 1));
+    assertNull("Black piece should no longer be at the original position", pieceAtOriginalPosition);
 
     }
 
