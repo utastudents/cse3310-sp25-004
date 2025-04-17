@@ -15,24 +15,63 @@ import java.util.ArrayList;
 import java.util.Random; 
 import java.util.List; 
 
-public class BotI extends Bot {                                      
+public BotI() {} 
+
+    public BotI(Game game, Color color){}*/
+    
     @Override
     public boolean makeMove(GameState gs){
+        /*
+        ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
+        if (availableCheckers.isEmpty()) { 
+            return false; 
+        } 
+        
+         ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers); 
+         if (!jumpMoves.isEmpty()) { 
+            Move bestJumpMove = selectBestJumpMove(jumpMoves); 
+            executeMove(bestJumpMove); 
+            return true; 
+        } 
+         
+         ArrayList<Move> moves = getAllMoves(availableCheckers); 
+
+         if (!moves.isEmpty()) { 
+            Move bestMove = selectBestMove(moves); 
+            executeMove(bestMove); 
+            return true; 
+        } 
+
+        return false; 
+
+    } 
+        */
         return false;
     }
 
 
     @Override 
     public boolean updateBoard(GameState gs) {
+        /*
+        if (game != null) {
+            this.board = game.getBoard().getBoard();
+        }
+        return true;
+        */
         return false;
     } 
 
     @Override 
-    public boolean endGame(GameState gs) {return false;} 
+    public boolean endGame(GameState gs) {
+        /*
+        if (game != null) {
+            this.board = game.getBoard().getBoard();
+        }
+        return true;
+        */
+        return false;
+    } 
     /* 
-    public BotI() {} 
-
-    public BotI(Game game, Color color){}
 
 
     protected ArrayList<Checker> getAvailableCheckers() {} 
