@@ -83,4 +83,29 @@ public class GameTest {
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
     }
+
+    @Test
+    void testProcessMove() {
+
+        GameManager manager = new GameManager();
+        // Using dummy values for testing purposes
+        GameMove move = new GameMove(1, 3, 2, 6, 3, "King");
+        move.getFromPosition_X();
+        move.getFromPosition_Y();
+        move.getToPosition_X();
+        move.getToPosition_Y();
+        move.getClietId();
+        // Making objects
+        GamePlay gamePlay = new GamePlay(1);
+        Cord cord = new Cord(3, 2);
+        Checker piece = new Checker(cord, Color.RED);
+        gamePlay.getBoard().checkerBoard[2][3] = piece;
+
+        GameUpdate update = manager.processMove(move, gamePlay);
+
+        // will return equals and true if executed
+        assertEquals("In Progress", update.getGameStatus());
+        assertTrue(update.getCapturedPosition().contains("Playerid"));
+    }
+
 }
