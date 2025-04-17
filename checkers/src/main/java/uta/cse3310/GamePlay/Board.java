@@ -94,13 +94,14 @@ public class Board
 	// Does not check Jumps
 	{
 
-		if(checkerBoard[dest.getY()][dest.getX()] != null)
-		{
-			return false; // Cannot move to a square already occupied by another piece
-		}
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
 			return false; // Invalid move, out of bounds
+		}
+
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
+		{
+			return false; // Cannot move to a square already occupied by another piece
 		}
 
 		/*else
