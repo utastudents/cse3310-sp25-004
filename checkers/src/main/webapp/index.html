@@ -302,7 +302,7 @@
 </div>
 
 
-<div class="summary">
+<div class="summary" id="summary">
 	<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>
 
 	<!-- visibility hidden -->
@@ -455,7 +455,7 @@
 		console.log("Switching to page " + page);
 		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
 		listOfDiv.forEach(function (id) {
-			var div = document.getElementById(id);
+			const div = document.getElementById(id);
 			if (div) div.style.display = "none";
 		});
 
