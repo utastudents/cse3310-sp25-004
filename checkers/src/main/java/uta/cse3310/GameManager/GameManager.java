@@ -83,7 +83,8 @@ public class GameManager {
         }
     }
 
-    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back
+    // to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         // Getter is misspelled in other class
         int playerId = move.getClietId();
@@ -101,5 +102,14 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
     }
+    /*
+     * public void SendUpdatedBoard(Game game, int currentPlayerId) {
+     * Player p1 = game.getPlayer1();
+     * Player p2 = game.getPlayer2();
+     * 
+     * if (p1 != null) p1.updateBoard(null);
+     * if (p2 != null) p2.updateBoard(null);
+     * }
+     */
 
 }
