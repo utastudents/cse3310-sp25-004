@@ -224,7 +224,7 @@ public class App extends WebSocketServer {
         Reply = PM.ViewMatch(jsonObj, Id);
         break;  
       case "GameMove":        
-        Reply = PM.GameMove(jsonObj, Id);
+        PM.GameMove(jsonObj, Id);
         break;
       case "backToHome":
         Reply = PM.backToHome(Id);

@@ -9,6 +9,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import uta.cse3310.App;
 import uta.cse3310.Bot.Bot;
@@ -693,6 +694,17 @@ public class PageManager {
         UserEventReply reply = new UserEventReply();
         reply.recipients.add(clientId);
         App.sendMessage(reply);
+    }
+    public void sendUpdate(int UserId, GameUpdate update){
+        int userId = UserId;
+        int clientId = userIDToClientID.get(userId);
+        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+        json.addProperty("responseID", "GameUpdate");
+        UserEventReply reply = new UserEventReply();
+        reply.replyObj = json;
+        reply.recipients.add(clientId);
+        App.sendMessage(reply);
+    
     }
 
     public UserEventReply GameMove(JsonObject jsonObj, int Id)

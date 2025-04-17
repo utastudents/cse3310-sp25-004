@@ -55,7 +55,7 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
-       // App.pmInstance.makeMove(playerId);
+        App.pmInstance.makeMove(playerId);
         
         return true;
     }
@@ -63,7 +63,9 @@ public class HumanPlayer extends Player{
     @Override
     public boolean updateBoard(GameState gs) //Returns false if the client could not be reached
     {
-        return false;
+        
+       // App.pmInstance.sendUpdate(playerId, update);
+        return true;
     }
 
     @Override
