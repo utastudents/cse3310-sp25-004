@@ -146,8 +146,31 @@ public class BotI extends Bot {
         return jumpMoves; 
     } 
 
-  
-    private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){} 
+   // Get all possible moves for all checkers
+    private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){
+	
+	ArrayList<Move> moves = new ArrayList<>(); 
+        
+	// If board is null, return empty list 
+
+        if (board == null) { 
+
+            return moves; 
+        } 
+
+        for (Checker checker : checkers) { 
+
+            ArrayList<Cord> possibleMoves = getPossibleMoves(checker); 
+
+            for (Cord move : possibleMoves) { 
+
+                moves.add(new Move(checker, move, false)); 
+
+            } 
+
+        } 
+        return moves; 
+} 
 
     private ArrayList<Cord> getPossibleMoves(Checker piece){} 
 
