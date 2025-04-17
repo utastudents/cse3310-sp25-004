@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="icon" type="image/png" href="/final_logo.png">
+	<title>Login | Checkers | CSE3310-004</title>
 </head>
 
 <body>
@@ -81,7 +82,7 @@
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
 			<!-- Have function to get amount of players -->
-			<h3>Current players: 3/48</h3>
+			<h3>Current players: <span id="player-count">3</span>/48</h3>
 			<div class="lobby_lists" style="border-radius: 2em; border: 1px solid">
 				<ol id="lobby_list_items">
 					<!-- Dynamically Created Elements -->
@@ -453,6 +454,8 @@
 		document.getElementById("summary").style.display = "none";
 	}
 
+	const pageToTitle = {"join_game": "Join Game", "game_display": "Game Display", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard"};
+
 	function swapToPage(page) {
 		console.log("Switching to page " + page);
 		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
@@ -462,5 +465,7 @@
 		});
 
 		document.getElementById(page).style.display = "block";
+
+		document.title = pageToTitle[page] + " | Checkers | CSE3310-004";
 	}
 </script>
