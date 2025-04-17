@@ -94,27 +94,41 @@ public class Board
 	// Does not check Jumps
 	{
 
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
+		{
+			return false; // Cannot move to a square already occupied by another piece
+		}
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
 			return false; // Invalid move, out of bounds
 		}
 
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
-		{
-			return false; // Cannot move to a square already occupied by another piece
-		}
-		else
+		/*else
 		{
 			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-			int yDiff = (dest.getY() - piece.getCord().getY());
+			int yDiff = Math.abs(dest.getY() - piece.getCord().getY());
 
 			if(xDiff == 1 && yDiff == 1)
 			{
 				return true;
 			}
+			else
+			{
+				return false;
+			}
 		}
 
-		return false; // Should not reach. If it does something is wrong and the move is invalid
+		//return false; // Should not reach. If it does something is wrong and the move is */
+		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
+		int yDiff = (dest.getY() - piece.getCord().getY());
+
+		if(xDiff == 1 && yDiff == 1)
+		{
+			return true;
+		}
+
+		return false;
+
 	}
 
 	boolean moveBackwardCheck(Checker piece, Cord dest) 

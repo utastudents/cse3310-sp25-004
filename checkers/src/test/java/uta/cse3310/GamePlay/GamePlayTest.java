@@ -6,13 +6,15 @@ import org.junit.jupiter.api.Test;
 public class GamePlayTest{
 
 	@Test
-	void moveForwardCheckTest() {
-		var checker = new Checker(new Cord(3, 2), Color.BLACK);
+	void moveForwardCheckTest() 
+    {
+		//var checker = new Checker(new Cord(3, 2), Color.BLACK);
 		var cord = new Cord(4, 3);
 		var board = new Board();
+        
 		
         //THIS TEST IS BUSTED. Please fix BEFORE uncommenting, thank you :) - Please run test before committing
-		//assertEquals(true, board.moveForwardCheck(checker, cord));
+		assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], cord));
 	}
 
     // This will test if piece becomea a king piece once it reaches the end
