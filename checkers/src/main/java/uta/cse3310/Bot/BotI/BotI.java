@@ -89,7 +89,6 @@ public class BotI extends Bot {
     } 
     /* 
 
-
     // Get all checkers of the bot's color 
 
     protected ArrayList<Checker> getAvailableCheckers() { 
@@ -234,6 +233,4 @@ private class Move
 } 
 } 
 */
-
-}
 
