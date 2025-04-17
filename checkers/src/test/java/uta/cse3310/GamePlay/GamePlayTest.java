@@ -105,7 +105,7 @@ public class GamePlayTest{
         //next we want to assert that the new position does not equal null
 
         //Please run test BEFORE committing, thank you :)
-        //assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
+        assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
         
        
     }

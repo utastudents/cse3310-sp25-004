@@ -300,7 +300,7 @@ public class Board
 		int oldY = oldCord.getY();
 		checkerBoard[oldX][oldY] = null;
 		piece.setCord(newX, newY);
-		checkerBoard[newY][newX] = piece;
+		checkerBoard[newX][newY] = piece; //test works with this format like how initialized
 	}
 	
 	/* 
