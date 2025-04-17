@@ -1,120 +1,33 @@
-package uta.cse3310.Bot.BotI;
+package uta.cse3310.Bot.BotI; 
 
-import uta.cse3310.GameState;
-import uta.cse3310.Bot.Bot;
-import uta.cse3310.GameManager.Game;
-import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Checker;
 
-public class BotI extends Bot {
-    
-    public void promoteToKing() {
-        // TODO: Check if a piece reached the end and promote to king
-    }
+import uta.cse3310.GameState; 
+import uta.cse3310.Bot.Bot; 
+import uta.cse3310.GameManager.Game; 
+import uta.cse3310.GamePlay.Board; 
+import uta.cse3310.GamePlay.Checker; 
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.GamePlay.Cord; 
+import uta.cse3310.GamePlay.GamePlay; 
+import uta.cse3310.PairUp.Player; 
+import java.util.ArrayList; 
+import java.util.Random; 
+import java.util.List; 
 
-    
-    public void defendPieces() {
-        // TODO: Prioritize defending own pieces over offense
-    }
+public class BotI extends Bot {                                      
 
-    
-    public void attackPieces() {
-        // TODO: Look for chances to force opponent into bad moves
-    }
+    public BotI() {} 
 
-    
-    public void capturePieces() {
-        // TODO: Capture opponent piece by jumping diagonally 
-    }
-
-    
-    public void checkMultipleJumps() {
-        // TODO: If multiple jumps are possible, do them
-    }
-    
-
-    public void moveChecker() {
-        // TODO: Move a non-king piece diagonally one square
-    }
-    
-    public void moveKing() { 
-
-        // TODO: Move a king piece diagonally one square in any direction 
-    } 
-    
-    public boolean isMoveLegal() { 
-     
-        // TODO: Validate if a move is legal 
-    return true; 
-    } 
-    
-    public void waitForOpponent() { 
-   
-        // TODO: Wait for opponent to make a move before acting 
-    } 
-    
-    public void adjustStrategy() { 
-    // TODO: Change strategy based on early, mid, or late game 
-
-    } 
-    
-    public void blockOpponent() { 
-
-        // TODO: Try to block opponent from advancing or jumping 
-
-    } 
-
-    public void findOffensiveMove() { 
-
-        // TODO: Decide if it's safe and smart to attack 
-
-    } 
-
-     public void allowMultipleKings() { 
-
-        // TODO: Allow more than one king on board 
-
-    } 
-
-    public boolean isPieceCaptured(int pieceId) { 
-
-        // TODO: Check if a piece has been captured 
-
-    return false; 
-
-    } 
-
-    public void checkMultipleCaptures() { 
-
-        // TODO: Detect and respond if multiple pieces were taken 
-
-    } 
-
-    public void protectBackLine() { 
-
-        // TODO: Avoid moving back row pieces unless necessary 
-
-    } 
+    public BotI(Game game, Color color){} 
 
     @Override
-    public boolean makeMove(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
-    }
+    public boolean makeMove(GameState gs) {} 
 
-    @Override
-    public boolean updateBoard(GameState gs) {
-        return true; //Can be ignored
-    }
 
-    @Override
-    public boolean startGame(Game g) {
-        return true; //Can be ignored
-    }
+    @Override 
+    public boolean updateBoard(GameState gs) {} 
 
-    @Override
-    public boolean endGame(GameState gs) {
-        return true; //Can be ignored
-    }
+    @Override 
+    public boolean endGame(GameState gs) {} 
 
-} 
+}
