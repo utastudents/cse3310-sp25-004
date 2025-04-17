@@ -449,7 +449,7 @@
 		document.getElementById("summary").style.display = "none";
 	}
 
-	const pageToTitle = {"join_game": "Join Game", "game_display": "Game Display", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard"};
+	const pageToTitle = {"join_game": "Join Game", "game_display": "Play", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard"};
 
 	function swapToPage(page) {
 		console.log("Switching to page " + page);
@@ -460,6 +460,10 @@
 		});
 
 		document.getElementById(page).style.display = "block";
+
+		if (page === "join_game") {
+			document.getElementById("summary").style.display = "block"; //So players can check out the leaderboard while queuing up. Also for debug since this page is unreachable lol
+		}
 
 		document.title = pageToTitle[page] + " | Checkers | CSE3310-004";
 	}

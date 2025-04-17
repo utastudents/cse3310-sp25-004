@@ -1,10 +1,15 @@
 
 package uta.cse3310.DB;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import uta.cse3310.DB.PasswordManager;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PairUp.Player.STATUS;
 
 
 public class DB 
@@ -89,7 +94,15 @@ public class DB
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
+                    String password = rs.getString("password"); //Password here being, of course, the hash
+                    int id = rs.getInt("id");
+                    int wins = rs.getInt("wins");
+                    int losses = rs.getInt("losses");
+                    int elo = rs.getInt("elo");
+                    int games_played = rs.getInt("games_played");
+                
+                    return new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
+                    //return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
                 }
             }
         } catch (SQLException e) {
@@ -109,10 +122,16 @@ public class DB
             if (rs.next()) {
                 String storedHash = rs.getString("password");
                 byte[] salt = rs.getBytes("salt");
-
+                int id = rs.getInt("id");
+                int wins = rs.getInt("wins");
+                int losses = rs.getInt("losses");
+                int elo = rs.getInt("elo");
+                int games_played = rs.getInt("games_played");
+                
                 //checks password
                 if (PasswordManager.verifyPassword(password, storedHash, salt)) {
-                    return new HumanPlayer(rs.getString("username"), storedHash, salt);
+                    return new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
+                    //return new HumanPlayer(rs.getString("username"), storedHash, salt);
                 }
             }
          } catch (SQLException e) {
@@ -174,11 +193,15 @@ public class DB
                 ResultSet rs = stmt.executeQuery(sql);
                 int index = 0;
                 while (rs.next() && index < 10) {
-                    topPlayers[index++] = new HumanPlayer(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getBytes("salt")
-                    );
+                    String username = rs.getString("username");
+                    String password = rs.getString("password"); //Password here being, of course, the hash
+                    int id = rs.getInt("id");
+                    int wins = rs.getInt("wins");
+                    int losses = rs.getInt("losses");
+                    int elo = rs.getInt("elo");
+                    int games_played = rs.getInt("games_played");
+                
+                    topPlayers[index++] = new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
                 }
             }
         }
