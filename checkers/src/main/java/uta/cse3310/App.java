@@ -39,37 +39,24 @@
 
 package uta.cse3310;
 
-import uta.cse3310.PageManager.PageManager;
-import uta.cse3310.PageManager.UserEventReply;
-import uta.cse3310.PageManager.UserEvent;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.time.Instant;
-import java.time.Duration;
-import java.util.List;
-import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.Hashtable;
+import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class App extends WebSocketServer {
 
@@ -151,6 +138,8 @@ public class App extends WebSocketServer {
               }
           }
       }
+
+      sendMessage(PM.sendActivePlayersToAll());
 
       System.out.println("Removed player " + id);
   }

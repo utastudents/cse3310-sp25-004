@@ -1,36 +1,22 @@
 package uta.cse3310.PageManager;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.HashMap;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
-import uta.cse3310.App;
-
-
-//import uta.cse3310.GameState;
-
-import uta.cse3310.DB.DB;
-import uta.cse3310.GameManager.GameManager;
-import uta.cse3310.GameManager.Game;
-import uta.cse3310.PageManager.GameMove;
-import uta.cse3310.PairUp.PairUp;
-import uta.cse3310.PageManager.UserEvent;
-import uta.cse3310.PageManager.UserEventReply;
-import uta.cse3310.PageManager.HumanPlayer;
-import uta.cse3310.PairUp.Player;
-import uta.cse3310.GamePlay.GamePlay;
-import uta.cse3310.GamePlay.Cord;
-import uta.cse3310.GamePlay.Checker;
-import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Color;
-import uta.cse3310.Bot.Bot;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import uta.cse3310.App;
+import uta.cse3310.Bot.Bot;
+import uta.cse3310.DB.DB;
+import uta.cse3310.GameManager.Game;
+import uta.cse3310.GameManager.GameManager;
+import uta.cse3310.PairUp.PairUp;
+import uta.cse3310.PairUp.Player;
 
 public class PageManager {
     //GameManager gm;
@@ -111,24 +97,16 @@ public class PageManager {
     }
     
     
-    
-    
-    
-    public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)
-    {
-        UserEventReply userEventReply= new UserEventReply();
+    public JsonObject activePlayerList() {
         JsonObject responseJson = new JsonObject();
 
         // general identification of JSON
-        responseJson.addProperty("responseID", "join_game");
-        responseJson.addProperty("MyClientID", Id);
+        responseJson.addProperty("responseID", "active_players");
         responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
         Enumeration<Integer> e = activePlayers.keys();
 
         // to have an array of active players
         JsonArray playersArray = new JsonArray();
-
-        userEventReply.recipients = new ArrayList<>();
         
         // loop through active players and add info onto the players array
         while (e.hasMoreElements())
@@ -145,18 +123,40 @@ public class PageManager {
             playerData.addProperty("status", player.getStatus().toString());
 
             playersArray.add(playerData);
-
-            if (player.getStatus() == Player.STATUS.ONLINE)
-            {
-                userEventReply.recipients.add(key);
-            }
         }
 
 
         // add the array to the JSON and add recipients
         responseJson.add("activePlayers", playersArray);
 
-        userEventReply.replyObj = responseJson;
+        return responseJson;
+    }
+
+    public UserEventReply sendActivePlayersToAll() {
+        UserEventReply userEventReply= new UserEventReply();
+        userEventReply.recipients = new ArrayList<>();
+
+        Enumeration<Integer> e = activePlayers.keys();
+        while (e.hasMoreElements())
+        {
+            int key = e.nextElement();
+            userEventReply.recipients.add(key);
+        }
+
+        userEventReply.replyObj = activePlayerList();
+
+        return userEventReply;
+    }
+    
+    
+    public UserEventReply getActivePlayers(JsonObject jsonObj, int Id)
+    {
+        UserEventReply userEventReply= new UserEventReply();
+        userEventReply.recipients = new ArrayList<>();
+
+        userEventReply.recipients.add(Id);
+
+        userEventReply.replyObj = activePlayerList();
 
         return userEventReply;
 
@@ -193,7 +193,7 @@ public class PageManager {
         UserEventReply userEventReply=  new UserEventReply();
 
         responseJson.addProperty("responseID", "statusUpdate");
-        responseJson.addProperty("MyClientID", Id);
+        responseJson.addProperty("playerID", Id);
         responseJson.addProperty("statusChange", status.toString());
 
         userEventReply.replyObj = responseJson;
@@ -211,7 +211,7 @@ public class PageManager {
         return userEventReply;
         
         // {
-        //     "responseID": "statusUpdate",
+        //     "responseID": "playerID",
         //     "MyClientID": 123,
         //     "statusChange": "IN_QUEUE"
         // }
@@ -625,6 +625,9 @@ public class PageManager {
 
         System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
 
+        // Now that the player is an active player, let the other clients know
+        App.sendMessage(sendActivePlayersToAll());
+
         // 6) if the player is not null, then the username and password are correct
         status.addProperty("responseID", "loginSuccessful");
         status.addProperty("msg", "Login successful!");
@@ -671,6 +674,9 @@ public class PageManager {
         activePlayers.put(Id, player);
         userIDToClientID.put(player.getPlayerId(), Id);
         player.setStatus(Player.STATUS.ONLINE);
+
+        // Now that the player is an active player, let the other clients know
+        App.sendMessage(sendActivePlayersToAll());
 
         // Respond to frontend
         status.addProperty("msg", "Account created successfully!");

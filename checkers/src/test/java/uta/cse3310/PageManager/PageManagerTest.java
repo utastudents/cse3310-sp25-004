@@ -1,28 +1,24 @@
 package uta.cse3310.PageManager;
 
-import uta.cse3310.DB.DB;
-import uta.cse3310.PairUp.PairUp;
-import uta.cse3310.PageManager.UserEvent;
-import uta.cse3310.PageManager.UserEventReply;
-import uta.cse3310.PageManager.HumanPlayer;
-import uta.cse3310.PageManager.PageManager;
-import uta.cse3310.PageManager.GameState;
-import uta.cse3310.PairUp.Player;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
-
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import uta.cse3310.PairUp.PairUp;
+import uta.cse3310.PairUp.Player;
 
 @ExtendWith(MockitoExtension.class)
 public class PageManagerTest
@@ -73,8 +69,8 @@ public class PageManagerTest
 
         JsonObject response = reply.replyObj;
 
-        assertEquals("join_game", response.get("responseID").getAsString());
-        assertEquals(1, response.get("MyClientID").getAsInt());
+        assertEquals("active_players", response.get("responseID").getAsString());
+        //assertEquals(1, response.get("MyClientID").getAsInt()); //No need for MyClientID since this is sent to ALL players
 
         JsonArray playersArray = response.get("activePlayers").getAsJsonArray();
         assertNotNull(playersArray);

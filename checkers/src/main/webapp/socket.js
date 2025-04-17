@@ -100,9 +100,8 @@ connection.onmessage = function (evt) {
             break;
         }
 
-        case "join_game":{
-            // Join game does NOT mean an actual checkers game -- it just means logging in to the site. getActivePlayers responds with this
-            console.log("Join Game Received: ", jsonMsg);
+        case "active_players": {
+            console.log("Active Players list Received: ", jsonMsg);
             updateJoinGameList(jsonMsg);
             break;
         }
@@ -115,6 +114,11 @@ connection.onmessage = function (evt) {
         // Join Game Responses
         case "challengeBot": {
             botChallenged(jsonMsg.inQueue);
+            break;
+        }
+
+        case "statusUpdate": {
+            updateStatus(jsonMsg.playerID, jsonMsg.statusChange);
             break;
         }
 

@@ -219,19 +219,26 @@
 			}
 
 			function updateStatus(playerID, status) {
+				//STATUS can be IN_GAME ONLINE or IN_QUEUE
+				if (playerID == globalClientID) {
+					//My ID
+					return;
+				}
+
+				const elementID = "UID" + playerID;
 				// Access the player ID
-				const playerElement = document.getElementById(playerID);
+				const playerElement = document.getElementById(elementID);
 
 				// access the status span
 				const statusElement = playerElement.querySelector('.status');
-				const challengedBtn = document.getElementById(`btn1-${playerID}`);
-				const viewBtn = document.getElementById(`btn2-${playerID}`);
+				const challengedBtn = document.getElementById(`chall_btn-${playerID}`);
+				const viewBtn = document.getElementById(`view_btn-${playerID}`);
 
 				if (!challengedBtn) {
 					console.log("cant find button");
 				}
 				// Change the status to "free"
-				if (status == "busy") {
+				if (status == "IN_GAME") {
 					statusElement.classList.remove('free');
 					statusElement.classList.add('busy');
 
