@@ -102,7 +102,7 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
     }
-
+    //Sending updated board to PageManager
     public void sendUpdateBoard(GameMove move, GamePlay gamePlay, PageManager pageManager) {
         GameUpdate update = processMove(move, gamePlay);
         int userId = move.getClietId(); 
