@@ -8,12 +8,9 @@ import uta.cse3310.GameState;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 
-/**
- * These are the Unit tests for the Game class to ensure proper behavior of
- * constructors, getters, and setters related to player IDs and game ID.
- */
+
 public class GameTest {
-    // mock implementation of player
+    // Mock implementation of player
     private static class MockPlayer extends Player {
         public MockPlayer(int id) {
             this.playerId = id;
@@ -39,7 +36,6 @@ public class GameTest {
     void testCreateGame() {
         // Making game manager object
         GameManager manager = new GameManager();
-        //manager.initializeGames(); //Moved initialization into constructor
 
         // Player objects
         Player p1 = new MockPlayer(0);
@@ -80,5 +76,10 @@ public class GameTest {
         manager.removeGame(currentGame);
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
+    }
+
+    @Test
+    void testProcessMove(){
+        
     }
 }
