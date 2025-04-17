@@ -813,7 +813,13 @@ public class PageManager {
 
     // Method to check if transition possible
     public boolean canTransition(GameState from, GameState to) {
-        return false;
+        switch(from) {
+            case LOGIN: return to == GameState.JOIN_GAME;
+            case JOIN_GAME: return to == GameState.GAME_DISPLAY;
+            case GAME_DISPLAY: return to == GameState.SUMMARY;
+            case SUMMARY: return to == GameState.JOIN_GAME;
+            default: return false;
+        }
     }
 
     // Method to get the current state of user
