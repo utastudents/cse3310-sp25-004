@@ -82,6 +82,12 @@ public class HumanPlayer extends Player{
         return true; //TODO: let the client know the game has started
     }
 
+    @Override
+    public boolean endGame(GameState gs) {
+        //TODO: let the client know the game has ended. Show the final board and Win/Loss, and allow them to click through to summary page
+        return false;
+    }
+
     /*
      * we could have a method here that is used to add a spectator to the game and call a static method in 
      * page manager where it would create the UserEventReply which is then sent to another static method in App.java. 

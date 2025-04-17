@@ -3,6 +3,8 @@ package uta.cse3310.Bot.BotI;
 import uta.cse3310.GameState;
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.GamePlay.Board;
+import uta.cse3310.GamePlay.Checker;
 
 public class BotI extends Bot {
     
@@ -100,18 +102,19 @@ public class BotI extends Bot {
         throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
     }
 
-
     @Override
     public boolean updateBoard(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
+        return true; //Can be ignored
     }
-
 
     @Override
     public boolean startGame(Game g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startGame'");
-    }   
+        return true; //Can be ignored
+    }
+
+    @Override
+    public boolean endGame(GameState gs) {
+        return true; //Can be ignored
+    }
 
 } 

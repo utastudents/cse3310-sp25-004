@@ -8,7 +8,7 @@ public class Game{
    private Player player2;  // player 2 object
    private int gameID;   // Unique game identifier
    private GamePlay board;
-   private boolean isAvailable;
+   public boolean isAvailable;
 
 	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
       this.gameID = gameID; // gameID is index number in ArrayList

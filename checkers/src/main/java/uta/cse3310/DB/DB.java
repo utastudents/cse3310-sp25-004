@@ -189,5 +189,42 @@ public class DB
     
         return topPlayers;
     }
+    public void recordMatchResult(int winnerId, int loserId) {
+        try {
+            String query = "SELECT * FROM players WHERE id = ?";
+    
+            //fetch winners data
+            PreparedStatement stmt1 = conn.prepareStatement(query);
+            stmt1.setInt(1, winnerId);
+            ResultSet rs1 = stmt1.executeQuery();
+            if (!rs1.next()) return; 
+    
+            //fetch losers data
+            PreparedStatement stmt2 = conn.prepareStatement(query);
+            stmt2.setInt(1, loserId);
+            ResultSet rs2 = stmt2.executeQuery();
+            if (!rs2.next()) return;  
+    
+            //get the info for both of the players
+            int winnerElo = rs1.getInt("elo");
+            int loserElo = rs2.getInt("elo");
+            int winnerWins = rs1.getInt("wins") + 1;  // Winner's wins incremented by 1
+            int loserLosses = rs2.getInt("losses") + 1;  // Loser's losses incremented by 1
+            int winnerGames = rs1.getInt("games_played") + 1;  // Winner's total games incremented by 1
+            int loserGames = rs2.getInt("games_played") + 1;  // Loser's total games incremented by 1
+
+            int k = 32; //Elo constant (can be adjusted)
+
+            int newLoserElo =  (int) (loserElo  + k * (0 - (1.0 / (1.0 + Math.pow(10, (winnerElo - loserElo ) / 400.0)))));
+            int newWinnerElo = (int) (winnerElo + k * (1 - (1.0 / (1.0 + Math.pow(10, (loserElo  - winnerElo) / 400.0)))));
+    
+            updatePlayerStats(winnerId, winnerWins, rs1.getInt("losses"), newWinnerElo, winnerGames);
+    
+            updatePlayerStats(loserId, rs2.getInt("wins"), loserLosses, newLoserElo, loserGames);
+    
+        } catch (SQLException e) {
+            System.out.println("Error recording match result: " + e.getMessage());
+        }
+    }
 
 }

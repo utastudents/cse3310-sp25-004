@@ -83,7 +83,7 @@ connection.onmessage = function (evt) {
     {
         // Page Manager
         case "updateVisibility": {
-            alert("Switch to page " + jsonMsg.visible);
+            swapToPage(jsonMsg.visible);
             break;
         }
 
@@ -95,10 +95,12 @@ connection.onmessage = function (evt) {
         case "loginSuccessful": {
             loginSuccess();
             sendMessage({action:"getActivePlayers"});
+            swapToPage("join_game");
             break;
         }
 
         case "join_game":{
+            // Join game does NOT mean an actual checkers game -- it just means logging in to the site. getActivePlayers responds with this
             console.log("Join Game Received: ", jsonMsg);
             updateJoinGameList(jsonMsg);
             break;
@@ -141,17 +143,10 @@ connection.onmessage = function (evt) {
     }
 }
 
-/*document.getElementById("join_game").style.display = "none"; // set Login to visible but the rest hidden
-document.getElementById("game_display").style.display = "none";
-document.getElementById("new_account").style.display = "none";
-document.getElementById("login").style.display = "block"; */
-
-function handleJoinGame(data) { //function to update when join team
-    console.log("Join team response received", data);
-
-    document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
-    document.getElementById("game_display").style.display = "none";
-    document.getElementById("new_account").style.display = "none";
-    document.getElementById("login").style.display = "none"; 
-}
-
+/**
+ * This file is for all of the websocket logic
+ * All of the websocket logic should be in this file
+ * Nothing that is not websocket logic should be in this file
+ * - NO document.getElementById
+ * - NO game logic, game code, etc.
+ */

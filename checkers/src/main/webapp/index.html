@@ -65,6 +65,7 @@
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
+
     <div id="join_game" style = "display: none">
 		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
@@ -269,9 +270,27 @@
 </div>
 	</body>
     
+	<!--GAME DISPLAY HTML-->
     <div id="game_display">
-
+		<script src="./game_display/script.js"></script>
+		<div id="game-container">
+			<div id="board-container">
+			  <table id="game-board"></table>
+		  </div>
+			<div id="players-table">
+			  <div id="players-container">
+				<p id="players">Player 1 vs. Player 2</p>
+			  </div>
+			  <div id="live-box"></div>
+			  <div id="buttons-cont">
+				<button class="button" id="quit">Quit</button>
+				<button class="button" id="draw-request">Draw</button>
+			  </div>
+			</div>
+		  </div>
     </div>
+
+
 	<div class="summary">
 		<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>
 
@@ -408,5 +427,28 @@
 			document.querySelector('.center-container').style.display = 'none';
 
 		}
+	}
+
+	//Page transition functions!
+	function handleJoinGame(data) { //function to update when join team
+		console.log("Join team response received", data);
+
+		document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+		document.getElementById("game_display").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
+		document.getElementById("login").style.display = "none"; 
+		document.getElementById("summary").style.display = "none"; 
+	}
+
+	function swapToPage(page) {
+		console.log("Switching to page " + page);
+
+		document.getElementById("join_game").style.display = "none";
+		document.getElementById("game_display").style.display = "none";
+		document.getElementById("new_account").style.display = "none";
+		document.getElementById("login").style.display = "none"; 
+		document.getElementById("summary").style.display = "none"; 
+
+		document.getElementById(page).style.display = "block"; 
 	}
 </script>

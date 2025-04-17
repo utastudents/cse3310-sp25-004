@@ -3,6 +3,9 @@ package uta.cse3310.GameTermination;
 import uta.cse3310.GameManager.Game;
 import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameTermination {
 //<<<<<<< HEAD
@@ -17,42 +20,48 @@ public class GameTermination {
             } */
         // Tells game play game is over.
 //>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
-        public Game endGame() {
-                Game game = new Game(0, null, null); // temp code for compiling purposes
-                return game;
-        // New endGame functionality; Compiles but need to pass board of current game instead of a new board. 
-                // Also need to tell GameManager that a parameter was added to this method. 
-        /*public Game endGame(Game currentGame) {
+        public Game endGame(Game currentGame) { //temp code for compiling purposes
+                return currentGame; 
+        }
+        // New endGame functionality.  
+        /* public Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
 
-                Board myBoard = new Board(); 
                 // Check if player 1 has won
-                if (state.hasPlayerWon(myBoard, currentGame.getPlayer1().getPlayerId())) {
-                        winnerID = currentGame.getPlayer1().getPlayerId(); // lowercase 'd'
+                if (state.hasPlayerWon(currentGame.board.getBoard(), currentGame.getPlayer1().getPlayerId())) {
+                        winnerID = currentGame.getPlayer1().getPlayerId();
                         currentGame.setGameActive(false);
-                        saveResults(currentGame, winnerID);
+                        //saveResults(currentGame, winnerID);
                         return currentGame;
                 }
 
                 // Check if player 2 has won
-                if (state.hasPlayerWon(myBoard, currentGame.getPlayer2().getPlayerId())) {
-                        winnerID = currentGame.getPlayer2().getPlayerId(); // lowercase 'd'
+                if (state.hasPlayerWon(currentGame.board.getBoard(), currentGame.getPlayer2().getPlayerId())) {
+                        winnerID = currentGame.getPlayer2().getPlayerId(); 
                         currentGame.setGameActive(false);
-                        saveResults(currentGame, winnerID);
+                        //saveResults(currentGame, winnerID);
                         return currentGame;
                 }
 
                 // Check for draw
-                if (state.gameStateDraw(myBoard, currentGame)) {
+                if (state.gameStateDraw(currentGame.board.getBoard(), currentGame)) {
                         winnerID = -1;
                         currentGame.setGameActive(false);
-                        saveResults(currentGame, winnerID);
+                        //saveResults(currentGame, winnerID);
                         return currentGame;
                 }
 
+                // Checks if game ended before it was over. 
+                if(!(currentGame.isAvailable))
+                {
+                        winnerID = -2; // Indicates game ended early
+                        return currentGame; 
+                }
+
                 return null;
-        }*/
+        }
+        */
         }
 /*
         public HumanPlayer[] saveResults(Game game){
@@ -118,8 +127,34 @@ public class GameTermination {
 
                 return updatedStats;
         }
-*/
+         // Generates and displays the leaderboard based on player scores. 
+         public void generateLeaderboard(int clientId) {
+        // Query the database for top 10 players.
+        List<String> topPlayers = new ArrayList<>();
+        String url = "jdbc:sqlite:game.db";  // Ensure this path is correct for your system
+
+        String sql = "SELECT username, wins FROM players ORDER BY wins DESC LIMIT 10";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // For simplicity, just create a string representation.
+                String entry = rs.getString("username") + " - Wins: " + rs.getInt("wins");
+                topPlayers.add(entry);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving leaderboard: " + e.getMessage());
         }
+
+        // Delegate the sending of the leaderboard data to the PageManager.
+        // Note: You could either create a new PageManager instance here or use an existing one if available.
+       // PageManager pm = new PageManager();
+       // pm.sendLeaderboard(topPlayers, clientId);
+    }
+*/
 
 
 
