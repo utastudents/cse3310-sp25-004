@@ -15,6 +15,7 @@ public class Game{
       this.player1 = player1;
       this.player2 = player2;
       this.isAvailable = true;
+      this.board = new GamePlay(gameID);
    }
 
    // Getting available game boolean value, true via constructor
@@ -26,6 +27,7 @@ public class Game{
    public void setGameActive(boolean status){
       this.isAvailable = status;
    }
+
 
    public GamePlay getBoard(){        //decide how interacts with gameplay
       return board;
