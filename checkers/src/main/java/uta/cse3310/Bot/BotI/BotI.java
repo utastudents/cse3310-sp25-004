@@ -23,9 +23,16 @@ public class BotI extends Bot {
     private Random random;
     
     public BotI() {
+        super();
+        this.random = new Random();
     } 
 
     public BotI(Game game, Color color){
+        super();
+        this.game = game;
+        this.color = color;
+        this.board = game.getBoard().getBoard();
+        this.random = new Random();
     }
     
     @Override
