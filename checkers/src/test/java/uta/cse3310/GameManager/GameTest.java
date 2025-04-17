@@ -9,6 +9,7 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.GameUpdate;
+import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GamePlay.Color;
@@ -79,6 +80,12 @@ public class GameTest {
                 break;
             }
         }
+
+        Board board = new Board();
+
+        if (currentGame.getBoard() == null) {
+            currentGame.getBoard(); // or whatever constructor you have
+        }
         manager.removeGame(currentGame);
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
@@ -107,5 +114,4 @@ public class GameTest {
         assertEquals("In Progress", update.getGameStatus());
         assertTrue(update.getCapturedPosition().contains("Playerid"));
     }
-
 }
