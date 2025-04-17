@@ -2,7 +2,7 @@ package uta.cse3310.Bot.BotI;
 
 
 import uta.cse3310.GameState; 
-import uta.cse3310.GameState;
+import uta.cse3310.Bot.Bot;
 import uta.cse3310.Bot.BotII.BotII.Move;
 import uta.cse3310.GameManager.Game; 
 import uta.cse3310.GamePlay.Board; 
