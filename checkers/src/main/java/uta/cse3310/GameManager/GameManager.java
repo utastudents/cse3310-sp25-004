@@ -1,18 +1,19 @@
 package uta.cse3310.GameManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import uta.cse3310.Bot.BotI.BotI;
+import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
-import uta.cse3310.Bot.BotI.BotI;
-import uta.cse3310.Bot.BotII.BotII;
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.GameUpdate;
+import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
-import uta.cse3310.PageManager.GameUpdate;
-import uta.cse3310.PageManager.GameMove;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameManager {
     private static final int MAX_GAMES = 10;
@@ -100,6 +101,12 @@ public class GameManager {
                 + to.getX() + "," + to.getY() + ")";
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
+    }
+
+    public void sendUpdateBoard(GameMove move, GamePlay gamePlay, PageManager pageManager) {
+        GameUpdate update = processMove(move, gamePlay);
+        int userId = move.getClietId(); 
+        pageManager.sendUpdate(userId, update);
     }
 
 }
