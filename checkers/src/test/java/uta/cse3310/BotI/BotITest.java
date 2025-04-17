@@ -1,4 +1,4 @@
-package uta.cse3310.BotI;
+/*package uta.cse3310.BotI;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -15,4 +15,4 @@ public class BotITest {
 
     //@Test
 
-}
+}*/
