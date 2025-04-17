@@ -787,8 +787,6 @@ public class PageManager {
         }
     }
 
-    
-
 
     // Method to transition between pages
    // Transition all given clients to a new game state and notify them
@@ -810,7 +808,7 @@ public class PageManager {
 
     //Method to transition to join game page after user finishes reviewing summary of game
     public UserEventReply backToHome(int clientId) {
-        return null;
+        return transitionPage(List.of(clientId), GameState.JOIN_GAME);
     }
 
     // Method to check if transition possible
