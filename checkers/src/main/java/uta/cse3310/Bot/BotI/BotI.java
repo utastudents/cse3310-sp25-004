@@ -48,6 +48,18 @@ public class BotI extends Bot {
     private Move selectBestMove(ArrayList<Move> moves) {}
  
     private boolean wouldBecomeKing(Move move) {}
+
+    private boolean capturesKing(Move move) {} 
+
+    private boolean isSafeMove(Move move) {} 
+
+    private boolean isAdvancingMove(Move move) {} 
+
+    private void executeMove(Move move) {} 
+
+    private class Move {} 
+
+
     */
 
 }
