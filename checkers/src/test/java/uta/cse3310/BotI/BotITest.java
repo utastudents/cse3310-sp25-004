@@ -7,7 +7,7 @@ import org.junit.Test;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.GameManager.Game;
 import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Checker;XZCXZCXZCXZCZXC
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
