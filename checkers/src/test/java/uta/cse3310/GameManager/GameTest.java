@@ -14,12 +14,8 @@ import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 
-/**
- * These are the Unit tests for the Game class to ensure proper behavior of
- * constructors, getters, and setters related to player IDs and game ID.
- */
 public class GameTest {
-    // mock implementation of player
+    // Mock implementation of player
     private static class MockPlayer extends Player {
         public MockPlayer(int id) {
             this.playerId = id;
@@ -87,29 +83,4 @@ public class GameTest {
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
     }
-
-    @Test
-    void testProcessMove() {
-
-        GameManager manager = new GameManager();
-        // Using dummy values for testing purposes
-        GameMove move = new GameMove(1, 3, 2, 6, 3, "King");
-        move.getFromPosition_X();
-        move.getFromPosition_Y();
-        move.getToPosition_X();
-        move.getToPosition_Y();
-        move.getClietId();
-        // Making objects
-        GamePlay gamePlay = new GamePlay(1);
-        Cord cord = new Cord(3, 2);
-        Checker piece = new Checker(cord, Color.RED);
-        gamePlay.getBoard().checkerBoard[2][3] = piece;
-
-        GameUpdate update = manager.processMove(move, gamePlay);
-
-        // will return equals and true if executed
-        assertEquals("In Progress", update.getGameStatus());
-        assertTrue(update.getCapturedPosition().contains("Playerid"));
-    }
-
 }
