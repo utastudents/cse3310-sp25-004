@@ -250,4 +250,10 @@ public class DB
         }
     }
 
+
+    public HumanPlayer getPlayerById(int player1Id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayerById'");
+    }
+
 }
