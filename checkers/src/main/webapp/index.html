@@ -106,14 +106,14 @@
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
 			<button>
-				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
-					Request Bot
+				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 0})">
+					Challenge Bot I
 				</a>
 			</button>
 			<!-- request to see bots play -->
 			<button>
-				<a id="CURRENT_SESSION_BOTvsBOT" type="button"> <!-- onclick in script section -->
-					Watch Bot Vs Bot
+				<a id="CURRENT_SESSION_BOTvsBOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
+					Challenge Bot II
 				</a></button>
 		</div>
 		<!-- Send server who is the current player that logged in and request to see the list of active players-->
@@ -258,9 +258,11 @@
 				sendMessage(JSON.stringify(botVsBotReq));
 			}
 
+			/* Bot v Bot was dropped from the requirements :(
 			document.getElementById("CURRENT_SESSION_BOTvsBOT").onclick = function () {
 				watchBotVsBot(currentPlayerInfo);
 			};
+			*/
 
 			function clearLobbyList() {
 				const listEl = document.getElementById("lobby_list_items");
