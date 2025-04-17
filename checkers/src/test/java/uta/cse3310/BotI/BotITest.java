@@ -51,7 +51,7 @@ public class BotITestI {
 
     boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
     assertTrue("Bot should be able to make a move after board update", moveResult);
-}
+    }
 
     //@Test
     public void testEndGame() {
