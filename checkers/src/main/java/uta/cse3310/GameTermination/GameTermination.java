@@ -20,16 +20,13 @@ public class GameTermination {
             } */
         // Tells game play game is over.
 //>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
-        public Game endGame(Game currentGame) { //temp code for compiling purposes
-                return currentGame; 
-        }
         // New endGame functionality.  
-        /* public Game endGame(Game currentGame) {
+        public Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
 
                 // Check if player 1 has won
-                if (state.hasPlayerWon(currentGame.board.getBoard(), currentGame.getPlayer1().getPlayerId())) {
+                if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
                         winnerID = currentGame.getPlayer1().getPlayerId();
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
@@ -37,7 +34,7 @@ public class GameTermination {
                 }
 
                 // Check if player 2 has won
-                if (state.hasPlayerWon(currentGame.board.getBoard(), currentGame.getPlayer2().getPlayerId())) {
+                if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer2().getPlayerId())) {
                         winnerID = currentGame.getPlayer2().getPlayerId(); 
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
@@ -45,7 +42,7 @@ public class GameTermination {
                 }
 
                 // Check for draw
-                if (state.gameStateDraw(currentGame.board.getBoard(), currentGame)) {
+                if (state.gameStateDraw(currentGame.getBoard().getBoard(), currentGame)) {
                         winnerID = -1;
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
@@ -61,9 +58,6 @@ public class GameTermination {
 
                 return null;
         }
-        */
-        }
-/*
         public HumanPlayer[] saveResults(Game game){
                 DB database = new DB();
                 gameState state = new gameState();
@@ -74,7 +68,7 @@ public class GameTermination {
                 int player2Id = game.getPlayer2().getPlayerId();
 
                 //Determine which player is winning
-                int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game, game);
+                int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game);
 
                 //retrieve players current stats
                 HumanPlayer player1 = database.getPlayerById(player1Id);
@@ -154,8 +148,7 @@ public class GameTermination {
        // PageManager pm = new PageManager();
        // pm.sendLeaderboard(topPlayers, clientId);
     }
-*/
-
+}
 
 
 
