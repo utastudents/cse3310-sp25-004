@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.Random; 
 import java.util.List; 
 
-public BotI() {} 
+public class BotI extends Bot {
+    public BotI() {} 
 
-    public BotI(Game game, Color color){}*/
+    public BotI(Game game, Color color){}
     
     @Override
     public boolean makeMove(GameState gs){
@@ -102,3 +103,4 @@ public BotI() {}
     */
 
 }
+
