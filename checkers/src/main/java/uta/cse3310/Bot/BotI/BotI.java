@@ -30,4 +30,11 @@ public class BotI extends Bot {
     @Override 
     public boolean endGame(GameState gs) {} 
 
+    protected ArrayList<Checker> getAvailableCheckers() {} 
+
+    private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers){} 
+
+    private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){} 
+
+    private ArrayList<Cord> getPossibleMoves(Checker piece){} 
 }
