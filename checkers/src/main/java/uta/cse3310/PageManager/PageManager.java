@@ -824,7 +824,7 @@ public class PageManager {
 
     // Method to get the current state of user
     public GameState getCurrentState(int clientId) {
-        return null;
+        return clientStates.getOrDefault(clientId, GameState.LOGIN);
     }
 
     // Method to reset client states for the new game
