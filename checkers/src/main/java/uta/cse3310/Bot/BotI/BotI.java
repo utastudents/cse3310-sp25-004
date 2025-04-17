@@ -111,8 +111,42 @@ public class BotI extends Bot {
         return checkers; 
     }  
 
-    private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers){} 
+    // Get all possible jump moves for all checkers 
 
+    private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers) { 
+
+        ArrayList<Move> jumpMoves = new ArrayList<>(); 
+
+        // If board is null, return empty list 
+
+        if (board == null) { 
+
+            return jumpMoves; 
+        } 
+
+        for (Checker checker : checkers) { 
+
+            ArrayList<Cord> jumps; 
+
+            if (checker.getColor() == Color.BLACK) { 
+
+                jumps = board.getPossibleForwardJump(checker); 
+
+            } else { 
+
+                jumps = board.getPossibleBackwardJump(checker); 
+            } 
+
+            for (Cord jump : jumps) { 
+
+                jumpMoves.add(new Move(checker, jump, true)); 
+            } 
+        } 
+        
+        return jumpMoves; 
+    } 
+
+  
     private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){} 
 
     private ArrayList<Cord> getPossibleMoves(Checker piece){} 
