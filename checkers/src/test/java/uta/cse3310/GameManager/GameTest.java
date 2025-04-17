@@ -7,6 +7,12 @@ import static org.junit.Assert.assertTrue;
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.GameUpdate;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.GamePlay.Cord;
 
 /**
  * These are the Unit tests for the Game class to ensure proper behavior of
@@ -30,7 +36,7 @@ public class GameTest {
         }
 
         @Override
-        public boolean endGame(GameState gs){
+        public boolean endGame(GameState gs) {
             return true;
         }
     }
@@ -39,7 +45,7 @@ public class GameTest {
     void testCreateGame() {
         // Making game manager object
         GameManager manager = new GameManager();
-        //manager.initializeGames(); //Moved initialization into constructor
+        // manager.initializeGames(); //Moved initialization into constructor
 
         // Player objects
         Player p1 = new MockPlayer(0);
@@ -49,11 +55,11 @@ public class GameTest {
         boolean result = manager.createGame(p1, p2);
 
         // Will return true if executed correctly
-        assertTrue("Game was created successfully!", result); //Causes an error
+        assertTrue("Game was created successfully!", result); // Causes an error
     }
 
     @Test
-    void testRemoveGame(){
+    void testRemoveGame() {
         // Making game manager object
         GameManager manager = new GameManager();
 
@@ -65,9 +71,9 @@ public class GameTest {
 
         // Setting to boolean
         boolean result = manager.createGame(p1, p2);
-        
+
         // Will return true if executed correctly
-        assertTrue("Game was created successfully!", result); //Causes an error
+        assertTrue("Game was created successfully!", result); // Causes an error
         assertEquals(9, manager.getNumOfAvailableGames(), "Game is now active after creation!");
 
         Game currentGame = null;
@@ -81,4 +87,29 @@ public class GameTest {
 
         assertEquals(10, manager.getNumOfAvailableGames(), "Game was removed successfully!");
     }
+
+    @Test
+    void testProcessMove() {
+
+        GameManager manager = new GameManager();
+        // Using dummy values for testing purposes
+        GameMove move = new GameMove(1, 3, 2, 6, 3, "King");
+        move.getFromPosition_X();
+        move.getFromPosition_Y();
+        move.getToPosition_X();
+        move.getToPosition_Y();
+        move.getClietId();
+        // Making objects
+        GamePlay gamePlay = new GamePlay(1);
+        Cord cord = new Cord(3, 2);
+        Checker piece = new Checker(cord, Color.RED);
+        gamePlay.getBoard().checkerBoard[2][3] = piece;
+
+        GameUpdate update = manager.processMove(move, gamePlay);
+
+        // will return equals and true if executed
+        assertEquals("In Progress", update.getGameStatus());
+        assertTrue(update.getCapturedPosition().contains("Playerid"));
+    }
+
 }
