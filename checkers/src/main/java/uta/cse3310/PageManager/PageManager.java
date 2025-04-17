@@ -698,8 +698,11 @@ public class PageManager {
     }
     public void sendUpdate(int UserId, GameUpdate update){
         int userId = UserId;
+        GameUpdate updates = update;
+        String board[][] = To2DstringArray(updates.getUpdatedBoard());
+        updates.setboardState(board);
         int clientId = userIDToClientID.get(userId);
-        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
+        JsonObject json = JsonParser.parseString(gson.toJson(updates)).getAsJsonObject();
         json.addProperty("responseID", "GameUpdate");
         UserEventReply reply = new UserEventReply();
         reply.replyObj = json;
