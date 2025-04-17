@@ -75,7 +75,27 @@ public class BotI extends Bot {
     /* 
 
 
-    protected ArrayList<Checker> getAvailableCheckers() {} 
+    // Get all checkers of the bot's color 
+
+    protected ArrayList<Checker> getAvailableCheckers() { 
+        
+        ArrayList<Checker> checkers = new ArrayList<>(); 
+        
+        // If board is null, return empty list 
+        if (board == null) { 
+            return checkers; 
+        } 
+
+        for (int y = 0; y < 8; y++) { 
+            for (int x = 0; x < 8; x++) { 
+                Checker checker = board.checkSpace(new Cord(x, y)); 
+                if (checker != null && checker.getColor() == color) { 
+                    checkers.add(checker); 
+                } 
+            } 
+        } 
+        return checkers; 
+    }  
 
     private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers){} 
 
