@@ -100,7 +100,7 @@
 			<button>
 				<!-- Will always have current player information, parameter is player they want to challenge -->
 				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
-				<a id="CURRENT_SESSION_JQ" type="button" onclick="match_making({'id':1,'name':'bob','elo':1200})">
+				<a id="CURRENT_SESSION_JQ" type="button" onclick="sendMessage({action:'joinQueue', playerClientId: globalClientID})">
 					Match Making
 				</a>
 			</button>
@@ -145,10 +145,11 @@
 				const challenge_btn = document.createElement("button");
 				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
 				challenge_btn.innerText = "Challenge";
-				challenge_btn.onclick = function () {
+				challenge_btn.addEventListener("click", function () {
 					// req_challenge(1, player_info.ClientID);
-					console.log("Requesting challenge to player: {player_id}");
-				};
+					// console.log(`Requesting challenge to player: ${player_info.ClientID}`);
+					sendMessage({action:"challengePlayer",opponentClientId: player_info.ClientID});
+				});
 
 				const view_btn = document.createElement("button");
 				view_btn.id = `view_btn-${player_info.ClientID}`;
@@ -452,7 +453,7 @@
 
 	function swapToPage(page) {
 		console.log("Switching to page " + page);
-		var listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
+		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
 		listOfDiv.forEach(function (id) {
 			var div = document.getElementById(id);
 			if (div) div.style.display = "none";
