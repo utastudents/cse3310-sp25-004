@@ -172,8 +172,98 @@ public class BotI extends Bot {
         return moves; 
 } 
 
-    private ArrayList<Cord> getPossibleMoves(Checker piece){} 
+ // Get all possible moves for a single checker 
 
+    private ArrayList<Cord> getPossibleMoves(Checker piece) { 
+
+        ArrayList<Cord> moves = new ArrayList<>(); 
+
+        // If board is null, return empty list 
+
+        if (board == null) { 
+
+            return moves; 
+
+        } 
+
+        int x = piece.getCord().getX(); 
+
+        int y = piece.getCord().getY(); 
+
+        // For kings, check both forward and backward moves 
+
+        if (piece.isKing()) { 
+
+            // Forward moves 
+
+            if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
+
+                moves.add(new Cord(x + 1, y + 1)); 
+
+            } 
+
+            if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
+
+                moves.add(new Cord(x - 1, y + 1)); 
+
+            } 
+
+            // Backward moves 
+
+            if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
+
+                moves.add(new Cord(x + 1, y - 1)); 
+
+            } 
+
+            if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
+
+                moves.add(new Cord(x - 1, y - 1)); 
+
+            } 
+
+        }  
+
+        // For regular pieces, only check moves in their direction 
+
+        else { 
+
+            if (piece.getColor() == Color.BLACK) { 
+
+                if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
+
+                    moves.add(new Cord(x + 1, y + 1)); 
+
+                } 
+
+                if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
+
+                    moves.add(new Cord(x - 1, y + 1)); 
+
+                } 
+
+            } else { 
+
+                if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
+
+                    moves.add(new Cord(x + 1, y - 1)); 
+
+                } 
+
+                if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
+
+                    moves.add(new Cord(x - 1, y - 1)); 
+
+                } 
+
+            } 
+
+        } 
+
+        return moves; 
+    } 
+
+  
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {return jumpMoves;}
  
     private Move selectBestMove(ArrayList<Move> moves) {}
