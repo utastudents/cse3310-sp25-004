@@ -394,19 +394,7 @@
 </html>
 <script src="socket.js"></script>
 <script>
-	// each of the 'divs' in the html page should have attributes to allow them to be hidden.
-	// the page manager should send a small json message, that tells which of these are hidden
-	// and which are visible when there is a change
-	// something like "{"display_new_account":t,"display_join_game":f,"display_game_display:f,"display_summary":f}"
-
-
-	// a reminder.  we want to create one websocket connection, and use if, basically forever.
-	// or until the user decides to go to another page.
-	// this requires everything to load from this page.
-
-
-	// WEBSOCKET CALLBACK FUNCTIONS
-	// These functions are called in response to the client receiving websocket messages
+	// Log in / new user functions
 
 	function login(message) {
 		document.getElementById("login-username-error").style.display = "none";
