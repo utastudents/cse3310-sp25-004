@@ -1,5 +1,9 @@
 package uta.cse3310.GameTermination;
 
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sq;.SQLException;
+
 import java.util.HashMap;
 import java.sql.*;
 import java.util.ArrayList;
