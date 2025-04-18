@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class BotII extends Bot {
 	
-	//private GamePlay gamePlay;
-    //private Color botColor = Color.BLACK; // Default color for the bot
+	private Game game;
+    private Color botColor = Color.BLACK; // Initializing with a default value
 
     /*
     public BotII(GamePlay gamePlay, Color botColor) {
@@ -151,7 +151,7 @@ public static class Move {
     public void waitForOpponent() {
         // TODO: Wait for opponent to make a move before acting
     }
-      public void adjustStrategy() {
+    public void adjustStrategy() {
         // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
         // TODO: Change strategy based on early, mid, or late game
         // Early: Moving first row pieces?
@@ -161,7 +161,7 @@ public static class Move {
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
     }
-     public boolean isPieceCaptured(int pieceId) {
+    public boolean isPieceCaptured(int pieceId) {
         // TODO: Check if a piece has been captured
         return false;
     }
@@ -171,8 +171,124 @@ public static class Move {
 
     @Override
     public boolean makeMove(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+        // Since we can't directly get the board from game, we need to get it another way
+        if (this.game == null) {
+            return false;
+        }
+        
+        // Access the board from the game
+        Board board = null;
+        try {
+            // This is a guess at the correct method chain - adjust as needed
+            board = this.game.getBoard().getBoard();
+        } catch (Exception e) {
+            // If that doesn't work, we can't proceed
+            return false;
+        }
+        
+        if (board == null) {
+            return false;
+        }
+        
+        // Get our color - since getColor() doesn't exist, we'll use our member variable directly
+        Color myColor = this.botColor;
+        if (myColor == null) {
+            // Default to BLACK if not set
+            myColor = Color.BLACK;
+        }
+        
+        // Rest of the logic for making a move
+        ArrayList<Checker> myCheckers = new ArrayList<>();
+        
+        // Find all our checkers
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker checker = board.checkerBoard[y][x];
+                if (checker != null && checker.getColor() == myColor) {
+                    myCheckers.add(checker);
+                }
+            }
+        }
+        
+        if (myCheckers.isEmpty()) {
+            return false;
+        }
+        
+        // Check for jumps first (they're mandatory in checkers)
+        for (Checker checker : myCheckers) {
+            ArrayList<Cord> jumps = new ArrayList<>();
+            
+            // Get possible jumps
+            ArrayList<Cord> forwardJumps = board.getPossibleForwardJump(checker);
+            if (forwardJumps != null) {
+                jumps.addAll(forwardJumps);
+            }
+            
+            // Kings can also jump backward
+            if (checker.isKing()) {
+                ArrayList<Cord> backwardJumps = board.getPossibleBackwardJump(checker);
+                if (backwardJumps != null) {
+                    jumps.addAll(backwardJumps);
+                }
+            }
+            
+            if (!jumps.isEmpty()) {
+                // Take the first jump available
+                Cord jumpDest = jumps.get(0);
+                board.updatePosition(checker, jumpDest);
+                
+                // Check if we need to king the piece
+                board.kingMe(checker);
+                
+                return true;
+            }
+        }
+        
+        // Try the defensive strategy
+        Move defenseMove = defendPieces(board);
+        if (defenseMove != null) {
+            board.updatePosition(defenseMove.piece, defenseMove.destination);
+            
+            // Check if we need to king the piece
+            board.kingMe(defenseMove.piece);
+            
+            return true;
+        }
+        
+        // If no jumps or defensive moves, make any valid move
+        for (Checker checker : myCheckers) {
+            ArrayList<Cord> normalMoves = new ArrayList<>();
+            
+            // For black pieces and kings
+            if (myColor == Color.BLACK || checker.isKing()) {
+                // Check forward left
+                checkMove(board, checker, -1, 1, normalMoves);
+                // Check forward right
+                checkMove(board, checker, 1, 1, normalMoves);
+            }
+            
+            // For red pieces and kings
+            if (myColor == Color.RED || checker.isKing()) {
+                // Check backward left
+                checkMove(board, checker, -1, -1, normalMoves);
+                // Check backward right
+                checkMove(board, checker, 1, -1, normalMoves);
+            }
+            
+            if (!normalMoves.isEmpty()) {
+                // Just take the first valid move
+                Cord moveDest = normalMoves.get(0);
+                board.updatePosition(checker, moveDest);
+                
+                // Check if we need to king the piece
+                board.kingMe(checker);
+                
+                return true;
+            }
+        }
+        
+        // No valid moves found
+        return false;
     }
 
     @Override
