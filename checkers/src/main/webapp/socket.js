@@ -15,7 +15,12 @@ connection = new WebSocket(serverUrl);
 
 // Messenger - This is how ALL outgoing messages will be sent to the server. ALL OF THEM. 
 function sendMessage(json = {}) {
-    jsonMsg = JSON.parse(json);
+    let jsonMsg = null;
+    if (typeof json === "string") {
+        jsonMsg = JSON.parse(json);
+    } else {
+        jsonMsg = json;
+    }
 
     if (!jsonMsg.action) {
         console.trace("No ACTION specified in sendMessage!");
@@ -38,16 +43,10 @@ connection.onclose = function (evt) {
 
 var globalClientID = null;
 
-connection.onmessage = function (evt) {
-    let msg = evt; //extract data from websocket response
-    console.log("Message received: " + msg);
-    let jsonMsg = JSON.parse(msg);
-
-    console.log(jsonMsg);
-
+connection.onmessage = function (msg) {
+    let jsonMsg = JSON.parse(msg.data);
+    
     let responseID = jsonMsg.responseID;
-
-    console.log("Response ID: " + responseID);
 
     if (jsonMsg.clientId) {
         globalClientID = jsonMsg.clientId;

@@ -65,7 +65,7 @@
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
-    <div id="join_game" style = "display: none">
+    <div id="join_game" >
 		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
@@ -135,8 +135,7 @@
 				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
 				challenge_btn.innerText = "Challenge";
 				challenge_btn.onclick = function () {
-					// req_challenge(1, player_info.ClientID);
-					console.log("Requesting challenge to player: {player_id}");
+					sendMessage({ action: "challengePlayer", "opponentClientId": player_info.ClientID }); 
 				};
 
 				const view_btn = document.createElement("button");
@@ -158,6 +157,17 @@
 
 				listEl.appendChild(li);
 			};
+
+			function req_challenge() {
+				const challengeRequest = {
+					type: "request_challenge",
+					playerID: player_id,
+					challengedPlayerID: challenged_player_id
+				};
+
+				console.log("Requesting challenge to player:", challenged_player_id);
+				sendMessage(JSON.stringify(challengeRequest));
+			}
 			
 			//view match function
 			function viewMatch(playerID) {
