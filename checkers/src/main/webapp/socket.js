@@ -28,8 +28,11 @@ function sendMessage(json = {}) {
     }
     
     console.log("Sending message " + jsonMsg.action + " to server");
-    console.log(JSON.stringify(jsonMsg));
-    connection.send(jsonMsg);
+
+    let toSend = JSON.stringify(jsonMsg);
+
+    console.log(toSend);
+    connection.send(toSend);
 }
 
 
