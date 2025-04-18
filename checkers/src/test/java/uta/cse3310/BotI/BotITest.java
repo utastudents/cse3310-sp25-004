@@ -1,4 +1,4 @@
-/*package uta.cse3310.BotI;
+package uta.cse3310.BotI;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -89,4 +89,4 @@ public class Bot1Test {
         boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
         assertTrue("Bot should be able to make a move after game ends", moveResult);
     }
-} */
+} 
