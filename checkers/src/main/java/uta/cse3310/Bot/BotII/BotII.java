@@ -334,7 +334,6 @@ public class BotII extends Bot {
         // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
     }
 
-    @Override
     public void makeMove() {
         if (this.game == null) return;
 
@@ -446,7 +445,6 @@ public class BotII extends Bot {
     }
     }
 
-    @Override
     public boolean makeMove(GameState gs) {
         makeMove(); // call your actual move logic
         return true;
