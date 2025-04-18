@@ -310,8 +310,9 @@ public static class Move {
 
     @Override
     public boolean startGame(Game g) {
-        return true; //Can be ignored
-    }
+        this.game = g;
+        return true;
+}
 
     @Override
     public boolean endGame(GameState gs) {
