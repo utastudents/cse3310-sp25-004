@@ -75,9 +75,8 @@
 	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
-
-	<div id="join_game">
-		<div class="lobby_lists_container" style="width:100%;">
+    <div id="join_game" style="display: none;">
+		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
 			<!-- Have function to get amount of players -->
@@ -91,8 +90,8 @@
 					<!-- EXAMPLE: -->
 					<!-- <li class="player">
 						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
-						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
-						<button id="btn2-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
+						<button id="chall_btn-UID002" onclick="req_challenge(1,2)">Challenge</button>
+						<button id="view_btn-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
 					</li> -->
 				</ol>
 			</div>
@@ -134,10 +133,10 @@
 				paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
 
 				const span = document.createElement("span");
-				if (player_info.status == "ONLINE") {
-					span.className = "status free";
+				if (player_info.status == "ONLINE"){
+					span.className = "status free"; 
 				} else {
-					span.className = "status busy";
+					span.className = "status busy"; 
 				}
 				paragraph.appendChild(span);
 
@@ -145,52 +144,62 @@
 				const challenge_btn = document.createElement("button");
 				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
 				challenge_btn.innerText = "Challenge";
-				challenge_btn.addEventListener("click", function () {
-					// req_challenge(1, player_info.ClientID);
-					// console.log(`Requesting challenge to player: ${player_info.ClientID}`);
-					sendMessage({action:"challengePlayer",opponentClientId: player_info.ClientID});
-				});
+				challenge_btn.onclick = function () {
+					sendMessage({ action: "challengePlayer", "opponentClientId": player_info.ClientID }); 
+				};
 
 				const view_btn = document.createElement("button");
 				view_btn.id = `view_btn-${player_info.ClientID}`;
 				view_btn.innerText = "View Match";
-				if (player_info.status == "ONLINE") {
-					view_btn.disabled = true;
+				if (player_info.status == "ONLINE"){
+					view_btn.disabled = true; 
 				} else {
-					view_btn.disabled = false;
+					view_btn.disabled = false; 
 				}
-				view_btn.disabled = true;
+				view_btn.disabled = true; 
 				view_btn.onclick = function () {
 					viewMatch(player_info.ClientID);
 				};
-
+			
 				li.appendChild(paragraph);
 				li.appendChild(challenge_btn);
 				li.appendChild(view_btn);
 
 				listEl.appendChild(li);
 			};
+
+			function req_challenge() {
+				const challengeRequest = {
+					type: "request_challenge",
+					playerID: player_id,
+					challengedPlayerID: challenged_player_id
+				};
+
+				console.log("Requesting challenge to player:", challenged_player_id);
+				sendMessage(JSON.stringify(challengeRequest));
+			}
+			
 			//view match function
 			function viewMatch(playerID) {
 				const viewMatchRequest = {
 					type: "request_view_match",
-					playerID: playerID
+					playerID: playerID 
 				};
 
 				console.log("Requesting to view match for player:", playerID);
-				sendMessage(JSON.stringify(viewMatchRequest));
+					sendMessage(JSON.stringify(viewMatchRequest));
 			}
 
 			function watchBotVsBot(player_info) {
 				const botVsBotReq = {
 					type: "request_bot_vs_bot",
-					playerID: player_info.ClientID,
+					playerID: player_info.ClientID, 
 				};
 
 				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
 				sendMessage(JSON.stringify(botVsBotReq));
 			}
-			// end
+				
 			function updateJoinGameList(data) {
 				clearLobbyList();
 				const current_player_id = globalClientID;
