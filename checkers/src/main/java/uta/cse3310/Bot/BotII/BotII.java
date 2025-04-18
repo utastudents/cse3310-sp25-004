@@ -27,7 +27,33 @@ public class BotII extends Bot {
     }
     
     public void makeValidMove() {
-        // TODO: Logic to choose and make a legal move
+    // try normal move if nothing else works
+    Board board = game.getBoard().getBoard();
+
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker c = board.checkerBoard[y][x];
+                if (c != null && c.getColor() == botColor) {
+                    ArrayList<Cord> moves = new ArrayList<>();
+
+                    if (botColor == Color.BLACK || c.isKing()) {
+                        checkMove(board, c, -1, 1, moves);
+                        checkMove(board, c, 1, 1, moves);
+                    }
+                    if (botColor == Color.RED || c.isKing()) {
+                        checkMove(board, c, -1, -1, moves);
+                        checkMove(board, c, 1, -1, moves);
+                    }
+
+                    if (!moves.isEmpty()) {
+                        Cord dest = moves.get(0);
+                        board.updatePosition(c, dest);
+                        promoteToKing(); // crown if needed
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public void promoteToKing() {
@@ -48,7 +74,7 @@ public class BotII extends Bot {
             }
         }
     }
-    
+
     public static Move defendPieces(Board board) {
     // TODO: Prioritize defending own pieces over offense
     // TODO: Try to block opponent from advancing or jumping
