@@ -22,6 +22,9 @@ public class BotII extends Bot {
         this.botColor = botColor; // Set the bot's color
     }
     */
+    public BotII() {
+        super(); // Calls the constructor of the parent class which is Bot
+    }
     
     public void makeValidMove() {
         // TODO: Logic to choose and make a legal move
