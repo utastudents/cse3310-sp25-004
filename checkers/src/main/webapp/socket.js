@@ -147,8 +147,42 @@ connection.onmessage = function (evt) {
     }
 }
 
+/*START: This part will be for the challenged button timer, this is so I can come back to it */
+function startChallenge(button){
+    button.classList.add("challenged");
+    let time = 10;
+    const origText = button.innerText;
+    button.disabled = true;
 
+    //to show count down//
+    const count = setInterval(() => {
+        button.innerText = 'Waiting... ${timeLeft}s';
+        time--;
 
+        if(time < 0){
+            clearInterval(count);
+            button.classList.remove("challenged");
+            button.classList.add("fail");
+            button.innerText = "Challenge Expired";
+        }
+    }, 1000);
+
+    setTimeout(() => {
+        clearInterval(count);
+        const accepted = Math.random() > 0.5;
+        button.classList.remove("challenged");
+
+        if(accepted){
+            button.classList.add("success");
+            button.innerText = "Challenge Accepted!";
+        }else{
+            button.classList.add("fail");
+            button.innerText = "Challenge Declined";
+        }
+    }, Math.floor(Math.random() * 10000))
+}
+
+/*END of timer code*/ 
 
 function handleJoinGame(data) { //function to update when join team
     console.log("Join team response received", data);
@@ -157,4 +191,5 @@ function handleJoinGame(data) { //function to update when join team
     document.getElementById("new_account").style.display = "none";
     document.getElementById("login").style.display = "none"; 
 }
+
 
