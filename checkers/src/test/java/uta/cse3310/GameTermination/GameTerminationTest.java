@@ -158,5 +158,5 @@ public class GameTerminationTest {
             // If we get a different exception, that's unexpected
             fail("Unexpected exception: " + e.getMessage());
         }
-    }
-}*/
+    */
+}
