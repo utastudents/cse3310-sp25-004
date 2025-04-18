@@ -298,8 +298,7 @@ button[disabled] {
 }
 
 /* This next part of the code is for the challenge button to have a timer*/
-#chall_btn-UID002{
-  padding: 10px 20px;
+.chall_btn {
   font-size: 16px;
   border-radius: 8px;
   border: none;
@@ -308,15 +307,15 @@ button[disabled] {
   transition: background-color 0.3s;
 }
 
-#chall_btn-UID002.challenged{
+.chall_btn.challenged{
   background-color: orange;
 }
 
-#chall_btn-UID002.success{
+.chall_btn.success{
   background-color: green;
 }
 
-#chall_btn-UID002.fail{
+.chall_btn.fail{
   background-color: red;
 }
 
