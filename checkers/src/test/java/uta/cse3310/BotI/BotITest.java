@@ -22,7 +22,7 @@ public class BotITest {
 
     @Before
     public void setUp() {
-        gameplay = new GamePlay(1); // Pass game ID
+        gameplay = new GamePlay(1);
         board = gameplay.getBoard();
         game = new Game(1, null, null);
         game.startGame(game);
