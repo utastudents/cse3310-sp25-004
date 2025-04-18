@@ -13,10 +13,10 @@ import uta.cse3310.GamePlay.Cord;
 
 public class BotIITest {
 
-    @Test
+  /*  @Test
 	void Makemove() {
 		
-	}
+	}*/
 
     @Test
     public void TestDefendPieces() {
@@ -38,7 +38,7 @@ public class BotIITest {
 
     }
 
-    @Test
+  /*  @Test
     void TestcapturePiece() {
 	//Arange
 	/*
@@ -60,7 +60,7 @@ public class BotIITest {
        //
      */
 
-    }
+    } */
 
     @Test
     public void testIsInDanger() {
