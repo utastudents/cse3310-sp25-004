@@ -1,3 +1,5 @@
+
+/*SIGN UP*/
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,11 +8,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: whitesmoke; 
+    background: rgb(24, 24, 24); 
     color: 333333;
 }
 
-/*SIGN UP*/
 .center-container {
     position: relative;
     width: 100%;
@@ -24,11 +25,11 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    border-radius: 9px;
+    border: 2px solid rgb(0, 0, 0);
     width: 500px;
     padding: 25px;
     text-align: center;
-    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+    box-shadow: 0  0 30px rgba(255, 255, 255, 0.3);
 }
 
 .signup-box {
@@ -65,20 +66,43 @@ input::placeholder {
 
 
 .signup-box button {
-    background-color: #39393959;
+    position: relative;
+    background: transparent;
     color: rgb(255, 255, 255);
-    border: none;
+    border: 2px solid black;
     font-size: 16px;
+    font-weight: 500;
     width: 75%;
     padding: 5px;
     margin-top: 5px;
-    border-radius: 2px;
+    border-radius: 40px;
     height: 40px;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
 }
 
-.signup-box button:hover {
-    color: rgb(255, 255, 255);
-    background: #000;
+.signup-box button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgb(0, 0, 0), rgb(34, 34, 34), rgb(77, 77, 77), rgb(116, 116, 116));
+    opacity: 1;
+    z-index: 0;
+    border-radius: 40px;
+    pointer-events: none;
+    transition: .5s;
+}
+    
+.signup-box button span {
+    position: relative;
+    z-index: 1;
+}
+.signup-box button:hover::before {
+ opacity: 60%;
 }
 
 .signup-text {
@@ -89,12 +113,22 @@ input::placeholder {
 }
 
 .signup-text a{
-    color: #39393959;
+    color: #ffffff59;
     text-decoration: underline;
 }
 
 .signup-text a:hover {
-    color: #000; 
+    color: #000000; 
+}
+
+#back-to-login{
+    color: rgb(107, 107, 107);
+    font-weight: 600;
+}
+
+#back-to-login:hover{
+    color: black;
+    text-decoration: underline;
 }
 
 /*ICON SIGNUP*/
