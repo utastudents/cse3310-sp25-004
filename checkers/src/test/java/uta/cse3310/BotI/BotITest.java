@@ -13,7 +13,7 @@ import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameState;
 
-public class Bot1Test {
+public class BotITest {
 
     private BotI bot;
     private Game game;
@@ -22,7 +22,7 @@ public class Bot1Test {
 
     @Before
     public void setUp() {
-        gameplay = new GamePlay();
+        gameplay = new GamePlay(1); // Pass game ID
         board = gameplay.getBoard();
         game = new Game(1, null, null);
         game.startGame(game);
@@ -31,17 +31,15 @@ public class Bot1Test {
 
     @Test
     public void testMakeMove() {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                board.removePiece(new Cord(x, y));
-            }
-        }
+        // Clear the board by creating a new board
+        board = new Board();
         
-        Checker blackPiece = new Checker(Color.BLACK, new Cord(1, 1));
-        board.placePiece(blackPiece);
+        // Place pieces
+        Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
+        board.updatePosition(blackPiece, new Cord(1, 1));
         
-        Checker redPiece = new Checker(Color.RED, new Cord(2, 2));
-        board.placePiece(redPiece);
+        Checker redPiece = new Checker(new Cord(2, 2), Color.RED);
+        board.updatePosition(redPiece, new Cord(2, 2));
         
         bot.updateBoard(GameState.GAME_DISPLAY);
         
@@ -54,14 +52,12 @@ public class Bot1Test {
 
     @Test
     public void testUpdateBoard() {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                board.removePiece(new Cord(x, y));
-            }
-        }
+        // Clear the board by creating a new board
+        board = new Board();
         
-        Checker blackPiece = new Checker(Color.BLACK, new Cord(1, 1));
-        board.placePiece(blackPiece);
+        // Place piece
+        Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
+        board.updatePosition(blackPiece, new Cord(1, 1));
         
         boolean updateResult = bot.updateBoard(GameState.GAME_DISPLAY);
         assertTrue("Board update should be successful", updateResult);
@@ -72,14 +68,12 @@ public class Bot1Test {
 
     @Test
     public void testEndGame() {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                board.removePiece(new Cord(x, y));
-            }
-        }
+        // Clear the board by creating a new board
+        board = new Board();
         
-        Checker blackPiece = new Checker(Color.BLACK, new Cord(1, 1));
-        board.placePiece(blackPiece);
+        // Place piece
+        Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
+        board.updatePosition(blackPiece, new Cord(1, 1));
         
         bot.updateBoard(GameState.GAME_DISPLAY);
         
