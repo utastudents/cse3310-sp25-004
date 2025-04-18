@@ -102,11 +102,71 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
     }
-    //Sending updated board to PageManager
-    public void sendUpdateBoard(GameMove move, GamePlay gamePlay, PageManager pageManager) {
-        GameUpdate update = processMove(move, gamePlay);
-        int userId = move.getClietId(); 
-        pageManager.sendUpdate(userId, update);
-    }
 
-}
+    //Converting the board from Checker[][] to String[][] for display
+    public String[][] To2DstringArray(Checker[][] board) {
+        String[][] result = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Checker c = board[i][j];
+                if (c == null) {
+                    result[i][j] = "empty";
+                } else {
+                    String type = c.isKing() ? "king" : "pawn";
+                    String color = c.getColor().toString().toLowerCase();
+                    result[i][j] = color + "_" + type;
+                }
+            }
+        }
+        return result;
+    }
+    
+    // Handling move logic and sending updated board state to both players involved in the game
+    public void sendUpdateBoard(GameMove move, GamePlay gamePlay, PageManager pageManager) {
+        int playerId = move.getClietId(); //recording a move
+        
+        //Getting coordinates for the move
+        Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
+        Cord to = new Cord(move.getToPosition_X(), move.getToPosition_Y());
+        
+        //Getting the checkers peice being moved
+        Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
+
+        // Attempting to move the piece, it will return 2 if successful
+        int result = gamePlay.move(piece, to);
+    
+        if (result == 2) {
+            boolean isCapture = true;
+            boolean isKing = piece.isKing();
+    
+            String movePath = "Playerid " + playerId + ": (" + from.getX() + "," + from.getY() + ") -> (" +
+                    to.getX() + "," + to.getY() + ")";
+    
+            GameUpdate update = new GameUpdate(true, "In Progress", "", isCapture, isKing, movePath);
+            update.setboardState(To2DstringArray(gamePlay.getBoard().checkerBoard));
+    
+            // Sending to both players of the game the player is in
+            for (Game game : games) {
+                if (game != null && game.isGameActive()) {
+                    Player p1 = game.getPlayer1();
+                    Player p2 = game.getPlayer2();
+                    
+                     // Matching player to game
+                    if (p1 != null && p1.getPlayerId() == playerId) {
+                        pageManager.sendUpdate(p1.getPlayerId(), update);
+                        if (p2 != null) {
+                            pageManager.sendUpdate(p2.getPlayerId(), update);
+                        }
+                        break;
+                    } else if (p2 != null && p2.getPlayerId() == playerId) {
+                        pageManager.sendUpdate(p2.getPlayerId(), update);
+                        if (p1 != null) {
+                            pageManager.sendUpdate(p1.getPlayerId(), update);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}   
