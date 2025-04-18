@@ -170,138 +170,88 @@ public static class Move {
     }
 
     @Override
-    public boolean makeMove(GameState gs) {
-        // Since we can't directly get the board from game, we need to get it another way
-        if (this.game == null) {
-            return false;
-        }
-        
-        // Access the board from the game
-        Board board = null;
-        try {
-            // This is a guess at the correct method chain - adjust as needed
-            board = this.game.getBoard().getBoard();
-        } catch (Exception e) {
-            // If that doesn't work, we can't proceed
-            return false;
-        }
-        
-        if (board == null) {
-            return false;
-        }
-        
-        // Get our color - since getColor() doesn't exist, we'll use our member variable directly
-        Color myColor = this.botColor;
-        if (myColor == null) {
-            // Default to BLACK if not set
-            myColor = Color.BLACK;
-        }
-        
-        // Rest of the logic for making a move
-        ArrayList<Checker> myCheckers = new ArrayList<>();
-        
-        // Find all our checkers
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                Checker checker = board.checkerBoard[y][x];
-                if (checker != null && checker.getColor() == myColor) {
-                    myCheckers.add(checker);
-                }
-            }
-        }
-        
-        if (myCheckers.isEmpty()) {
-            return false;
-        }
-        
-        // Check for jumps first (they're mandatory in checkers)
-        for (Checker checker : myCheckers) {
-            ArrayList<Cord> jumps = new ArrayList<>();
-            
-            // Get possible jumps
-            ArrayList<Cord> forwardJumps = board.getPossibleForwardJump(checker);
-            if (forwardJumps != null) {
-                jumps.addAll(forwardJumps);
-            }
-            
-            // Kings can also jump backward
-            if (checker.isKing()) {
-                ArrayList<Cord> backwardJumps = board.getPossibleBackwardJump(checker);
-                if (backwardJumps != null) {
-                    jumps.addAll(backwardJumps);
-                }
-            }
-            
-            if (!jumps.isEmpty()) {
-                // Take the first jump available
-                Cord jumpDest = jumps.get(0);
-                board.updatePosition(checker, jumpDest);
-                
-                // Check if we need to king the piece
-                board.kingMe(checker);
-                
-                return true;
-            }
-        }
-        
-        // Try the defensive strategy
-        Move defenseMove = defendPieces(board);
-        if (defenseMove != null) {
-            board.updatePosition(defenseMove.piece, defenseMove.destination);
-            
-            // Check if we need to king the piece
-            board.kingMe(defenseMove.piece);
-            
-            return true;
-        }
-        
-        // If no jumps or defensive moves, make any valid move
-        for (Checker checker : myCheckers) {
-            ArrayList<Cord> normalMoves = new ArrayList<>();
-            
-            // For black pieces and kings
-            if (myColor == Color.BLACK || checker.isKing()) {
-                // Check forward left
-                checkMove(board, checker, -1, 1, normalMoves);
-                // Check forward right
-                checkMove(board, checker, 1, 1, normalMoves);
-            }
-            
-            // For red pieces and kings
-            if (myColor == Color.RED || checker.isKing()) {
-                // Check backward left
-                checkMove(board, checker, -1, -1, normalMoves);
-                // Check backward right
-                checkMove(board, checker, 1, -1, normalMoves);
-            }
-            
-            if (!normalMoves.isEmpty()) {
-                // Just take the first valid move
-                Cord moveDest = normalMoves.get(0);
-                board.updatePosition(checker, moveDest);
-                
-                // Check if we need to king the piece
-                board.kingMe(checker);
-                
-                return true;
-            }
-        }
-        
-        // No valid moves found
-        return false;
+public void makeMove() {
+    if (this.game == null) return;
+
+    Board board = null;
+    try {
+        board = this.game.getBoard().getBoard();
+
+    } catch (Exception e) {
+        return;
     }
 
-        // Helper method to check if a move is valid and add it to the list
-    private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
-        int newX = checker.getCord().getX() + dx;
-        int newY = checker.getCord().getY() + dy;
-        
-        // Check if destination is on board and empty
-        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && 
-            board.checkerBoard[newY][newX] == null) {
-            moves.add(new Cord(newX, newY));
+    if (board == null) return;
+
+    // get checkers of this bot's color
+    ArrayList<Checker> myPieces = new ArrayList<>();
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            Checker c = board.checkerBoard[y][x];
+            if (c != null && c.getColor() == this.botColor) {
+                myPieces.add(c);
+            }
         }
     }
+
+    if (myPieces.isEmpty()) return;
+
+    for (Checker piece : myPieces) {
+        ArrayList<Cord> jumps = new ArrayList<>();
+
+        if (this.botColor == Color.BLACK || piece.isKing()) {
+            jumps.addAll(board.getPossibleForwardJump(piece));
+        }
+        if (this.botColor == Color.RED || piece.isKing()) {
+            jumps.addAll(board.getPossibleBackwardJump(piece));
+        }
+
+        if (!jumps.isEmpty()) {
+            Cord jumpDest = jumps.get(0);
+            board.updatePosition(piece, jumpDest);
+            board.kingMe(piece);
+            return;
+        }
+    }
+
+    // try defend
+    Move move = defendPieces(board);
+    if (move != null) {
+        board.updatePosition(move.piece, move.destination);
+        board.kingMe(move.piece);
+        return;
+    }
+
+    // fallback move
+    for (Checker piece : myPieces) {
+        ArrayList<Cord> moves = new ArrayList<>();
+        if (this.botColor == Color.BLACK || piece.isKing()) {
+            checkMove(board, piece, -1, 1, moves);
+            checkMove(board, piece, 1, 1, moves);
+        }
+        if (this.botColor == Color.RED || piece.isKing()) {
+            checkMove(board, piece, -1, -1, moves);
+            checkMove(board, piece, 1, -1, moves);
+        }
+
+        if (!moves.isEmpty()) {
+            Cord dest = moves.get(0);
+            board.updatePosition(piece, dest);
+            board.kingMe(piece);
+            return;
+        }
+    }
+}
+
+        // Helper method to check if a move is valid and add it to the list
+private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
+    int newX = checker.getCord().getX() + dx;
+    int newY = checker.getCord().getY() + dy;
+
+    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
+        moves.add(new Cord(newX, newY));
+    }
+}
 
     @Override
     public boolean updateBoard(GameState gs) {
