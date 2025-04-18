@@ -291,6 +291,18 @@ public static class Move {
         return false;
     }
 
+        // Helper method to check if a move is valid and add it to the list
+    private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
+        int newX = checker.getCord().getX() + dx;
+        int newY = checker.getCord().getY() + dy;
+        
+        // Check if destination is on board and empty
+        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && 
+            board.checkerBoard[newY][newX] == null) {
+            moves.add(new Cord(newX, newY));
+        }
+    }
+
     @Override
     public boolean updateBoard(GameState gs) {
         return true; //Can be ignored
