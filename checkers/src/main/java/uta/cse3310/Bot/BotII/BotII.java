@@ -52,10 +52,10 @@ public class BotII extends Bot {
     }
 	
     //tests with a test checker piece if move willput piece in danger by calling isInDanger
-    /*private boolean isMoveSafe(Checker checker, Board board Cord dest) {
+    private boolean isMoveSafe(Checker checker, Board board Cord dest) {
   	Checker testChecker= new Checker(dest, Color.BLACK);
    	return !isInDanger(testChecker, board)
-    } */
+    } 
 
     // Attempt to make a defensive move for a given checker
     private boolean attemptDefensiveMove(Checker checker, Board board) {
@@ -70,7 +70,7 @@ public class BotII extends Bot {
 
         // Try each move and choose the safest one
         for (Cord dest : possibleMoves) {
-            //if (isMoveSafe(checker, dest, board)) { // DOES NOT COMPILE
+              if (isMoveSafe(checker, dest, board)) { 
                 board.updatePosition(checker, dest);  // Execute the move
                 return true;
             //}
