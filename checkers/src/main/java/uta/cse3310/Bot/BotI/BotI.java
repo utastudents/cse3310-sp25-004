@@ -264,11 +264,105 @@ public class BotI extends Bot {
     } 
 
   
-    private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {return jumpMoves;}
+        // select the best jump move based on strategy
+    private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
+        // if there's only one jump move, return it
+        if (jumpMoves.size() == 1) {
+            return jumpMoves.get(0);
+        }
+        
+        // prioritize jumps that lead to kings
+        ArrayList<Move> kingJumps = new ArrayList<>();
+        for (Move move : jumpMoves) {
+            if (wouldBecomeKing(move)) {
+                kingJumps.add(move);
+            }
+        }
+        
+        if (!kingJumps.isEmpty()) {
+            return kingJumps.get(random.nextInt(kingJumps.size()));
+        }
+        
+        // prioritize jumps that capture kings
+        ArrayList<Move> kingCaptureJumps = new ArrayList<>();
+        for (Move move : jumpMoves) {
+            if (capturesKing(move)) {
+                kingCaptureJumps.add(move);
+            }
+        }
+        
+        if (!kingCaptureJumps.isEmpty()) {
+            return kingCaptureJumps.get(random.nextInt(kingCaptureJumps.size()));
+        }
+        
+        // otherwise, choose a random jump move
+        return jumpMoves.get(random.nextInt(jumpMoves.size()));
+    }
  
-    private Move selectBestMove(ArrayList<Move> moves) {}
+    // select the best move based on strategy
+    private Move selectBestMove(ArrayList<Move> moves) {
+        // if there's only one move, return it
+        if (moves.size() == 1) {
+            return moves.get(0);
+        }
+        
+        // prioritize moves that lead to kings
+        ArrayList<Move> kingMoves = new ArrayList<>();
+        for (Move move : moves) {
+            if (wouldBecomeKing(move)) {
+                kingMoves.add(move);
+            }
+        }
+        
+        if (!kingMoves.isEmpty()) {
+            return kingMoves.get(random.nextInt(kingMoves.size()));
+        }
+        
+        // prioritize moves that protect pieces
+        ArrayList<Move> safeMoves = new ArrayList<>();
+        for (Move move : moves) {
+            if (isSafeMove(move)) {
+                safeMoves.add(move);
+            }
+        }
+        
+        if (!safeMoves.isEmpty()) {
+            return safeMoves.get(random.nextInt(safeMoves.size()));
+        }
+        
+        // prioritize moves that advance pieces toward the opponent's side
+        ArrayList<Move> advancingMoves = new ArrayList<>();
+        for (Move move : moves) {
+            if (isAdvancingMove(move)) {
+                advancingMoves.add(move);
+            }
+        }
+        
+        if (!advancingMoves.isEmpty()) {
+            return advancingMoves.get(random.nextInt(advancingMoves.size()));
+        }
+        
+        // otherwise, choose a random move
+        return moves.get(random.nextInt(moves.size()));
+    }
  
-    private boolean wouldBecomeKing(Move move) {}
+    // check if a move would result in the piece becoming a king
+    private boolean wouldBecomeKing(Move move) {
+        if (move.piece.isKing()) {
+            return false;
+        }
+        
+        if (move.piece.getColor() == Color.BLACK && move.destination.getY() == 7) {
+            return true;
+        }
+        
+        if (move.piece.getColor() == Color.RED && move.destination.getY() == 0) {
+            return true;
+        }
+        
+        return false;
+    }
+
 
     private boolean capturesKing(Move move) 
     {
