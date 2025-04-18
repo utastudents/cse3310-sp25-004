@@ -89,7 +89,7 @@ public class Board
 		}
 	}
 	
-	boolean moveForwardCheck(Checker piece, Cord dest) 
+	public boolean moveForwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally forward to the destination square. 
 	// Does not check Jumps
 	{
@@ -132,7 +132,7 @@ public class Board
 
 	}
 
-	boolean moveBackwardCheck(Checker piece, Cord dest) 
+	public boolean moveBackwardCheck(Checker piece, Cord dest) 
 	// Returns true if the piece can move diagonally backward to the destination square. 
 	// Does not check Jumps
 	{
