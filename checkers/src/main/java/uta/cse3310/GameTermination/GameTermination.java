@@ -58,69 +58,79 @@ public class GameTermination {
 
                 return null;
         }
+
         public HumanPlayer[] saveResults(Game game){
                 DB database = new DB();
                 gameState state = new gameState();
 
+                //ensure both platers are Humans(not Bots)
+                if(!(game.getPlayer1() instanceof HumanPlayer) || !(game.getPlayer2() instanceof HumanPlayer )){
+                        System.out.println("BOT DETECTED");
+                        return new HumanPlayer[] {null , null};
+                }
 
-                //retrieves playerId
-                int player1Id = game.getPlayer1().getPlayerId();
-                int player2Id = game.getPlayer2().getPlayerId();
+                //cast players
+                HumanPlayer gamePlayer1 = (HumanPlayer) game.getPlayer1();
+                HumanPlayer gamePlayer2 = (HumanPlayer) game.getPlayer2();
+
+                //retrieves username
+                String username1 = gamePlayer1.getUsername();
+                String username2 = gamePlayer2.getUsername();
+
+                //retrieve players current stats
+                HumanPlayer player1 = database.getPlayerByUsername(username1);
+                HumanPlayer player2 = database.getPlayerByUsername(username2);
 
                 //Determine which player is winning
                 int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game);
+                
+                //extract IDs and stats
+                int p1Id = player1.getPlayerId();
+                int p2Id = player2.getPlayerId();
 
-                //retrieve players current stats
-                HumanPlayer player1 = database.getPlayerById(player1Id);
-                HumanPlayer player2 = database.getPlayerById(player2Id);
+                int  p1Wins = player1.getWins();
+                int  p1Losses = player1.getLosses();
+                int  p1Games = player1.getGamesPlayed();
+                int  p1Elo = player1.getELO();
 
-                //if no games have ever been played start with 0
-                int p1Wins = 0, p1Losses = 0, p1Games = 0, p1Elo = 1000;
-                int p2Wins = 0, p2Losses = 0, p2Games = 0, p2Elo = 1000;
-
-                //check incase players aren't detected
-                if(player1 != null && player2 != null){
-                        p1Wins = player1.getWins();
-                        p1Losses = player1.getLosses();
-                        p1Games = player1.getGamesPlayed();
-                        p1Elo = player1.getELO();
-
-                        p2Wins = player2.getWins();
-                        p2Losses = player2.getLosses();
-                        p2Games = player2.getGamesPlayed();
-                        p2Elo = player2.getELO();
-                }
-
+                int  p2Wins = player2.getWins();
+                int  p2Losses = player2.getLosses();
+                int  p2Games = player2.getGamesPlayed();
+                int  p2Elo = player2.getELO();
+                
                 int updatedElo1 = p1Elo;
                 int updatedElo2 = p2Elo;
 
                 //Handles player draw
                 if (winnerID == -1){
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
+                        database.updatePlayerStats(p1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
+                        database.updatePlayerStats(p2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
                 //Handles Player 1 Win
-                }else if(winnerID == player1Id){
+                }else if(winnerID == p1Id){
                         updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
                         updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
 
-                        database.updatePlayerStats(player1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 2);
+                        database.updatePlayerStats(p1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
+                        database.updatePlayerStats(p2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 1);
                 //Handles Player 2 Win
-                }else if(winnerID == player2Id){
+                }else if(winnerID == p2Id){
                         updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
                         updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
 
-                        database.updatePlayerStats(player2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
+                        database.updatePlayerStats(p2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
+                        database.updatePlayerStats(p1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
                 }
 
                 //return updated player stats
                 HumanPlayer[] updatedStats = new HumanPlayer[2];
-                updatedStats[0] = database.getPlayerById(player1Id);
-                updatedStats[1] = database.getPlayerById(player2Id);
+                updatedStats[0] = database.getPlayerByUsername(username1);
+                updatedStats[1] = database.getPlayerByUsername(username2);
 
                 return updatedStats;
         }
+                
+
+
          // Generates and displays the leaderboard based on player scores. 
          public void generateLeaderboard(int clientId) {
         // Query the database for top 10 players.

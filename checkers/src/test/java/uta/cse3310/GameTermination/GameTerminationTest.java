@@ -18,12 +18,6 @@ import uta.cse3310.DB.DB;
 // Mock DB class for testing
 class MockDB extends DB {
     @Override
-    public HumanPlayer getPlayerById(int playerId) {
-        // Return a mock player with the given ID
-        return new HumanPlayer("Player" + playerId, "user" + playerId, playerId, Player.STATUS.IN_GAME, 5, 2, 1000, 7);
-    }
-    
-    @Override
     public boolean updatePlayerStats(int playerId, int wins, int losses, int ELO, int gamesPlayed) {
         // Mock implementation that always succeeds
         return true;

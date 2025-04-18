@@ -250,11 +250,4 @@ public class DB
         }
     }
 
-    // GameTermination was calling this method,
-    // so this is temp code. Will fix when they clarify what they meant to call - GameManager
-    public HumanPlayer getPlayerById(int player1Id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerById'");
-    }
-
 }
