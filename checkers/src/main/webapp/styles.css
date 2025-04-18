@@ -189,6 +189,9 @@ input::placeholder {
     position: relative;
     width: 100%;
 }
+.input-icon:hover {
+  transform: scale(1.05);
+}
 
 .input-icon i {
     position: absolute;
@@ -197,6 +200,7 @@ input::placeholder {
     transform: translateY(-50%);
     color: #b8b8b8;
 }
+
 
 
 
@@ -216,6 +220,7 @@ input::placeholder {
     color: rgb(255, 255, 255);
     background: #000;
 }
+
 
 #login-btn{
   position: relative;
