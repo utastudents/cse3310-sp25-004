@@ -13,7 +13,7 @@ public class GamePlay
     public GamePlay(int id) 
     {
         this.GameID = id;
-        this.board= new Board();
+        this.board = new Board();
         //Initialize class with GameID and create starting board
     }
 
