@@ -29,9 +29,26 @@ public class BotII extends Bot {
     public void makeValidMove() {
         // TODO: Logic to choose and make a legal move
     }
+
     public void promoteToKing() {
-        // TODO: Check if a piece reached the end and promote to king / Allow more than one king on board
+    // go through all my pieces and promote if they reached end
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker c = game.getBoard().getBoard().checkerBoard[y][x];
+                if (c != null && c.getColor() == botColor) {
+                    if (!c.isKing()) {
+                        if (botColor == Color.BLACK && c.getCord().getY() == 7) {
+                            c.setKing(true);
+                        }
+                        if (botColor == Color.RED && c.getCord().getY() == 0) {
+                            c.setKing(true);
+                        }
+                    }
+                }
+            }
+        }
     }
+    
     public static Move defendPieces(Board board) {
     // TODO: Prioritize defending own pieces over offense
     // TODO: Try to block opponent from advancing or jumping
@@ -170,81 +187,80 @@ public static class Move {
     }
 
     @Override
-public void makeMove() {
-    if (this.game == null) return;
+    public void makeMove() {
+        if (this.game == null) return;
 
-    Board board = null;
-    try {
-        board = this.game.getBoard().getBoard();
+        Board board;
+        try {
+            board = this.game.getBoard().getBoard();
+        } catch (Exception e) {
+            return;
+        }
 
-    } catch (Exception e) {
-        return;
-    }
+        if (board == null) return;
 
-    if (board == null) return;
+        // get my pieces
+        ArrayList<Checker> myPieces = new ArrayList<>();
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker c = board.checkerBoard[y][x];
+                if (c != null && c.getColor() == this.botColor) {
+                    myPieces.add(c);
+                }
+            }
+        }
 
-    // get checkers of this bot's color
-    ArrayList<Checker> myPieces = new ArrayList<>();
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Checker c = board.checkerBoard[y][x];
-            if (c != null && c.getColor() == this.botColor) {
-                myPieces.add(c);
+        if (myPieces.isEmpty()) return;
+
+        // check if jump possible
+        for (Checker piece : myPieces) {
+            ArrayList<Cord> jumps = new ArrayList<>();
+            if (this.botColor == Color.BLACK || piece.isKing()) {
+                jumps.addAll(board.getPossibleForwardJump(piece));
+            }
+            if (this.botColor == Color.RED || piece.isKing()) {
+                jumps.addAll(board.getPossibleBackwardJump(piece));
+            }
+
+            if (!jumps.isEmpty()) {
+                Cord jumpDest = jumps.get(0);
+                board.updatePosition(piece, jumpDest);
+                board.kingMe(piece);
+                return;
+            }
+        }
+
+        // try to defend
+        Move move = defendPieces(board);
+        if (move != null) {
+            board.updatePosition(move.piece, move.destination);
+            board.kingMe(move.piece);
+            return;
+        }
+
+        // just move normally
+        for (Checker piece : myPieces) {
+            ArrayList<Cord> moves = new ArrayList<>();
+            if (this.botColor == Color.BLACK || piece.isKing()) {
+                checkMove(board, piece, -1, 1, moves);
+                checkMove(board, piece, 1, 1, moves);
+            }
+            if (this.botColor == Color.RED || piece.isKing()) {
+                checkMove(board, piece, -1, -1, moves);
+                checkMove(board, piece, 1, -1, moves);
+            }
+
+            if (!moves.isEmpty()) {
+                Cord dest = moves.get(0);
+                board.updatePosition(piece, dest);
+                board.kingMe(piece);
+                return;
             }
         }
     }
 
-    if (myPieces.isEmpty()) return;
-
-    for (Checker piece : myPieces) {
-        ArrayList<Cord> jumps = new ArrayList<>();
-
-        if (this.botColor == Color.BLACK || piece.isKing()) {
-            jumps.addAll(board.getPossibleForwardJump(piece));
-        }
-        if (this.botColor == Color.RED || piece.isKing()) {
-            jumps.addAll(board.getPossibleBackwardJump(piece));
-        }
-
-        if (!jumps.isEmpty()) {
-            Cord jumpDest = jumps.get(0);
-            board.updatePosition(piece, jumpDest);
-            board.kingMe(piece);
-            return;
-        }
-    }
-
-    // try defend
-    Move move = defendPieces(board);
-    if (move != null) {
-        board.updatePosition(move.piece, move.destination);
-        board.kingMe(move.piece);
-        return;
-    }
-
-    // fallback move
-    for (Checker piece : myPieces) {
-        ArrayList<Cord> moves = new ArrayList<>();
-        if (this.botColor == Color.BLACK || piece.isKing()) {
-            checkMove(board, piece, -1, 1, moves);
-            checkMove(board, piece, 1, 1, moves);
-        }
-        if (this.botColor == Color.RED || piece.isKing()) {
-            checkMove(board, piece, -1, -1, moves);
-            checkMove(board, piece, 1, -1, moves);
-        }
-
-        if (!moves.isEmpty()) {
-            Cord dest = moves.get(0);
-            board.updatePosition(piece, dest);
-            board.kingMe(piece);
-            return;
-        }
-    }
-}
-
         // Helper method to check if a move is valid and add it to the list
-private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
+    private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
     int newX = checker.getCord().getX() + dx;
     int newY = checker.getCord().getY() + dy;
 
