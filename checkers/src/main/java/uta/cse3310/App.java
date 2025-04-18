@@ -39,35 +39,24 @@
 
 package uta.cse3310;
 
-import uta.cse3310.PageManager.PageManager;
-import uta.cse3310.PageManager.UserEventReply;
-import uta.cse3310.PageManager.UserEvent;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.time.Instant;
-import java.time.Duration;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.Hashtable;
+import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class App extends WebSocketServer {
 
@@ -84,73 +73,76 @@ public class App extends WebSocketServer {
 
   public App(int port) {
     super(new InetSocketAddress(port));
+    pmInstance = PM;
   }
 
   public App(InetSocketAddress address) {
     super(address);
+    pmInstance = PM;
   }
 
   public App(int port, Draft_6455 draft) {
     super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
+    pmInstance = PM;
   }
 
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) {
     System.out.println("A new connection has been opened");
     clientId = clientId + 1;
-    System.out.println("the client id is " + clientId);
+    System.out.println("The client id is " + clientId);
 
-    // save off the ID and conn ptr so they can be easily fetched
+    // Save off the ID and connection pointer so they can be easily fetched
     con2id.put(conn, clientId);
     id2con.put(clientId, conn);
 
+    // Add a dummy player for client 1 or 2 (for testing purposes only)
+    // if (clientId == 1 || clientId == 2) {
+    //     PM.addDummy(clientId);
+    //     System.out.println("Added dummy player to activePlayers: dummy" + clientId);
+    // }
+
+    // Send the clientId as JSON back to the frontend
     id ID = new id();
     ID.clientId = clientId;
     Gson gson = new Gson();
-
-    // Note only send to the single connection
     String jsonString = gson.toJson(ID);
-    System.out.println("sending " + jsonString);
+    System.out.println("Sending " + jsonString);
     conn.send(jsonString);
   }
 
 
+
+
   @Override
-public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-    System.out.println(conn + " has closed");
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+      System.out.println(conn + " has closed");
 
-    // Get the player ID tied to this connection
-    Integer Id = con2id.get(conn);
+      Integer id = con2id.remove(conn);
+      if (id == null) {
+          System.out.println("No associated player found for this connection.");
+          return;
+      }
 
-    if (Id != null) {
-        // Remove the mapping between connection and player ID
-        id2con.remove(Id);
-        con2id.remove(conn);
+      id2con.remove(id);
 
-        // Handle the player leaving (like removing from active players or queue)
-        JsonObject jsonObj = new JsonObject();
-        jsonObj.addProperty("action", "playerLeft");
-        jsonObj.addProperty("clientID", Id);
+      UserEventReply reply = PM.userLeave(id);
+      if (reply == null) {
+          System.out.println("No user event reply for player " + id);
+      } else {
+          for (Integer recipientId : reply.recipients) {
+              WebSocket recipient = id2con.get(recipientId);
+              if (recipient != null) {
+                  recipient.send(reply.replyObj.toString());
+                  System.out.println("Notified player " + recipientId + " that player " + id + " has left.");
+              }
+          }
+      }
 
-        // Handle the actual player leave
-        UserEventReply reply = PM.userLeave(Id);
+      sendMessage(PM.sendActivePlayersToAll());
 
-        // Send the notification about player leaving
-        for (Integer recipientId : reply.recipients) {
-            WebSocket recipient = id2con.get(recipientId);
-            if (recipient != null) {
-                recipient.send(reply.replyObj.toString());
-                System.out.println("Notified player " + recipientId + " that player " + Id + " has left.");
-            }
-        }
-
-        System.out.println("Removed player " + Id);
-    } else {
-        System.out.println("No associated player found for this connection.");
-    }
-}
-
-  
+      System.out.println("Removed player " + id);
+  }
 
   public static void sendMessage(UserEventReply Reply)
   {
@@ -181,10 +173,25 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     // the function to be called needs to accept (for this example) a
     // UserEvent, and return a ReplyEvent
 
+    //Log the raw incoming WebSocket message
+    System.out.println("Incoming raw message: " + message);
+
     //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
+    //checj if actiion exist in the Json
+    if (!jsonObj.has("action")) {
+      System.out.println("ERROR: 'action' field is missing in JSON: " + jsonObj);
+      return;
+    }
     String action = jsonObj.get("action").getAsString();
-    //
+    // String action = null;
+
+    // if (jsonObj.has("action")) {
+    //     action = jsonObj.get("action").getAsString();
+    // } else {
+    //     System.err.println("ERROR: 'action' field is missing in JSON: " + message);
+    //     return;
+    // }
 
     //Omar: this is the main switch where we call our methods from PM depending on the action (every action is unique across all client-subsystems)
     UserEventReply Reply = null;
@@ -217,16 +224,13 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         Reply = PM.ViewMatch(jsonObj, Id);
         break;  
       case "GameMove":        
-        Reply = PM.GameMove(jsonObj, Id);
+        PM.GameMove(jsonObj, Id);
         break;
       case "backToHome":
         Reply = PM.backToHome(Id);
         break;
       case "summaryData":
         Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
-        break;
-      case "userLeft":
-        Reply = PM.userLeave(Id);
         break;
       default:
         System.out.println("Unknown action: " + action);
@@ -243,7 +247,27 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
       destination.send(Reply.replyObj.toString());
       System.out.println("sending " + Reply.replyObj.toString() + " to " + id);
     }
-  }
+
+      // Send page transition and active players only on success
+        if ((action.equals("login") || action.equals("new_user")) &&
+            Reply.replyObj.has("msg") &&
+            Reply.replyObj.get("msg").getAsString().contains("successfully")) {
+
+            UserEventReply transition = PM.transitionPage(List.of(clientId), uta.cse3310.PageManager.GameState.JOIN_GAME);
+            for (Integer id : transition.recipients) {
+                WebSocket destination = id2con.get(id);
+                destination.send(transition.replyObj.toString());
+                System.out.println("Transitioning client " + id + " to join_game");
+            }
+
+            UserEventReply playerList = PM.getActivePlayers(new JsonObject(), Id);
+            for (Integer id : playerList.recipients) {
+                WebSocket destination = id2con.get(id);
+                destination.send(playerList.replyObj.toString());
+                System.out.println("Sending active players to " + id);
+            }
+        }
+    }
 
   @Override
   public void onMessage(WebSocket conn, ByteBuffer message) {
@@ -292,9 +316,6 @@ public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     A.start();
     System.out.println("websocket Server started on port: " + port);
 
-    PageManager pm;
-    pm = new PageManager();
-    pmInstance = pm;
     System.out.println("Hello World!");
   }
 }

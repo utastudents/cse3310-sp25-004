@@ -1,10 +1,15 @@
 
 package uta.cse3310.DB;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import uta.cse3310.DB.PasswordManager;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PairUp.Player.STATUS;
 
 
 public class DB 
@@ -54,6 +59,7 @@ public class DB
     {
         if (getPlayerByUsername(username) != null) 
         {
+            System.out.println("User " + username + " already exists!");
             return false; /*if username exists it will return */
         }
         
@@ -67,31 +73,15 @@ public class DB
                 pstmt.setString(2, hashedPassword);
                 pstmt.setBytes(3, salt);
                 pstmt.executeUpdate();
+
+                System.out.println("User " + username + " inserted into DB succesfully");
+
+                return true;
             }
         } catch (SQLException e) {
             System.out.println("Failed to add player: " + e.getMessage());
-            return false;
         }
-        return true; // ????
-    }
-    /* gets a player using playerId, and return if the player is found */
-    public HumanPlayer getPlayerById(int playerId) 
-    {
-        try {
-            String sql = "SELECT * FROM players WHERE id = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, playerId);
-                ResultSet rs = pstmt.executeQuery();
-
-                if (rs.next()) {
-                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
-                }
-            }
-        } catch (SQLException e) 
-        {
-            System.err.println("Error fetching player: " + e.getMessage());
-        }
-        return null;
+        return false; // if something fails
     }
     
     /* gets player using username and it will return if it found  */
@@ -104,7 +94,15 @@ public class DB
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
+                    String password = rs.getString("password"); //Password here being, of course, the hash
+                    int id = rs.getInt("id");
+                    int wins = rs.getInt("wins");
+                    int losses = rs.getInt("losses");
+                    int elo = rs.getInt("elo");
+                    int games_played = rs.getInt("games_played");
+                
+                    return new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
+                    //return new HumanPlayer(rs.getString("username"), rs.getString("password"), rs.getBytes("salt"));
                 }
             }
         } catch (SQLException e) {
@@ -113,9 +111,33 @@ public class DB
         return null;
     }
 
+    /* verifies player login & returns if valid */
     public HumanPlayer getPlayer(String username, String password)
      {
-         // string sql = "SELECT * FROM players WHERE username = ? AND password = ?";
+         String sql = "SELECT * FROM players WHERE username = ?"; //Hi, we removed "AND password = ?" so that we could simulate creating and logging in to accounts.
+         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String storedHash = rs.getString("password");
+                byte[] salt = rs.getBytes("salt");
+                int id = rs.getInt("id");
+                int wins = rs.getInt("wins");
+                int losses = rs.getInt("losses");
+                int elo = rs.getInt("elo");
+                int games_played = rs.getInt("games_played");
+                
+                //checks password
+                if (PasswordManager.verifyPassword(password, storedHash, salt)) {
+                    return new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
+                    //return new HumanPlayer(rs.getString("username"), storedHash, salt);
+                }
+            }
+         } catch (SQLException e) {
+            System.out.println("Error fetching player: " + e.getMessage());
+         }
+         
          return null;  /* null when Player not found */
      }
  
@@ -171,11 +193,15 @@ public class DB
                 ResultSet rs = stmt.executeQuery(sql);
                 int index = 0;
                 while (rs.next() && index < 10) {
-                    topPlayers[index++] = new HumanPlayer(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getBytes("salt")
-                    );
+                    String username = rs.getString("username");
+                    String password = rs.getString("password"); //Password here being, of course, the hash
+                    int id = rs.getInt("id");
+                    int wins = rs.getInt("wins");
+                    int losses = rs.getInt("losses");
+                    int elo = rs.getInt("elo");
+                    int games_played = rs.getInt("games_played");
+                
+                    topPlayers[index++] = new HumanPlayer(username, password, id, STATUS.ONLINE, wins, losses, elo, games_played);
                 }
             }
         }
@@ -185,6 +211,50 @@ public class DB
         }
     
         return topPlayers;
+    }
+    public void recordMatchResult(int winnerId, int loserId) {
+        try {
+            String query = "SELECT * FROM players WHERE id = ?";
+    
+            //fetch winners data
+            PreparedStatement stmt1 = conn.prepareStatement(query);
+            stmt1.setInt(1, winnerId);
+            ResultSet rs1 = stmt1.executeQuery();
+            if (!rs1.next()) return; 
+    
+            //fetch losers data
+            PreparedStatement stmt2 = conn.prepareStatement(query);
+            stmt2.setInt(1, loserId);
+            ResultSet rs2 = stmt2.executeQuery();
+            if (!rs2.next()) return;  
+    
+            //get the info for both of the players
+            int winnerElo = rs1.getInt("elo");
+            int loserElo = rs2.getInt("elo");
+            int winnerWins = rs1.getInt("wins") + 1;  // Winner's wins incremented by 1
+            int loserLosses = rs2.getInt("losses") + 1;  // Loser's losses incremented by 1
+            int winnerGames = rs1.getInt("games_played") + 1;  // Winner's total games incremented by 1
+            int loserGames = rs2.getInt("games_played") + 1;  // Loser's total games incremented by 1
+
+            int k = 32; //Elo constant (can be adjusted)
+
+            int newLoserElo =  (int) (loserElo  + k * (0 - (1.0 / (1.0 + Math.pow(10, (winnerElo - loserElo ) / 400.0)))));
+            int newWinnerElo = (int) (winnerElo + k * (1 - (1.0 / (1.0 + Math.pow(10, (loserElo  - winnerElo) / 400.0)))));
+    
+            updatePlayerStats(winnerId, winnerWins, rs1.getInt("losses"), newWinnerElo, winnerGames);
+    
+            updatePlayerStats(loserId, rs2.getInt("wins"), loserLosses, newLoserElo, loserGames);
+    
+        } catch (SQLException e) {
+            System.out.println("Error recording match result: " + e.getMessage());
+        }
+    }
+
+    // GameTermination was calling this method,
+    // so this is temp code. Will fix when they clarify what they meant to call - GameManager
+    public HumanPlayer getPlayerById(int player1Id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayerById'");
     }
 
 }

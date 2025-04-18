@@ -2,7 +2,7 @@ package uta.cse3310.PairUp;
 
 import uta.cse3310.GameState;
 import uta.cse3310.GameManager.Game;
-
+import uta.cse3310.PageManager.GameUpdate;
 public abstract class Player {
     public static enum STATUS {
         IN_GAME,
@@ -24,7 +24,9 @@ public abstract class Player {
      */
 
     public abstract boolean makeMove(GameState gs); //Returns false if the client could not be reached
-    public abstract boolean updateBoard(GameState gs); //Returns false if the client could not be reached
+                                                    //will uncomment soon
+    public abstract boolean updateBoard(GameState gs/*,GameUpdate update */); //Returns false if the client could not be reached
+    public abstract boolean endGame(GameState gs); //Let the player know that the game has ended. Include the GS to show what the last move was
 
     //If this method is overridden, be sure to do super.startGame(g) or to store g in game yourself
     public boolean startGame(Game g) {

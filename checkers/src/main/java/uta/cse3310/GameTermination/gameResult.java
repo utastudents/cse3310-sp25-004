@@ -1,6 +1,11 @@
 package uta.cse3310.GameTermination;
 
 import java.util.HashMap;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+//import uta.cse3310.PageManager.PageManager;
+
 
 import uta.cse3310.GameManager.Game;
 
@@ -14,10 +19,5 @@ public class gameResult{
         
     }
 
-    // Generates and displays the leaderboard based on player scores. 
-    public void generateLeaderboard(){
-        
-    }
+    
 }
-
-

@@ -7,6 +7,7 @@ import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.App;
+import uta.cse3310.PageManager.UserEventReply;
 
 public class HumanPlayer extends Player{
 
@@ -17,6 +18,8 @@ public class HumanPlayer extends Player{
     private int wins;
     private int losses;
     private int gamesPlayed;
+
+    
 
     //private socketId potentially here
 
@@ -52,19 +55,25 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GameState gs) //Returns false if the client could not be reached
     {
-        return false;
+        App.pmInstance.makeMove(playerId);
+        
+        return true;
     }
 
-    @Override
-    public boolean updateBoard(GameState gs) //Returns false if the client could not be reached
+    @Override                                //will uncomment soon
+    public boolean updateBoard(GameState gs/*,GameUpdate update */) //Returns false if the client could not be reached
     {
-        return false;
+        
+       // App.pmInstance.sendUpdate(playerId, update);
+        return true;
     }
 
     @Override
     public boolean startGame(Game g) {
         this.game = g;
         this.status = STATUS.IN_GAME;
+
+        System.out.println("Player " + playerId + "'s game is starting!");
 
         // Need game board to be sent over
 
@@ -73,6 +82,12 @@ public class HumanPlayer extends Player{
     
 
         return true; //TODO: let the client know the game has started
+    }
+
+    @Override
+    public boolean endGame(GameState gs) {
+        //TODO: let the client know the game has ended. Show the final board and Win/Loss, and allow them to click through to summary page
+        return false;
     }
 
     /*
@@ -112,6 +127,10 @@ public class HumanPlayer extends Player{
 
     public STATUS getStatus(){
         return status;
+    }
+
+    public Game getGame(){
+        return game;
     }
 
 

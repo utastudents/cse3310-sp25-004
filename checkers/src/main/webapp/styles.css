@@ -1,3 +1,5 @@
+
+/*SIGN UP*/
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,25 +8,38 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: whitesmoke; 
+    background: rgb(24, 24, 24); 
     color: 333333;
 }
 
-/*SIGN UP*/
+.center-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+.login-box,
 .signup-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #fff;
-    border-radius: 9px;
-    width: 250px;
-    height: 300px;
+    border: 2px solid rgb(0, 0, 0);
+    width: 500px;
     padding: 25px;
     text-align: center;
-    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+    box-shadow: 0  0 30px rgba(255, 255, 255, 0.3);
+}
+
+.signup-box {
+    height: 500px;
 }
 
 .signup-box img {
-    width: 130px;
-    height: 130px;
-    margin-bottom: 5px;
+    width: 230px;
+    height: 230px;
+    margin-bottom: 10px;
 } 
 
 .signup-box input[type="text"],
@@ -37,6 +52,7 @@ body {
     box-sizing: border-box;
     padding-left: 30px;
     font-size: 15px;
+    height: 50px;
 }
 
 input:focus {
@@ -50,20 +66,43 @@ input::placeholder {
 
 
 .signup-box button {
-    background-color: #39393959;
+    position: relative;
+    background: transparent;
     color: rgb(255, 255, 255);
-    border: none;
-    font-size: 15px;
+    border: 2px solid black;
+    font-size: 16px;
+    font-weight: 500;
     width: 75%;
     padding: 5px;
     margin-top: 5px;
-    border-radius: 2px;
-
+    border-radius: 40px;
+    height: 40px;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
 }
 
-.signup-box button:hover {
-    color: rgb(255, 255, 255);
-    background: #000;
+.signup-box button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgb(0, 0, 0), rgb(34, 34, 34), rgb(77, 77, 77), rgb(116, 116, 116));
+    opacity: 1;
+    z-index: 0;
+    border-radius: 40px;
+    pointer-events: none;
+    transition: .5s;
+}
+    
+.signup-box button span {
+    position: relative;
+    z-index: 1;
+}
+.signup-box button:hover::before {
+ opacity: 60%;
 }
 
 .signup-text {
@@ -74,12 +113,22 @@ input::placeholder {
 }
 
 .signup-text a{
-    color: #39393959;
+    color: #ffffff59;
     text-decoration: underline;
 }
 
 .signup-text a:hover {
-    color: #000; 
+    color: #000000; 
+}
+
+#back-to-login{
+    color: rgb(107, 107, 107);
+    font-weight: 600;
+}
+
+#back-to-login:hover{
+    color: black;
+    text-decoration: underline;
 }
 
 /*ICON SIGNUP*/
@@ -90,39 +139,40 @@ input::placeholder {
 
 .input-icon i {
     position: absolute;
-    left: 43px;
+    left: 68px;
     top: 40%;
     transform: translateY(-50%);
     color: #b8b8b8;
 }
 
 /*LOGIN*/
+center-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
 .login-box {
-    background-color: #fff;
-    border-radius: 9px;
-    width: 250px;
-    height: 270px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
-    cursor: pointer;
+    height: 500px;
 }
 
 .login-box img {
-    width: 130px;
-    height: 130px;
-    margin-bottom: 5px;
+    width: 230px;
+    height: 230px;
+    margin-bottom: 30px;
 } 
 
 .login-box input[type="text"],
 .login-box input[type="password"] {
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     width: 75%;
     padding: 5px;
     border: 2px solid #39393959;
     border-radius: 6px;
     box-sizing: border-box;
     padding-left: 30px;
+    font-size: 15px;
+    height: 50px;
 }
 
 input:focus {
@@ -139,47 +189,87 @@ input::placeholder {
     position: relative;
     width: 100%;
 }
+.input-icon:hover {
+  transform: scale(1.05);
+}
 
 .input-icon i {
     position: absolute;
-    left: 43px;
+    left: 73px;
     top: 38%;
     transform: translateY(-50%);
     color: #b8b8b8;
 }
 
 
-.login-box button {
-    background-color: #39393959;
-    color: rgb(255, 255, 255);
-    border: none;
-    font-size: 15px;
-    width: 75%;
-    padding: 5px;
-    border-radius: 6px;
 
+
+#showDragonBtn {
+    background: transparent;
+    color: transparent;
+    border: none;
+    width: 50px;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: none;
 }
 
 .login-box button:hover {
     color: rgb(255, 255, 255);
     background: #000;
-
 }
 
-.signup-text {
-    font-size: 13px;
-    color: #39393959;
-    text-align: center;
-    margin-top: 8px;
+
+#login-btn{
+  position: relative;
+  background: transparent;
+  color: rgb(255, 255, 255);
+  border: 2px solid black;
+  font-size: 16px;
+  font-weight: 500;
+  width: 75%;
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 40px;
+  height: 40px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
 }
 
-.signup-text a{
-    color: #39393959;
+#login-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgb(0, 0, 0), rgb(34, 34, 34), rgb(77, 77, 77), rgb(116, 116, 116));
+  opacity: 1;
+  z-index: 0;
+  border-radius: 40px;
+  pointer-events: none;
+  transition: .5s;
+}
+  
+#login-btn span {
+  position: relative;
+  z-index: 1;
+}
+#login-btn:hover::before {
+opacity: 60%;
+}
+
+#show-signup{
+  color: rgb(107, 107, 107);
+  font-weight: 600;
+}
+
+#show-signup:hover{
+   color: black;
     text-decoration: underline;
-}
-
-.signup-text a:hover {
-    color: #000; 
 }
 
 
@@ -235,8 +325,8 @@ ol {
     align-items: center;
 }
 
-button {
-    background-color: #4A90E2;
+button { /*LEADER BOARD BUTTON*/
+    background-color: #39393959;
     color: white;
     border: none;
     padding: 12px 18px;
@@ -249,7 +339,7 @@ button {
 }
 
 button:hover {
-    background-color: #004a99;
+    background-color: #000;
     transform: scale(1.05); 
 }
 
@@ -291,15 +381,71 @@ button a {
 }
 
 /*Styling for the leaderboard */
-.button:hover{
-    background-color: rgb(54, 17, 204);
-    color: white;
-}
 
-.medal-emoji {
-	font-size: 1.3em;
-	margin-right: 5px;
-}
+#summary-leaderboard {
+    display: none;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
+  
+  #summary-leaderboard h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  #summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  #summary-table thead {
+    background-color: #004080;
+    color: white;
+    position: sticky; 
+    top: 0;  
+    z-index: 1; 
+  }
+  
+  #summary-table th,
+  #summary-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #summary-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  #summary-table tbody tr:hover {
+    background-color: #d9ebff;
+    transition: background-color 0.3s ease;
+  }
+  
+  #summary-button-hide {
+    display: block;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #004080;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  #summary-button-hide:hover {
+    background-color: #0066cc;
+  }
+
 
 .scrollable-table {
 	max-height: 450px; 
@@ -311,3 +457,312 @@ button a {
 	width: 100%;
 	border-collapse: collapse;
 }
+
+.login-box img.dragon {
+    position: absolute;
+    width: 350px;
+    height: auto;
+    top: -5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#summary-table tbody tr:nth-child(1) {
+    background-color: gold;
+    color: #000; 
+}
+
+#summary-table tbody tr:nth-child(2) {
+    background-color: silver;
+    color: #000;
+}
+
+#summary-table tbody tr:nth-child(3) {
+    background-color: #cd7f32; 
+    color: #000;
+}
+
+#summary-table tbody tr:hover {
+    background-color: #a3c653 !important; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* GAME DISPLAY STYLING */
+#game_display {
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  #live-box {
+    height: 50vh; /* tall enough for logs */
+    width: 40vh; /* proportional width */
+    background-color: #f4f4f4; /* Light background for readability */
+    border: 2px solid #333; /* Dark border for contrast */
+    border-radius: 10px; /* rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* adds depth */
+    margin: 10px;
+    padding: 10px; /*space inside the box */
+    overflow-y: auto; /* Enables scrolling for long logs */
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 0.9rem; 
+    color: #333; 
+    position: relative;
+    top: -5vh;
+  }
+  
+  /* styling for individual log entries */
+  #live-box p {
+    margin: 5px 0; /* spacing between log entries */
+    padding: 5px;
+    background-color: #eaeaea; 
+    border-radius: 5px; /* Rounded corners for logs */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /*  inset shadow */
+  }
+  
+  #players {
+    color: white;                   
+    padding: 0;                   
+    text-align: center;           
+  }
+  
+  #game-container {
+    display: flex;
+    width: auto;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+  
+  #board-container {
+      display:flex;
+      padding: 5vh;
+      position: relative;
+    
+      width: 90vh; /*increased size*/
+      height: 90vh;
+    
+      max-width: 100vw;
+      max-height: 100vw;
+    }
+  
+  #players-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: #f4f4f4;
+    border: 2px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 45vh;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+    
+  }
+  
+  #players-container {
+    display: flex;                /* Enable flexbox */
+    justify-content: center;      /* Center horizontally */
+    align-items: center;          /* Center vertically */
+    background-color: #333; /* Match the live box background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds depth */
+    margin-bottom: 20px;
+    padding: 10px;
+  
+    font-family: 'Courier New', Courier, monospace; /* Match the live box font */
+    font-size: 1rem; /* Slightly larger font for visibility */
+    color: #333; /* Match the live box text color */
+    height: auto;
+    position: relative;
+    top:0;
+    width: 100%;
+  }
+  
+  #buttons-cont {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    
+    margin: 0 auto;
+    padding-bottom: 1vh;
+    padding-top:3vh;
+  
+    width: 100%;
+    height: 4vh;
+  }
+  
+  
+  .button {
+    width: 50%;
+    height: 100%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 5px, grey, outline;
+    align-content: center;
+    padding: 1px;
+    background-color: #545861;
+    color:white;
+    font-size:1rem;
+    font-weight:bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /*smooth hover effect*/
+  
+  }
+  
+  .button:hover {
+    background-color: #feb47b;
+    transform:scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  
+  }
+  
+    table {
+      /*border: 15px solid #545861;*/
+      border-collapse: collapse; /*no gaps between the cells*/
+      background-color: #545861;
+      border-radius: 5px;
+    
+      width: 100%;
+      height: 100%;
+    }
+  
+    td {
+      text-align: center;
+      cursor: pointer; /*Pointer cursor so it's interactive*/
+      background-color: #C5D5EA;
+    
+      width: 12.50%; /*adjusted for 8x8 grid*/
+      height: 12.50%;
+      border:none; /*no border around squares*/
+    }
+  
+    /*light beige squares*/
+    .emptySquare {
+      background-color: #f0d9b5;
+    }
+  
+    /*dark brown squares*/
+    td:not(.emptySquare) {
+      background-color: #b58863;
+    }
+  
+  /* Styling for red pieces (Player 1) */
+  .red-piece {
+    position: relative;
+  }
+  
+  .red-piece::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background-color: #FF0000; /* Red color */
+    border-radius: 50%; /* Makes it circular */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+  }
+  
+  /* Styling for black pieces (Player 2) */
+  .black-piece {
+    position: relative;
+  }
+  
+  .black-piece::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background-color: #000000; /* Black color */
+    border-radius: 50%; /* Makes it circular */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+  }
+  
+  
+  /* Fullscreen background overlay */
+  #popup-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Modal content box */
+  #popup-modal-content {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    animation: fadeInScale 0.3s ease-out;
+  }
+  
+  /* Optional animation */
+  @keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+  }
+  
+  /* Message text */
+  #popup-message {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Modal buttons */
+  #popup-confirm, #popup-cancel {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  #popup-confirm {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  #popup-confirm:hover {
+    background-color: #45a049;
+  }
+  
+  #popup-cancel {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  #popup-cancel:hover {
+    background-color: #d32f2f;
+  }
+  
+  

@@ -8,13 +8,14 @@ public class Game{
    private Player player2;  // player 2 object
    private int gameID;   // Unique game identifier
    private GamePlay board;
-   private boolean isAvailable;
+   public boolean isAvailable;
 
 	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
       this.gameID = gameID; // gameID is index number in ArrayList
       this.player1 = player1;
       this.player2 = player2;
       this.isAvailable = true;
+      this.board = new GamePlay(gameID);
    }
 
    // Getting available game boolean value, true via constructor
@@ -26,6 +27,7 @@ public class Game{
    public void setGameActive(boolean status){
       this.isAvailable = status;
    }
+
 
    public GamePlay getBoard(){        //decide how interacts with gameplay
       return board;
