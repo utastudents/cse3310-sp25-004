@@ -58,7 +58,7 @@ public class BotIITest {
       	BotII.capturePiece(board);
 
        //
-     */
+     
 
     } */
 
