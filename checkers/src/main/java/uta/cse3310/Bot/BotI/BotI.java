@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Random; 
 import java.util.List; 
 
-public class BotI extends Bot {
-    
+public class BotI extends Bot {    
     private Board board;
     private Color color;
     private Game game;
@@ -35,10 +34,9 @@ public class BotI extends Bot {
         this.random = new Random();
     }
     
-    @Override
-    public boolean makeMove(GameState gs){
-        /*
-        ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
+    public boolean makeMove(GameState gs) {
+        // Ensure this method matches the abstract method signature in Bot
+        ArrayList<Checker> availableCheckers = getAvailableCheckers();
         if (availableCheckers.isEmpty()) { 
             return false; 
         } 
@@ -59,11 +57,7 @@ public class BotI extends Bot {
         } 
 
         return false; 
-
     } 
-        */
-        return false;
-    }
 
 
     @Override 
@@ -87,7 +81,6 @@ public class BotI extends Bot {
         */
         return false;
     } 
-    /* 
 
     // Get all checkers of the bot's color 
 
@@ -192,73 +185,73 @@ public class BotI extends Bot {
 
         // For kings, check both forward and backward moves 
 
-        if (piece.isKing()) { 
+        // if (piece.isKing()) { 
 
-            // Forward moves 
+        //     // Forward moves 
 
-            if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
+        //     if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
 
-                moves.add(new Cord(x + 1, y + 1)); 
+        //         moves.add(new Cord(x + 1, y + 1)); 
 
-            } 
+        //     } 
 
-            if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
+        //     if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
 
-                moves.add(new Cord(x - 1, y + 1)); 
+        //         moves.add(new Cord(x - 1, y + 1)); 
 
-            } 
+        //     } 
 
-            // Backward moves 
+        //     // Backward moves 
 
-            if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
+        //     if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
 
-                moves.add(new Cord(x + 1, y - 1)); 
+        //         moves.add(new Cord(x + 1, y - 1)); 
 
-            } 
+        //     } 
 
-            if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
+        //     if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
 
-                moves.add(new Cord(x - 1, y - 1)); 
+        //         moves.add(new Cord(x - 1, y - 1)); 
 
-            } 
+        //     } 
 
-        }  
+        // }  
 
         // For regular pieces, only check moves in their direction 
 
-        else { 
+        // else { 
 
-            if (piece.getColor() == Color.BLACK) { 
+        //     if (piece.getColor() == Color.BLACK) { 
 
-                if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
+        //         if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
 
-                    moves.add(new Cord(x + 1, y + 1)); 
+        //             moves.add(new Cord(x + 1, y + 1)); 
 
-                } 
+        //         } 
 
-                if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
+        //         if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
 
-                    moves.add(new Cord(x - 1, y + 1)); 
+        //             moves.add(new Cord(x - 1, y + 1)); 
 
-                } 
+        //         } 
 
-            } else { 
+        //     } else { 
 
-                if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
+        //         if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
 
-                    moves.add(new Cord(x + 1, y - 1)); 
+        //             moves.add(new Cord(x + 1, y - 1)); 
 
-                } 
+        //         } 
 
-                if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
+        //         if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
 
-                    moves.add(new Cord(x - 1, y - 1)); 
+        //             moves.add(new Cord(x - 1, y - 1)); 
 
-                } 
+        //         } 
 
-            } 
+        //     } 
 
-        } 
+        // } 
 
         return moves; 
     } 
@@ -431,6 +424,7 @@ private boolean isAdvancingMove(Move move)
         return move.destination.getY() < move.piece.getCord().getY(); 
     } 
 }  
+
 private void executeMove(Move move)
 { 
     if (board != null)
@@ -452,26 +446,22 @@ private void executeMove(Move move)
         } 
     } 
 } 
-private void executeMove(Move move)
-{ 
-    if (board != null)
-    { 
-        board.updatePosition(move.piece, move.destination); 
-        board.kingMe(move.piece); 
-    } 
-} 
-private class Move
-{ 
-    Checker piece; 
-    Cord destination; 
-    boolean isJump; 
-    Move(Checker piece, Cord destination, boolean isJump)
-    { 
-        this.piece = piece; 
-        this.destination = destination; 
-        this.isJump = isJump; 
-    } 
-} 
-} 
-*/
-}
+// private void executeMove(Move move)
+// { 
+//     if (board != null)
+//     { 
+//         board.updatePosition(move.piece, move.destination); 
+//         board.kingMe(move.piece); 
+//     } 
+// } 
+// private class void Move{ 
+//     Checker piece; 
+//     Cord destination; 
+//     boolean isJump; 
+//     Move(Checker piece, Cord destination, boolean isJump)
+//     { 
+//         this.piece = piece; 
+//         this.destination = destination; 
+//         this.isJump = isJump; 
+//     } 
+// } 
