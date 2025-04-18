@@ -1,8 +1,12 @@
 package uta.cse3310.Bot.BotI;
 
-import uta.cse3310.GameState;
+import java.util.Random;
+
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.GamePlay.Board;
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.GameState;
 
 public class BotI extends Bot {    
     private Board board;
@@ -25,6 +29,8 @@ public class BotI extends Bot {
     
     public boolean makeMove(GameState gs) {
         // Ensure this method matches the abstract method signature in Bot
+        
+        /* DOES NOT COMPILE - FIX AND TEST BEFORE COMITTING
         ArrayList<Checker> availableCheckers = getAvailableCheckers();
         if (availableCheckers.isEmpty()) { 
             return false; 
@@ -43,7 +49,7 @@ public class BotI extends Bot {
             Move bestMove = selectBestMove(moves); 
             executeMove(bestMove); 
             return true; 
-        } 
+        } */
 
         return false; 
     } 
@@ -72,6 +78,7 @@ public class BotI extends Bot {
     } 
 
     // Get all checkers of the bot's color 
+    /*
 
     protected ArrayList<Checker> getAvailableCheckers() { 
         
@@ -245,6 +252,8 @@ public class BotI extends Bot {
         return moves; 
     } 
 
+     */
+    /*
   
         // select the best jump move based on strategy
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
@@ -279,7 +288,7 @@ public class BotI extends Bot {
         
         // otherwise, choose a random jump move
         return jumpMoves.get(random.nextInt(jumpMoves.size()));
-    }
+    } 
  
     // select the best move based on strategy
     private Move selectBestMove(ArrayList<Move> moves) {
@@ -326,9 +335,11 @@ public class BotI extends Bot {
         
         // otherwise, choose a random move
         return moves.get(random.nextInt(moves.size()));
-    }
+    }*/
  
     // check if a move would result in the piece becoming a king
+
+    /*
     private boolean wouldBecomeKing(Move move) {
         if (move.piece.isKing()) {
             return false;
@@ -433,7 +444,7 @@ private void executeMove(Move move)
             this.destination = destination; 
             this.isJump = isJump; 
         } 
-    } 
+    }  */
 } 
 // private void executeMove(Move move)
 // { 

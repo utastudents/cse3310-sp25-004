@@ -1,23 +1,18 @@
 package uta.cse3310.Bot.BotII;
 
-import uta.cse3310.GameState;
+import java.util.ArrayList;
+
 import uta.cse3310.Bot.Bot;
+import uta.cse3310.GameManager.Game;
 import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
-import uta.cse3310.GameManager.Game;
-
-import java.util.ArrayList;
-
-public class BotII {
-
-    private GamePlay gamePlay;
-    private Color botColor; // Define whether Bot II is RED or BLACK
+import uta.cse3310.GameState;
 
 public class BotII extends Bot {
-	
+	private GamePlay gamePlay;
 	private Game game;
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
@@ -69,10 +64,10 @@ public class BotII extends Bot {
 
         // Try each move and choose the safest one
         for (Cord dest : possibleMoves) {
-            if (isMoveSafe(checker, dest, board)) {
+            //if (isMoveSafe(checker, dest, board)) { // DOES NOT COMPILE
                 board.updatePosition(checker, dest);  // Execute the move
                 return true;
-            }
+            //}
         }
 
         return false;
@@ -80,6 +75,7 @@ public class BotII extends Bot {
 
     // Get possible moves for a king piece
     private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
+        /*
         ArrayList<Cord> possibleMoves = new ArrayList<>();
         Cord cord = checker.getCord();
 
@@ -90,6 +86,8 @@ public class BotII extends Bot {
                 if (board.moveForwardCheck(checker, newCord) || board.moveBackwardCheck(checker, newCord)) {
                     possibleMoves.add(newCord);
     */
+        return null;
+    }
     public BotII() {
         super(); // Calls the constructor of the parent class which is Bot
     }
@@ -335,17 +333,17 @@ public class BotII extends Bot {
     }
 
     @Override
-    public void makeMove() {
-        if (this.game == null) return;
+    public boolean makeMove(GameState gs) {
+        if (this.game == null) return false;
 
         Board board;
         try {
             board = this.game.getBoard().getBoard();
         } catch (Exception e) {
-            return;
+            return false;
         }
 
-        if (board == null) return;
+        if (board == null) return false;
 
         // get my pieces
         ArrayList<Checker> myPieces = new ArrayList<>();
@@ -358,11 +356,14 @@ public class BotII extends Bot {
             }
         }
 
-        return possibleMoves;
+        //TODO send possibleMoves to GameManager
+
+        return true;
     }
 
     // Get possible moves for a man piece
     private ArrayList<Cord> getPossibleManMoves(Checker checker, Board board) {
+        /* THIS CODE DOES NOT COMPILE
         ArrayList<Cord> possibleMoves = new ArrayList<>();
         Cord cord = checker.getCord();
 
@@ -433,7 +434,8 @@ public class BotII extends Bot {
                 board.kingMe(piece);
                 return;
             }
-        }
+        } */
+        return null;
     }
 
         // Helper method to check if a move is valid and add it to the list
@@ -446,11 +448,13 @@ public class BotII extends Bot {
     }
     }
 
+    /*
     @Override
     public boolean makeMove(GameState gs) {
         makeMove(); // call your actual move logic
         return true;
     }
+     */
 
     @Override
     public boolean updateBoard(GameState gs) {
