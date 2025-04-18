@@ -31,10 +31,8 @@ public class BotITest {
 
     @Test
     public void testMakeMove() {
-        // Clear the board by creating a new board
         board = new Board();
         
-        // Place pieces
         Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
         board.updatePosition(blackPiece, new Cord(1, 1));
         
@@ -52,10 +50,8 @@ public class BotITest {
 
     @Test
     public void testUpdateBoard() {
-        // Clear the board by creating a new board
         board = new Board();
         
-        // Place piece
         Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
         board.updatePosition(blackPiece, new Cord(1, 1));
         
@@ -68,10 +64,8 @@ public class BotITest {
 
     @Test
     public void testEndGame() {
-        // Clear the board by creating a new board
         board = new Board();
         
-        // Place piece
         Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
         board.updatePosition(blackPiece, new Cord(1, 1));
         
