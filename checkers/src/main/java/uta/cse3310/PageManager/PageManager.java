@@ -774,7 +774,7 @@ public class PageManager {
             JsonObject msg = new JsonObject();
             msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
-            msg.addProperty("ID", player.getPlayerId());
+            msg.addProperty("ID", userIDToClientID.get(Id));
     
             UserEventReply reply = new UserEventReply();
             reply.replyObj = msg;
