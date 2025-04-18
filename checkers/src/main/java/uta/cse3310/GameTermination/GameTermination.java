@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTermination {
-//<<<<<<< HEAD
         // Tells game play game is over. 
 /*
         public void checkGameEnd(GameState gameState) {
@@ -19,7 +18,7 @@ public class GameTermination {
                 }
             } */
         // Tells game play game is over.
-//>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
+
         // New endGame functionality.  
         public Game endGame(Game currentGame) {
                 gameState state = new gameState();
