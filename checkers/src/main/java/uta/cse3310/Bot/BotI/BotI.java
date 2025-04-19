@@ -22,11 +22,13 @@ public class BotI extends Bot {
     private Game game;
     private Random random;
     
+    // Basic setup for the bot - creates a random generator for choosing between equally good moves
     public BotI() {
         super();
         this.random = new Random();
     } 
 
+    // Sets up the bot with a specific game and color (red or black)
     public BotI(Game game, Color color){
         super();
         this.game = game;
@@ -35,6 +37,7 @@ public class BotI extends Bot {
         this.random = new Random();
     }
     
+    // Main method that decides what move to make - checks jumps first, then regular moves
     @Override
     public boolean makeMove(GameState gs){
         
@@ -63,6 +66,7 @@ public class BotI extends Bot {
 
 
 
+    // Updates the bot's knowledge of where pieces are on the board
     @Override 
     public boolean updateBoard(GameState gs) {
         
@@ -73,6 +77,7 @@ public class BotI extends Bot {
         
     } 
 
+    // Cleanup when game ends
     @Override 
     public boolean endGame(GameState gs) {
         
@@ -86,6 +91,7 @@ public class BotI extends Bot {
 
     
 
+    // Finds all pieces on the board that belong to this bot
     protected ArrayList<Checker> getAvailableCheckers() { 
         
         ArrayList<Checker> checkers = new ArrayList<>(); 
@@ -106,6 +112,7 @@ public class BotI extends Bot {
 
     
 
+    // Finds all possible jump moves (capturing opponent pieces)
     private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers) { 
 
         ArrayList<Move> jumpMoves = new ArrayList<>(); 
@@ -130,6 +137,7 @@ public class BotI extends Bot {
     } 
 
    
+    // Finds all possible regular moves (moving one space diagonally)
     private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){
 	    ArrayList<Move> moves = new ArrayList<>(); 
 
@@ -147,6 +155,7 @@ public class BotI extends Bot {
     } 
 
  
+    // Figures out where a single piece can move (kings move both ways, regular pieces move forward only)
     private ArrayList<Cord> getPossibleMoves(Checker piece) { 
         ArrayList<Cord> moves = new ArrayList<>(); 
 
@@ -206,6 +215,7 @@ public class BotI extends Bot {
 
   
         
+    // Picks best jump move - prefers making kings and capturing kings
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
         if (jumpMoves.size() == 1) {
             return jumpMoves.get(0);
@@ -237,6 +247,7 @@ public class BotI extends Bot {
     }
  
     
+    // Picks best regular move - prefers making kings, staying safe, and advancing
     private Move selectBestMove(ArrayList<Move> moves) {
         if (moves.size() == 1) {
             return moves.get(0);
@@ -278,6 +289,7 @@ public class BotI extends Bot {
     }
  
     
+    // Checks if a move would make the piece a king
     private boolean wouldBecomeKing(Move move) {
         if (move.piece.isKing()) {
             return false;
@@ -292,6 +304,7 @@ public class BotI extends Bot {
     }
 
 
+    // Checks if a jump would capture an opponent's king
     private boolean capturesKing(Move move) 
     { 
         if (board == null) 
@@ -304,6 +317,7 @@ public class BotI extends Bot {
         return capturedPiece != null && capturedPiece.isKing(); 
     } 
 
+    // Checks if a move is safe from being captured
     private boolean isSafeMove(Move move) 
     { 
         if (board == null)
@@ -344,6 +358,7 @@ public class BotI extends Bot {
         return true; 
     }
           
+    // Checks if a move helps advance toward opponent's side
     private boolean isAdvancingMove(Move move)
     { 
         if (move.piece.isKing()) {
@@ -358,6 +373,7 @@ public class BotI extends Bot {
     }  
 
 
+    // Actually performs the move on the board and checks for king promotion
     private void executeMove(Move move)
     { 
         if (board != null)
@@ -367,6 +383,7 @@ public class BotI extends Bot {
         } 
     } 
 
+    // Keeps track of move information (which piece, where it's going, if it's a jump)
     private class Move
     { 
         Checker piece; 
