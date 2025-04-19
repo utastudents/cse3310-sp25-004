@@ -22,13 +22,14 @@ public class BotI extends Bot {
     private Game game;
     private Random random;
     
-    // Basic setup for the bot - creates a random generator for choosing between equally good moves
+    // if there are multiple moves the bot can make during its turn and 
+    // these moves are all equally "beneficial" i guess, it randomly chooses one of those moves
     public BotI() {
         super();
         this.random = new Random();
     } 
 
-    // Sets up the bot with a specific game and color (red or black)
+     //sets up the botn with a specific and color - like red or black
     public BotI(Game game, Color color){
         super();
         this.game = game;
@@ -37,36 +38,40 @@ public class BotI extends Bot {
         this.random = new Random();
     }
     
-    // Main method that decides what move to make - checks jumps first, then regular moves
+     //this method checks what move to make, its made strategically, 
+    // it goes through different checks/options and then makes it decisions, explained below
     @Override
     public boolean makeMove(GameState gs){
         
+        //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
         if (availableCheckers.isEmpty()) { 
             return false; 
         } 
         
+        //looks for jump moves that capture opponent
          ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers); 
          if (!jumpMoves.isEmpty()) { 
-            Move bestJumpMove = selectBestJumpMove(jumpMoves); 
+            Move bestJumpMove = selectBestJumpMove(jumpMoves); //picks the best jump option if its available
             executeMove(bestJumpMove); 
             return true; 
         } 
          
+         //if theres no jump moves,  just look for regular moves
          ArrayList<Move> moves = getAllMoves(availableCheckers); 
-
          if (!moves.isEmpty()) { 
+            //picks the best move for regular moves
             Move bestMove = selectBestMove(moves); 
             executeMove(bestMove); 
             return true; 
         } 
-        return false; 
+        return false; //if theres no moves at all
     } 
        
 
 
 
-    // Updates the bot's knowledge of where pieces are on the board
+    //updates where the peices are on the board
     @Override 
     public boolean updateBoard(GameState gs) {
         
@@ -77,7 +82,7 @@ public class BotI extends Bot {
         
     } 
 
-    // Cleanup when game ends
+    //this function is called when the game is over
     @Override 
     public boolean endGame(GameState gs) {
         
@@ -89,9 +94,9 @@ public class BotI extends Bot {
     } 
     
 
-    
 
-    // Finds all pieces on the board that belong to this bot
+
+    
     protected ArrayList<Checker> getAvailableCheckers() { 
         
         ArrayList<Checker> checkers = new ArrayList<>(); 
