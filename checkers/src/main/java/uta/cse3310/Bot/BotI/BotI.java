@@ -96,14 +96,15 @@ public class BotI extends Bot {
 
 
 
-    
+    //finds all checkers that are available on the board
     protected ArrayList<Checker> getAvailableCheckers() { 
-        
+        //creates a new list to store our checkers
         ArrayList<Checker> checkers = new ArrayList<>(); 
-        if (board == null) { 
+        if (board == null) { //if the board doesnt exist, return empty list
             return checkers; 
         } 
 
+        //just checking the board
         for (int y = 0; y < 8; y++) { 
             for (int x = 0; x < 8; x++) { 
                 Checker checker = board.checkSpace(new Cord(x, y)); 
@@ -128,11 +129,14 @@ public class BotI extends Bot {
         for (Checker checker : checkers) { 
             ArrayList<Cord> jumps; 
 
+            //jumps are based on checker color, black - moves forward, and red moves backward
             if (checker.getColor() == Color.BLACK) { 
                 jumps = board.getPossibleForwardJump(checker); 
             } else { 
                 jumps = board.getPossibleBackwardJump(checker); 
             } 
+
+            //adds each possible jump place as a move
             for (Cord jump : jumps) { 
                 jumpMoves.add(new Move(checker, jump, true)); 
             } 
@@ -142,25 +146,27 @@ public class BotI extends Bot {
     } 
 
    
-    // Finds all possible regular moves (moving one space diagonally)
+    // finds all possible moves
     private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){
 	    ArrayList<Move> moves = new ArrayList<>(); 
 
-        if (board == null) { 
+        if (board == null) { //returns empty list if the board is null
             return moves; 
         } 
 
+
         for (Checker checker : checkers) { 
+            //get all possible moves
             ArrayList<Cord> possibleMoves = getPossibleMoves(checker); 
             for (Cord move : possibleMoves) { 
-                moves.add(new Move(checker, move, false)); 
+                moves.add(new Move(checker, move, false)); //adds each possible destination as a move
             } 
         } 
         return moves; 
     } 
 
  
-    // Figures out where a single piece can move (kings move both ways, regular pieces move forward only)
+    // gets all possible mvoes for a single checker piece
     private ArrayList<Cord> getPossibleMoves(Checker piece) { 
         ArrayList<Cord> moves = new ArrayList<>(); 
 
@@ -171,45 +177,49 @@ public class BotI extends Bot {
         int x = piece.getCord().getX(); 
         int y = piece.getCord().getY(); 
 
+
+        //checks if the piece is a king -- meaning it can mov both forward and backward
         if (piece.isKing()) { 
+            //checks forward-right move
             if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
                 moves.add(new Cord(x + 1, y + 1)); 
             } 
-
+            //checks forward-left
             if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
                 moves.add(new Cord(x - 1, y + 1)); 
             } 
 
             
-
+            //checks backward-riht
             if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
                 moves.add(new Cord(x + 1, y - 1)); 
             } 
-
+            //chcks backward-left
             if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
                 moves.add(new Cord(x - 1, y - 1)); 
             } 
 
         }  
 
-       
+       //handles all non king peices- meaning the regular ones that cna only move iin one direction
         else { 
-
+            //check moves for black pieces - forward moves
             if (piece.getColor() == Color.BLACK) { 
+                //checks forward-right move
                 if (board.moveForwardCheck(piece, new Cord(x + 1, y + 1))) { 
                     moves.add(new Cord(x + 1, y + 1)); 
                 }
-
+                //checks forward-left move
                 if (board.moveForwardCheck(piece, new Cord(x - 1, y + 1))) { 
                     moves.add(new Cord(x - 1, y + 1)); 
                 } 
 
             } else { 
-
+                //checks backward-right move
                 if (board.moveBackwardCheck(piece, new Cord(x + 1, y - 1))) { 
                     moves.add(new Cord(x + 1, y - 1)); 
                 } 
-
+                //checks backward-left move
                 if (board.moveBackwardCheck(piece, new Cord(x - 1, y - 1))) { 
                     moves.add(new Cord(x - 1, y - 1)); 
                 } 
