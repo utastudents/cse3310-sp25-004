@@ -1,7 +1,3 @@
-//API call to fetch users
-let playerRed = "bot 1";
-let playerBlack = "bot 2";
-
 // Initialize the game state
 let currentPlayer = "red"; // Red starts first
 let selectedPieceId = null;
