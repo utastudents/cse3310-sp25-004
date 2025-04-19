@@ -254,54 +254,68 @@ public class BotI extends Bot {
     
     // Picks best regular move - prefers making kings, staying safe, and advancing
     private Move selectBestMove(ArrayList<Move> moves) {
+	// If there's only one move, it'll just do that one
         if (moves.size() == 1) {
             return moves.get(0);
         }
-        
+       
+	//First check for moves that make us a king choose the best option! 
         ArrayList<Move> kingMoves = new ArrayList<>();
         for (Move move : moves) {
             if (wouldBecomeKing(move)) {
                 kingMoves.add(move);
             }
         }
-        
+       
+	// If we found king moves, pick one randomly 
         if (!kingMoves.isEmpty()) {
             return kingMoves.get(random.nextInt(kingMoves.size()));
         }
-        
+       
+	// Next look for safe moves where we won't get captured right away 
         ArrayList<Move> safeMoves = new ArrayList<>();
         for (Move move : moves) {
             if (isSafeMove(move)) {
                 safeMoves.add(move);
             }
         }
-        
+       
+	// If safe moves exist, pick one randomly 
         if (!safeMoves.isEmpty()) {
             return safeMoves.get(random.nextInt(safeMoves.size()));
         }
-        
+       
+	// Then check for moves that move us forward toward being king 
         ArrayList<Move> advancingMoves = new ArrayList<>();
         for (Move move : moves) {
             if (isAdvancingMove(move)) {
                 advancingMoves.add(move);
             }
         }
-        
+       
+	// If we have advancing moves, pick one randomly 
         if (!advancingMoves.isEmpty()) {
             return advancingMoves.get(random.nextInt(advancingMoves.size()));
         }
+
+	// If all else fails, just pick any random move
         return moves.get(random.nextInt(moves.size()));
     }
  
     
     // Checks if a move would make the piece a king
     private boolean wouldBecomeKing(Move move) {
+	// Can't become king if already a king
         if (move.piece.isKing()) {
             return false;
         }
+
+	// Black pieces become kings at the top row (y=7)
         if (move.piece.getColor() == Color.BLACK && move.destination.getY() == 7) {
             return true;
         }
+
+	// Red pieces become kings at the bottom row (y=0)
         if (move.piece.getColor() == Color.RED && move.destination.getY() == 0) {
             return true;
         }
@@ -315,7 +329,8 @@ public class BotI extends Bot {
         if (board == null) 
         { 
         return false; 
-        }  
+        }
+	// Find the piece we're jumping over  
         int capturedX = (move.piece.getCord().getX() + move.destination.getX()) / 2; 
         int capturedY = (move.piece.getCord().getY() + move.destination.getY()) / 2; 
         Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY)); 
@@ -328,7 +343,8 @@ public class BotI extends Bot {
         if (board == null)
         { 
         return true; 
-        } 
+        }
+	// Look at all four diagonal squares around new position 
         for (int dy = -1; dy <= 1; dy += 2)
         { 
             for (int dx = -1; dx <= 1; dx += 2)
@@ -337,13 +353,19 @@ public class BotI extends Bot {
                 int y = move.destination.getY() + dy; 
                 if (x >= 0 && x < 8 && y >= 0 && y < 8)
                 { 
-                    Checker adjacentPiece = board.checkSpace(new Cord(x, y)); 
+                    Checker adjacentPiece = board.checkSpace(new Cord(x, y));
+			
+			// If there's an enemy piece that can capture us 
                     if (adjacentPiece != null && adjacentPiece.getColor() != color)
-                    { 
-                        if (adjacentPiece.isKing() ||  
-                        (adjacentPiece.getColor() == Color.BLACK && y < move.destination.getY()) || 
+                    {
+			// Kings can capture any direction 
+                        if (adjacentPiece.isKing() || 
+			// Black can only capture downward 
+                        (adjacentPiece.getColor() == Color.BLACK && y < move.destination.getY()) ||
+			// Red can only capture upward 
                         (adjacentPiece.getColor() == Color.RED && y > move.destination.getY())) 
-                        { 
+                        {
+		        	// Check if we have a friend behind us to block 
                             int behindX = move.destination.getX() - dx; 
                             int behindY = move.destination.getY() - dy; 
                             if (behindX >= 0 && behindX < 8 && behindY >= 0 && behindY < 8)
@@ -351,27 +373,30 @@ public class BotI extends Bot {
                                 Checker behindPiece = board.checkSpace(new Cord(behindX, behindY)); 
                                 if (behindPiece != null && behindPiece.getColor() == color) 
                                 { 
-                                    return true; 
+                                    return true; // Return's true when protected 
                                 } 
                             } 
-                            return false; 
+                            return false;  // Return's false if in danger 
                         } 
                     } 
                 } 
             } 
         } 
-        return true; 
+        return true; // No threats found 
     }
           
     // Checks if a move helps advance toward opponent's side
     private boolean isAdvancingMove(Move move)
-    { 
+    {
+	// Kings don't need to advance 
         if (move.piece.isKing()) {
             return false; 
-        } 
+        }
+	// Black moves up the board (higher y values) 
         if (move.piece.getColor() == Color.BLACK)  {
             return move.destination.getY() > move.piece.getCord().getY(); 
-        } 
+        }
+	// Red moves down the board (lower y values) 
         else { 
             return move.destination.getY() < move.piece.getCord().getY(); 
         } 
@@ -383,6 +408,7 @@ public class BotI extends Bot {
     { 
         if (board != null)
         { 
+	    // Move the piece and check for king promotion
             board.updatePosition(move.piece, move.destination); 
             board.kingMe(move.piece); 
         } 
@@ -391,9 +417,10 @@ public class BotI extends Bot {
     // Keeps track of move information (which piece, where it's going, if it's a jump)
     private class Move
     { 
-        Checker piece; 
-        Cord destination; 
-        boolean isJump; 
+        Checker piece;  // The piece being moved 
+        Cord destination; // Where it's going 
+        boolean isJump; // True if it's a jump/capture
+ 
         Move(Checker piece, Cord destination, boolean isJump)
         { 
             this.piece = piece; 
