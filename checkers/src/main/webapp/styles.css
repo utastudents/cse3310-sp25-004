@@ -374,7 +374,11 @@ button[disabled] {
   border: 1px solid #aaa;
 }
 
-/* This next part of the code is for the challenge button to have a timer*/
+/* JOIN GAME */
+.enable_btn {
+  background-color: #007bff;
+}
+
 .chall_btn {
   font-size: 16px;
   border-radius: 8px;
@@ -386,14 +390,6 @@ button[disabled] {
 
 .chall_btn.challenged{
   background-color: orange;
-}
-
-.chall_btn.success{
-  background-color: green;
-}
-
-.chall_btn.fail{
-  background-color: red;
 }
 
 .lobby_actions {

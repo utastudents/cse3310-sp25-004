@@ -96,24 +96,19 @@
 				</ol>
 			</div>
 
-			<button>
-				<!-- Will always have current player information, parameter is player they want to challenge -->
-				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
-				<a id="CURRENT_SESSION_JQ" type="button" onclick="sendMessage({action:'joinQueue', playerClientId: globalClientID})">
-					Match Making
-				</a>
+			<!-- Will always have current player information, parameter is player they want to challenge -->
+			<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
+			<button class="enable_btn" id="CURRENT_SESSION_JQ"  type="button" onclick="sendMessage({action:'joinQueue', playerClientId: globalClientID})">
+				Match Making
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
-			<button>
-				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 0})">
-					Challenge Bot I
-				</a>
+			<button class="enable_btn" id="CURRENT_SESSION_BOT"  type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 0})">
+				Challenge Bot I
 			</button>
 			<!-- request to see bots play -->
-			<button>
-				<a id="CURRENT_SESSION_BOTvsBOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
-					Challenge Bot II
-				</a></button>
+			<button class="enable_btn" id="CURRENT_SESSION_BOTvsBOT"  type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
+				Challenge Bot II
+			</button>
 		</div>
 		<!-- Send server who is the current player that logged in and request to see the list of active players-->
 		<script>
@@ -144,19 +139,29 @@
 				const challenge_btn = document.createElement("button");
 				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
 				challenge_btn.innerText = "Challenge";
+				if (player_info.status == "ONLINE") {
+					challenge_btn.className = "chall_btn";
+				} else {
+					challenge_btn.disabled = true;
+				}
 				challenge_btn.onclick = function () {
-					sendMessage({ action: "challengePlayer", "opponentClientId": player_info.ClientID }); 
+					challenge_btn.classList.add("challenged");
+					req_challenge(player_info.ClientID);
 				};
 
 				const view_btn = document.createElement("button");
 				view_btn.id = `view_btn-${player_info.ClientID}`;
 				view_btn.innerText = "View Match";
-				if (player_info.status == "ONLINE"){
-					view_btn.disabled = true; 
+
+				// Set the disabled state based on player_info.status
+				if (player_info.status == "ONLINE") {
+					view_btn.disabled = true;
+					view_btn.className = "";
 				} else {
-					view_btn.disabled = false; 
+					view_btn.disabled = false;
+					view_btn.className = "enable_btn";
 				}
-				view_btn.disabled = true; 
+
 				view_btn.onclick = function () {
 					viewMatch(player_info.ClientID);
 				};
@@ -168,11 +173,10 @@
 				listEl.appendChild(li);
 			};
 
-			function req_challenge() {
+			function req_challenge(challenged_player_id) {
 				const challengeRequest = {
-					type: "request_challenge",
-					playerID: player_id,
-					challengedPlayerID: challenged_player_id
+					action: "challengePlayer",
+					opponentClientID: challenged_player_id
 				};
 
 				console.log("Requesting challenge to player:", challenged_player_id);
@@ -206,7 +210,7 @@
 				const online_players = data["activePlayers"];
 
 				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
-
+				console.log(JSON.stringify(data));
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
 						Object.assign(currentPlayerInfo, player);
