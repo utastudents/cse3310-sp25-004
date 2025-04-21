@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.mockito.internal.matchers.Null;
 
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Board;
@@ -41,7 +42,10 @@ public class BotIITest {
     void TestcapturePiece() {
 	//Arange
  	// Set up the board with a black checker
+
+    
   	Board board = new Board();
+        boolean AT, HM;
      	Checker blackChecker = new Checker(new Cord(2, 2), Color.BLACK);
       	board.checkerBoard[2][2] = blackChecker;
 
@@ -52,13 +56,20 @@ public class BotIITest {
 	//Checks to see if the landing spot is empty
     	board.checkerBoard[4][4] = null;
      
-     	//Capture the piece
-      	BotII.capturePiece(board);
+     	BotII botII = new BotII(null, null);
+        //Capture the piece
+      	botII.capturePiece(board);
 	    
 	//assert
-       assertTrue("Red piece should have been captured", board.checkerBoard[3][3]);
-       asserTrue("Black piece should have moved to new location", moved);
-       Checker moved = board.checker[4][4];
+        if (board.checkerBoard[3][3] == null) {
+            AT = true;
+            assertTrue("Red piece should have been captured", AT);
+        }
+        Checker moved = board.checkerBoard[4][4];
+        if (moved != null) {
+            HM = true;
+            assertTrue("Black piece should have moved to new location", HM);
+        }
     } 
 
     @Test

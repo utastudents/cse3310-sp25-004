@@ -249,8 +249,8 @@ public class BotII extends Bot {
         }
     }
     
-    public void capturePiece() {
-    Board board = game.getBoard().getBoard();
+    public void capturePiece(Board board) {
+    board = game.getBoard().getBoard();
 
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 8; x++) {
