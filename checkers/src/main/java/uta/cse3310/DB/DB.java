@@ -45,7 +45,7 @@ public class DB
                      "salt TEXT NOT NULL," +
                      "wins INTEGER DEFAULT 0," +   
                      "losses INTEGER DEFAULT 0," + 
-                     "elo INTEGER DEFAULT 1000," + //Unsure how we are gonig to do elo, starting at 1000 for now
+                     "elo INTEGER DEFAULT 1000," + 
                      "games_played INTEGER DEFAULT 0)";
         
         try (Statement stmt = conn.createStatement()) {
