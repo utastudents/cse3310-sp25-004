@@ -31,9 +31,6 @@ public class Board
 	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
 	{
-		int nums[] = {1,3,5,7};
-
-
 		// Set the whole board to null
 		for (int i = 0; i < 8; i++)
 		{
@@ -50,6 +47,8 @@ public class Board
 			{
 				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
 				{
+					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
+					// ?? potential fix: just make another for loop
 					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.BLACK);
 				}
 				else // Row 1 has the black checkers on squares 0,2,4,6
@@ -77,6 +76,16 @@ public class Board
 
 	}
 
+	/* 
+		Definition: kingMe sets a checker piece to be a king
+			- called after every move
+
+		Arguments:
+			piece: checker piece that was moved
+
+		Returns:
+			void
+	*/
 	public void kingMe(Checker piece)
 	{
 		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
@@ -88,76 +97,67 @@ public class Board
 			piece.setKing(true);
 		}
 	}
-	
+
+	/* 
+		Definition: moveForwardCheck checks if the requested destination by the user is a valid simple move
+			- for forward move only (black and king pieces)
+			- Does not check Jumps
+
+		Arguments:
+			piece : checker piece chosen by the player
+			dest : destination cord that the player click/request to move to
+
+		Returns:
+			true : piece can move diagonally forward to the destination square
+	*/
 	public boolean moveForwardCheck(Checker piece, Cord dest) 
-	// Returns true if the piece can move diagonally forward to the destination square. 
-	// Does not check Jumps
 	{
-
-		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
+		// verify destination square is in bound
+		if(dest.getX() <= 0 || dest.getX() >= 7 || dest.getY() <= 0 || dest.getY() >= 7)
 		{
-			return false; // Invalid move, out of bounds
+			return false;
 		}
-
+		// verify destination square is not occupied by another piece
 		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
-			return false; // Cannot move to a square already occupied by another piece
+			return false;
 		}
-
-		/*else
-		{
-			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-			int yDiff = Math.abs(dest.getY() - piece.getCord().getY());
-
-			if(xDiff == 1 && yDiff == 1)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		//return false; // Should not reach. If it does something is wrong and the move is */
+		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
 
-		if(xDiff == 1 && yDiff == 1)
-		{
-			return true;
-		}
-
-		return false;
-
+		return (xDiff == 1 && yDiff == 1);
 	}
 
+	/* 
+		Definition: moveBackwardCheck checks if the requested destination by the user is a valid simple move
+			- for backward move only (red and king pieces)
+			- Does not check Jumps
+
+		Arguments:
+			piece : checker piece chosen by the player
+			dest : destination cord that the player click/request to move to
+
+		Returns:
+			true : piece can move diagonally backward to the destination square
+	*/
 	public boolean moveBackwardCheck(Checker piece, Cord dest) 
-	// Returns true if the piece can move diagonally backward to the destination square. 
-	// Does not check Jumps
 	{
-
-		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
+		// verify destination square is in bound
+		if(dest.getX() <= 0 || dest.getX() >= 7 || dest.getY() <= 0 || dest.getY() >= 7)
 		{
-			return false; // Invalid move, out of bounds
+			return false;
 		}
-
+		// verify destination square is not occupied by another piece	
 		if(checkerBoard[dest.getY()][dest.getX()] == null)
 		{
-			return false; // Cannot move to a square already occupied by another piece
+			return false;
 		}
-		else
-		{
-			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-			int yDiff = (dest.getY() - piece.getCord().getY());
+		// verify if destination is 1 square below and to the right/left of the chosen checker
+		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
+		int yDiff = (dest.getY() - piece.getCord().getY());
 
-			if(xDiff == 1 && yDiff == -1)
-			{
-				return true;
-			}
-		}
-
-		return false; // Should not reach. If it does something is wrong and the move is invalid
+		return (xDiff == 1 && yDiff == -1);
 	}
 	
 	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
@@ -257,7 +257,7 @@ public class Board
 	}
 
 	/* 
-		Definition: checkBackwardJump checks if the requested detination by the user is a valid jump
+		Definition: checkBackwardJump checks if the requested destination by the user is a valid jump
 		Arguments:
 			jumpList : List of possible backwards jumps gathered after running getPossibleBackwardJump
 			cord : destination cord that the player click/request to move to
