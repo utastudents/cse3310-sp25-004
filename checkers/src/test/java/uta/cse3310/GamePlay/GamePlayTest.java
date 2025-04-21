@@ -5,19 +5,31 @@ import org.junit.jupiter.api.Test;
 
 public class GamePlayTest{
 
+    // Test moveForwardCheck, test it will return true if simple move is legal and false if it's illegal
 	@Test
 	void moveForwardCheckTest() 
     {
-		//var checker = new Checker(new Cord(3, 2), Color.BLACK);
-		var cord = new Cord(4, 3);
+		var legal_right = new Cord(4, 3);
+        // ?? this shouldnt be failing
+        // var legal_left = new Cord(2, 3);
+        var illegal_back_left = new Cord(2, 1);
+        var illegal_nonDiagonal = new Cord(2, 2);
+        var illegal_outOfBound = new Cord(0,8);
 		var board = new Board();
         
-		
-        //THIS TEST IS BUSTED. Please fix BEFORE uncommenting, thank you :) - Please run test before committing
-		assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], cord));
+		assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
+        //assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_back_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_nonDiagonal));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_outOfBound));
+
+        // ?? this shouldnt be failing
+        // var checker = new Checker(new Cord(4, 3), Color.BLACK);
+        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
+
 	}
 
-    // This will test if piece becomea a king piece once it reaches the end
+    // Test kingMe, test if piece becomea a king piece once it reaches the end
     @Test
     void kingMeTest() {
         var board = new Board();
