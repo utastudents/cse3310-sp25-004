@@ -37,11 +37,9 @@ public class BotIITest {
         assertTrue("A defensive move should be found", bestMove != null);
 
     }
-
-  /*  @Test
+    @Test
     void TestcapturePiece() {
 	//Arange
-	/*
  	// Set up the board with a black checker
   	Board board = new Board();
      	Checker blackChecker = new Checker(new Cord(2, 2), Color.BLACK);
