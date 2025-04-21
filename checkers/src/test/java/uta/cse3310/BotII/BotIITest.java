@@ -56,11 +56,12 @@ public class BotIITest {
      
      	//Capture the piece
       	BotII.capturePiece(board);
-
-       //
-     
-
-    } */
+	    
+	//assert
+       assertTrue("Red piece should have been captured", board.checkerBoard[3][3]);
+       asserTrue("Black piece should have moved to new location", moved);
+       Checker moved = board.checker[4][4];
+    } 
 
     @Test
     public void testIsInDanger() {
