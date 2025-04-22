@@ -230,44 +230,6 @@
 				return player_count;
 			}
 
-			function updateStatus(playerID, status) {
-				//STATUS can be IN_GAME ONLINE or IN_QUEUE
-				if (playerID == globalClientID) {
-					//My ID
-					return;
-				}
-
-				const elementID = "UID" + playerID;
-				// Access the player ID
-				const playerElement = document.getElementById(elementID);
-
-				// access the status span
-				const statusElement = playerElement.querySelector('.status');
-				const challengedBtn = document.getElementById(`chall_btn-${playerID}`);
-				const viewBtn = document.getElementById(`view_btn-${playerID}`);
-
-				if (!challengedBtn) {
-					console.log("cant find button");
-				}
-				// Change the status to "free"
-				if (status == "IN_GAME") {
-					statusElement.classList.remove('free');
-					statusElement.classList.add('busy');
-
-					//change challenge button to disabled, view match to True
-					challengedBtn.disabled = true;
-					viewBtn.disabled = false;
-				}
-				// welp you not gonna spectate an idle player 
-				else {
-					statusElement.classList.remove('busy');
-					statusElement.classList.add('free');
-					//change button to normal
-					challengedBtn.disabled = false;
-					viewBtn.disabled = true;
-				}
-			}
-
 			function watchBotVsBot(player_info) {
 				const botVsBotReq = {
 					type: "request_bot_vs_bot",
