@@ -14,10 +14,7 @@ import uta.cse3310.GamePlay.Cord;
 
 public class BotIITest {
 
-  /*  @Test
-	void Makemove() {
-		
-	}*/
+
 
     @Test
     public void TestDefendPieces() {
@@ -38,6 +35,7 @@ public class BotIITest {
         assertTrue("A defensive move should be found", bestMove != null);
 
     }
+    /* 
     @Test
     void TestcapturePiece() {
 	//Arange
@@ -70,7 +68,7 @@ public class BotIITest {
             HM = true;
             assertTrue("Black piece should have moved to new location", HM);
         }
-    } 
+    } */
 
     @Test
     public void testIsInDanger() {

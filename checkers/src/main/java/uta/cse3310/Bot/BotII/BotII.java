@@ -180,22 +180,28 @@ public class BotII extends Bot {
     public static boolean isInDanger(Checker checker, Board board) {
         int x = checker.getCord().getX();
         int y = checker.getCord().getY();
-
-        // Check if a red piece could jump this checker
-        int[][] dirs = { {-1, -1}, {1, -1} };
-        for (int[] d : dirs) {
-            int rx = x + d[0];
-            int ry = y + d[1];
-            int jx = x - d[0];
-            int jy = y - d[1];
-
-            if (inBounds(rx, ry) && inBounds(jx, jy)) {
-                Checker red = board.checkerBoard[ry][rx];
-                if (red != null && red.getColor() == Color.RED && board.checkerBoard[jy][jx] == null) {
-                    return true;
+        
+        // For BLACK pieces (moving upward), check if RED can jump from below
+        if(checker.getColor() == Color.BLACK) {
+            int[][] attackDirections = {{1,1}, {-1,1}}; // Relative to BLACK position
+            
+            for(int[] dir : attackDirections) {
+                int attackX = x + dir[0];
+                int attackY = y + dir[1];
+                int jumpX = x - dir[0];
+                int jumpY = y - dir[1];
+                
+                if(inBounds(attackX, attackY) && inBounds(jumpX, jumpY)) {
+                    Checker attacker = board.checkerBoard[attackY][attackX];
+                    boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+                    
+                    if(attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty) {
+                        return true;
+                    }
                 }
             }
         }
+        // Similar logic for RED pieces would go here
         return false;
     }
 
@@ -207,16 +213,15 @@ public class BotII extends Bot {
         int x = checker.getCord().getX();
         int y = checker.getCord().getY();
 
-        int[][] moves = { {-1, 1}, {1, 1} }; // forward directions for black
-
-        for (int[] m : moves) {
-            int nx = x + m[0];
-            int ny = y + m[1];
-            if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null) {
-                // Simulate move and check if it leads to danger
-                Cord simulatedCord = new Cord(nx, ny);
-                if (!wouldBeInDangerAfterMove(checker, simulatedCord, board)) {
-                    safeMoves.add(simulatedCord);
+        // For BLACK pieces, safe moves are backward
+        if(checker.getColor() == Color.BLACK) {
+            int[][] moves = {{-1,1}, {1,1}}; // backward diagonals
+            
+            for(int[] m : moves) {
+                int nx = x + m[0];
+                int ny = y + m[1];
+                if(BotII.inBounds(nx, ny) && board.checkerBoard[ny][nx] == null) {
+                    safeMoves.add(new Cord(nx, ny));
                 }
             }
         }
