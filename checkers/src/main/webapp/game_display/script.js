@@ -68,11 +68,11 @@ function createBoard() {
     if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
     for (let row = 0; row < 8; row++) {
         const tr = document.createElement("tr");
-
+        tr.style.height = "50px";
         for (let col = 0; col < 8; col++) {
             const td = document.createElement("td");
             const isPlayable = (row + col) % 2 === 0;
-
+            td.style.height = "50px";
             if (isPlayable) {
                 td.classList.add("emptySquare");
 
