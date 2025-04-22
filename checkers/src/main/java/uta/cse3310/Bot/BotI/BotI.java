@@ -21,6 +21,7 @@ public class BotI extends Bot {
     private Color color;
     private Game game;
     private Random random;
+    private boolean gameEnded = false;
     
     // if there are multiple moves the bot can make during its turn and 
     // these moves are all equally "beneficial" i guess, it randomly chooses one of those moves
@@ -42,7 +43,11 @@ public class BotI extends Bot {
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
     public boolean makeMove(GameState gs){
-        
+        //if game ends bot cant make a move
+        if (gameEnded) {
+            return false;
+        }
+
         //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
         if (availableCheckers.isEmpty()) { 
@@ -89,6 +94,7 @@ public class BotI extends Bot {
         if (game != null) {
             this.board = game.getBoard().getBoard();
         }
+        gameEnded = true;
         return true;
         
     } 
