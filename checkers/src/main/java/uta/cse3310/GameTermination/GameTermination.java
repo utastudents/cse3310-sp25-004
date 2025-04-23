@@ -1,11 +1,17 @@
 package uta.cse3310.GameTermination;
 
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.App;
 import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.PageManager.UserEventReply;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.JsonObject;
 
 public class GameTermination {
         // Tells game play game is over. 
@@ -80,10 +86,16 @@ public class GameTermination {
                 HumanPlayer player1 = database.getPlayerByUsername(username1);
                 HumanPlayer player2 = database.getPlayerByUsername(username2);
 
-                //Determine which player is winning
+                //safety check to avoid game corruption
+                if(player1 == null || player2 == null){
+                        System.out.println("Player not detected");
+                        return new HumanPlayer[]{null, null};
+                }
+
+                //Determine who won game
                 int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game);
                 
-                //extract IDs and stats
+                //extract current player stats
                 int p1Id = player1.getPlayerId();
                 int p2Id = player2.getPlayerId();
 
@@ -106,15 +118,15 @@ public class GameTermination {
                         database.updatePlayerStats(p2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
                 //Handles Player 1 Win
                 }else if(winnerID == p1Id){
-                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
-                        updatedElo2 = (int)(p2Elo + 32 * (0 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
+                        updatedElo1 = calculateElo(p1Elo, p2Elo, true);
+                        updatedElo2 = calculateElo(p2Elo, p1Elo, false);
 
                         database.updatePlayerStats(p1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
                         database.updatePlayerStats(p2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 1);
                 //Handles Player 2 Win
                 }else if(winnerID == p2Id){
-                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
-                        updatedElo1 = (int)(p1Elo + 32 * (0 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+                        updatedElo2 = calculateElo(p2Elo, p1Elo, true);
+                        updatedElo1 = calculateElo(p1Elo, p2Elo, false);
 
                         database.updatePlayerStats(p2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
                         database.updatePlayerStats(p1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
@@ -125,38 +137,20 @@ public class GameTermination {
                 updatedStats[0] = database.getPlayerByUsername(username1);
                 updatedStats[1] = database.getPlayerByUsername(username2);
 
+                //send updated leaderboard to both players before returning
+                App.sendMessage(App.pmInstance.retrieveLeaderboardJson(new JsonObject(), player1.getPlayerId()));
+                App.sendMessage(App.pmInstance.retrieveLeaderboardJson(new JsonObject(), player2.getPlayerId()));
+
                 return updatedStats;
         }
-                
+        
+        //moved here so Elo can be calculated easily
+        private int calculateElo(int playerElo, int opponentElo, boolean isWinner) {
+                double expectedScore = 1.0 / (1.0 + Math.pow(10, (opponentElo - playerElo) / 400.0));
+                return (int)(playerElo + 32 * ((isWinner ? 1 : 0) - expectedScore));
 
-
-         // Generates and displays the leaderboard based on player scores. 
-         public void generateLeaderboard(int clientId) {
-        // Query the database for top 10 players.
-        List<String> topPlayers = new ArrayList<>();
-        String url = "jdbc:sqlite:game.db";  // Ensure this path is correct for your system
-
-        String sql = "SELECT username, wins FROM players ORDER BY wins DESC LIMIT 10";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                // For simplicity, just create a string representation.
-                String entry = rs.getString("username") + " - Wins: " + rs.getInt("wins");
-                topPlayers.add(entry);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving leaderboard: " + e.getMessage());
         }
 
-        // Delegate the sending of the leaderboard data to the PageManager.
-        // Note: You could either create a new PageManager instance here or use an existing one if available.
-       // PageManager pm = new PageManager();
-       // pm.sendLeaderboard(topPlayers, clientId);
-    }
 }
 
 
