@@ -735,21 +735,51 @@ public class PageManager {
     }
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
-        
-       
-        
-        GameMove move = gson.fromJson(jsonObj, GameMove.class);
-        move.setClientId(Id);
-        GamePlay gameplay = new GamePlay(move.getGameId());
-        Gm.processMove(move, gameplay);
+        // {"action":"GameMove","color":"red","fromPosition":"R2-C6","toPosition":"R3-C5"}
         UserEventReply reply = new UserEventReply();
+        JsonObject json = new JsonObject();
+        reply.replyObj = json;
+        reply.recipients = new ArrayList<>();
+        reply.recipients.add(Id);
 
-        //JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
-        //reply.replyObj = json;
-        //reply.recipients.add(move.getClientId());
+        HumanPlayer hp = activePlayers.get(Id);
+        if (hp == null) {
+            //Player is not signed in!
+            json.addProperty("responseID", "invalidMove");
+            return reply;
+        }
+
+        // Get game from the player object
+        Game g = hp.getGame();
+
+        if (g == null) {
+            //Player is not in a game!
+            json.addProperty("responseID", "invalidMove");
+            return reply;
+        }
+
+        GamePlay gamePlay = g.getBoard();
+        Cord from = PageManager.codeToCord(jsonObj.get("fromPosition").getAsString());
+        Cord to = PageManager.codeToCord(jsonObj.get("toPosition").getAsString());
+        GameMove gameMove = new GameMove(g.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), jsonObj.get("color").getAsString());
+       
+        gameMove.setClientId(Id);
+        GameUpdate update = Gm.processMove(gameMove, gamePlay);
+
+        //TODO: add json fields to json
+        json.addProperty("valid", update.isValidMove());
+
         return reply;
-            
+    }
+
+    private static Cord codeToCord(String code) {
+        //"R2-C6"
+        String pos = code.split("-")[1];
         
+        int x = pos.charAt(0) - 'A';
+        int y = Integer.parseInt(pos.substring(1));
+        Cord c = new Cord(x, y);
+        return c;
     }
 
      
