@@ -49,10 +49,10 @@ public class BotITest {
         Checker redPiece = new Checker(new Cord(2, 2), Color.RED);
         board.updatePosition(redPiece, new Cord(2, 2));
         
-        bot.updateBoard(GameState.GAME_DISPLAY);
+        bot.updateBoard(game.getBoard());
         
         //have the bot mKE  a move
-        boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
+        boolean moveResult = bot.makeMove(game.getBoard());
         assertTrue(moveResult, "Bot should make a valid move");
         
 
@@ -70,11 +70,11 @@ public class BotITest {
         board.updatePosition(blackPiece, new Cord(1, 1));
 
         //the board updates
-        boolean updateResult = bot.updateBoard(GameState.GAME_DISPLAY);
+        boolean updateResult = bot.updateBoard(game.getBoard());
         assertTrue(updateResult, "Board update should be successful");
         
         //checks if the bot can move after the board updates
-        boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
+        boolean moveResult = bot.makeMove(game.getBoard());
         assertTrue(moveResult, "Bot should be able to make a move after board update" );
     }
 
@@ -87,14 +87,14 @@ public class BotITest {
         Checker blackPiece = new Checker(new Cord(1, 1), Color.BLACK);
         board.updatePosition(blackPiece, new Cord(1, 1));
         
-        bot.updateBoard(GameState.GAME_DISPLAY);
+        bot.updateBoard(game.getBoard());
         
         //game ends properly
-        boolean endGameResult = bot.endGame(GameState.SUMMARY);
+        boolean endGameResult = bot.endGame(game.getBoard());
         assertTrue(endGameResult, "End game should be successful" );
         
         //bot stops moving after game end
-        boolean moveResult = bot.makeMove(GameState.GAME_DISPLAY);
+        boolean moveResult = bot.makeMove(game.getBoard());
         assertFalse(moveResult ,"Bot should NOT be able to make a move after game ends" );
     }
 } 

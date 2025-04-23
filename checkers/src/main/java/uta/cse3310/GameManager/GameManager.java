@@ -101,6 +101,21 @@ public class GameManager {
         String movePath = "Playerid " + playerId + ":" + "(" + from.getX() + "," + from.getY() + ")" + " -> " + "("
                 + to.getX() + "," + to.getY() + ")";
 
+
+        // Let both players know that a move has been made & whose turn it is
+        if (valid) {
+            Game g = games.get(move.getGameId());
+            if (g.getPlayer1().getPlayerId() == playerId) {
+                //This is player 1. Player 2's move
+                g.getPlayer1().updateBoard(g.getBoard());
+                g.getPlayer2().makeMove(g.getBoard());
+            } else {
+                //Player 1's move
+                g.getPlayer1().makeMove(g.getBoard());
+                g.getPlayer2().updateBoard(g.getBoard());
+            }   
+        }
+
         return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);
     }
 

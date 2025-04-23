@@ -344,8 +344,10 @@ public class BotII extends Bot {
     }
 
     @Override
-    public boolean makeMove(GameState gs) {
+    public boolean makeMove(GamePlay gs) {
         if (this.game == null) return false;
+
+        //Board can be retrieved from GamePlay!
 
         Board board;
         try {
@@ -468,9 +470,9 @@ public class BotII extends Bot {
      */
 
     @Override
-    public boolean updateBoard(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBoard'");
+    public boolean updateBoard(GamePlay gs) {
+        //Can be ignored
+        return true;
     }
     @Override
     public boolean startGame(Game g) {
@@ -479,7 +481,7 @@ public class BotII extends Bot {
 }
 
     @Override
-    public boolean endGame(GameState gs) {
+    public boolean endGame(GamePlay gs) {
         return true; //Can be ignored
     }
 

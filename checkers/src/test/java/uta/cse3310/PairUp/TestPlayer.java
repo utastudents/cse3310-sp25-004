@@ -2,6 +2,7 @@ package uta.cse3310.PairUp;
 
 import uta.cse3310.GameState;
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PageManager.HumanPlayer;
 
 public class TestPlayer extends HumanPlayer {
@@ -18,17 +19,17 @@ public class TestPlayer extends HumanPlayer {
     }
 
     @Override
-    public boolean makeMove(GameState gs) {
+    public boolean makeMove(GamePlay gs) {
         return true;
     }
 
     @Override
-    public boolean updateBoard(GameState gs) {
+    public boolean updateBoard(GamePlay gs) {
         return true;
     }
 
     @Override
-    public boolean endGame(GameState gs) {
+    public boolean endGame(GamePlay gs) {
         return true;
     }
 }

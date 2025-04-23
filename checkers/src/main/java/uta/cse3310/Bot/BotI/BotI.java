@@ -42,7 +42,7 @@ public class BotI extends Bot {
      //this method checks what move to make, its made strategically, 
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
-    public boolean makeMove(GameState gs){
+    public boolean makeMove(GamePlay gs){
         //if game ends bot cant make a move
         if (gameEnded) {
             return false;
@@ -78,7 +78,7 @@ public class BotI extends Bot {
 
     //updates where the peices are on the board
     @Override 
-    public boolean updateBoard(GameState gs) {
+    public boolean updateBoard(GamePlay gs) {
         
         if (game != null) {
             this.board = game.getBoard().getBoard();
@@ -89,7 +89,7 @@ public class BotI extends Bot {
 
     //this function is called when the game is over
     @Override 
-    public boolean endGame(GameState gs) {
+    public boolean endGame(GamePlay gs) {
         
         if (game != null) {
             this.board = game.getBoard().getBoard();
