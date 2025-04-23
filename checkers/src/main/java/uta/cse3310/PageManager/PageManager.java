@@ -22,7 +22,6 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.GamePlay.*;
 public class PageManager {
-    //GameManager gm;
     DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
@@ -32,7 +31,7 @@ public class PageManager {
     // List to track active players in the subsystem
     public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
     Gson gson = new Gson();
-    GameManager Gm = new GameManager();
+    public static GameManager Gm;
     public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
     public Hashtable<Integer,GamePlay> getGamePlay = new Hashtable<>();
 
@@ -40,7 +39,8 @@ public class PageManager {
     public HashMap<Integer, GameState> clientStates = new HashMap<>();
 
     public PageManager() { 
-        //gm = new GameManager(); //already created??
+        PageManager.Gm = new GameManager(); // Instance variable for Bots to reference
+
         db = new DB();
         // pass over a pointer to the single database object in this system
         pu = new PairUp(Gm);
