@@ -150,6 +150,20 @@ connection.onmessage = function (msg) {
             console.log("Player left:", jsonMsg.username);
             break;
         }
+		case "gameWon": {
+			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've won the game
+			//Expects the same response data, just a different responseID
+			showWinStatus();
+			loadData(jsonMsg.top10);
+			break;
+		}
+		case "gameLost": {
+			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've lost the game
+			//Expects the same response data, just a different responseID
+			showLoseStatus();
+			loadData(jsonMsg.top10);
+			break;
+		}
         default:{
             console.log("Received unexpected responseID! Got: \n"+responseID);
         }
