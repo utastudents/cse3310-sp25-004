@@ -38,6 +38,8 @@ public class GamePlay
         // 1 = Invalid move. The player must choose a valid jump.
         // 0 = Invalid move for any other reason
 
+        System.out.println("Moving piece " + piece + " to destination " + dest);
+
         if (piece == null) {
             return 0; // No piece to move
         }

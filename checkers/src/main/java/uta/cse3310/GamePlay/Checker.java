@@ -46,5 +46,7 @@ public class Checker
 		return playerID;
 	}
 
-
+	public String toString() {
+		return color + " piece " + cord.toString() + " isKing " + isKing;
+	}
 }
