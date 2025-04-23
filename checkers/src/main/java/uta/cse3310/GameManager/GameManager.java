@@ -100,7 +100,7 @@ public class GameManager {
         String movePath = "Playerid " + playerId + ":" + "(" + from.getX() + "," + from.getY() + ")" + " -> " + "("
                 + to.getX() + "," + to.getY() + ")";
 
-        return new GameUpdate(valid, "In Progress", "", result == 2, piece.isKing(), movePath);
+        return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);
     }
 
     //Converting the board from Checker[][] to String[][] for display

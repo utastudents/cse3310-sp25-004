@@ -38,6 +38,10 @@ public class GamePlay
         // 1 = Invalid move. The player must choose a valid jump.
         // 0 = Invalid move for any other reason
 
+        if (piece == null) {
+            return 0; // No piece to move
+        }
+
         int result = 0;
         boolean forceJump = false; // Set To true if a jump is found. 
         //create two ArrayLists for possible jumps
