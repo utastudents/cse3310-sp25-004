@@ -7,10 +7,10 @@ public class GameMove {
     private int toPosition_X;
     private int toPosition_Y;
     private String pieceType;
-
+    private int gameId;
   
-    public GameMove(int clientId, int fromPosition_X, int fromPosition_Y, int toPosition_X,int toPosition_Y, String pieceType) {
-        this.clientId = clientId;
+    public GameMove(int gameId, int fromPosition_X, int fromPosition_Y, int toPosition_X,int toPosition_Y, String pieceType) {
+        this.gameId = gameId;
         this.fromPosition_X = fromPosition_X;
         this.fromPosition_Y = fromPosition_Y;
         this.toPosition_X = toPosition_X;
@@ -40,6 +40,9 @@ public class GameMove {
     public void setClientId(int clientId) {
          this.clientId = clientId; 
     }
+    public void setGameId(int gameId) {
+        this.gameId = gameId; 
+   }
     public void setFromPosition_X(int fromPosition) { 
         this.fromPosition_X = fromPosition;
     }

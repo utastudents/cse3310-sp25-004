@@ -12,6 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.App;
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.DB.DB;
@@ -33,6 +34,7 @@ public class PageManager {
     Gson gson = new Gson();
     GameManager Gm = new GameManager();
     public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+    public Hashtable<Integer,GamePlay> getGamePlay = new Hashtable<>();
 
     // Track user in which subsytem they are in.
     public HashMap<Integer, GameState> clientStates = new HashMap<>();
@@ -729,9 +731,7 @@ public class PageManager {
 
         }
 
-
-
-        return null;
+        return Sboard;
     }
     public UserEventReply GameMove(JsonObject jsonObj, int Id)
     {
