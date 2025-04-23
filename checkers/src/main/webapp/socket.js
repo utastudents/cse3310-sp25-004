@@ -137,6 +137,15 @@ connection.onmessage = function (msg) {
             alert("Starting the game! " + JSON.stringify(jsonMsg));
             break;
         }
+        case "invalidMove": {
+            alert("Invalid Move!");
+            break;
+        }
+        case "validMove": {
+            console.log("Valid move");
+            console.log(jsonMsg.valid);
+            break;
+        }
 
         // Summary Responses
         case "summaryData": {

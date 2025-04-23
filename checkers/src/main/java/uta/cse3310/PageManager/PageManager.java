@@ -768,6 +768,7 @@ public class PageManager {
 
         //TODO: add json fields to json
         json.addProperty("valid", update.isValidMove());
+        json.addProperty("responseID", "validMove");
 
         return reply;
     }
