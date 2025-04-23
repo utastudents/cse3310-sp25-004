@@ -1,6 +1,7 @@
 
 package uta.cse3310.DB;
 
+/* import all required documents */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.sql.Statement;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player.STATUS;
 
-
+/* define our main class to be used */
 public class DB 
 {
     /*declaring conn variable with Connection type, Connection will let us SELECT, INSERT, and UPDATE the database*/
