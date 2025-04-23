@@ -1,6 +1,6 @@
 package uta.cse3310.BotII;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -12,7 +12,34 @@ import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 
+
+
 public class BotIITest {
+
+    @Test
+    public void testInDanger() {
+        // 1. Setup the board
+        Board board = new Board();
+    
+        // Place pieces
+        Checker blackPiece = new Checker(new Cord(2, 2), Color.BLACK);
+        Checker redPiece = new Checker(new Cord(3, 3), Color.RED);
+        board.checkerBoard[2][2] = blackPiece;  
+        board.checkerBoard[3][3] = redPiece;    
+        
+        // 2. Verify the danger condition
+        boolean inDanger = BotII.isInDanger(blackPiece, board);
+        
+        
+        // 4. Assertions
+        assertTrue("Black piece at (2,2) should be in danger from red at (3,3)", inDanger);
+        
+        // 5. Test defensive move generation
+        BotII.Move defensiveMove = BotII.defendPieces(board);
+        assertNotNull("Should find a defensive move", defensiveMove);
+        assertTrue("Move should be to higher Y coordinate (backward for BLACK)",
+                  defensiveMove.destination.getY() > blackPiece.getCord().getY());
+    }
 
 
 
