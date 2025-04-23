@@ -9,7 +9,8 @@ public class GameMove {
     private String pieceType;
     private int gameId;
   
-    public GameMove(int gameId, int fromPosition_X, int fromPosition_Y, int toPosition_X,int toPosition_Y, String pieceType) {
+    public GameMove(int clientId, int gameId, int fromPosition_X, int fromPosition_Y, int toPosition_X,int toPosition_Y, String pieceType) {
+        this.clientId = clientId; //Player ID, works for Bot or HP
         this.gameId = gameId;
         this.fromPosition_X = fromPosition_X;
         this.fromPosition_Y = fromPosition_Y;
@@ -18,7 +19,7 @@ public class GameMove {
         this.pieceType = pieceType;
     }
     //getters
-    public int getClietId() { 
+    public int getClientId() { 
         return clientId; 
     }
     public int getFromPosition_X() {

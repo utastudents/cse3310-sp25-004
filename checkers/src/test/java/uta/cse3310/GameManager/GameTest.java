@@ -96,12 +96,12 @@ public class GameTest {
 
         GameManager manager = new GameManager();
         // Using dummy values for testing purposes
-        GameMove move = new GameMove(1, 3, 2, 6, 3, "King");
+        GameMove move = new GameMove(1, 1, 3, 2, 6, 3, "King");
         move.getFromPosition_X();
         move.getFromPosition_Y();
         move.getToPosition_X();
         move.getToPosition_Y();
-        move.getClietId();
+        move.getClientId();
         // Making objects
         GamePlay gamePlay = new GamePlay(1);
         Cord cord = new Cord(3, 2);

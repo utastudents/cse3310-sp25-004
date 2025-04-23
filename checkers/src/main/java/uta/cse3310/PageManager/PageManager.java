@@ -761,12 +761,11 @@ public class PageManager {
         GamePlay gamePlay = g.getBoard();
         Cord from = PageManager.codeToCord(jsonObj.get("fromPosition").getAsString());
         Cord to = PageManager.codeToCord(jsonObj.get("toPosition").getAsString());
-        GameMove gameMove = new GameMove(g.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), jsonObj.get("color").getAsString());
+        GameMove gameMove = new GameMove(Id, g.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), jsonObj.get("color").getAsString());
        
         gameMove.setClientId(Id);
         GameUpdate update = Gm.processMove(gameMove, gamePlay);
 
-        //TODO: add json fields to json
         json.addProperty("valid", update.isValidMove());
         json.addProperty("responseID", "validMove");
 

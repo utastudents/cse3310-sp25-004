@@ -86,11 +86,12 @@ public class GameManager {
 
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
-        // Getter is misspelled in other class
-        int playerId = move.getClietId();
+        int playerId = move.getClientId();
 
         Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
         Cord to = new Cord(move.getToPosition_X(), move.getToPosition_Y());
+
+        System.out.println("Player " + playerId + " is moving from " + from + " to " + to);
 
         Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
         int result = gamePlay.move(piece, to);
@@ -123,7 +124,7 @@ public class GameManager {
     
     // Handling move logic and sending updated board state to both players involved in the game
     public void sendUpdateBoard(GameMove move, GamePlay gamePlay, PageManager pageManager) {
-        int playerId = move.getClietId(); //recording a move
+        int playerId = move.getClientId(); //recording a move
         
         //Getting coordinates for the move
         Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
