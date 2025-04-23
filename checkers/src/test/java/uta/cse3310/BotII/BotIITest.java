@@ -1,10 +1,9 @@
 package uta.cse3310.BotII;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.*;
 import java.util.ArrayList;
 
-import org.junit.Test;
-import org.mockito.internal.matchers.Null;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Board;
@@ -34,7 +33,7 @@ public class BotIITest {
         BotII.Move bestMove = BotII.defendPieces(board);
 
         // Check if the bot finds a valid move
-        assertTrue("A defensive move should be found", bestMove != null);
+        assertTrue(bestMove != null,"A defensive move should be found" );
 
     }
     /* 
@@ -85,7 +84,7 @@ public class BotIITest {
 
         // Run the method and check if the checker is in danger
         boolean result = BotII.isInDanger(blackChecker, board);
-        assertTrue("Checker should be in danger", result);
+        assertTrue(result,"Checker should be in danger" );
     }
 
 
@@ -100,7 +99,7 @@ public class BotIITest {
         ArrayList<Cord> safeMoves = BotII.getSafeMoves(blackChecker, board);
 
         // Assert that there are safe moves available
-        assertTrue("There should be at least one safe move", !safeMoves.isEmpty());
+        assertTrue(!safeMoves.isEmpty(),"There should be at least one safe move" );
     }
     
 }
