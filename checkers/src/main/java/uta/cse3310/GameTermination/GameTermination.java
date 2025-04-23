@@ -107,14 +107,14 @@ public class GameTermination {
                 //Handles Player 1 Win
                 }else if(winnerID == p1Id){
                         updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
-                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
+                        updatedElo2 = (int)(p2Elo + 32 * (0 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
 
                         database.updatePlayerStats(p1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
                         database.updatePlayerStats(p2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 1);
                 //Handles Player 2 Win
                 }else if(winnerID == p2Id){
                         updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
-                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
+                        updatedElo1 = (int)(p1Elo + 32 * (0 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
 
                         database.updatePlayerStats(p2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
                         database.updatePlayerStats(p1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
