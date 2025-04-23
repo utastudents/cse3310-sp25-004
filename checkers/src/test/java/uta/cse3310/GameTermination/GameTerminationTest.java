@@ -15,15 +15,6 @@ import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.DB.DB;
 
-// Mock DB class for testing
-class MockDB extends DB {
-    @Override
-    public boolean updatePlayerStats(int playerId, int wins, int losses, int ELO, int gamesPlayed) {
-        // Mock implementation that always succeeds
-        return true;
-    }
-}
-
 public class GameTerminationTest {
 
     @Test
@@ -115,42 +106,88 @@ public class GameTerminationTest {
 
         assertFalse(result.isGameActive());
     }
-/* Fix implementation of saveResults and then fix test based on that. 
+
     @Test
     public void testSaveResults() {
-        // Temporary test just to see if saveResults would work properly: 
-        // Since the DB.getPlayerById method is not implemented and throws an UnsupportedOperationException,
-        // we'll test the GameTermination class's ability to handle this situation.
-        // We'll verify that the method doesn't crash and returns null for the player stats.
-        
+        // Create a GameTermination instance
         GameTermination gt = new GameTermination();
+        gameState state = new gameState();
         
-        HumanPlayer p1 = new HumanPlayer("Player1", "user1", 1, Player.STATUS.IN_GAME, 5, 2, 7, 1200);
-        HumanPlayer p2 = new HumanPlayer("Player2", "user2", 2, Player.STATUS.IN_GAME, 3, 4, 7, 1000);
+        // Create a DB instance to add players
+        DB db = new DB();
         
-        Game game = new Game(999, p1, p2);
+        // Use fixed usernames for test players
+        String username1 = "testPlayer1";
+        String username2 = "testPlayer2";
+        
+        // Get the players from the database first
+        HumanPlayer dbPlayer1 = db.getPlayerByUsername(username1);
+        HumanPlayer dbPlayer2 = db.getPlayerByUsername(username2);
+        
+        // If players don't exist, create them
+        if (dbPlayer1 == null) {
+            db.addPlayer(username1, "password1");
+            dbPlayer1 = db.getPlayerByUsername(username1);
+        }
+        
+        if (dbPlayer2 == null) {
+            db.addPlayer(username2, "password2");
+            dbPlayer2 = db.getPlayerByUsername(username2);
+        }
+        
+        assertNotNull(dbPlayer1, "Player 1 not found in database");
+        assertNotNull(dbPlayer2, "Player 2 not found in database");
+        
+        // Set initial stats in the database
+        assertTrue(db.updatePlayerStats(dbPlayer1.getPlayerId(), 5, 2, 1200, 7), "Failed to update player 1 stats");
+        assertTrue(db.updatePlayerStats(dbPlayer2.getPlayerId(), 3, 4, 1000, 7), "Failed to update player 2 stats");
+        
+        // Verify the stats were updated
+        dbPlayer1 = db.getPlayerByUsername(username1);
+        dbPlayer2 = db.getPlayerByUsername(username2);
+        
+        // Create a game with these players
+        Game game = new Game(999, dbPlayer1, dbPlayer2);
         GamePlay gamePlay = new GamePlay(999);
         Board board = gamePlay.getBoard();
 
         // Set up a winning position for player 1
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board.checkerBoard[i][j] = null;
+            }
+        }
+        
+        // Add only Player 1's pieces to simulate a win
         board.checkerBoard[0][0] = new Checker(new Cord(0, 0), Color.BLACK);
+        board.checkerBoard[0][2] = new Checker(new Cord(0, 2), Color.BLACK);
+        board.checkerBoard[1][1] = new Checker(new Cord(1, 1), Color.BLACK);
+        
         game.setGameActive(true);
 
+
         try {
-            // This will throw an UnsupportedOperationException because getPlayerById is not implemented
+            // Call saveResults and get the updated player stats
             HumanPlayer[] updatedStats = gt.saveResults(game);
             
-            // If we get here, the method didn't throw an exception, which is unexpected
-            // We'll just assert that the method returned something (even if it's null)
+            // Verify that the method returned something
             assertNotNull(updatedStats);
             
-        } catch (UnsupportedOperationException e) {
-            // This is the expected behavior - the method should throw an UnsupportedOperationException
-            // because getPlayerById is not implemented
-            System.out.println("Expected exception: " + e.getMessage());
+            // If the database connection worked and players were found, verify the stats
+            if (updatedStats[0] != null && updatedStats[1] != null) {
+                
+                // Verify that the stats were actually updated
+                assertEquals(dbPlayer1.getWins() + 1, updatedStats[0].getWins(), "Player 1 wins should have increased by 1");
+                assertEquals(dbPlayer2.getLosses() + 1, updatedStats[1].getLosses(), "Player 2 losses should have increased by 1");
+                assertTrue(updatedStats[0].getELO() > dbPlayer1.getELO(), "Player 1 ELO should have increased");
+                assertTrue(updatedStats[1].getELO() < dbPlayer2.getELO(), "Player 2 ELO should have decreased");
+            } else {
+                fail("Players not found in database after saveResults");
+            }
+            
         } catch (Exception e) {
-            // If we get a different exception, that's unexpected
+            // If an exception occurs, the test should fail
             fail("Unexpected exception: " + e.getMessage());
         }
-    */
+    }
 }
