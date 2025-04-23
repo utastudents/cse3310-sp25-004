@@ -1,6 +1,5 @@
 package uta.cse3310.PairUp;
 
-import uta.cse3310.GameState;
 import uta.cse3310.GameManager.Game;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PageManager.HumanPlayer;
