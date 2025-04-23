@@ -49,7 +49,7 @@ public class Board
 				{
 					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
 					// ?? potential fix: just make another for loop
-					checkerBoard[x][y] = new Checker(new Cord(x+1, y), Color.BLACK);
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.BLACK);
 				}
 			}
 
@@ -59,7 +59,7 @@ public class Board
 				{
 					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
 					// ?? potential fix: just make another for loop
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
 				}
 			}
 		}
@@ -71,11 +71,11 @@ public class Board
 			{
 				if(y%2 == 1) // Row 5 and 7 have the red checkers on squares 0,2,4,6
 				{
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
 				}
 				else // Row 6 has the red checkers on squares 1,3,5,7
 				{
-					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.RED);
+					checkerBoard[y][x] = new Checker(new Cord(x, y), Color.RED);
 				}
 			}
 		}
