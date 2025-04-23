@@ -773,11 +773,10 @@ public class PageManager {
     }
 
     private static Cord codeToCord(String code) {
-        //"R2-C6"
-        String pos = code.split("-")[1];
+        //"R2-C6" as in Row 2 Col 6
         
-        int x = pos.charAt(0) - 'A';
-        int y = Integer.parseInt(pos.substring(1));
+        int y = Integer.parseInt(code.substring(1,2)); // Row is Y
+        int x = Integer.parseInt(code.substring(4,5)); // Col is X
         Cord c = new Cord(x, y);
         return c;
     }
