@@ -375,4 +375,15 @@ public class Board
 
 	// 	return result;
 	// }
+
+	public String toString() {
+		String toReturn = "";
+		for (Checker[] row : checkerBoard) {
+			for (Checker c : row) {
+				toReturn += Checker.shortString(c) + " ";
+			}
+			toReturn += "\n";
+		}
+		return toReturn;
+	}
 }
