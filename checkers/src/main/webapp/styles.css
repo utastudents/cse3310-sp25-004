@@ -447,6 +447,7 @@ button[disabled] {
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    border-radius: 16px;
   }
   
   #summary-table thead {
