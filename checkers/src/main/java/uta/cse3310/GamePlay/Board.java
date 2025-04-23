@@ -59,7 +59,10 @@ public class Board
 				{
 					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
 					// ?? potential fix: just make another for loop
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
+					
+					
+					// ERROR: This goes out of bounds when x=7. Please fix and TEST COMPILE & RUN before committing. Thank you.
+					//checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
 				}
 			}
 		}
