@@ -44,6 +44,11 @@ public class GamePlay
         ArrayList<Cord> possibleJumpsForward = null;
         ArrayList<Cord> possibleJumpsBackward = null;
 
+        if (piece == null || dest == null) // Check for null piece or destination
+        {
+            return 0;
+        }
+
         if(piece.getColor() == Color.BLACK || piece.isKing())
         {
             possibleJumpsForward = board.getPossibleForwardJump(piece);

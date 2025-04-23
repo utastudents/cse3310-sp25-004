@@ -43,17 +43,23 @@ public class Board
 		// Set the black checkers on the board on row 0, 1, 2
 		for(int y = 0; y < 3; y++)
 		{
-			for(int x = 0; x < 8; x+=2)
+			for(int x = 1; x < 8; x+=2)
 			{
 				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
 				{
 					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
 					// ?? potential fix: just make another for loop
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.BLACK);
+					checkerBoard[x][y] = new Checker(new Cord(x+1, y), Color.BLACK);
 				}
-				else // Row 1 has the black checkers on squares 0,2,4,6
+			}
+
+			for(int x = 1; x < 8; x+=2)
+			{
+				if(y%2 == 1)// Row 0 and 2 have the black checkers on squares 1,3,5,7
 				{
-					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.BLACK);
+					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
+					// ?? potential fix: just make another for loop
+					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
 				}
 			}
 		}
