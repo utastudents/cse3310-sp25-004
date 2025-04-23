@@ -20,7 +20,7 @@ import uta.cse3310.GameManager.Game;
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
-
+import uta.cse3310.GamePlay.*;
 public class PageManager {
     //GameManager gm;
     DB db;
@@ -740,7 +740,8 @@ public class PageManager {
         
         GameMove move = gson.fromJson(jsonObj, GameMove.class);
         move.setClientId(Id);
-        //GameUpdate update = Gm.processMove(move);
+        GamePlay gameplay = new GamePlay(move.getGameId());
+        Gm.processMove(move, gameplay);
         UserEventReply reply = new UserEventReply();
 
         //JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();

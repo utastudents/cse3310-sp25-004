@@ -36,6 +36,9 @@ public class GameMove {
     public String getPieceType() { 
         return pieceType; 
     }
+    public int getGameId() { 
+        return gameId; 
+    }
     //setters
     public void setClientId(int clientId) {
          this.clientId = clientId; 
