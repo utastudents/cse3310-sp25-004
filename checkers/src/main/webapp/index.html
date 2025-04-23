@@ -330,6 +330,7 @@
 	<!-- visibility hidden -->
 	<div id="summary-leaderboard" style="display: none;">
 		<meta charset="UTF-8">
+		<h2 id="summary-gameResultBanner">Game Status</h2>
 		<h1>Leaderboard</h1>
 		<div class="scrollable-table">
 			<table id="summary-table">
@@ -388,7 +389,7 @@
 		<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
 		<script src="./summary/summary.js"></script>
 		<script>
-			// Temporary functions to show/hide the leaderboard until page manager can take over
+			// Show/hide the leaderboard
 			function summaryShow() {
 				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
 				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
@@ -398,6 +399,30 @@
 			function summaryHide() {
 				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
 				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+			}
+
+			winMessage = "You won!";
+			loseMessage = "You lost!";
+			bannerID = "summary-gameResultBanner";
+
+			function bannerMessage(show, message="") {
+				document.getElementById(bannerID).textContent = message;
+				if (show) {
+					document.getElementById(bannerID).style.display = "block";
+				} else {
+					document.getElementById(bannerID).style.display = "none";
+				}
+			}
+
+			// Show/hide win status banner
+			function showWinStatus() {
+				bannerMessage(true, winMessage);
+			}
+			function showLoseStatus() {
+				bannerMessage(true, loseMessage);
+			}
+			function hideGameStatus() {
+				bannerMessage(false);
 			}
 		</script>
 	</div>
