@@ -48,7 +48,7 @@ var globalClientID = null;
 
 connection.onmessage = function (msg) {
     let jsonMsg = JSON.parse(msg.data);
-    
+    // console.log("Message from server: ", jsonMsg);
     let responseID = jsonMsg.responseID;
 
     if (jsonMsg.clientId) {
@@ -107,6 +107,15 @@ connection.onmessage = function (msg) {
         case "active_players": {
             console.log("Active Players list Received: ", jsonMsg);
             updateJoinGameList(jsonMsg);
+            break;
+        }
+        case "challengePlayer": {
+            // console.log("Player challenge request accepted", jsonMsg);
+            sendMessage({action:"challengePlayerReply", opponentClientId:jsonMsg.playerClientId, playerClientId:globalClientID, accepted:true});
+            break;
+        }
+        case "challengePlayerReply":{
+            // console.log("Player vs player ",jsonMsg);
             break;
         }
 
