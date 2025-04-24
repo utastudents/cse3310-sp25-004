@@ -97,9 +97,9 @@ public class BotII extends Bot {
     */
         return null;
     }
-    public BotII() {
+    /*public BotII() {
         super(); // Calls the constructor of the parent class which is Bot
-    }
+    }*/
     
     public void makeValidMove() {
     // try normal move if nothing else works
@@ -302,37 +302,37 @@ public class BotII extends Bot {
     }
 
     public void adjustStrategy() {
-    // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
-    // TODO: Change strategy based on early, mid, or late game
-    // Early: Moving first row pieces?
-    // Second: A King comes into play?
-    // Late: A select # of pieces left on the board?
-    Board board = game.getBoard().getBoard();
-    int myCount = 0;
-    int oppCount = 0;
+        // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
+        // TODO: Change strategy based on early, mid, or late game
+        // Early: Moving first row pieces?
+        // Second: A King comes into play?
+        // Late: A select # of pieces left on the board?
+        Board board = game.getBoard().getBoard();
+        int myCount = 0;
+        int oppCount = 0;
 
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Checker c = board.checkerBoard[y][x];
-            if (c != null) {
-                if (c.getColor() == botColor) {
-                    myCount++;
-                } else {
-                    oppCount++;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker c = board.checkerBoard[y][x];
+                if (c != null) {
+                    if (c.getColor() == botColor) {
+                        myCount++;
+                    } else {
+                        oppCount++;
+                    }
                 }
             }
         }
-    }
 
-    // if opponent has 3 or more pieces than us, go aggressive
-    if (oppCount - myCount >= 3) {
-        beAggressive = true;
-    } else {
-        beAggressive = false;
-    }
+        // if opponent has 3 or more pieces than us, go aggressive
+        if (oppCount - myCount >= 3) {
+            beAggressive = true;
+        } else {
+            beAggressive = false;
+        }
 
-    // (Optional) print for debugging
-    System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
+        // (Optional) print for debugging
+        System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
     }
 
     public void findOffensiveMove() {
@@ -357,16 +357,18 @@ public class BotII extends Bot {
     }
 
     
-    private GameMove botMethodThatMakesAMoveHere(GamePlay gp) {
-        Cord from = new Cord(0,0); //Should use actual game logic here to determine which checker and where to move it
-        Cord to = new Cord(1,1);
+    private GameMove finalMove(GamePlay gp) {
+        Move fM = null;
+        fM = defendPieces(gp.getBoard());
+        Cord from = fM.piece.getCord();
+        Cord to = fM.destination;
         return new GameMove(this.playerId, this.game.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), "black");
     }
 
     @Override
     public boolean makeMove(GamePlay gp) {
 
-        GameMove move = botMethodThatMakesAMoveHere(gp);
+        GameMove move = finalMove(gp);
        
         PageManager.Gm.processMove(move, gp);
         return true;
