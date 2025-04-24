@@ -18,6 +18,48 @@ public class GamePlayTest{
 		//assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], cord));
 	}
 
+    @Test
+    void initCheckersTest()
+    {
+        // Make sure the initial board is set up correctly
+        var board = new Board();
+        for (int i = 0; i < 3; i++)
+        {
+            if(i == 0 || i == 2)
+            {
+                for (int j = 0; j < 8; j+=2)
+                {
+                    assertEquals(Color.RED, board.checkerBoard[i][j].getColor());
+                }
+            }
+            else // i == 1
+            {
+                for (int j = 1; j < 8; j+=2)
+                {
+                    assertEquals(Color.RED, board.checkerBoard[i][j].getColor());
+                }
+            }
+        }
+
+        for (int i = 5; i < 8; i++)
+        {
+            if(i == 5 || i == 7)
+            {
+                for (int j = 0; j < 8; j+=2)
+                {
+                    assertEquals(Color.BLACK, board.checkerBoard[i][j].getColor());
+                }
+            }
+            else // i == 6
+            {
+                for (int j = 1; j < 8; j+=2)
+                {
+                    assertEquals(Color.BLACK, board.checkerBoard[i][j].getColor());
+                }
+            }
+        }
+    }
+
 
     // This will test if piece becomea a king piece once it reaches the end
     @Disabled("Disabled until we can fix this test")
