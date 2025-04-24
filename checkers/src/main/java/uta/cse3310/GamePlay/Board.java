@@ -43,6 +43,10 @@ public class Board
 		// Set the black checkers on the board on row 0, 1, 2
 		for(int y = 0; y < 3; y++)
 		{
+			/*
+			MIGHT NEED CHANGING
+   			IN DISPLAY CHECKERS IN R0 ARE ON COLUMNS 0, 2 ,4 ,6
+   			*/
 			for(int x = 1; x < 8; x+=2)
 			{
 				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
@@ -52,7 +56,9 @@ public class Board
 					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.BLACK);
 				}
 			}
-
+			/*
+   			CAN BE COMBINED WITH ABOVE ^ FOR LOOP
+   			*/
 			for(int x = 1; x < 8; x+=2)
 			{
 				if(y%2 == 1)// Row 0 and 2 have the black checkers on squares 1,3,5,7
@@ -94,6 +100,9 @@ public class Board
 	*/
 	public void kingMe(Checker piece)
 	{
+		/*
+  		BLACK STARTS ON R7 SO 0 AND 7 SHOULD BE SWITCHED
+  		*/
 		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
 		{
 			piece.setKing(true);
@@ -128,10 +137,14 @@ public class Board
 		{
 			return false;
 		}
+		/*
+  		COULD ADD COLOR CHECK TO VERIFY THE CORRECT DIRECTION
+    		ALSO COULD BE ADDED IN A DIFFERENT METHOD
+    		*/
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
-
+		
 		return (xDiff == 1 && yDiff == 1);
 	}
 
@@ -159,10 +172,14 @@ public class Board
 		{
 			return false;
 		}
+		/*
+  		COLOR CHECK
+    		UNLESS IT'S IN ANOTHER METHOD
+    		*/
 		// verify if destination is 1 square below and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
-
+		
 		return (xDiff == 1 && yDiff == -1);
 	}
 	
@@ -172,6 +189,10 @@ public class Board
 		int originX = piece.getCord().getX();
 		int originY = piece.getCord().getY();
 		Color originColor = piece.getColor();
+		/*
+  		COLOR CHECK UNLESS IN A DIFFERENT METHOD
+    		NEED COLOR FOR DIRECTION
+  		*/
 		//First check if the jump to the left is in bounds
 		if ((originX-2 > 0 && originX-2 <=8) && (originY+2 > 0 && originY+2 <=8))
 		{
@@ -339,6 +360,9 @@ public class Board
 		int destX = dest.getX();
 		int destY = dest.getY();
 
+		/*
+ 		COULD ADD COLOR AND/OR KING CHECKS TO MAKE CODE CLEANER
+  		*/
 		// check which location piece moved too by comparing the cords piece original location the location of the jump
 		// remove piece in the bottom left (in terms of dest)
 		if (origX == destX-2 && origY == destY-2)
