@@ -20,7 +20,6 @@ public class Board
         //Initialize class with board array and initialize checker positions
 
 		initCheckers();
-		
 	}
 
 	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
@@ -41,43 +40,52 @@ public class Board
 			}
 		}
 
-		for(int i = 0; i < 3; i++) // row aka y coordinate
+		// Set the black checkers on the board on row 0, 1, 2
+		for(int y = 0; y < 3; y++)
 		{
-			if(i == 0 || i == 2) // First or 3rd black Row
+			/*
+			MIGHT NEED CHANGING
+   			IN DISPLAY CHECKERS IN R0 ARE ON COLUMNS 0, 2 ,4 ,6
+   			*/
+			for(int x = 1; x < 8; x+=2)
 			{
-				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.BLACK);
-				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.BLACK);
-				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.BLACK);
-				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.BLACK);
+				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
+				{
+					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
+					// ?? potential fix: just make another for loop
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.BLACK);
+				}
 			}
-			else // Second black row
+			/*
+   			CAN BE COMBINED WITH ABOVE ^ FOR LOOP
+   			*/
+			for(int x = 1; x < 8; x+=2)
 			{
-				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.BLACK);
-				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.BLACK);
-				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.BLACK);
-				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.BLACK);
+				if(y%2 == 1)// Row 0 and 2 have the black checkers on squares 1,3,5,7
+				{
+					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
+					// ?? potential fix: just make another for loop
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
+				}
 			}
-
 		}
 
-		for(int i = 5; i < 8; i++) // row aka y coordinate
+		// Set the red checkers on the board on row 5, 6, 7
+		for(int y = 5; y < 8; y++)
 		{
-			if(i == 0 || i == 2) // First or 3rd Red Row
+			for(int x = 0; x < 8; x+=2)
 			{
-				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.RED);
-				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.RED);
-				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.RED);
-				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.RED);
+				if(y%2 == 1) // Row 5 and 7 have the red checkers on squares 0,2,4,6
+				{
+					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
+				}
+				else // Row 6 has the red checkers on squares 1,3,5,7
+				{
+					checkerBoard[y][x] = new Checker(new Cord(x, y), Color.RED);
+				}
 			}
-			else // Second Red Row
-			{
-				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.RED);
-				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.RED);
-				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.RED);
-				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.RED);
-			}
-
 		}
+
 	}
 
 	/* 
@@ -377,6 +385,20 @@ public class Board
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
 	}
+
+	//UNUSED
+	// public static int moveValidation(Checker piece, Cord dest)
+	// // The main logic for movement. 
+	// // This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
+
+	// {
+	// 	// TODO: Finish Board moveValidation function
+	// 	int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
+
+
+
+	// 	return result;
+	// }
 
 	public String toString() {
 		String toReturn = "";
