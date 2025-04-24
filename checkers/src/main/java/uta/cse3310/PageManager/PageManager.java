@@ -785,7 +785,10 @@ public class PageManager {
         return c;
     }
 
-     
+     public void EndGameNotifier(int UserId, GamePlay gs){
+
+
+     }
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
