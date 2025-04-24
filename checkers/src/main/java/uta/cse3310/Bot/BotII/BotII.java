@@ -11,11 +11,11 @@ import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.PageManager;
-import uta.cse3310.GameState;
+//import uta.cse3310.GameState;
 
 public class BotII extends Bot {
 
-	private GamePlay gamePlay;
+	//private GamePlay gamePlay;
 	private Game game;
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
@@ -40,7 +40,7 @@ public class BotII extends Bot {
     }*/
 
     // Get all the Bot II's checkers (either RED or BLACK)
-    private ArrayList<Checker> getBotCheckers(Board board) {
+    /*private ArrayList<Checker> getBotCheckers(Board board) {
         ArrayList<Checker> botCheckers = new ArrayList<>();
 
         for (int row = 0; row < 8; row++) {
@@ -52,7 +52,7 @@ public class BotII extends Bot {
             }
         }
         return botCheckers;
-    }
+    }*/
 	
     //tests with a test checker piece if move willput piece in danger by calling isInDanger
    /* private boolean isMoveSafe(Checker checker, Board board Cord dest) {
@@ -83,7 +83,7 @@ public class BotII extends Bot {
     }*/
 
     // Get possible moves for a king piece
-    private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
+    //private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
         /*
         ArrayList<Cord> possibleMoves = new ArrayList<>();
         Cord cord = checker.getCord();
@@ -95,8 +95,8 @@ public class BotII extends Bot {
                 if (board.moveForwardCheck(checker, newCord) || board.moveBackwardCheck(checker, newCord)) {
                     possibleMoves.add(newCord);
     */
-        return null;
-    }
+        //return null;
+    //}
     /*public BotII() {
         super(); // Calls the constructor of the parent class which is Bot
     }*/
@@ -231,13 +231,13 @@ public class BotII extends Bot {
         return safeMoves;
     }
 
-        /**
-         * Checks if moving to a given destination would put the checker in danger.
-         */
-    private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
+    /**
+     * Checks if moving to a given destination would put the checker in danger.
+     */
+    /*private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
         Checker temp = new Checker(dest, piece.getColor());
         return isInDanger(temp, board);
-    }
+    }*/
 
         /** Utility to check if board coordinates are valid. */
     private static boolean inBounds(int x, int y) {
@@ -358,8 +358,7 @@ public class BotII extends Bot {
 
     
     private GameMove finalMove(GamePlay gp) {
-        Move fM = null;
-        fM = defendPieces(gp.getBoard());
+        Move fM = defendPieces(gp.getBoard());
         Cord from = fM.piece.getCord();
         Cord to = fM.destination;
         return new GameMove(this.playerId, this.game.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), "black");
@@ -383,7 +382,7 @@ public class BotII extends Bot {
     public boolean startGame(Game g) {
         this.game = g;
         return true;
-}
+    }
 
     @Override
     public boolean endGame(GamePlay gs) {
