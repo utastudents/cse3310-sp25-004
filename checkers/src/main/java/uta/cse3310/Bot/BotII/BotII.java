@@ -9,21 +9,24 @@ import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.GameState;
 
 public class BotII extends Bot {
+
 	private GamePlay gamePlay;
 	private Game game;
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
 
-    public BotII(GamePlay gamePlay, Color botColor) {
+    /*public BotII(GamePlay gamePlay, Color botColor) {
         this.gamePlay = gamePlay;
         this.botColor = botColor;
-    }
+    }*/
 
     // Method to make a defensive move
-    public void makeDefensiveMove() {
+    /*public void makeDefensiveMove() {
         Board board = gamePlay.getBoard();  // Get the current board
         ArrayList<Checker> botCheckers = getBotCheckers(board); // Get the bot's pieces
         boolean moveMade = false;
@@ -34,7 +37,7 @@ public class BotII extends Bot {
                 moveMade = attemptDefensiveMove(checker, board);
             }
         }
-    }
+    }*/
 
     // Get all the Bot II's checkers (either RED or BLACK)
     private ArrayList<Checker> getBotCheckers(Board board) {
@@ -58,7 +61,7 @@ public class BotII extends Bot {
     } */
 
     // Attempt to make a defensive move for a given checker
-    private boolean attemptDefensiveMove(Checker checker, Board board) {
+    /*private boolean attemptDefensiveMove(Checker checker, Board board) {
         ArrayList<Cord> possibleMoves = new ArrayList<>();
 
         // Generate possible defensive moves based on the piece type (man or king)
@@ -77,7 +80,7 @@ public class BotII extends Bot {
         }
 
         return false;
-    }
+    }*/
 
     // Get possible moves for a king piece
     private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
@@ -148,9 +151,9 @@ public class BotII extends Bot {
     }
 
     public static Move defendPieces(Board board) {
-    // TODO: Prioritize defending own pieces over offense
-    // TODO: Try to block opponent from advancing or jumping
-    Move bestMove = null;
+        // TODO: Prioritize defending own pieces over offense
+        // TODO: Try to block opponent from advancing or jumping
+        Move bestMove = null;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
@@ -171,7 +174,7 @@ public class BotII extends Bot {
                 }
             }
         }
-            return bestMove;
+        return bestMove;
     }
 
     /**
@@ -343,131 +346,31 @@ public class BotII extends Bot {
         // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
     }
 
-    @Override
-    public boolean makeMove(GamePlay gs) {
-        if (this.game == null) return false;
-
-        //Board can be retrieved from GamePlay!
-
-        Board board;
-        try {
-            board = this.game.getBoard().getBoard();
-        } catch (Exception e) {
-            return false;
-        }
-
-        if (board == null) return false;
-
-        // get my pieces
-        ArrayList<Checker> myPieces = new ArrayList<>();
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                Checker c = board.checkerBoard[y][x];
-                if (c != null && c.getColor() == this.botColor) {
-                    myPieces.add(c);
-                }
-            }
-        }
-
-        //TODO send possibleMoves to GameManager
-
-        return true;
-    }
-
-    // Get possible moves for a man piece
-    private ArrayList<Cord> getPossibleManMoves(Checker checker, Board board) {
-        /* THIS CODE DOES NOT COMPILE
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-        Cord cord = checker.getCord();
-
-        // If the piece is black, it moves forward (up the board)
-        if (checker.getColor() == Color.BLACK) {
-            Cord newCord = new Cord(cord.getX() + 1, cord.getY() - 1);
-            if (board.moveForwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-            newCord = new Cord(cord.getX() - 1, cord.getY() - 1);
-            if (board.moveForwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-        } 
-        // If the piece is red, it moves backward (down the board)
-        else if (checker.getColor() == Color.RED) {
-            Cord newCord = new Cord(cord.getX() + 1, cord.getY() + 1);
-            if (board.moveBackwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-            }
-            newCord = new Cord(cord.getX() - 1, cord.getY() + 1);
-            if (board.moveBackwardCheck(checker, newCord)) {
-                possibleMoves.add(newCord);
-
-        if (myPieces.isEmpty()) return;
-
-        // check if jump possible
-        for (Checker piece : myPieces) {
-            ArrayList<Cord> jumps = new ArrayList<>();
-            if (this.botColor == Color.BLACK || piece.isKing()) {
-                jumps.addAll(board.getPossibleForwardJump(piece));
-            }
-            if (this.botColor == Color.RED || piece.isKing()) {
-                jumps.addAll(board.getPossibleBackwardJump(piece));
-            }
-
-            if (!jumps.isEmpty()) {
-                Cord jumpDest = jumps.get(0);
-                board.updatePosition(piece, jumpDest);
-                board.kingMe(piece);
-                return;
-            }
-        }
-
-        // try to defend
-        Move move = defendPieces(board);
-        if (move != null) {
-            board.updatePosition(move.piece, move.destination);
-            board.kingMe(move.piece);
-            return;
-        }
-
-        // just move normally
-        for (Checker piece : myPieces) {
-            ArrayList<Cord> moves = new ArrayList<>();
-            if (this.botColor == Color.BLACK || piece.isKing()) {
-                checkMove(board, piece, -1, 1, moves);
-                checkMove(board, piece, 1, 1, moves);
-            }
-            if (this.botColor == Color.RED || piece.isKing()) {
-                checkMove(board, piece, -1, -1, moves);
-                checkMove(board, piece, 1, -1, moves);
-            }
-
-            if (!moves.isEmpty()) {
-                Cord dest = moves.get(0);
-                board.updatePosition(piece, dest);
-                board.kingMe(piece);
-                return;
-            }
-        } */
-        return null;
-    }
-
-        // Helper method to check if a move is valid and add it to the list
+    // Helper method to check if a move is valid and add it to the list
     private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
-    int newX = checker.getCord().getX() + dx;
-    int newY = checker.getCord().getY() + dy;
+        int newX = checker.getCord().getX() + dx;
+        int newY = checker.getCord().getY() + dy;
 
-    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
-        moves.add(new Cord(newX, newY));
-    }
+        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
+            moves.add(new Cord(newX, newY));
+        }
     }
 
-    /*
+    
+    private GameMove botMethodThatMakesAMoveHere(GamePlay gp) {
+        Cord from = new Cord(0,0); //Should use actual game logic here to determine which checker and where to move it
+        Cord to = new Cord(1,1);
+        return new GameMove(this.playerId, this.game.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), "black");
+    }
+
     @Override
-    public boolean makeMove(GameState gs) {
-        makeMove(); // call your actual move logic
+    public boolean makeMove(GamePlay gp) {
+
+        GameMove move = botMethodThatMakesAMoveHere(gp);
+       
+        PageManager.Gm.processMove(move, gp);
         return true;
     }
-     */
 
     @Override
     public boolean updateBoard(GamePlay gs) {
