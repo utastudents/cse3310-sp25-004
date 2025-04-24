@@ -58,6 +58,7 @@ public class GamePlayTest{
                 }
             }
         }
+        board.printBoard();
     }
 
 

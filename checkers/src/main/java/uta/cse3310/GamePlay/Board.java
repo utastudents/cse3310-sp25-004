@@ -21,6 +21,30 @@ public class Board
 		initCheckers();
 	}
 
+	public void printBoard()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (checkerBoard[i][j] == null)
+                {
+                    System.out.print("0 ");
+                }
+                else if(checkerBoard[i][j].getColor() == Color.BLACK)
+                {
+                    System.out.print("B ");
+                }
+                else if(checkerBoard[i][j].getColor() == Color.RED)
+                {
+                    System.out.print("R ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
 	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
