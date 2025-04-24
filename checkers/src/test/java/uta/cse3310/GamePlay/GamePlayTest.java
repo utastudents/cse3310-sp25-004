@@ -45,14 +45,14 @@ public class GamePlayTest{
         {
             if(i == 5 || i == 7)
             {
-                for (int j = 0; j < 8; j+=2)
+                for (int j = 1; j < 8; j+=2)
                 {
                     assertEquals(Color.BLACK, board.checkerBoard[i][j].getColor());
                 }
             }
             else // i == 6
             {
-                for (int j = 1; j < 8; j+=2)
+                for (int j = 0; j < 8; j+=2)
                 {
                     assertEquals(Color.BLACK, board.checkerBoard[i][j].getColor());
                 }
