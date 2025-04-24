@@ -785,7 +785,7 @@ public class PageManager {
         Cord c = new Cord(x, y);
         return c;
     }
-/* 
+
      public void EndGameNotifier(int UserId, GamePlay gs){
         
         UserEventReply reply = new UserEventReply();
@@ -796,9 +796,10 @@ public class PageManager {
         //turning the board to 2d string array
         String board[][] = To2DstringArray(gs.getBoard().checkerBoard);
 
-        //gettinh the 2d string board as a jsonobj
-        json = JsonParser.parseString(gson.toJson(board)).getAsJsonObject();
+        //getting the 2d string board as a jsonobj
+        json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "EndGame");
+        
         changePlayerStatus(STATUS.ONLINE, clientId);
        
         reply.replyObj = json;
@@ -806,7 +807,7 @@ public class PageManager {
         App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
         
      }
-     */
+     
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      //because users are only put on active list when they log in, no message will be generated for users who did not log in and left
