@@ -214,6 +214,9 @@ public class App extends WebSocketServer {
       case "challengePlayer":      
         Reply = PM.challengePlayer(jsonObj, Id);
         break;
+      case "challengePlayerReply":      
+        Reply = PM.challengePlayerReply(jsonObj, Id);
+        break;  
       case "challengeBot":        
         Reply = PM.challengeBot(jsonObj, Id);
         break;
