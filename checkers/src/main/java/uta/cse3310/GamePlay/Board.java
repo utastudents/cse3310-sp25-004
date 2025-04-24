@@ -28,7 +28,6 @@ public class Board
 		return checkerBoard[Cord.getX()][Cord.getY()]; 
 	}
 	
-	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
 	{
 		// Set the whole board to null
@@ -40,52 +39,43 @@ public class Board
 			}
 		}
 
-		// Set the black checkers on the board on row 0, 1, 2
-		for(int y = 0; y < 3; y++)
+		for(int i = 0; i < 3; i++) // row aka y coordinate
 		{
-			/*
-			MIGHT NEED CHANGING
-   			IN DISPLAY CHECKERS IN R0 ARE ON COLUMNS 0, 2 ,4 ,6
-   			*/
-			for(int x = 1; x < 8; x+=2)
+			if(i == 0 || i == 2) // First or 3rd black Row
 			{
-				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
-				{
-					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
-					// ?? potential fix: just make another for loop
-					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.BLACK);
-				}
+				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.BLACK);
+				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.BLACK);
+				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.BLACK);
+				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.BLACK);
 			}
-			/*
-   			CAN BE COMBINED WITH ABOVE ^ FOR LOOP
-   			*/
-			for(int x = 1; x < 8; x+=2)
+			else // Second black row
 			{
-				if(y%2 == 1)// Row 0 and 2 have the black checkers on squares 1,3,5,7
-				{
-					// ?? I feel like x+1 would initialize a checker piece for 1, 4, and 7
-					// ?? potential fix: just make another for loop
-					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
-				}
+				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.BLACK);
+				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.BLACK);
+				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.BLACK);
+				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.BLACK);
 			}
+
 		}
 
-		// Set the red checkers on the board on row 5, 6, 7
-		for(int y = 5; y < 8; y++)
+		for(int i = 5; i < 8; i++) // row aka y coordinate
 		{
-			for(int x = 0; x < 8; x+=2)
+			if(i == 5 || i == 7) // First or 3rd Red Row
 			{
-				if(y%2 == 1) // Row 5 and 7 have the red checkers on squares 0,2,4,6
-				{
-					checkerBoard[y][x] = new Checker(new Cord(x+1, y), Color.RED);
-				}
-				else // Row 6 has the red checkers on squares 1,3,5,7
-				{
-					checkerBoard[y][x] = new Checker(new Cord(x, y), Color.RED);
-				}
+				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.RED);
+				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.RED);
+				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.RED);
+				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.RED);
 			}
-		}
+			else // Second Red Row
+			{
+				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.RED);
+				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.RED);
+				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.RED);
+				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.RED);
+			}
 
+		}
 	}
 
 	/* 
