@@ -88,7 +88,7 @@ public class HumanPlayer extends Player{
     @Override
     public boolean endGame(GamePlay gs) {
         //TODO: let the client know the game has ended. Show the final board and Win/Loss, and allow them to click through to summary page
-        App.pmInstance.EndGameNotifier(playerId, gs);
+      //  App.pmInstance.EndGameNotifier(playerId, gs);
         return false;
     }
 
