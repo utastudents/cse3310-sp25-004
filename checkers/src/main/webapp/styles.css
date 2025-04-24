@@ -25,11 +25,10 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    border: 2px solid rgb(0, 0, 0);
     width: 500px;
-    padding: 25px;
+    padding: 5px;
     text-align: center;
-    box-shadow: 0  0 30px rgba(255, 255, 255, 0.3);
+    border-radius: 1%;
 }
 
 .signup-box {
@@ -63,7 +62,6 @@ input:focus {
 input::placeholder {
     color: #b8b8b8;
 }
-
 
 .signup-box button {
     position: relative;
@@ -150,7 +148,7 @@ center-container {
     position: relative;
     width: 100%;
     height: 100vh;
-  }
+}
 
 .login-box {
     height: 500px;
@@ -159,7 +157,8 @@ center-container {
 .login-box img {
     width: 230px;
     height: 230px;
-    margin-bottom: 30px;
+    margin-top: 17px;
+    margin-bottom: 20px;
 } 
 
 .login-box input[type="text"],
@@ -189,9 +188,6 @@ input::placeholder {
     position: relative;
     width: 100%;
 }
-.input-icon:hover {
-  transform: scale(1.05);
-}
 
 .input-icon i {
     position: absolute;
@@ -201,7 +197,6 @@ input::placeholder {
     color: #b8b8b8;
 }
 
-
 .login-box button { 
     background-color: #39393959;
     color: rgb(255, 255, 255);
@@ -209,7 +204,6 @@ input::placeholder {
     font-size: 15px;
     width: 75%;
     padding: 5px;
-    border-radius: 6px;
     height: 40px;
 }
 
@@ -238,9 +232,6 @@ input::placeholder {
   font-size: 16px;
   font-weight: 500;
   width: 75%;
-  padding: 5px;
-  margin-top: 5px;
-  border-radius: 40px;
   height: 40px;
   overflow: hidden;
   z-index: 1;
@@ -261,10 +252,8 @@ input::placeholder {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgb(0, 0, 0), rgb(34, 34, 34), rgb(77, 77, 77), rgb(116, 116, 116));
-  opacity: 1;
+  background: #000;
   z-index: 0;
-  border-radius: 40px;
   pointer-events: none;
   transition: .5s;
 }
@@ -273,20 +262,16 @@ input::placeholder {
   position: relative;
   z-index: 1;
 }
-#login-btn:hover::before {
-opacity: 60%;
-}
 
 #show-signup{
-  color: rgb(107, 107, 107);
+  color: rgb(172, 172, 172);
   font-weight: 600;
 }
 
 #show-signup:hover{
    color: black;
-    text-decoration: underline;
+  text-decoration: underline;
 }
-
 
 /* LEADERBOARD*/
 h2 { 
