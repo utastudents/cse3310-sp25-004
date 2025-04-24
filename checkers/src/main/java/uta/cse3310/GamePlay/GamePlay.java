@@ -39,24 +39,9 @@ public class GamePlay
     {
         this.GameID = id;
         this.board= new Board();
-        printBoard();
         //Initialize class with GameID and create starting board
     }
-
-    /*public int gameTermCheck(Board board)
-    {
-
-        //return 0 if game does not end
-        //call for endGame method
-        if ()
-
-        //could do a try and catch method if they decide to use a throw to make terminate
-
-
-    } */
-   //we don't use the game object so we'll let manager handle this
     
-
     public int move(Checker piece, Cord dest) 
     {
         // Return values
