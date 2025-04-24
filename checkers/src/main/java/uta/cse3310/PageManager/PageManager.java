@@ -285,7 +285,7 @@ public class PageManager {
         JsonObject responseJson = new JsonObject();
 
         // Extracting what i recieve
-        int opponentClientId = jsonObj.get("opponentClientId").getAsInt();
+        int opponentClientId = jsonObj.get("opponentClientID").getAsInt();
 
         // general identification of JSON
         responseJson.addProperty("responseID", "challengePlayer");
