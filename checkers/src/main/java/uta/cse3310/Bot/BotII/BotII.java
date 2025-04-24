@@ -181,30 +181,44 @@ public class BotII extends Bot {
      * Checks if the checker can be jumped by any red piece.
      */
     public static boolean isInDanger(Checker checker, Board board) {
+        // get the coordinates from the specific piece we are looking at
         int x = checker.getCord().getX();
         int y = checker.getCord().getY();
         
-        // For BLACK pieces (moving upward), check if RED can jump from below
-        if(checker.getColor() == Color.BLACK) {
-            int[][] attackDirections = {{1,1}, {-1,1}}; // Relative to BLACK position
-            
-            for(int[] dir : attackDirections) {
-                int attackX = x + dir[0];
-                int attackY = y + dir[1];
-                int jumpX = x - dir[0];
-                int jumpY = y - dir[1];
-                
-                if(inBounds(attackX, attackY) && inBounds(jumpX, jumpY)) {
-                    Checker attacker = board.checkerBoard[attackY][attackX];
-                    boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
-                    
-                    if(attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty) {
-                        return true;
-                    }
+    
+        // Check all four possible jump directions incase of king pices
+        int[][] directions = {
+            {1, 1},   // bottom-right
+            {-1, 1},   // bottom-left
+            {1, -1},   // top-right
+            {-1, -1}   // top-left
+        };
+        // created an iterator in order to differentiate the pieces between kings and mans
+        int it = 0;
+    
+        for (int[] dir : directions) {
+            // direction for mans relative to our piece
+            int attackX = x + dir[0];
+            int attackY = y + dir[1];
+            // direction for kings relative to our piece
+            int jumpX = x - dir[0];
+            int jumpY = y - dir[1];
+    
+            // Check bounds
+            if (inBounds(attackX, attackY) && inBounds(jumpX, jumpY)) {
+                // Check if there's an opponent piece that can jump us
+                Checker attacker = board.checkerBoard[attackY][attackX];
+                boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+    
+                if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && it < 2) {
+                    return true;
+                }
+                if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && attacker.isKing()) {
+                    return true;
                 }
             }
+            it++;
         }
-        // Similar logic for RED pieces would go here
         return false;
     }
 
