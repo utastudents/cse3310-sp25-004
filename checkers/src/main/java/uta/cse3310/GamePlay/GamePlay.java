@@ -10,10 +10,36 @@ public class GamePlay
     private Board board;
     //private GameTermination termination;
 
+    public void printBoard()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (board.checkerBoard[i][j] == null)
+                {
+                    System.out.print("0 ");
+                }
+                else if(board.checkerBoard[i][j].getColor() == Color.BLACK)
+                {
+                    System.out.print("B ");
+                }
+                else if(board.checkerBoard[i][j].getColor() == Color.RED)
+                {
+                    System.out.print("R ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+
     public GamePlay(int id) 
     {
         this.GameID = id;
         this.board= new Board();
+        printBoard();
         //Initialize class with GameID and create starting board
     }
 
