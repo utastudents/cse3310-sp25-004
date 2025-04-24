@@ -15,95 +15,13 @@ import uta.cse3310.PageManager.PageManager;
 
 public class BotII extends Bot {
 
-	//private GamePlay gamePlay;
 	private Game game;
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
-
-    /*public BotII(GamePlay gamePlay, Color botColor) {
-        this.gamePlay = gamePlay;
-        this.botColor = botColor;
-    }*/
-
-    // Method to make a defensive move
-    /*public void makeDefensiveMove() {
-        Board board = gamePlay.getBoard();  // Get the current board
-        ArrayList<Checker> botCheckers = getBotCheckers(board); // Get the bot's pieces
-        boolean moveMade = false;
-
-        for (Checker checker : botCheckers) {
-            if (!moveMade) {
-                // Try to move each piece defensively
-                moveMade = attemptDefensiveMove(checker, board);
-            }
-        }
-    }*/
-
-    // Get all the Bot II's checkers (either RED or BLACK)
-    /*private ArrayList<Checker> getBotCheckers(Board board) {
-        ArrayList<Checker> botCheckers = new ArrayList<>();
-
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Checker checker = board.checkSpace(new Cord(col, row));
-                if (checker != null && checker.getColor() == botColor) {
-                    botCheckers.add(checker);
-                }
-            }
-        }
-        return botCheckers;
-    }*/
-	
-    //tests with a test checker piece if move willput piece in danger by calling isInDanger
-   /* private boolean isMoveSafe(Checker checker, Board board Cord dest) {
-  	Checker testChecker= new Checker(dest, Color.BLACK);
-   	return !isInDanger(testChecker, board)
-    } */
-
-    // Attempt to make a defensive move for a given checker
-    /*private boolean attemptDefensiveMove(Checker checker, Board board) {
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-
-        // Generate possible defensive moves based on the piece type (man or king)
-        if (checker.isKing()) {
-            possibleMoves = getPossibleKingMoves(checker, board);
-        } else {
-            possibleMoves = getPossibleManMoves(checker, board);
-        }
-
-        // Try each move and choose the safest one
-        for (Cord dest : possibleMoves) {
-             // if (isMoveSafe(checker, dest, board)) { // doesn't compile
-                board.updatePosition(checker, dest);  // Execute the move
-                return true;
-            //}
-        }
-
-        return false;
-    }*/
-
-    // Get possible moves for a king piece
-    //private ArrayList<Cord> getPossibleKingMoves(Checker checker, Board board) {
-        /*
-        ArrayList<Cord> possibleMoves = new ArrayList<>();
-        Cord cord = checker.getCord();
-
-        // Check both forward and backward diagonals
-        for (int x = -1; x <= 1; x += 2) {
-            for (int y = -1; y <= 1; y += 2) {
-                Cord newCord = new Cord(cord.getX() + x, cord.getY() + y);
-                if (board.moveForwardCheck(checker, newCord) || board.moveBackwardCheck(checker, newCord)) {
-                    possibleMoves.add(newCord);
-    */
-        //return null;
-    //}
-    /*public BotII() {
-        super(); // Calls the constructor of the parent class which is Bot
-    }*/
     
     public void makeValidMove() {
-    // try normal move if nothing else works
-    Board board = game.getBoard().getBoard();
+        // try normal move if nothing else works
+        Board board = game.getBoard().getBoard();
 
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -188,8 +106,10 @@ public class BotII extends Bot {
     
         // Check all four possible jump directions incase of king pices
         int[][] directions = {
+            // direction of man pieces relative to our piece
             {1, 1},   // bottom-right
             {-1, 1},   // bottom-left
+            // direction of king pieces relative to our piece
             {1, -1},   // top-right
             {-1, -1}   // top-left
         };
@@ -197,10 +117,8 @@ public class BotII extends Bot {
         int it = 0;
     
         for (int[] dir : directions) {
-            // direction for mans relative to our piece
             int attackX = x + dir[0];
             int attackY = y + dir[1];
-            // direction for kings relative to our piece
             int jumpX = x - dir[0];
             int jumpY = y - dir[1];
     
@@ -315,7 +233,7 @@ public class BotII extends Bot {
         // TODO: Wait for opponent to make a move before acting
     }
 
-    public void adjustStrategy() {
+    public boolean adjustStrategy() {
         // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
         // TODO: Change strategy based on early, mid, or late game
         // Early: Moving first row pieces?
@@ -347,6 +265,7 @@ public class BotII extends Bot {
 
         // (Optional) print for debugging
         System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
+        return beAggressive;
     }
 
     public void findOffensiveMove() {
@@ -370,9 +289,21 @@ public class BotII extends Bot {
         }
     }
 
+    private Move makeBestMove (Board board) {
+        Move bestMove = null;
+        board = game.getBoard().getBoard();
+        if (!adjustStrategy()) {
+            bestMove = defendPieces(board);
+        }
+        else if (bestMove == null) {
+            
+        }
+        return bestMove;
+    }
     
     private GameMove finalMove(GamePlay gp) {
-        Move fM = defendPieces(gp.getBoard());
+        Board board = game.getBoard().getBoard();
+        Move fM = makeBestMove(board);
         Cord from = fM.piece.getCord();
         Cord to = fM.destination;
         return new GameMove(this.playerId, this.game.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), "black");

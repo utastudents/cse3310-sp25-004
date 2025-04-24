@@ -1,10 +1,7 @@
 package uta.cse3310.BotII;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
-
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
