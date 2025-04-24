@@ -398,21 +398,7 @@ public class Board
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
 	}
-
-	//UNUSED
-	// public static int moveValidation(Checker piece, Cord dest)
-	// // The main logic for movement. 
-	// // This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
-
-	// {
-	// 	// TODO: Finish Board moveValidation function
-	// 	int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
-
-
-
-	// 	return result;
-	// }
-
+	
 	public String toString() {
 		String toReturn = "";
 		for (Checker[] row : checkerBoard) {

@@ -176,6 +176,7 @@ public class GamePlay
         //TODO: Send Game Termination end board
         return result;
     }
+    
     //Allows the piece to automatically take direct jumps after a jump by the player
     public int concurrentJumps(Checker piece)
     {
