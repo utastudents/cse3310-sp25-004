@@ -19,6 +19,7 @@ import uta.cse3310.GameManager.Game;
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
+import uta.cse3310.PairUp.Player.STATUS;
 import uta.cse3310.GamePlay.*;
 public class PageManager {
     DB db;
@@ -786,8 +787,26 @@ public class PageManager {
     }
 
      public void EndGameNotifier(int UserId, GamePlay gs){
+        
+        UserEventReply reply = new UserEventReply();
+        JsonObject json = new JsonObject();
+        int clientId = userIDToClientID.get(UserId);
+        reply.recipients.add(clientId);
 
+        //turning the board to 2d string array
+        String board[][] = To2DstringArray(gs.getBoard().checkerBoard);
 
+        //gettinh the 2d string board as a jsonobj
+        json = JsonParser.parseString(gson.toJson(board)).getAsJsonObject();
+        json.addProperty("responseID", "EndGame");
+        changePlayerStatus(STATUS.ONLINE, clientId);
+       
+        reply.replyObj = json;
+        App.sendMessage(reply);
+        App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
+        
+        
+        
      }
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
