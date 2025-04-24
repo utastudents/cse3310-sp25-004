@@ -32,7 +32,7 @@ body {
 }
 
 .signup-box {
-    height: 520px;
+    height: 535px;
 }
 
 .signup-box img {
@@ -96,8 +96,9 @@ input::placeholder {
     position: relative;
     z-index: 1;
 }
+
 .signup-box button:hover::before {
- opacity: 60%;
+    opacity: 60%;
 }
 
 .signup-text {
@@ -108,7 +109,7 @@ input::placeholder {
 }
 
 .signup-text a{
-    color: #ffffff59;
+    color: rgb(172, 172, 172);
     text-decoration: underline;
 }
 
@@ -117,7 +118,7 @@ input::placeholder {
 }
 
 #back-to-login{
-    color: rgb(107, 107, 107);
+    color: rgb(172, 172, 172);
     font-weight: 600;
 }
 
