@@ -11,8 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import uta.cse3310.GamePlay.Checker;
-import uta.cse3310.GamePlay.GamePlay;
+
 import uta.cse3310.App;
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.DB.DB;
@@ -661,6 +660,11 @@ public class PageManager {
         System.out.println("addPlayer result: " + success);
 
         if(!success){
+            if (db.getPlayerByUsername(username) != null) {
+                status.addProperty("msg", "Username already exists");
+                reply.replyObj = status;
+                return reply;
+            }
              status.addProperty("msg", "failed to create player !");
              reply.replyObj = status;
              return reply;
