@@ -150,10 +150,6 @@ public class Board
 		{
 			return false;
 		}
-		/*
-  		COULD ADD COLOR CHECK TO VERIFY THE CORRECT DIRECTION
-    		ALSO COULD BE ADDED IN A DIFFERENT METHOD
-    		*/
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (piece.getCord().getY() - dest.getY());
@@ -181,19 +177,15 @@ public class Board
 			return false;
 		}
 		// verify destination square is not occupied by another piece	
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
 			return false;
 		}
-		/*
-  		COLOR CHECK
-    		UNLESS IT'S IN ANOTHER METHOD
-    		*/
 		// verify if destination is 1 square below and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
 		
-		return (xDiff == 1 && yDiff == -1);
+		return (xDiff == 1 && yDiff == 1);
 	}
 	
 	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
