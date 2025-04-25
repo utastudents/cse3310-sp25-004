@@ -65,6 +65,7 @@ function addEventListeners() {
 }
 //Game Board Setup
 function createBoard() {
+    console.log("Creating board");
     if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
     for (let row = 0; row < 8; row++) {
         const tr = document.createElement("tr");
@@ -73,6 +74,8 @@ function createBoard() {
             const td = document.createElement("td");
             const isPlayable = (row + col) % 2 === 0;
             td.style.height = "50px";
+            td.id = `square-r${row}-c${col}`;
+
             if (isPlayable) {
                 td.classList.add("emptySquare");
 
@@ -81,12 +84,8 @@ function createBoard() {
 
                 if (isRed) {
                     td.classList.add("red-piece");
-                    td.id = `red-piece-r${row}-c${col}`;
                 } else if (isBlack) {
                     td.classList.add("black-piece");
-                    td.id = `black-piece-r${row}-c${col}`;
-                } else {
-                    td.id = `square-r${row}-c${col}`;
                 }
 
                 td.addEventListener("click", () => handleClick(td.id));
@@ -119,7 +118,7 @@ function handleClick(clickedId) {
         const fromId = selectedPieceId;
         const toId = clickedId;
 
-        movePiece(fromId, toId);
+        // movePiece(fromId, toId); // Don't actually move the piece :) java-side will take care of that
         selectedPieceId = null;
 
         const fromCoords = getRowColFromId(fromId);

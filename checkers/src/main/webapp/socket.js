@@ -158,6 +158,7 @@ connection.onmessage = function (msg) {
         case "UpdateBoard": {
             console.log("Board update! e.g. Bot Move");
             console.log(jsonMsg);
+            displayBoard(jsonMsg);
             break;
         }
         case "requestMove": {

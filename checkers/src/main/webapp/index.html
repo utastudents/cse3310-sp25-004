@@ -441,6 +441,37 @@
 </html>
 <script src="socket.js"></script>
 <script>
+	// Board display
+	// This method is called by socket.js with the game board from Java / GamePlay
+	function displayBoard(json) {
+		const boardState = json.boardState;
+		if (!boardState) {
+			console.log("Json invalid!");
+			console.log(json);
+			return;
+		}
+		if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
+		for (let row = 0; row < 8; row++) {
+			for (let col = 0; col < 8; col++) {
+				const el = document.getElementById(`square-r${row}-c${col}`);
+				el.classList.remove("red-piece", "black-piece", "empty");
+
+				if (boardState[row][col] == "empty") {
+					el.classList.add("empty");
+				} else {
+					const pieceType = boardState[row][col].split("_");
+					const isKing = pieceType[1] == "king"; //Either "king" or "pawn"
+
+					if (!isKing) {
+						el.classList.add(`${pieceType[0]}-piece`);
+					} else {
+						el.classList.add(`${pieceType[0]}-king`);
+					}
+				}
+			}
+		}
+	}
+
 	// Log in / new user functions
 
 	function login(message) {
