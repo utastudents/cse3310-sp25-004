@@ -15,6 +15,10 @@ import uta.cse3310.PageManager.PageManager;
 
 public class BotII extends Bot {
 
+    public BotII() {
+        this.playerId = -2; //Bots are -1, -2. Might change this later
+    }
+
 	private Game game;
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive

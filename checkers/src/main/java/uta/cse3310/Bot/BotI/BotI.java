@@ -1,19 +1,16 @@
 package uta.cse3310.Bot.BotI; 
 
 
-import uta.cse3310.GameState; 
+import java.util.ArrayList; 
+import java.util.Random;
+
 import uta.cse3310.Bot.Bot;
-import uta.cse3310.Bot.BotII.BotII.Move;
-import uta.cse3310.GameManager.Game; 
+import uta.cse3310.GameManager.Game;
 import uta.cse3310.GamePlay.Board; 
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord; 
 import uta.cse3310.GamePlay.GamePlay; 
-import uta.cse3310.PairUp.Player; 
-import java.util.ArrayList; 
-import java.util.Random; 
-import java.util.List; 
 
 public class BotI extends Bot {
     
@@ -28,6 +25,7 @@ public class BotI extends Bot {
     public BotI() {
         super();
         this.random = new Random();
+        this.playerId = -1;
     } 
 
      //sets up the botn with a specific and color - like red or black
@@ -37,6 +35,7 @@ public class BotI extends Bot {
         this.color = color;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
+        this.playerId = -1;
     }
     
      //this method checks what move to make, its made strategically, 
