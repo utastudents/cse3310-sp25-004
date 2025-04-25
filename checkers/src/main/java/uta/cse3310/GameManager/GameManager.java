@@ -96,7 +96,7 @@ public class GameManager {
         Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
         if (piece == null) {
             System.out.println("Attempted to move a piece that does not exist!");
-            System.out.println(gamePlay.getBoard());
+            gamePlay.getBoard().printBoard();
         }
         int result = gamePlay.move(piece, to);
         boolean valid = (result == 2);
