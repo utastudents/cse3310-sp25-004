@@ -206,4 +206,26 @@ public class GamePlayTest{
         System.out.println("Final Board");
         testGP.getBoard().printBoard();
     }
+
+    @Test
+    void kingMovement()
+    {
+        var testGP = new GamePlay(0);
+        int result = testGP.move(testGP.getBoard().checkerBoard[5][3], new Cord(4, 4));
+        testGP.getBoard().checkerBoard[4][4].setKing(true);
+        //Top Left
+        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(3, 3));
+        assertEquals(result, 2);
+        //Bottom Right
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(4, 4));
+        assertEquals(result, 2);
+        //Top Right
+        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(5, 3));
+        assertEquals(result, 2);
+        //Bottom Left
+        result = testGP.move(testGP.getBoard().checkerBoard[3][5], new Cord(4, 4));
+        assertEquals(result, 2);
+        System.out.println("King movement final board: ");
+        testGP.getBoard().printBoard();
+    }
 }
