@@ -155,7 +155,7 @@ connection.onmessage = function (msg) {
             console.log(jsonMsg.valid);
             break;
         }
-        case "UpdateBoatd": {
+        case "UpdateBoard": {
             console.log("Board update! e.g. Bot Move");
             console.log(jsonMsg);
             break;
@@ -193,6 +193,7 @@ connection.onmessage = function (msg) {
 		}
         default:{
             console.log("Received unexpected responseID! Got: \n"+responseID);
+            console.log(jsonMsg);
         }
     }
 }

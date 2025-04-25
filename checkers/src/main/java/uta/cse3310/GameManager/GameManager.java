@@ -107,17 +107,25 @@ public class GameManager {
 
 
         // Let both players know that a move has been made & whose turn it is
+        Game g = games.get(move.getGameId());
+        GamePlay board = g.getBoard();
         if (valid) {
-            Game g = games.get(move.getGameId());
+            
             if (g.getPlayer1().getPlayerId() == playerId) {
                 //This is player 1. Player 2's move
-                g.getPlayer1().updateBoard(g.getBoard());
-                g.getPlayer2().makeMove(g.getBoard());
+                g.getPlayer1().updateBoard(board);
+                g.getPlayer2().makeMove(board);
             } else {
                 //Player 1's move
-                g.getPlayer1().makeMove(g.getBoard());
-                g.getPlayer2().updateBoard(g.getBoard());
+                g.getPlayer1().makeMove(board);
+                g.getPlayer2().updateBoard(board);
             }   
+        } else {
+            // Send the actual game board back so they can compare
+            g.getPlayer2().updateBoard(board);
+            g.getPlayer2().updateBoard(board);
+            System.out.println("Attempted invalid move. Actual board:");
+            System.out.println(board);
         }
 
         return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);
