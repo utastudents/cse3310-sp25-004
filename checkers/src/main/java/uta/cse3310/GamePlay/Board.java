@@ -183,10 +183,6 @@ public class Board
 			System.out.println("Space occupied");
 			return false;
 		}
-		/*
-  		COULD ADD COLOR CHECK TO VERIFY THE CORRECT DIRECTION
-    		ALSO COULD BE ADDED IN A DIFFERENT METHOD
-    		*/
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
@@ -222,10 +218,6 @@ public class Board
 			System.out.println("Space occupied");
 			return false;
 		}
-		/*
-  		COLOR CHECK
-    		UNLESS IT'S IN ANOTHER METHOD
-    		*/
 		// verify if destination is 1 square below and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
