@@ -61,11 +61,11 @@ public class HumanPlayer extends Player{
         return true;
     }
 
-    @Override                                //will uncomment soon
-    public boolean updateBoard(GamePlay gs/*,GameUpdate update */) //Returns false if the client could not be reached
+    @Override                                
+    public boolean updateBoard(GamePlay gs) //Returns false if the client could not be reached
     {
         
-       // App.pmInstance.sendUpdate(playerId, update);
+        App.pmInstance.sendBoard(playerId, gs);
         return true;
     }
 

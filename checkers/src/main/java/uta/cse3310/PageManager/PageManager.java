@@ -717,6 +717,19 @@ public class PageManager {
         App.sendMessage(reply);
     
     }
+    public void sendBoard(int UserId, GamePlay gs){
+        int userId = UserId;
+        int clientId = userIDToClientID.get(userId);
+        JsonObject json = new JsonObject();
+        String board[][] = To2DstringArray(gs.getBoard().checkerBoard);
+        json.add("boardState", gson.toJsonTree(board));
+        json.addProperty("responseID", "UpdateBoard");
+        UserEventReply reply = new UserEventReply();
+        reply.replyObj = json;
+        reply.recipients.add(clientId);
+        App.sendMessage(reply);
+    
+    }
     public String[][] To2DstringArray (Checker[][] board){
      
         String[][] Sboard = new String[8][8];
