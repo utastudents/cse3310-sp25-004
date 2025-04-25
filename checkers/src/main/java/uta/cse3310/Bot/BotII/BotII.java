@@ -296,6 +296,7 @@ public class BotII extends Bot {
     private Move makeBestMove (Board board) {
         Move bestMove = null;
         board = game.getBoard().getBoard();
+        
         if (!adjustStrategy()) {
             bestMove = defendPieces(board);
         }
