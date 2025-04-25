@@ -45,6 +45,37 @@ public class Board
         System.out.println();
     }
 
+	public void printBoard(Cord from, Cord to)
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+				String space = "  ";
+				if ((from.getX() == j && from.getY() == i)) {
+					space = "f ";
+				} else if (to.getX() == j && to.getY() == i) {
+					space = "t ";
+				}
+
+                if (checkerBoard[i][j] == null)
+                {
+                    System.out.print("0" + space);
+                }
+                else if(checkerBoard[i][j].getColor() == Color.BLACK)
+                {
+                    System.out.print("B" + space);
+                }
+                else if(checkerBoard[i][j].getColor() == Color.RED)
+                {
+                    System.out.print("R" + space);
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
 	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
@@ -141,13 +172,15 @@ public class Board
 	public boolean moveForwardCheck(Checker piece, Cord dest) 
 	{
 		// verify destination square is in bound
-		if(dest.getX() <= 0 || dest.getX() >= 7 || dest.getY() <= 0 || dest.getY() >= 7)
+		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
+			System.out.println("Out of bounds");
 			return false;
 		}
 		// verify destination square is not occupied by another piece
 		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
+			System.out.println("Space occupied");
 			return false;
 		}
 		/*
@@ -156,8 +189,10 @@ public class Board
     		*/
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-		int yDiff = (piece.getCord().getY() - dest.getY());
+		int yDiff = (dest.getY() - piece.getCord().getY());
 		
+		System.out.println("X/Y diffs: expected: (1,1) actual: (" + xDiff + ", " + yDiff + ")");
+
 		return (xDiff == 1 && yDiff == 1);
 	}
 
@@ -176,13 +211,15 @@ public class Board
 	public boolean moveBackwardCheck(Checker piece, Cord dest) 
 	{
 		// verify destination square is in bound
-		if(dest.getX() <= 0 || dest.getX() >= 7 || dest.getY() <= 0 || dest.getY() >= 7)
+		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
+			System.out.println("Out of bounds");
 			return false;
 		}
 		// verify destination square is not occupied by another piece	
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
+			System.out.println("Space occupied");
 			return false;
 		}
 		/*
@@ -193,7 +230,9 @@ public class Board
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
 		
-		return (xDiff == 1 && yDiff == -1);
+			System.out.println("X/Y diffs: expected: (1,-1) actual: (" + xDiff + ", " + yDiff + ")");
+
+			return (xDiff == 1 && yDiff == -1);
 	}
 	
 	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 

@@ -125,7 +125,8 @@ public class GameManager {
             g.getPlayer2().updateBoard(board);
             g.getPlayer2().updateBoard(board);
             System.out.println("Attempted invalid move. Actual board:");
-            System.out.println(board);
+            board.getBoard().printBoard();
+            board.getBoard().printBoard(from, to);
         }
 
         return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);

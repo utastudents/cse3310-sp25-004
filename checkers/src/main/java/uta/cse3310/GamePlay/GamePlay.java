@@ -132,7 +132,7 @@ public class GamePlay
             {
                 if(piece.getColor() == Color.BLACK) // Black piece move code
                 {
-                    if(board.moveForwardCheck(piece, dest) == true)
+                    if(board.moveBackwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
                         board.kingMe(piece);
@@ -145,7 +145,7 @@ public class GamePlay
                 }
                 else if(piece.getColor() == Color.RED) // Red piece move code
                 {
-                    if(board.moveBackwardCheck(piece, dest) == true)
+                    if(board.moveForwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
                         board.kingMe(piece);
