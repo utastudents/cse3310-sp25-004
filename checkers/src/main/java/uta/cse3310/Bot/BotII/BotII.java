@@ -111,11 +111,11 @@ public class BotII extends Bot {
         // Check all four possible jump directions incase of king pices
         int[][] directions = {
             // direction of man pieces relative to our piece
-            {1, 1},   // bottom-right
-            {-1, 1},   // bottom-left
+            {-1, -1},   // bottom-right
+            {1, -1},   // bottom-left
             // direction of king pieces relative to our piece
-            {1, -1},   // top-right
-            {-1, -1}   // top-left
+            {-1, 1},   // top-right
+            {1, 1}   // top-left
         };
         // created an iterator in order to differentiate the pieces between kings and mans
         int it = 0;
@@ -261,11 +261,7 @@ public class BotII extends Bot {
         }
 
         // if opponent has 3 or more pieces than us, go aggressive
-        if (oppCount - myCount >= 3) {
-            beAggressive = true;
-        } else {
-            beAggressive = false;
-        }
+        beAggressive = oppCount - myCount >= 3;
 
         // (Optional) print for debugging
         System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
