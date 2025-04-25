@@ -2,7 +2,6 @@ package uta.cse3310.GamePlay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.Disabled;
 
 public class GamePlayTest{
@@ -175,9 +174,36 @@ public class GamePlayTest{
     void singleSpaceMovement()
     {
         var testGP = new GamePlay(0);
-        System.out.println("Testing single space movement (invalid (white) spots)");
+        System.out.println("Testing single space movement (valid (black) spots)");
         int result = testGP.move(testGP.getBoard().checkerBoard[5][3], new Cord(4, 4));
-        System.out.println(result);
+        //System.out.printf("Top Right Result: ", result);
+        assertEquals(result, 2);
+        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(3, 3));
+        //System.out.printf("Top Left Result: ", result);
+        assertEquals(result, 2);
+        System.out.println("Invalid as Man cant go backwards");
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(4, 4));
+        //System.out.printf("Bottom Right Result (invalid as man cant go backwards): ", result);
+        assertEquals(result, 0);
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(2, 4));
+        //System.out.printf("Bottom Left Result (invalid as man cant go backwards): ", result);
+        assertEquals(result, 0);
+        System.out.println("");
+        System.out.println("Testing single space movement (invalid (white) spots)");
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(3, 2));
+        //System.out.printf("Invalid Top Result: ", result);
+        assertEquals(result, 0);
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(3, 4));
+        //System.out.printf("Invalid Bottom Result: ", result);
+        assertEquals(result, 0);
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(2, 3));
+        //System.out.printf("Invalid Left Result: ", result);
+        assertEquals(result, 0);
+        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(4, 3));
+        //System.out.printf("Invalid Right Result: ", result);
+        assertEquals(result, 0);
+
+        System.out.println("Final Board");
         testGP.getBoard().printBoard();
     }
 }
