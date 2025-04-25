@@ -2,6 +2,7 @@ package uta.cse3310.GamePlay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.Disabled;
 
 public class GamePlayTest{
@@ -68,6 +69,7 @@ public class GamePlayTest{
                 }
             }
         }
+        System.out.println("Init board:");
         board.printBoard();
     }
 
@@ -169,4 +171,13 @@ public class GamePlayTest{
        
     }
 
+    @Test
+    void singleSpaceMovement()
+    {
+        var testGP = new GamePlay(0);
+        System.out.println("Testing single space movement (invalid (white) spots)");
+        int result = testGP.move(testGP.getBoard().checkerBoard[5][3], new Cord(4, 4));
+        System.out.println(result);
+        testGP.getBoard().printBoard();
+    }
 }

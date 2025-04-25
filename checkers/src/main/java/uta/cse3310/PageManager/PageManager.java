@@ -568,11 +568,7 @@ public class PageManager {
         }
         responseJson.add("player2", player2);
 
-        //According to game display, they will have the game setup
-
-        // GamePlay board = g.getBoard();
-
-        // // responseJson.add("board", boardToJson(board));
+        
 
 
         userEventReply.recipients = new ArrayList<>();
@@ -587,6 +583,8 @@ public class PageManager {
         //send info to new onmessage
         App.sendMessage(userEventReply);
 
+        //Send the board as well
+        this.sendBoard(UserId, g.getBoard());
     }
     
     public UserEventReply quickStart(JsonObject jsonObj, int Id)
@@ -775,7 +773,7 @@ public class PageManager {
      
         String[][] Sboard = new String[8][8];
         for(int i = 0; i < 8; i++){
-            for(int j = 0; i < 8; j++){
+            for(int j = 0; j < 8; j++){
                 Checker c = board[i][j];
                 if(c == null){
                     Sboard[i][j]="empty";

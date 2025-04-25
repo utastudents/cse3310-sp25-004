@@ -156,7 +156,7 @@ public class Board
     		*/
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-		int yDiff = (dest.getY() - piece.getCord().getY());
+		int yDiff = (piece.getCord().getY() - dest.getY());
 		
 		return (xDiff == 1 && yDiff == 1);
 	}
@@ -353,9 +353,9 @@ public class Board
 		Cord oldCord = piece.getCord();
 		int oldX = oldCord.getX();
 		int oldY = oldCord.getY();
-		checkerBoard[oldX][oldY] = null;
+		checkerBoard[oldY][oldX] = null;
 		piece.setCord(newX, newY);
-		checkerBoard[newX][newY] = piece; //test works with this format like how initialized
+		checkerBoard[newY][newX] = piece; //test works with this format like how initialized
 	}
 	
 	/* 

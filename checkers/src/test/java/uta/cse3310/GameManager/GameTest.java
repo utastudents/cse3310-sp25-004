@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
+import uta.cse3310.PairUp.TestPlayer;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.GamePlay.Board;
@@ -95,15 +96,19 @@ public class GameTest {
     void testProcessMove() {
 
         GameManager manager = new GameManager();
+
+        manager.createGame(new TestPlayer(0), new TestPlayer(1));
+        Game g = manager.getGames().get(0);
+
         // Using dummy values for testing purposes
-        GameMove move = new GameMove(1, 1, 3, 2, 6, 3, "King");
+        GameMove move = new GameMove(1, 0, 3, 2, 6, 3, "King");
         move.getFromPosition_X();
         move.getFromPosition_Y();
         move.getToPosition_X();
         move.getToPosition_Y();
         move.getClientId();
         // Making objects
-        GamePlay gamePlay = new GamePlay(1);
+        GamePlay gamePlay = g.getBoard();
         Cord cord = new Cord(3, 2);
         Checker piece = new Checker(cord, Color.RED);
         gamePlay.getBoard().checkerBoard[2][3] = piece;
