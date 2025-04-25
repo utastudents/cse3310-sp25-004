@@ -164,6 +164,7 @@ connection.onmessage = function (msg) {
         case "requestMove": {
             console.log("Your move!");
             console.log(jsonMsg);
+            break;
         }
 
         // Summary Responses
