@@ -198,6 +198,10 @@ public class App extends WebSocketServer {
 
     switch(action)
     {
+      case "quickstart":
+        // debug code to immediately login and put user in a game
+        Reply = PM.quickStart(jsonObj, Id);
+        break;
       case "login":
         Reply = PM.handleLogin(jsonObj, Id);
         break;

@@ -155,6 +155,15 @@ connection.onmessage = function (msg) {
             console.log(jsonMsg.valid);
             break;
         }
+        case "UpdateBoatd": {
+            console.log("Board update! e.g. Bot Move");
+            console.log(jsonMsg);
+            break;
+        }
+        case "requestMove": {
+            console.log("Your move!");
+            console.log(jsonMsg);
+        }
 
         // Summary Responses
         case "summaryData": {

@@ -56,7 +56,7 @@ public class HumanPlayer extends Player{
     @Override
     public boolean makeMove(GamePlay gs) //Returns false if the client could not be reached
     {
-        App.pmInstance.makeMove(playerId);
+        App.pmInstance.makeMove(playerId, gs);
         
         return true;
     }

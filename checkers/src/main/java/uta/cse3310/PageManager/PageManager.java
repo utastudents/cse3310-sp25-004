@@ -589,7 +589,39 @@ public class PageManager {
 
     }
     
+    public UserEventReply quickStart(JsonObject jsonObj, int Id)
+    {
+        //Login and put in game, then return the start game info
+        JsonObject status = new JsonObject();
 
+        // Create dummy player for debug purposes
+        HumanPlayer player = new HumanPlayer("Test", "1234567890", Player.nextId(), STATUS.ONLINE, 0, 0, 1000, 0);
+
+        // ADDING PLAYER TO ACTIVE PLAYER MAP
+        activePlayers.put(Id,player);
+        userIDToClientID.put(player.getPlayerId(),Id);
+        player.setStatus(HumanPlayer.STATUS.ONLINE);
+
+        System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
+
+        // Now that the player is an active player, let the other clients know
+        App.sendMessage(sendActivePlayersToAll());
+
+        // 6) if the player is not null, then the username and password are correct
+        status.addProperty("responseID", "loginSuccessful");
+        status.addProperty("msg", "Login successful!");
+        status.addProperty("playerID", player.getPlayerId());
+
+        UserEventReply reply = new UserEventReply(status, Id);
+        App.sendMessage(reply);
+
+        // Go ahead and add to challenge as well
+        jsonObj.addProperty("botId", 1);
+        
+        UserEventReply challengeReply = this.challengeBot(jsonObj, Id);
+
+        return challengeReply;
+    }
 
     public UserEventReply ViewMatch(JsonObject jsonObj, int Id)
     {
@@ -694,42 +726,51 @@ public class PageManager {
         reply.replyObj = status;
         return reply;
     }
-    public void makeMove (int UserID){
-        int userId = UserID;
+
+    // makeMove - This is an OUTGOING request for a player to make a move. Called by HumanPlayer, which is called by GameManager
+    public void makeMove (int userId, GamePlay gs){
         int clientId = userIDToClientID.get(userId);
+        String board[][] = To2DstringArray(gs.getBoard().checkerBoard);
+
         JsonObject obj = new JsonObject ();
-        obj.addProperty("action", "requestMove");
-        UserEventReply reply = new UserEventReply();
-        reply.recipients.add(clientId);
+        obj.addProperty("responseID", "requestMove");        
+        obj.add("boardState", gson.toJsonTree(board));
+
+        UserEventReply reply = new UserEventReply(obj, clientId);
+
         App.sendMessage(reply);
     }
-    public void sendUpdate(int UserId, GameUpdate update){
-        int userId = UserId;
-        GameUpdate updates = update;
-        String board[][] = To2DstringArray(updates.getUpdatedBoard());
-        updates.setboardState(board);
+
+    public void sendUpdate(int userId, GameUpdate update){
+        String board[][] = To2DstringArray(update.getUpdatedBoard());
         int clientId = userIDToClientID.get(userId);
-        JsonObject json = JsonParser.parseString(gson.toJson(updates)).getAsJsonObject();
+
+        update.setboardState(board);
+        
+        JsonObject json = JsonParser.parseString(gson.toJson(update)).getAsJsonObject();
         json.addProperty("responseID", "GameUpdate");
+
         UserEventReply reply = new UserEventReply();
         reply.replyObj = json;
         reply.recipients.add(clientId);
+
         App.sendMessage(reply);
-    
     }
-    public void sendBoard(int UserId, GamePlay gs){
-        int userId = UserId;
+
+    // This is an OUTGOING MESSAGE that sends a JSON-copy of the board from GameDisplay to show on screen
+    public void sendBoard(int userId, GamePlay gs){
         int clientId = userIDToClientID.get(userId);
-        JsonObject json = new JsonObject();
         String board[][] = To2DstringArray(gs.getBoard().checkerBoard);
+
+        JsonObject json = new JsonObject();
         json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "UpdateBoard");
-        UserEventReply reply = new UserEventReply();
-        reply.replyObj = json;
-        reply.recipients.add(clientId);
+
+        UserEventReply reply = new UserEventReply(json, clientId);
+
         App.sendMessage(reply);
-    
     }
+
     public String[][] To2DstringArray (Checker[][] board){
      
         String[][] Sboard = new String[8][8];
