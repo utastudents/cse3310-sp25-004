@@ -19,7 +19,8 @@ public class BotII extends Bot {
         this.playerId = -2; //Bots are -1, -2. Might change this later
     }
 
-	private Game game;
+	// private Game game; // Game game is declared in the abstract Player super class
+
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     
