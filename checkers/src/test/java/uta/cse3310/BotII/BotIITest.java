@@ -1,6 +1,7 @@
 package uta.cse3310.BotII;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,21 +29,12 @@ public class BotIITest {
         Checker blackChecker2 = new Checker(new Cord(5, 6), Color.BLACK);
         board.checkerBoard[6][5] = blackChecker2;
 
-        // Checker blackChecker3 = new Checker(new Cord(5, 6), Color.BLACK);
-        // board.checkerBoard[5][2] = blackChecker3;
-
-        // Red piece at column 2, row 3 (x=2, y=3) - above black (can jump downward)
+        // Red piece at column 2, row 3 (x=2, y=3) - above black (can jump down)
         Checker redChecker1 = new Checker(new Cord(2, 3), Color.RED);
         board.checkerBoard[3][2] = redChecker1;
 
-        // Checker redChecker2 = new Checker(new Cord(4, 3), Color.RED);
-        // board.checkerBoard[3][4] = redChecker2;
-
-        // Empty landing spot at column 1, row 2 (x=1, y=2)
-        
-
         System.out.println("Board state in TestDefendPieces:");
-        printBoardWithCoordinates(board);  // Custom visualization method
+        printBoardWithCoordinates(board);  // pirnt board with cords
         System.out.println("Black piece at: " + blackChecker.getCord());
         System.out.println("Red piece at: " + redChecker1.getCord());
 
@@ -107,113 +99,42 @@ public class BotIITest {
         }
     }
 
-    // @Test
-    // public void TestDefendPieces() {
-    //     // Create empty board
-    //     Board board = new Board();
-    //     clearBoard(board);
-    
-    //     // Black piece at column 3, row 4 (x=3, y=4)
-    //     Checker blackChecker = new Checker(new Cord(3, 4), Color.BLACK);
-    //     board.checkerBoard[4][3] = blackChecker;
-    
-    //     // Red piece at column 4, row 5 (x=4, y=5) - can jump black
-    //     Checker redChecker = new Checker(new Cord(4, 5), Color.RED);
-    //     board.checkerBoard[5][4] = redChecker;
-    
-    //     // Empty landing spot at column 5, row 6 (x=5, y=6)
-    //     board.checkerBoard[6][5] = null;
-       
-    //     System.out.println("Board state in TestDefendPieces:");
-    //     printBoardWithCoordinates(board);  // Custom visualization method
-    //     System.out.println("Black piece at: " + blackChecker.getCord());
-    //     System.out.println("Red piece at: " + redChecker.getCord());
-    
-    //     BotII.Move bestMove = BotII.defendPieces(board);
-    //     assertTrue(bestMove != null, "A defensive move should be found");
-        
-    //     // Verify the move is actually defensive
-    //     assertNotEquals(blackChecker.getCord(), bestMove.destination);
-    // }
-    
-    // @Test
-    // public void testIsInDanger() {
-    //     // Create empty board
-    //     Board board = new Board();
-    //     clearBoard(board);
-    
-    //     // Black piece at column 3, row 4 (x=3, y=4)
-    //     Checker blackChecker = new Checker(new Cord(3, 4), Color.BLACK);
-    //     board.checkerBoard[4][3] = blackChecker;
-    
-    //     // Red piece at column 4, row 5 (x=4, y=5) - can jump black
-    //     Checker redChecker = new Checker(new Cord(4, 5), Color.RED);
-    //     board.checkerBoard[5][4] = redChecker;
-    
-    //     // Empty landing spot at column 5, row 6 (x=5, y=6)
-    //     board.checkerBoard[6][5] = null;
 
-    //     System.out.println("\nBoard state in testIsInDanger:");
-    //     printBoardWithCoordinates(board);
-    //     System.out.println("Black piece at: " + blackChecker.getCord());
-    //     System.out.println("Red piece at: " + redChecker.getCord());
+@Test
+public void testGetSafeMoves() {
+    // Create empty board
+    Board board = new Board();
+    clearBoard(board);
+
+    // Place a black checker at (3, 3)
+    Checker blackChecker = new Checker(new Cord(3, 3), Color.BLACK);
+    board.checkerBoard[3][3] = blackChecker;
+
+    // Place a red checker at (2,2)
+    Checker redChecker = new Checker(new Cord(1, 1), Color.RED);
+    board.checkerBoard[2][2] = redChecker;
+
+    board.checkerBoard[4][2] = null;  
     
-    //     boolean result = BotII.isInDanger(blackChecker, board);
-    //     System.out.println("Is black piece in danger? " + result);
-    //     assertTrue(result, "Checker should be in danger");
-    // }
+
+    System.out.println("\nBoard state in testGetSafeMoves:");
+    printBoardWithCoordinates(board);
+    System.out.println("Black piece at: " + blackChecker.getCord());
+    System.out.println("Red piece at: " + redChecker.getCord());
+
+    // Get safe moves for black checker
+    ArrayList<Cord> safeMoves = BotII.getSafeMoves(blackChecker, board);
+
+    // Print the safe moves found
+    System.out.println("Safe moves found:");
+    for (Cord move : safeMoves) {
+        System.out.println(move);
+    }
+
+    assertTrue(!safeMoves.isEmpty(), "There should be at least one safe move");
     
   
-    /* 
-    @Test
-    void TestcapturePiece() {
-	//Arange
- 	// Set up the board with a black checker
-
-    
-  	Board board = new Board();
-        boolean AT, HM;
-     	Checker blackChecker = new Checker(new Cord(2, 2), Color.BLACK);
-      	board.checkerBoard[2][2] = blackChecker;
-
-	//Simulate a red piece in a position that can get jumped by the black piece
-       Checker redChecker = new Checker(new Cord(3, 3), Color.RED);
-       board.checkerBoard[3][3] = redChecker;
-
-	//Checks to see if the landing spot is empty
-    	board.checkerBoard[4][4] = null;
-     
-     	BotII botII = new BotII(null, null);
-        //Capture the piece
-      	botII.capturePiece(board);
-	    
-	//assert
-        if (board.checkerBoard[3][3] == null) {
-            AT = true;
-            assertTrue("Red piece should have been captured", AT);
-        }
-        Checker moved = board.checkerBoard[4][4];
-        if (moved != null) {
-            HM = true;
-            assertTrue("Black piece should have moved to new location", HM);
-        }
-    } */
-
-
-    @Disabled("Disabled until we can fix this test")
-    @Test
-    public void testGetSafeMoves() {
-        // Set up the board and a black checker
-        Board board = new Board();
-        Checker blackChecker = new Checker(new Cord(3, 3), Color.BLACK);
-        board.checkerBoard[3][3] = blackChecker;
-
-        // Get the safe moves for the black checker
-        ArrayList<Cord> safeMoves = BotII.getSafeMoves(blackChecker, board);
-
-        // Assert that there are safe moves available
-        assertTrue(!safeMoves.isEmpty(),"There should be at least one safe move" );
-    }
+}
     
     @Disabled("Disabled until we can fix this test")
     @Test
