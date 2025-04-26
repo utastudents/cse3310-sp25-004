@@ -164,7 +164,7 @@ connection.onmessage = function (msg) {
             break;
         }
         case "requestMove": {
-            alert('Your move')
+            //alert('Your move')
             console.log("Your move!");
             console.log(jsonMsg);
             displayBoard(jsonMsg);
