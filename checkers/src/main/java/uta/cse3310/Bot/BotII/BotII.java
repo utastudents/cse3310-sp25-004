@@ -77,7 +77,11 @@ public class BotII extends Bot {
                         for (Cord move : safeMoves) {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
-                            } else {
+                            } 
+                            // else if (bestMove == null) {
+
+                            // }
+                            else {
                                 // Prioritize backward movement if near being jumped
                                 if (move.getY() > checker.getCord().getY()) {
                                     bestMove = new Move(checker, move);
