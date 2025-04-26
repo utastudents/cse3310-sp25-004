@@ -30,12 +30,10 @@ public class BotII extends Bot {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
                 if (checker != null && checker.getColor() == Color.BLACK) {
-                    if (!isInDanger(checker, board)) {
-                        ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
-                        for (Cord move : safeMoves) {
-                            if (bestMove == null) {
-                                bestMove = new Move(checker, move);
-                            }
+                    ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
+                    for (Cord move : safeMoves) {
+                        if (!wouldBeInDangerAfterMove(checker, move, board) && bestMove == null) {
+                            bestMove = new Move(checker, move);
                         }
                     }
                 }
@@ -81,12 +79,12 @@ public class BotII extends Bot {
                             // else if (bestMove == null) {
 
                             // }
-                            else {
-                                // Prioritize backward movement if near being jumped
-                                if (move.getY() > checker.getCord().getY()) {
-                                    bestMove = new Move(checker, move);
-                                }
-                            }
+                            // else {
+                            //     // Prioritize backward movement if near being jumped
+                            //     if (move.getY() > checker.getCord().getY()) {
+                            //         bestMove = new Move(checker, move);
+                            //     }
+                            // }
                         }
                     }
                 }

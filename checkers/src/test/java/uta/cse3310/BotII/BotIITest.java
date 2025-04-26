@@ -1,9 +1,9 @@
 package uta.cse3310.BotII;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+//import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Disabled;
+//import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import uta.cse3310.Bot.BotII.BotII;
@@ -107,15 +107,12 @@ public void testGetSafeMoves() {
     clearBoard(board);
 
     // Place a black checker at (3, 3)
-    Checker blackChecker = new Checker(new Cord(3, 3), Color.BLACK);
-    board.checkerBoard[3][3] = blackChecker;
+    Checker blackChecker = new Checker(new Cord(1, 3), Color.BLACK);
+    board.checkerBoard[3][1] = blackChecker;
 
     // Place a red checker at (2,2)
-    Checker redChecker = new Checker(new Cord(1, 1), Color.RED);
-    board.checkerBoard[2][2] = redChecker;
-
-    board.checkerBoard[4][2] = null;  
-    
+    Checker redChecker = new Checker(new Cord(0, 2), Color.RED);
+    board.checkerBoard[2][0] = redChecker;    
 
     System.out.println("\nBoard state in testGetSafeMoves:");
     printBoardWithCoordinates(board);
@@ -136,12 +133,13 @@ public void testGetSafeMoves() {
   
 }
     
-    @Disabled("Disabled until we can fix this test")
+    //@Disabled("Disabled until we can fix this test")
     @Test
     public void testMakeValidMove() {
         Board board = new Board();
         printBoardWithCoordinates(board);
         BotII.Move bestMove = BotII.makeValidMove(board);
+        System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
         assertTrue(bestMove != null, "An offensive move should be found");
     }
     
