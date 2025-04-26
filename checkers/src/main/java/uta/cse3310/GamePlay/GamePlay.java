@@ -10,6 +10,8 @@ public class GamePlay
     private Board board;
     //private GameTermination termination;
 
+    public boolean turn; // false for red's turn, true for black's turn
+
     public GamePlay(int id) 
     {
         this.GameID = id;

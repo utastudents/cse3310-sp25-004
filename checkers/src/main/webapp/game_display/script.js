@@ -4,11 +4,48 @@ let selectedPieceId = null;
 let board = document.getElementById("game-board");
 const initialRedPieceRows = [0, 1, 2];
 const initialBlackPieceRows = [5, 6, 7];
+
+let redName;
+let blackName;
+
+let me = "red"; // default
+
+function startGameInitialize(json) {
+    me = json.you;
+    console.log("You are " + me);
+    redName = json.player1.isBot ? 'Bot' : json.player1.username;
+    blackName = json.player2.isBot ? 'Bot' : json.player2.username;
+    currentPlayer = "red";
+    displayPlayerTurn();
+}
+
+function displayPlayerTurn() {
+    const playerDisplay = document.getElementById("players");
+    if (currentPlayer == me) {
+        playerDisplay.textContent = currentPlayer === "red"
+            ? `Your Turn (Red)` : `Your Turn (Black)`;
+    } else {
+        playerDisplay.textContent = currentPlayer === "red"
+            ? `${redName}'s Turn (Red)` : `${blackName}'s Turn (Black)`;
+    }
+}
+
+function yourTurn() {
+    //Called by requestMove
+    currentPlayer = me;
+    displayPlayerTurn();
+}
+
+function opponentTurn() {
+    currentPlayer = me === "red" ? "black" : "red";
+    displayPlayerTurn();
+}
+
 // Update the player turn display
 function updatePlayerTurn() {
     const playerDisplay = document.getElementById("players");
     playerDisplay.textContent = currentPlayer === "red"
-     ? `${window.playerRed}'s Turn (Red)` : `${window.playerBlack}'s Turn (Black)`;
+     ? `${redName}'s Turn (Red)` : `${blackName}'s Turn (Black)`;
 }
 // Switch the current player
 function switchPlayer() {
@@ -56,12 +93,14 @@ function handleMoveResult(moveData)  {
 
 // Add event listeners to the board
 function addEventListeners() {
+    /* This code has been replaced by java-side move handling. Thank you for your service o7
     document.querySelectorAll("td").forEach(cell => {
         cell.addEventListener("click", () => {
             // For now, just switch the player on any cell click
             switchPlayer();
         });
     });
+    */
 }
 //Game Board Setup
 function createBoard() {
@@ -134,7 +173,7 @@ function handleClick(clickedId) {
 
         handleMoveResult(moveData);
         sendGameMove(fromId, toId);
-        switchPlayer();
+        //switchPlayer(); // Java will handle this
     }
 
     //Invalid or cancel selection

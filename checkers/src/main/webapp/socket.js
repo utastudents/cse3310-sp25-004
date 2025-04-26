@@ -144,6 +144,7 @@ connection.onmessage = function (msg) {
             //Start the actual game!
             //{"responseID":"startGame","gameType":"pvb","player1":{"isBot":false,"playerClientId":1,"username":"test","elo":0,"gamesWon":0,"gamesLost":0,"status":"IN_GAME"},"player2":{"isBot":true}}
             console.log("Starting the game!", JSON.stringify(jsonMsg));
+            startGameInitialize(jsonMsg);
             break;
         }
         case "invalidMove": {
@@ -159,11 +160,15 @@ connection.onmessage = function (msg) {
             console.log("Board update! e.g. Bot Move");
             console.log(jsonMsg);
             displayBoard(jsonMsg);
+            opponentTurn();
             break;
         }
         case "requestMove": {
+            alert('Your move')
             console.log("Your move!");
             console.log(jsonMsg);
+            displayBoard(jsonMsg);
+            yourTurn();
             break;
         }
 

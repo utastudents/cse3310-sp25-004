@@ -174,7 +174,7 @@ public class App extends WebSocketServer {
     // UserEvent, and return a ReplyEvent
 
     //Log the raw incoming WebSocket message
-    System.out.println("Incoming raw message: " + message);
+    System.out.println("Incoming raw message: " + message + " from clientID " + Id);
 
     //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
