@@ -24,35 +24,34 @@ public class BotII extends Bot {
     private Color botColor = Color.BLACK; // Initializing with a default value
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     
-    public void makeValidMove() {
+    public static Move makeValidMove(Board board) {
         // try normal move if nothing else works
-        Board board = game.getBoard().getBoard();
 
+        // 
+        Move bestMove = null;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                Checker c = board.checkerBoard[y][x];
-                if (c != null && c.getColor() == botColor) {
-                    ArrayList<Cord> moves = new ArrayList<>();
-
-                    if (botColor == Color.BLACK || c.isKing()) {
-                        checkMove(board, c, -1, 1, moves);
-                        checkMove(board, c, 1, 1, moves);
-                    }
-                    if (botColor == Color.RED || c.isKing()) {
-                        checkMove(board, c, -1, -1, moves);
-                        checkMove(board, c, 1, -1, moves);
-                    }
-
-                    if (!moves.isEmpty()) {
-                        Cord dest = moves.get(0);
-                        board.updatePosition(c, dest);
-                        promoteToKing(); // crown if needed
-                        return;
+                Checker checker = board.checkerBoard[y][x];
+                if (checker != null && checker.getColor() == Color.BLACK) {
+                    if (!isInDanger(checker, board)) {
+                        ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
+                        for (Cord move : safeMoves) {
+                            if (bestMove == null) {
+                                bestMove = new Move(checker, move);
+                            } else {
+                                // Prioritize backward movement if near being jumped
+                                if (move.getY() > checker.getCord().getY()) {
+                                    bestMove = new Move(checker, move);
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+        return bestMove;
     }
+
 
     public void promoteToKing() {
     // go through all my pieces and promote if they reached end
@@ -281,14 +280,14 @@ public class BotII extends Bot {
     }
 
     // Helper method to check if a move is valid and add it to the list
-    private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
-        int newX = checker.getCord().getX() + dx;
-        int newY = checker.getCord().getY() + dy;
+    // private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
+    //     int newX = checker.getCord().getX() + dx;
+    //     int newY = checker.getCord().getY() + dy;
 
-        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
-            moves.add(new Cord(newX, newY));
-        }
-    }
+    //     if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
+    //         moves.add(new Cord(newX, newY));
+    //     }
+    // }
 
     private Move makeBestMove (Board board) {
         Move bestMove = null;
@@ -298,7 +297,7 @@ public class BotII extends Bot {
             bestMove = defendPieces(board);
         }
         else if (bestMove == null) {
-            
+            bestMove = makeValidMove(board);
         }
         return bestMove;
     }
