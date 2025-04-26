@@ -2,7 +2,6 @@ package uta.cse3310.GamePlay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 
 public class GamePlayTest{
 
@@ -74,7 +73,6 @@ public class GamePlayTest{
 
 
     // This will test if piece becomea a king piece once it reaches the end
-    @Disabled("Disabled until we can fix this test")
     @Test
     void kingMeTest() {
         var board = new Board();
@@ -83,29 +81,37 @@ public class GamePlayTest{
         test that checker is not a king if it's not on the last opposing row
         test that checker is a king if it's on the last opposing row */
 
-        var blackChecker = new Checker(new Cord(0,0), Color.BLACK);
-        // parse through each row
-        for (int y = 0; y < 8; y++) {
+        var blackChecker = new Checker(new Cord(1,7), Color.BLACK);
+        // parse through each row starting at the bottom
+        for (int row = 7; row >= 0; row --) {
             // parse through each possible column and for each possible location, run kingMe
-            if (y%2 == 1){
-                for (int x = 0; x < 8; x += 2) {
-                    blackChecker.setCord(x, y);
+            if (row%2 == 1){ // for rows 1, 3, 5 and 7
+                for (int col = 1; col <= 7; col += 2) {
+                    blackChecker.setCord(col, row);
                     board.kingMe(blackChecker);
+                    // if location is not on the last row, checker should not be king
+                    if (row != 0){
+                        assertEquals(false, blackChecker.isKing());
+                    }
+                    // if location is on the last row, checker should be king
+                    else{
+                        assertEquals(true, blackChecker.isKing());
+                    }
                 }
             }
-            else if (y%2 == 0){
-                for (int x = 1; x < 8; x += 2) {
-                    blackChecker.setCord(x, y);
+            else if (row%2 == 0){ // for rows 0, 2, 4, and 6
+                for (int col = 1; col < 8; col += 2) {
+                    blackChecker.setCord(col, row);
                     board.kingMe(blackChecker);
+                    // if location is not on the last row, checker should not be king
+                    if (row != 0){
+                        assertEquals(false, blackChecker.isKing());
+                    }
+                    // if location is on the last row, checker should be king
+                    else{
+                        assertEquals(true, blackChecker.isKing());
+                    }
                 }
-            }
-            // if location is not on the last row, checker should not be king
-            if (y != 7){
-                assertEquals(false, blackChecker.isKing());
-            }
-            // if location is on the last row, checker should be king
-            else{
-                assertEquals(true, blackChecker.isKing());
             }
             
         }
@@ -116,31 +122,40 @@ public class GamePlayTest{
 
         var redChecker = new Checker(new Cord(0,0), Color.RED);
         // parse through each row
-        for (int y = 7; y >= 0; y--) {
+        for (int row = 0; row <= 7; row++) {
             // parse through each possible column and for each possible location, run kingMe
-            if (y%2 == 1){
-                for (int x = 0; x < 8; x += 2) {
-                    redChecker.setCord(x, y);
+            if (row%2 == 1){ // for rows 1, 3, 5 and 7
+                for (int col = 1; col <= 7; col += 2) {
+                    redChecker.setCord(col, row);
                     board.kingMe(redChecker);
+                    // if location is not on the last row, checker should not be king
+                    if (row != 7){
+                        assertEquals(false, redChecker.isKing());
+                    }
+                    // if location is on the last row, checker should be king
+                    else{
+                        assertEquals(true, redChecker.isKing());
+                    }
                 }
             }
-            else if (y%2 == 0){
-                for (int x = 1; x < 8; x += 2) {
-                    redChecker.setCord(x, y);
+            else if (row%2 == 0){ // for rows 0, 2, 4, and 6
+                for (int col = 0; col < 8; col += 2) {
+                    redChecker.setCord(col, row);
                     board.kingMe(redChecker);
+                    // if location is not on the last row, checker should not be king
+                    if (row != 7){ 
+                        assertEquals(false, redChecker.isKing());
+                    }
+                    // if location is on the last row, checker should be king
+                    else{
+                        assertEquals(true, redChecker.isKing());
+                    }
                 }
-            }
-            // if location is not on the last row, checker should not be king
-            if (y != 0){
-                assertEquals(false, redChecker.isKing());
-            }
-            // if location is on the last row, checker should be king
-            else{
-                assertEquals(true, redChecker.isKing());
             }
             
         }
     }
+
 
 
     @Test
