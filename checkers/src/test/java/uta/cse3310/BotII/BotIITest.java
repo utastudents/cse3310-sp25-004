@@ -27,9 +27,15 @@ public class BotIITest {
         Checker blackChecker2 = new Checker(new Cord(5, 6), Color.BLACK);
         board.checkerBoard[6][5] = blackChecker2;
 
+        // Checker blackChecker3 = new Checker(new Cord(5, 6), Color.BLACK);
+        // board.checkerBoard[5][2] = blackChecker3;
+
         // Red piece at column 2, row 3 (x=2, y=3) - above black (can jump downward)
-        Checker redChecker = new Checker(new Cord(2, 3), Color.RED);
-        board.checkerBoard[3][2] = redChecker;
+        Checker redChecker1 = new Checker(new Cord(2, 3), Color.RED);
+        board.checkerBoard[3][2] = redChecker1;
+
+        // Checker redChecker2 = new Checker(new Cord(4, 3), Color.RED);
+        // board.checkerBoard[3][4] = redChecker2;
 
         // Empty landing spot at column 1, row 2 (x=1, y=2)
         
@@ -37,10 +43,11 @@ public class BotIITest {
         System.out.println("Board state in TestDefendPieces:");
         printBoardWithCoordinates(board);  // Custom visualization method
         System.out.println("Black piece at: " + blackChecker.getCord());
-        System.out.println("Red piece at: " + redChecker.getCord());
+        System.out.println("Red piece at: " + redChecker1.getCord());
 
         BotII.Move bestMove = BotII.defendPieces(board);
         assertTrue(bestMove != null, "A defensice move should be found");
+        printBoardWithCoordinates(board);
         
         if (bestMove != null) {
             System.out.println("Defensive move found: " + bestMove.piece.getCord() + 
@@ -205,6 +212,14 @@ public class BotIITest {
 
         // Assert that there are safe moves available
         assertTrue(!safeMoves.isEmpty(),"There should be at least one safe move" );
+    }
+
+    @Test
+    public void testMakeValidMove() {
+        Board board = new Board();
+        printBoardWithCoordinates(board);
+        BotII.Move bestMove = BotII.makeValidMove(board);
+        assertTrue(bestMove != null, "An offensive move should be found");
     }
     
 }

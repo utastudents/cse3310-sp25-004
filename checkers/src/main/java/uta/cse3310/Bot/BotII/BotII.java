@@ -25,9 +25,6 @@ public class BotII extends Bot {
     private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     
     public static Move makeValidMove(Board board) {
-        // try normal move if nothing else works
-
-        // 
         Move bestMove = null;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
@@ -38,11 +35,6 @@ public class BotII extends Bot {
                         for (Cord move : safeMoves) {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
-                            } else {
-                                // Prioritize backward movement if near being jumped
-                                if (move.getY() > checker.getCord().getY()) {
-                                    bestMove = new Move(checker, move);
-                                }
                             }
                         }
                     }
@@ -154,14 +146,20 @@ public class BotII extends Bot {
 
         // For BLACK pieces, safe moves are backward
         if(checker.getColor() == Color.BLACK) {
-            int[][] moves = {{-1,1}, {1,1}}; // backward diagonals
+            int[][] moves = {{-1,-1}, {1,-1}}; // backward diagonals
             
             for(int[] m : moves) {
                 int nx = x + m[0];
                 int ny = y + m[1];
-                if(BotII.inBounds(nx, ny) && board.checkerBoard[ny][nx] == null) {
+                if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null/*  && 
+                    !wouldBeInDangerAfterMove(checker, new Cord(nx, ny), board)*/) {
                     safeMoves.add(new Cord(nx, ny));
                 }
+                // else if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null && 
+                //     board.checkerBoard[y-2][x-2].getColor() == Color.BLACK || 
+                //     board.checkerBoard[y-2][x+2].getColor() == Color.BLACK) {
+
+                // }
             }
         }
         return safeMoves;
@@ -170,10 +168,10 @@ public class BotII extends Bot {
     /**
      * Checks if moving to a given destination would put the checker in danger.
      */
-    /*private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
+    private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
         Checker temp = new Checker(dest, piece.getColor());
         return isInDanger(temp, board);
-    }*/
+    }
 
         /** Utility to check if board coordinates are valid. */
     private static boolean inBounds(int x, int y) {
