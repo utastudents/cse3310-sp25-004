@@ -47,13 +47,27 @@ public class PageManager {
     }
 
     //gets top10 playersfirst , 11th is the current player
-    public UserEventReply retrieveLeaderboardJson(JsonObject jsonObj, int id) {
+    public UserEventReply retrieveLeaderboardJson(JsonObject jsonObj, int id, int Outcome) {
         UserEventReply userEventReply = new UserEventReply();
 
     
         // Outer JSON with response ID
         JsonObject responseJson = new JsonObject();
+        if(Outcome == -2){
         responseJson.addProperty("responseID", "summaryData");
+        }
+
+        if(Outcome == 1) {
+        responseJson.addProperty("responseID", "gameWon");
+        }
+
+        if(Outcome == -1) {
+        responseJson.addProperty("responseID", "gameLost");
+        }
+
+        if(Outcome == 0) {
+            responseJson.addProperty("responseID", "gameDraw");
+            }
     
         // Get the top10 players by elo from db
         HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
@@ -859,6 +873,9 @@ public class PageManager {
         App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
         
      }
+
+
+    
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();

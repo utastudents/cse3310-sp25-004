@@ -237,7 +237,7 @@ public class App extends WebSocketServer {
         Reply = PM.backToHome(Id);
         break;
       case "summaryData":
-        Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
+        Reply = PM.retrieveLeaderboardJson(jsonObj, Id, -2);
         break;
       default:
         System.out.println("Unknown action: " + action);

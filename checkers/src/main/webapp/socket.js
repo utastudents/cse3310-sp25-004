@@ -180,6 +180,7 @@ connection.onmessage = function (msg) {
             break;
         }
 		case "gameWon": {
+            console.log("Received gameWon");
 			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've won the game
 			//Expects the same response data, just a different responseID
 			showWinStatus();
