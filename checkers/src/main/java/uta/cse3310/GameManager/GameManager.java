@@ -65,6 +65,10 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 newGame.setGameActive(true);
+
+                // p1 goes first
+                p1.makeMove(newGame.getBoard());
+                
                 return true;
             }
         }
