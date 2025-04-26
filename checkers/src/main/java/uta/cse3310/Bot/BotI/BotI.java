@@ -421,12 +421,18 @@ public class BotI extends Bot {
     // Actually performs the move on the board and checks for king promotion
     private void executeMove(Move move)
     { 
+        // WARNING : THIS CODE IS INCORRECT
+        // Moves should be made by calling GameManager's processMove method
+        // This is available through PageManager.Gm.processMove()
+        // See Bot.java for reference
+        System.err.println("Please update this code to use GameManager's processMove method!");
         if (board != null)
         { 
 	    // Move the piece and check for king promotion
             board.updatePosition(move.piece, move.destination); 
             board.kingMe(move.piece); 
         } 
+        
     } 
 
     // Keeps track of move information (which piece, where it's going, if it's a jump)

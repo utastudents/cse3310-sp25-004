@@ -65,6 +65,10 @@ public class GameManager {
                 p2.startGame(newGame);
                 games.set(i, newGame);
                 newGame.setGameActive(true);
+
+                // p1 goes first
+                p1.makeMove(newGame.getBoard());
+
                 return true;
             }
         }
@@ -87,6 +91,15 @@ public class GameManager {
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         int playerId = move.getClientId();
+        Game g = games.get(move.getGameId());
+
+        if (gamePlay.turn == (g.getPlayer1().getPlayerId() == playerId)) {
+            // Red's turn and black is trying to move or vice-versa
+            g.printBasics();
+            System.out.println("Wrong player (" + playerId + ") tried to move!");
+            System.out.println("Expected move from player " + (gamePlay.turn ? g.getPlayer2().getPlayerId() : g.getPlayer1().getPlayerId()));
+            return new GameUpdate(false, "In Progress", "", false, false, "Playerid failed to move");
+        }
 
         Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
         Cord to = new Cord(move.getToPosition_X(), move.getToPosition_Y());
@@ -107,26 +120,29 @@ public class GameManager {
 
 
         // Let both players know that a move has been made & whose turn it is
-        Game g = games.get(move.getGameId());
+        
         GamePlay board = g.getBoard();
         if (valid) {
-            
-            if (g.getPlayer1().getPlayerId() == playerId) {
-                //This is player 1. Player 2's move
-                g.getPlayer1().updateBoard(board);
-                g.getPlayer2().makeMove(board);
-            } else {
-                //Player 1's move
-                g.getPlayer1().makeMove(board);
-                g.getPlayer2().updateBoard(board);
-            }   
+            // Swap turns
+            board.turn = !board.turn;
         } else {
             // Send the actual game board back so they can compare
-            g.getPlayer2().updateBoard(board);
-            g.getPlayer2().updateBoard(board);
             System.out.println("Attempted invalid move. Actual board:");
             board.getBoard().printBoard();
             board.getBoard().printBoard(from, to);
+        }
+        
+        // Debug
+        g.printBasics();
+
+        if (board.turn) {
+            //Black's move
+            g.getPlayer1().updateBoard(board);
+            g.getPlayer2().makeMove(board);
+        } else {
+            //Red's move
+            g.getPlayer1().makeMove(board);
+            g.getPlayer2().updateBoard(board);
         }
 
         return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);

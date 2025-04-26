@@ -19,39 +19,29 @@ public class BotII extends Bot {
         this.playerId = -2; //Bots are -1, -2. Might change this later
     }
 
-	private Game game;
-    private Color botColor = Color.BLACK; // Initializing with a default value
-    private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
-    
-    public void makeValidMove() {
-        // try normal move if nothing else works
-        Board board = game.getBoard().getBoard();
+	// private Game game; // Game game is declared in the abstract Player super class
 
+    private static Color botColor = Color.BLACK; // Initializing with a default value
+    private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
+    
+    public static Move makeValidMove(Board board) {
+        Move bestMove = null;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                Checker c = board.checkerBoard[y][x];
-                if (c != null && c.getColor() == botColor) {
-                    ArrayList<Cord> moves = new ArrayList<>();
-
-                    if (botColor == Color.BLACK || c.isKing()) {
-                        checkMove(board, c, -1, 1, moves);
-                        checkMove(board, c, 1, 1, moves);
-                    }
-                    if (botColor == Color.RED || c.isKing()) {
-                        checkMove(board, c, -1, -1, moves);
-                        checkMove(board, c, 1, -1, moves);
-                    }
-
-                    if (!moves.isEmpty()) {
-                        Cord dest = moves.get(0);
-                        board.updatePosition(c, dest);
-                        promoteToKing(); // crown if needed
-                        return;
+                Checker checker = board.checkerBoard[y][x];
+                if (checker != null && checker.getColor() == Color.BLACK) {
+                    ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
+                    for (Cord move : safeMoves) {
+                        if (!wouldBeInDangerAfterMove(checker, move, board) && bestMove == null) {
+                            bestMove = new Move(checker, move);
+                        }
                     }
                 }
             }
         }
+        return bestMove;
     }
+
 
     public void promoteToKing() {
     // go through all my pieces and promote if they reached end
@@ -85,12 +75,16 @@ public class BotII extends Bot {
                         for (Cord move : safeMoves) {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
-                            } else {
-                                // Prioritize backward movement if near being jumped
-                                if (move.getY() > checker.getCord().getY()) {
-                                    bestMove = new Move(checker, move);
-                                }
-                            }
+                            } 
+                            // else if (bestMove == null) {
+
+                            // }
+                            // else {
+                            //     // Prioritize backward movement if near being jumped
+                            //     if (move.getY() > checker.getCord().getY()) {
+                            //         bestMove = new Move(checker, move);
+                            //     }
+                            // }
                         }
                     }
                 }
@@ -154,14 +148,20 @@ public class BotII extends Bot {
 
         // For BLACK pieces, safe moves are backward
         if(checker.getColor() == Color.BLACK) {
-            int[][] moves = {{-1,1}, {1,1}}; // backward diagonals
+            int[][] moves = {{-1,-1}, {1,-1}}; // backward diagonals
             
             for(int[] m : moves) {
                 int nx = x + m[0];
                 int ny = y + m[1];
-                if(BotII.inBounds(nx, ny) && board.checkerBoard[ny][nx] == null) {
+                if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null/*  && 
+                    !wouldBeInDangerAfterMove(checker, new Cord(nx, ny), board)*/) {
                     safeMoves.add(new Cord(nx, ny));
                 }
+                // else if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null && 
+                //     board.checkerBoard[y-2][x-2].getColor() == Color.BLACK || 
+                //     board.checkerBoard[y-2][x+2].getColor() == Color.BLACK) {
+
+                // }
             }
         }
         return safeMoves;
@@ -170,10 +170,10 @@ public class BotII extends Bot {
     /**
      * Checks if moving to a given destination would put the checker in danger.
      */
-    /*private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
+    private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
         Checker temp = new Checker(dest, piece.getColor());
         return isInDanger(temp, board);
-    }*/
+    }
 
         /** Utility to check if board coordinates are valid. */
     private static boolean inBounds(int x, int y) {
@@ -237,13 +237,13 @@ public class BotII extends Bot {
         // TODO: Wait for opponent to make a move before acting
     }
 
-    public boolean adjustStrategy() {
+    public static boolean adjustStrategy(Board board) {
         // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
         // TODO: Change strategy based on early, mid, or late game
         // Early: Moving first row pieces?
         // Second: A King comes into play?
         // Late: A select # of pieces left on the board?
-        Board board = game.getBoard().getBoard();
+        //Board board = game.getBoard().getBoard();
         int myCount = 0;
         int oppCount = 0;
 
@@ -280,25 +280,27 @@ public class BotII extends Bot {
     }
 
     // Helper method to check if a move is valid and add it to the list
-    private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
-        int newX = checker.getCord().getX() + dx;
-        int newY = checker.getCord().getY() + dy;
+    // private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
+    //     int newX = checker.getCord().getX() + dx;
+    //     int newY = checker.getCord().getY() + dy;
 
-        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
-            moves.add(new Cord(newX, newY));
-        }
-    }
+    //     if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
+    //         moves.add(new Cord(newX, newY));
+    //     }
+    // }
 
-    private Move makeBestMove (Board board) {
+    public static Move makeBestMove (Board board) {
         Move bestMove = null;
-        board = game.getBoard().getBoard();
         
-        if (!adjustStrategy()) {
+        if (adjustStrategy(board)) {
             bestMove = defendPieces(board);
         }
         else if (bestMove == null) {
-            
+            bestMove = makeValidMove(board);
         }
+        // else {
+            
+        // }
         return bestMove;
     }
     

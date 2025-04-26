@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -17,10 +16,12 @@ import uta.cse3310.Bot.Bot;
 import uta.cse3310.DB.DB;
 import uta.cse3310.GameManager.Game;
 import uta.cse3310.GameManager.GameManager;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
-import uta.cse3310.GamePlay.*;
 public class PageManager {
     DB db;
     PairUp pu;
@@ -582,8 +583,7 @@ public class PageManager {
         }
         responseJson.add("player2", player2);
 
-        
-
+        responseJson.addProperty("you", (g.getPlayer1().getPlayerId() == UserId) ? "red" : "black");
 
         userEventReply.recipients = new ArrayList<>();
         userEventReply.recipients.add(clientId);
@@ -597,8 +597,8 @@ public class PageManager {
         //send info to new onmessage
         App.sendMessage(userEventReply);
 
-        //Send the board as well
-        this.sendBoard(UserId, g.getBoard());
+        //No need to send the board, as makeMove and updateBoard will handle it
+        //this.sendBoard(UserId, g.getBoard());
     }
     
     public UserEventReply quickStart(JsonObject jsonObj, int Id)
@@ -628,7 +628,7 @@ public class PageManager {
         App.sendMessage(reply);
 
         // Go ahead and add to challenge as well
-        jsonObj.addProperty("botId", 1);
+        jsonObj.addProperty("botId", 2);
         
         UserEventReply challengeReply = this.challengeBot(jsonObj, Id);
 
@@ -832,9 +832,8 @@ public class PageManager {
         GamePlay gamePlay = g.getBoard();
         Cord from = PageManager.codeToCord(jsonObj.get("fromPosition").getAsString());
         Cord to = PageManager.codeToCord(jsonObj.get("toPosition").getAsString());
-        GameMove gameMove = new GameMove(Id, g.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), jsonObj.get("color").getAsString());
-       
-        gameMove.setClientId(Id);
+        GameMove gameMove = new GameMove(hp.getPlayerId(), g.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), jsonObj.get("color").getAsString());
+        
         GameUpdate update = Gm.processMove(gameMove, gamePlay);
 
         json.addProperty("valid", update.isValidMove());
