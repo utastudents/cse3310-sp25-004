@@ -199,6 +199,11 @@ connection.onmessage = function (msg) {
 			loadData(jsonMsg.top10);
 			break;
 		}
+        case "gameDraw": {
+            //more summaryData for a draw
+
+            break;
+        }
         default:{
             console.log("Received unexpected responseID! Got: \n"+responseID);
             console.log(jsonMsg);
