@@ -21,8 +21,8 @@ public class BotII extends Bot {
 
 	// private Game game; // Game game is declared in the abstract Player super class
 
-    private Color botColor = Color.BLACK; // Initializing with a default value
-    private boolean beAggressive = false; // Flag to determine if the bot should be aggressive
+    private static Color botColor = Color.BLACK; // Initializing with a default value
+    private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     
     public static Move makeValidMove(Board board) {
         Move bestMove = null;
@@ -237,13 +237,13 @@ public class BotII extends Bot {
         // TODO: Wait for opponent to make a move before acting
     }
 
-    public boolean adjustStrategy() {
+    public static boolean adjustStrategy(Board board) {
         // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
         // TODO: Change strategy based on early, mid, or late game
         // Early: Moving first row pieces?
         // Second: A King comes into play?
         // Late: A select # of pieces left on the board?
-        Board board = game.getBoard().getBoard();
+        //Board board = game.getBoard().getBoard();
         int myCount = 0;
         int oppCount = 0;
 
@@ -289,16 +289,18 @@ public class BotII extends Bot {
     //     }
     // }
 
-    private Move makeBestMove (Board board) {
+    public static Move makeBestMove (Board board) {
         Move bestMove = null;
-        board = game.getBoard().getBoard();
         
-        if (!adjustStrategy()) {
+        if (adjustStrategy(board)) {
             bestMove = defendPieces(board);
         }
         else if (bestMove == null) {
             bestMove = makeValidMove(board);
         }
+        // else {
+            
+        // }
         return bestMove;
     }
     

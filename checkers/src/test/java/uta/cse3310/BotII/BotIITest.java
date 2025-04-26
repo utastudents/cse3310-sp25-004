@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import uta.cse3310.Bot.BotII.BotII;
+import uta.cse3310.Bot.BotII.BotII.Move;
 import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
@@ -142,5 +143,13 @@ public void testGetSafeMoves() {
         System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
         assertTrue(bestMove != null, "An offensive move should be found");
     }
-    
+
+    @Test
+    public void testMakeBestMove() {
+        Board board = new Board();
+        printBoardWithCoordinates(board);
+        BotII.Move bestMove = BotII.makeBestMove(board);
+        assertTrue(bestMove != null, "An offensive move should be found");
+        System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
+    }
 }
