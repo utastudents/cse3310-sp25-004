@@ -79,7 +79,7 @@ public class Board
 	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
-		return checkerBoard[Cord.getX()][Cord.getY()]; 
+		return checkerBoard[Cord.getY()][Cord.getX()]; 
 	}
 	
 	private void initCheckers() // Initializes the checkers on the board at there starting positions
@@ -241,10 +241,10 @@ public class Board
 		if ((originX-2 > 0 && originX-2 <=8) && (originY+2 > 0 && originY+2 <=8))
 		{
 			//Check if the immediate diagonal is an enemy piece
-			if (checkerBoard[originX-1][originY+1] != null && checkerBoard[originX-1][originY+1].getColor() != originColor)
+			if (checkerBoard[originY+1][originX-1] != null && checkerBoard[originY+1][originX-1].getColor() != originColor)
 			{
 				//Add to list of jumps if space is free
-				if (checkerBoard[originX-2][originY+2] == null)
+				if (checkerBoard[originY+2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY+2));
 				}
@@ -253,9 +253,9 @@ public class Board
 		//Same as above but checking to the right
 		if ((originX+2 > 0 && originX+2 <=8) && (originY+2 > 0 && originY+2 <=8))
 		{
-			if (checkerBoard[originX+1][originY+1] != null && checkerBoard[originX+1][originY+1].getColor() != originColor)
+			if (checkerBoard[originY+1][originX+1] != null && checkerBoard[originY+1][originX+1].getColor() != originColor)
 			{
-				if (checkerBoard[originX+2][originY+2] == null)
+				if (checkerBoard[originY+2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY+2));
 				}
@@ -306,9 +306,9 @@ public class Board
 		Color originColor = piece.getColor();
 		if ((originX-2 > 0 && originX-2 <=8) && (originY-2 > 0 && originY-2 <=8))
 		{
-			if (checkerBoard[originX-1][originY-1] != null && checkerBoard[originX-1][originY-1].getColor() != originColor)
+			if (checkerBoard[originY-1][originX-1] != null && checkerBoard[originY-1][originX-1].getColor() != originColor)
 			{
-				if (checkerBoard[originX-2][originY-2] == null)
+				if (checkerBoard[originY-2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY-2));
 				}
@@ -316,9 +316,9 @@ public class Board
 		}
 		if ((originX+2 > 0 && originX+2 <=8) && (originY-2 > 0 && originY-2 <=8))
 		{
-			if (checkerBoard[originX+1][originY-1] != null && checkerBoard[originX+1][originY-1].getColor() != originColor)
+			if (checkerBoard[originY-1][originX+1] != null && checkerBoard[originY-1][originX+1].getColor() != originColor)
 			{
-				if (checkerBoard[originX+2][originY-2] == null)
+				if (checkerBoard[originY-2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY-2));
 				}
