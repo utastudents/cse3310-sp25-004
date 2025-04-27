@@ -122,6 +122,7 @@ public class PageManager {
         // general identification of JSON
         responseJson.addProperty("responseID", "active_players");
         responseJson.addProperty("playersInQueue", pu.getNumPlayersInQueue());
+        responseJson.addProperty("availableGames", Gm.getNumOfAvailableGames());
         Enumeration<Integer> e = activePlayers.keys();
 
         // to have an array of active players
