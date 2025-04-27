@@ -81,10 +81,9 @@ public class Board
 	{
 		return checkerBoard[Cord.getY()][Cord.getX()]; 
 	}
-	
-	private void initCheckers() // Initializes the checkers on the board at there starting positions
+
+	public void clearboard() // Set all spaces to null
 	{
-		// Set the whole board to null
 		for (int i = 0; i < 8; i++)
 		{
 			for(int j = 0; j < 8; j++)
@@ -92,6 +91,11 @@ public class Board
 				checkerBoard[i][j] = null; // Initialize the board with null values
 			}
 		}
+	}
+	
+	private void initCheckers() // Initializes the checkers on the board at there starting positions
+	{
+		clearboard();
 
 		for(int i = 5; i < 8; i++) // row aka y coordinate
 		{
