@@ -6,6 +6,7 @@ import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.PageManager.UserEventReply;
+import uta.cse3310.PairUp.Player;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,12 +30,19 @@ public class GameTermination {
         public Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
+                Player player1 = currentGame.getPlayer1();
+                Player player2 = currentGame.getPlayer2();
+
+
 
                 // Check if player 1 has won
                 if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
                         winnerID = currentGame.getPlayer1().getPlayerId();
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameWon"));
+                       //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameLost"));
+
                         return currentGame;
                 }
 
@@ -43,6 +51,8 @@ public class GameTermination {
                         winnerID = currentGame.getPlayer2().getPlayerId(); 
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameLost"));
+                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameWon"));
                         return currentGame;
                 }
 
@@ -51,6 +61,10 @@ public class GameTermination {
                         winnerID = -1;
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+
+                       // App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameDraw"));
+                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameDraw"));
+
                         return currentGame;
                 }
 
