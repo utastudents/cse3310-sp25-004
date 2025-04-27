@@ -1,6 +1,9 @@
 package uta.cse3310.GamePlay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.beans.Transient;
+
 import org.junit.jupiter.api.Test;
 
 public class GamePlayTest{
@@ -161,28 +164,41 @@ public class GamePlayTest{
     @Test
     void updatePositionTest() {
         var testBoard = new Board();
-        var testCord = new Cord(3,4);
-        var pieceTest1 = testBoard.checkerBoard[3][2]; //create a copy of the piexe we're moving
-        //pieceTest1.setCord(3, 4);
-        //this fails since pieceTest1 = null somewhere
-        //could be initializing problem
+        var testCord = new Cord(4,3);
+        var pieceTest1 = testBoard.checkerBoard[2][3]; //create a copy of the piexe we're moving
+        pieceTest1.setCord(4, 3);
+        //just needed to look at the board initalization again lel
 
-        //manually set new board positions somehow
+        //manually set a new position
 
         //change the position of a checker to a position where it can be jumped
-        //testBoard.updatePosition( testBoard.checkerBoard[3][2], testCord );
-        
-        //assertEquals(null, testBoard.checkerBoard[2][3]);   
-        
-        //NOTE: need to implement way to set old position to NULL
-        
+        testBoard.updatePosition( testBoard.checkerBoard[2][3], testCord );
+        //assertEquals(null, testBoard.checkerBoard[2][3]);
+        //for some reason it doesn't want to delete checker
+                
         //assert that the piece has been removed from the old spot
         //next we want to assert that the new position does not equal null
 
         //Please run test BEFORE committing, thank you :)
-        //assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
+        assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
+        
+        System.out.println("Update Position Final Board");
+        testBoard.printBoard();
         
        
+    }
+
+    @Test
+    void deletePiece()
+    {
+        var testBoard = new Board();
+        var testCord = new Cord(3,2);
+        testBoard.deleteChecker(testCord);
+
+        assertEquals(null, testBoard.checkerBoard[2][3]);
+
+        System.out.println("Delete Checker Final Board");
+        testBoard.printBoard();
     }
 
     @Test

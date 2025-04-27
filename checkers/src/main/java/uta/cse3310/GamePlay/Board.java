@@ -99,14 +99,14 @@ public class Board
 
 		for(int i = 5; i < 8; i++) // row aka y coordinate
 		{
-			if(i == 6) // First or 3rd black Row
+			if(i == 6) // second
 			{
 				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.BLACK);
 				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.BLACK);
 				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.BLACK);
 				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.BLACK);
 			}
-			else // Second black row
+			else // first and third black row
 			{
 				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.BLACK);
 				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.BLACK);
@@ -118,14 +118,14 @@ public class Board
 
 		for(int i = 0; i < 3; i++) // row aka y coordinate
 		{
-			if(i == 1) // First or 3rd Red Row
+			if(i == 1) // second Red Row
 			{
 				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.RED);
 				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.RED);
 				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.RED);
 				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.RED);
 			}
-			else // Second Red Row
+			else // first and thire Red Row
 			{
 				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.RED);
 				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.RED);
@@ -390,12 +390,10 @@ public class Board
 	// updatePosition updates the chosen checker piece with the chosen destination
 	public void updatePosition(Checker piece, Cord dest)
 	{
+		Cord oldCord = piece.getCord();
 		int newX = dest.getX();
 		int newY = dest.getY();
-		Cord oldCord = piece.getCord();
-		int oldX = oldCord.getX();
-		int oldY = oldCord.getY();
-		checkerBoard[oldY][oldX] = null;
+		deleteChecker(oldCord);
 		piece.setCord(newX, newY);
 		checkerBoard[newY][newX] = piece; //test works with this format like how initialized
 	}
