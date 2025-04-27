@@ -672,14 +672,14 @@ button[disabled] {
       border:none; /*no border around squares*/
     }
   
-    /*light beige squares*/
+    /*Dark Squares*/
     .emptySquare {
-      background-color: #f0d9b5;
+      background-color: #b58863;
     }
   
     /*dark brown squares*/
     td:not(.emptySquare) {
-      background-color: #b58863;
+      background-color: #f0d9b5;
     }
   
   /* Styling for red pieces (Player 1) */
