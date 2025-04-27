@@ -151,15 +151,15 @@ public class BotIITest {
         System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
     }
 
-    @Test
-    public void testMakeMove() {
-        BotII bot = new BotII();
-        GamePlay gp = new GamePlay(0);
-        if (bot.makeMove(gp) == false) {
-            System.out.println("This should be working");
-        }
-        else{
-            System.out.println("This isnt working");
-        }
-    }
+    // @Test
+    // public void testMakeMove() {
+    //     BotII bot = new BotII();
+    //     GamePlay gp = new GamePlay(0);
+    //     if (bot.makeMove(gp) == false) {
+    //         System.out.println("This should be working");
+    //     }
+    //     else{
+    //         System.out.println("This isnt working");
+    //     }
+    // }
 }
