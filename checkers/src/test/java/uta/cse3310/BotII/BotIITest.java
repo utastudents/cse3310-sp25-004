@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import uta.cse3310.Bot.BotII.BotII;
-import uta.cse3310.Bot.BotII.BotII.Move;
 import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
@@ -101,38 +100,36 @@ public class BotIITest {
     }
 
 
-@Test
-public void testGetSafeMoves() {
-    // Create empty board
-    Board board = new Board();
-    clearBoard(board);
+    @Test
+    public void testGetSafeMoves() {
+        // Create empty board
+        Board board = new Board();
+        clearBoard(board);
 
-    // Place a black checker at (3, 3)
-    Checker blackChecker = new Checker(new Cord(1, 3), Color.BLACK);
-    board.checkerBoard[3][1] = blackChecker;
+        // Place a black checker at (3, 3)
+        Checker blackChecker = new Checker(new Cord(1, 3), Color.BLACK);
+        board.checkerBoard[3][1] = blackChecker;
 
-    // Place a red checker at (2,2)
-    Checker redChecker = new Checker(new Cord(0, 2), Color.RED);
-    board.checkerBoard[2][0] = redChecker;    
+        // Place a red checker at (2,2)
+        Checker redChecker = new Checker(new Cord(0, 2), Color.RED);
+        board.checkerBoard[2][0] = redChecker;    
 
-    System.out.println("\nBoard state in testGetSafeMoves:");
-    printBoardWithCoordinates(board);
-    System.out.println("Black piece at: " + blackChecker.getCord());
-    System.out.println("Red piece at: " + redChecker.getCord());
+        System.out.println("\nBoard state in testGetSafeMoves:");
+        printBoardWithCoordinates(board);
+        System.out.println("Black piece at: " + blackChecker.getCord());
+        System.out.println("Red piece at: " + redChecker.getCord());
 
-    // Get safe moves for black checker
-    ArrayList<Cord> safeMoves = BotII.getSafeMoves(blackChecker, board);
+        // Get safe moves for black checker
+        ArrayList<Cord> safeMoves = BotII.getSafeMoves(blackChecker, board);
 
-    // Print the safe moves found
-    System.out.println("Safe moves found:");
-    for (Cord move : safeMoves) {
-        System.out.println(move);
+        // Print the safe moves found
+        System.out.println("Safe moves found:");
+        for (Cord move : safeMoves) {
+            System.out.println(move);
+        }
+
+        assertTrue(!safeMoves.isEmpty(), "There should be at least one safe move");
     }
-
-    assertTrue(!safeMoves.isEmpty(), "There should be at least one safe move");
-    
-  
-}
     
     //@Disabled("Disabled until we can fix this test")
     @Test
