@@ -261,6 +261,7 @@ public class Board
 				}
 			}
 		}
+		System.out.println(jumpList);
 		return jumpList;
 	}
 	
@@ -278,13 +279,15 @@ public class Board
 		{
 			//checks if cords are equal
 			//might need a separate equals methods to actually compare the x-y positions
-			if(jumpList.get(i).equals(cord))
+			if(jumpList.get(i).getX() == cord.getX() && jumpList.get(i).getY() == cord.getY())
 			{
 				check = true;
 				break;
 			}
 		}
-		
+		System.out.println("CHECK JUMP RESULT");
+		System.out.println(jumpList);
+		System.out.println(cord);
 		//if true return index of cord in list
 		//else return -1, same as null
 		if(check)
@@ -324,6 +327,7 @@ public class Board
 				}
 			}
 		}
+		System.out.println(jumpList);
 		return jumpList;
 	}
 
@@ -350,13 +354,16 @@ public class Board
 		{
 			//checks if cords are equal
 			//might need a separate equals methods to actually compare the x-y positions
-			if(jumpList.get(i).equals(cord))
+			if(jumpList.get(i).getX() == cord.getX() && jumpList.get(i).getY() == cord.getY())
 			{
 				check = true;
 				break;
 			}
 		}
-		
+		System.out.println("CHECK JUMP RESULT");
+		System.out.println(jumpList);
+		System.out.println(cord);
+		System.out.println(check);
 		//if found return index of cord in list
 		//if cord is not found in possibleBackwardJumps list, return -1 (same as null)
 		if(check)
