@@ -227,7 +227,7 @@ public class Board
 			return (xDiff == 1 && yDiff == -1);
 	}
 	
-	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
@@ -297,8 +297,8 @@ public class Board
 		}
 	}
 
-	//Same as getPossibleForwardJump but backwards
-	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	//Same as getPossibleBackwardJump but forwards
+	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
