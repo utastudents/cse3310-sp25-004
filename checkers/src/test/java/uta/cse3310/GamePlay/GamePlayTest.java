@@ -34,14 +34,14 @@ public class GamePlayTest{
         var board = new Board();
         for (int i = 0; i < 3; i++)
         {
-            if(i == 0 || i == 2)
+            if(i == 1)
             {
                 for (int j = 0; j < 8; j+=2)
                 {
                     assertEquals(Color.RED, board.checkerBoard[i][j].getColor());
                 }
             }
-            else // i == 1
+            else // i == 1 or 1 == 2
             {
                 for (int j = 1; j < 8; j+=2)
                 {
@@ -52,14 +52,14 @@ public class GamePlayTest{
 
         for (int i = 5; i < 8; i++)
         {
-            if(i == 5 || i == 7)
+            if(i == 6 )
             {
                 for (int j = 1; j < 8; j+=2)
                 {
                     assertEquals(Color.BLACK, board.checkerBoard[i][j].getColor());
                 }
             }
-            else // i == 6
+            else // i == 5 or i == 7
             {
                 for (int j = 0; j < 8; j+=2)
                 {
@@ -190,10 +190,10 @@ public class GamePlayTest{
     {
         var testGP = new GamePlay(0);
         System.out.println("Testing single space movement (valid (black) spots)");
-        int result = testGP.move(testGP.getBoard().checkerBoard[5][3], new Cord(4, 4));
+        int result = testGP.move(testGP.getBoard().checkerBoard[5][2], new Cord(3, 4));
         //System.out.printf("Top Right Result: ", result);
         assertEquals(result, 2);
-        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(3, 3));
+        result = testGP.move(testGP.getBoard().checkerBoard[4][3], new Cord(2, 3));
         //System.out.printf("Top Left Result: ", result);
         assertEquals(result, 2);
         System.out.println("Invalid as Man cant go backwards");
@@ -226,19 +226,19 @@ public class GamePlayTest{
     void kingMovement()
     {
         var testGP = new GamePlay(0);
-        int result = testGP.move(testGP.getBoard().checkerBoard[5][3], new Cord(4, 4));
-        testGP.getBoard().checkerBoard[4][4].setKing(true);
+        int result = testGP.move(testGP.getBoard().checkerBoard[5][2], new Cord(3, 4));
+        testGP.getBoard().checkerBoard[4][3].setKing(true);
         //Top Left
-        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(3, 3));
+        result = testGP.move(testGP.getBoard().checkerBoard[4][3], new Cord(2, 3));
         assertEquals(result, 2);
         //Bottom Right
-        result = testGP.move(testGP.getBoard().checkerBoard[3][3], new Cord(4, 4));
+        result = testGP.move(testGP.getBoard().checkerBoard[3][2], new Cord(3, 4));
         assertEquals(result, 2);
         //Top Right
-        result = testGP.move(testGP.getBoard().checkerBoard[4][4], new Cord(5, 3));
+        result = testGP.move(testGP.getBoard().checkerBoard[4][3], new Cord(4, 3));
         assertEquals(result, 2);
         //Bottom Left
-        result = testGP.move(testGP.getBoard().checkerBoard[3][5], new Cord(4, 4));
+        result = testGP.move(testGP.getBoard().checkerBoard[3][4], new Cord(3, 4));
         assertEquals(result, 2);
         System.out.println("King movement final board: ");
         testGP.getBoard().printBoard();

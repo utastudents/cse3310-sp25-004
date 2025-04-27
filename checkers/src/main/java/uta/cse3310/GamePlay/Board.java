@@ -95,7 +95,7 @@ public class Board
 
 		for(int i = 5; i < 8; i++) // row aka y coordinate
 		{
-			if(i == 5 || i == 7) // First or 3rd black Row
+			if(i == 6) // First or 3rd black Row
 			{
 				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.BLACK);
 				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.BLACK);
@@ -114,7 +114,7 @@ public class Board
 
 		for(int i = 0; i < 3; i++) // row aka y coordinate
 		{
-			if(i == 0 || i == 2) // First or 3rd Red Row
+			if(i == 1) // First or 3rd Red Row
 			{
 				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.RED);
 				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.RED);
