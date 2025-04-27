@@ -1,21 +1,22 @@
 package uta.cse3310.GameManager;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
 
-import uta.cse3310.GameState;
+import uta.cse3310.GamePlay.Board;
+import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Color;
+import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.TestPlayer;
-import uta.cse3310.PageManager.GameMove;
-import uta.cse3310.PageManager.GameUpdate;
-import uta.cse3310.GamePlay.Board;
-import uta.cse3310.GamePlay.Checker;
-import uta.cse3310.GamePlay.GamePlay;
-import uta.cse3310.GamePlay.Color;
-import uta.cse3310.GamePlay.Cord;
 
 public class GameTest {
     // Mock implementation of player
@@ -122,17 +123,36 @@ public class GameTest {
     }
     @Test
     void testSetGameActive() {
-    Player player1 = new MockPlayer(1); 
-    Player player2 = new MockPlayer(2);
 
-    Game game = new Game(0, player1, player2);
+        Player player1 = new MockPlayer(1); 
+        Player player2 = new MockPlayer(2);
 
-    assertTrue("Game should initially be active", game.isGameActive());
+        Game game = new Game(0, player1, player2);
 
-    game.setGameActive(false);
-    assertFalse("Game should be inactive after setting to false", game.isGameActive());
+        assertTrue("Game should initially be active", game.isGameActive());
 
-    game.setGameActive(true);
-    assertTrue("Game should be active after setting to true again", game.isGameActive());
-}
+        game.setGameActive(false);
+        assertFalse("Game should be inactive after setting to false", game.isGameActive());
+
+        game.setGameActive(true);
+        assertTrue("Game should be active after setting to true again", game.isGameActive());
+    }
+
+    @Test
+    void testInitializeGames(){
+        GameManager manager = new GameManager(); //calling initializeGames() in the constructor
+
+        // Getting the list of games after initialization
+        var games = manager.getGames();
+
+        assertEquals(10, games.size(), "There should be exactly 10 games initialized.");
+
+        for (int i = 0; i < games.size(); i++) {
+            Game game = games.get(i);
+            assertNotNull(game, "Game at index " + i + " should not be null.");
+            assertEquals(i, game.getGameID(), "Game ID at index " + i + " should be " + i + ".");
+            assertNull(game.getPlayer1(), "Player 1 should initially be null.");
+            assertNull(game.getPlayer2(), "Player 2 should initially be null.");
+        }
+    }
 }
