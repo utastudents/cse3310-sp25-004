@@ -111,7 +111,7 @@ function createBoard() {
         tr.style.height = "50px";
         for (let col = 0; col < 8; col++) {
             const td = document.createElement("td");
-            const isPlayable = (row + col) % 2 === 0;
+            const isPlayable = (row + col) % 2 === 1;
             td.style.height = "50px";
             td.id = `square-r${row}-c${col}`;
 
