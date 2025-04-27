@@ -3,6 +3,7 @@ package uta.cse3310.GameManager;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.PairUp;
@@ -119,4 +120,19 @@ public class GameTest {
         assertEquals("In Progress", update.getGameStatus());
         assertTrue(update.getCapturedPosition().contains("Playerid"));
     }
+    @Test
+    void testSetGameActive() {
+    Player player1 = new MockPlayer(1); 
+    Player player2 = new MockPlayer(2);
+
+    Game game = new Game(0, player1, player2);
+
+    assertTrue("Game should initially be active", game.isGameActive());
+
+    game.setGameActive(false);
+    assertFalse("Game should be inactive after setting to false", game.isGameActive());
+
+    game.setGameActive(true);
+    assertTrue("Game should be active after setting to true again", game.isGameActive());
+}
 }
