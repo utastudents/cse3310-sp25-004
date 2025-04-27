@@ -11,6 +11,7 @@ import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
+import uta.cse3310.GamePlay.GamePlay;
 
 
 
@@ -148,5 +149,17 @@ public class BotIITest {
         BotII.Move bestMove = BotII.makeBestMove(board);
         assertTrue(bestMove != null, "An offensive move should be found");
         System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
+    }
+
+    @Test
+    public void testMakeMove() {
+        BotII bot = new BotII();
+        GamePlay gp = new GamePlay(0);
+        if (bot.makeMove(gp) == false) {
+            System.out.println("This should be working");
+        }
+        else{
+            System.out.println("This isnt working");
+        }
     }
 }
