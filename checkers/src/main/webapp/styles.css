@@ -683,40 +683,84 @@ button[disabled] {
     }
   
   /* Styling for red pieces (Player 1) */
-  .red-piece {
-    position: relative;
-  }
-  
-  .red-piece::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-color: #FF0000; /* Red color */
-    border-radius: 50%; /* Makes it circular */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
-  }
-  
-  /* Styling for black pieces (Player 2) */
-  .black-piece {
-    position: relative;
-  }
-  
-  .black-piece::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-color: #000000; /* Black color */
-    border-radius: 50%; /* Makes it circular */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
-  }
+.red-piece {
+  position: relative;
+}
+
+.red-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #FF0000; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+.red-king {
+  position: relative;
+}
+
+.red-king::before {
+  content: "K";
+  text-align: center;
+  vertical-align: "center";
+  font-size: 30;
+  font-weight: bold;
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #FF0000; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+/* Styling for black pieces (Player 2) */
+.black-piece {
+  position: relative;
+}
+
+.black-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #000000; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+.black-king {
+  position: relative;
+}
+
+.black-king::before {
+  content: "K";
+  text-align: center;
+  vertical-align: "center";
+  font-size: 30;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #000000; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
   
   
   /* Fullscreen background overlay */
