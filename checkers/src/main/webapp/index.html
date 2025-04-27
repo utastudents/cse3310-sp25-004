@@ -212,7 +212,7 @@
 				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
-				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
+				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
 				console.log(JSON.stringify(data));
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
