@@ -242,7 +242,7 @@ public class Board
     		NEED COLOR FOR DIRECTION
   		*/
 		//First check if the jump to the left is in bounds
-		if ((originX-2 > 0 && originX-2 <=8) && (originY+2 > 0 && originY+2 <=8))
+		if ((originX-2 >= 0 && originX-2 < 8) && (originY+2 >= 0 && originY+2 < 8))
 		{
 			//Check if the immediate diagonal is an enemy piece
 			if (checkerBoard[originY+1][originX-1] != null && checkerBoard[originY+1][originX-1].getColor() != originColor)
@@ -255,7 +255,7 @@ public class Board
 			}
 		}
 		//Same as above but checking to the right
-		if ((originX+2 > 0 && originX+2 <=8) && (originY+2 > 0 && originY+2 <=8))
+		if ((originX+2 >= 0 && originX+2 < 8) && (originY+2 >= 0 && originY+2 < 8))
 		{
 			if (checkerBoard[originY+1][originX+1] != null && checkerBoard[originY+1][originX+1].getColor() != originColor)
 			{
@@ -311,7 +311,7 @@ public class Board
 		int originX = piece.getCord().getX();
 		int originY = piece.getCord().getY();
 		Color originColor = piece.getColor();
-		if ((originX-2 > 0 && originX-2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		if ((originX-2 >= 0 && originX-2 < 8) && (originY-2 >= 0 && originY-2 < 8))
 		{
 			if (checkerBoard[originY-1][originX-1] != null && checkerBoard[originY-1][originX-1].getColor() != originColor)
 			{
@@ -321,7 +321,7 @@ public class Board
 				}
 			}
 		}
-		if ((originX+2 > 0 && originX+2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		if ((originX+2 >= 0 && originX+2 < 8) && (originY-2 >= 0 && originY-2 < 8))
 		{
 			if (checkerBoard[originY-1][originX+1] != null && checkerBoard[originY-1][originX+1].getColor() != originColor)
 			{
