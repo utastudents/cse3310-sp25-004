@@ -27,12 +27,15 @@ public class BotIITest {
         Checker blackChecker = new Checker(new Cord(3, 4), Color.BLACK);
         board.checkerBoard[4][3] = blackChecker;
 
-        Checker blackChecker2 = new Checker(new Cord(5, 6), Color.BLACK);
-        board.checkerBoard[6][5] = blackChecker2;
+        Checker blackChecker2 = new Checker(new Cord(3, 6), Color.BLACK);
+        board.checkerBoard[6][3] = blackChecker2;
 
         // Red piece at column 2, row 3 (x=2, y=3) - above black (can jump down)
         Checker redChecker1 = new Checker(new Cord(2, 3), Color.RED);
         board.checkerBoard[3][2] = redChecker1;
+
+        Checker redChecker2 = new Checker(new Cord(4, 3), Color.RED);
+        board.checkerBoard[3][4] = redChecker2;
 
         System.out.println("Board state in TestDefendPieces:");
         printBoardWithCoordinates(board);  // pirnt board with cords
@@ -60,8 +63,8 @@ public class BotIITest {
         board.checkerBoard[4][3] = blackChecker;
 
         // Red piece at column 2, row 3 (x=2, y=3) - can jump downward
-        Checker redChecker = new Checker(new Cord(2, 3), Color.RED);
-        board.checkerBoard[3][2] = redChecker;
+        Checker redChecker = new Checker(new Cord(4, 3), Color.RED);
+        board.checkerBoard[3][4] = redChecker;
 
         // Empty landing spot at column 4, row 5 (x=4, y=5)
         board.checkerBoard[5][4] = null;

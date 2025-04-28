@@ -23,6 +23,7 @@ public class BotII extends Bot {
 
     private static Color botColor = Color.BLACK; // Initializing with a default value
     private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
+    private static boolean attackSide = false; // True will be for left and False for right side
     
     public static Move makeValidMove(Board board) {
         Move bestMove = null;
@@ -69,24 +70,25 @@ public class BotII extends Bot {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
-                Checker blockingChecker = board.checkerBoard[y+2][x];
+                Checker blockingChecker = null;
+                if (y < 6) {
+                    blockingChecker = board.checkerBoard[y+2][x];
+                }
                 if (checker != null && checker.getColor() == Color.BLACK) {
                     if (isInDanger(checker, board)) {
                         ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                         for (Cord move : safeMoves) {
-                            if (bestMove == null) {
+                            System.out.println(y);
+                            if (bestMove == null && !wouldBeInDangerAfterMove(checker, move, board)) {
                                 bestMove = new Move(checker, move);
                             } 
-                            else if (bestMove == null && blockingChecker.getColor() == Color.BLACK) {
-                                bestMove = blockAttack(blockingChecker);
-                            }
-                            // else {
-                            //     // Prioritize backward movement if near being jumped
-                            //     if (move.getY() > checker.getCord().getY()) {
-                            //         bestMove = new Move(checker, move);
-                            //     }
-                            // }
                         }
+                        if (bestMove == null && blockingChecker != null) {
+                            bestMove = blockAttack(blockingChecker);
+                        }
+                            // else {
+                            //     bestMove = makeValidMove(board);
+                            // }
                     }
                 }
             }
@@ -94,14 +96,22 @@ public class BotII extends Bot {
         return bestMove;
     }
 
-    public static Move blockAttack (Checker checker) {
-        Move bestMove = null;
+    public static Move blockAttack(Checker checker) {
         int x = checker.getCord().getX();
         int y = checker.getCord().getY();
         
-        return bestMove;
+        if (attackSide && inBounds(x+1, y-1)) {
+            Cord dest = new Cord(x+1, y-1);
+            return new Move(checker, dest);
+        }
+        else if (!attackSide && inBounds(x-1, y-1)) {
+            Cord dest = new Cord(x-1, y-1);
+            return new Move(checker, dest);
+        }
+        
+        return null;
     }
-
+    
     /**
      * Checks if the checker can be jumped by any red piece.
      */
@@ -136,9 +146,38 @@ public class BotII extends Bot {
                 boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
     
                 if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && it < 2) {
+                    switch (it) {
+                        case 0:
+                            attackSide = true;
+                            break;
+                        case 1:
+                            attackSide = false;
+                            break;
+                        case 2: 
+                            attackSide = true;
+                            break;
+                        case 3: 
+                            attackSide = false;
+                            break;
+                    }
+                    System.out.println("The attacker is on the left side: " + attackSide);
                     return true;
                 }
                 if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && attacker.isKing()) {
+                    switch (it) {
+                        case 0:
+                            attackSide = true;
+                            break;
+                        case 1:
+                            attackSide = false;
+                            break;
+                        case 2: 
+                            attackSide = true;
+                            break;
+                        case 3: 
+                            attackSide = false;
+                            break;
+                    }
                     return true;
                 }
             }
