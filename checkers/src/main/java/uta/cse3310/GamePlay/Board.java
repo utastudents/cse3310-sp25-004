@@ -458,7 +458,15 @@ public class Board
 		{
 			for (Checker p : row) 
 			{
-				if(p.getColor() == pColor) // Check if the piece is the same color as the player
+				if (p == null) // Skip to next piece if p is NULL
+				{
+					continue; 
+				}
+				else if(p.getColor() != pColor) // Skip to next piece if p's color doesn't match the player's color
+				{
+					continue;
+				}
+				else 
 				{
 					if(p.isKing() || p.getColor() == Color.BLACK) // Check if the piece is a king or black
 					{
