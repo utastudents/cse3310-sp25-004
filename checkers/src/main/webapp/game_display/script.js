@@ -104,7 +104,7 @@ function handleMoveResult(moveData)  {
 }
 
 // Add event listeners to the board
-function addEventListeners() {
+function addGameDisplayListeners() {
     /* This code has been replaced by java-side move handling. Thank you for your service o7
     document.querySelectorAll("td").forEach(cell => {
         cell.addEventListener("click", () => {
@@ -113,6 +113,30 @@ function addEventListeners() {
         });
     });
     */
+    console.log("Adding button listeners");
+
+    const cancelBtn = document.getElementById("popup-cancel");
+    const confirmBtn = document.getElementById("popup-confirm");
+
+    // 🪝 Hook up Quit/Draw buttons to popup
+    const quitBtn = document.getElementById("quit");
+    const drawBtn = document.getElementById("draw-request");
+
+    if (quitBtn) quitBtn.onclick = () => showPopup("quit");
+    if (drawBtn) drawBtn.onclick = () => showPopup("draw");
+
+    if (cancelBtn) cancelBtn.onclick = hidePopup;
+
+    if (confirmBtn) {
+        confirmBtn.onclick = function () {
+            if (popupAction === 'quit') {
+                quitGame();
+            } else if (popupAction === 'draw') {
+                sendDrawRequest();
+            }
+            hidePopup();
+        };
+    }
 }
 //Game Board Setup
 function createBoard() {
@@ -263,10 +287,11 @@ function sendGameMove(fromId, toId) {
 }
 // Initialize the game
 function startGame() {
+    console.log("Loading in game_display content...");
     clearExampleLogs();
     createBoard();
     updatePlayerTurn();
-    addEventListeners();
+    addGameDisplayListeners();
 }
 // Start the game when the page loads
 document.addEventListener("DOMContentLoaded", startGame);
@@ -336,32 +361,6 @@ function hidePopup() {
         controls.style.opacity = "1";
     }
 }
-
-// Run when page is loaded
-document.addEventListener("DOMContentLoaded", function () {
-    const cancelBtn = document.getElementById("popup-cancel");
-    const confirmBtn = document.getElementById("popup-confirm");
-
-    // 🪝 Hook up Quit/Draw buttons to popup
-    const quitBtn = document.getElementById("quit");
-    const drawBtn = document.getElementById("draw-request");
-
-    if (quitBtn) quitBtn.onclick = () => showPopup("quit");
-    if (drawBtn) drawBtn.onclick = () => showPopup("draw");
-
-    if (cancelBtn) cancelBtn.onclick = hidePopup;
-
-    if (confirmBtn) {
-        confirmBtn.onclick = function () {
-            if (popupAction === 'quit') {
-                quitGame();
-            } else if (popupAction === 'draw') {
-                sendDrawRequest();
-            }
-            hidePopup();
-        };
-    }
-});
 
 
 // Example placeholder functions:
