@@ -22,7 +22,7 @@ public class BotII extends Bot {
 	// private Game game; // Game game is declared in the abstract Player super class
 
     private static Color botColor = Color.BLACK; // Initializing with a default value
-    private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
+    //private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     private static boolean attackSide = false; // True will be for left and False for right side
     
     public static Move makeValidMove(Board board) {
@@ -33,7 +33,10 @@ public class BotII extends Bot {
                 if (checker != null && checker.getColor() == Color.BLACK) {
                     ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                     for (Cord move : safeMoves) {
-                        if (!wouldBeInDangerAfterMove(checker, move, board) && bestMove == null) {
+                        if (wouldBeInDangerAfterMove(checker, move, board) == false && bestMove == null) {
+                            bestMove = new Move(checker, move);
+                        }
+                        if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
                             bestMove = new Move(checker, move);
                         }
                     }
@@ -218,7 +221,7 @@ public class BotII extends Bot {
      * Checks if moving to a given destination would put the checker in danger.
      */
     private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
-        Checker temp = new Checker(dest, piece.getColor());
+        Checker temp = new Checker(dest, Color.BLACK);
         return isInDanger(temp, board);
     }
 
@@ -352,11 +355,12 @@ public class BotII extends Bot {
 
     public static Move makeBestMove (Board board) {
         Move bestMove = null;
+        boolean fJump = board.hasJump(Color.BLACK);
         
-        if (bestMove == null) {
+        if (fJump) {
             bestMove = capturePiece(board);
         }
-        if (bestMove == null) {
+        else if (bestMove == null) {
             bestMove = defendPieces(board);
         }
         if (bestMove == null) {
@@ -368,7 +372,6 @@ public class BotII extends Bot {
     private GameMove finalMove(GamePlay gp) {
         // Omar: dont forget to update the board
         Board board = game.getBoard().getBoard();
-        // Board board = gp.getBoard();
         Move fM = makeBestMove(board);
         Cord from = fM.piece.getCord();
         Cord to = fM.destination;

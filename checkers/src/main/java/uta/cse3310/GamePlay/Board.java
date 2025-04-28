@@ -450,7 +450,7 @@ public class Board
 		return toReturn;
 	}
 
-	boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
+	public boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
     {
         ArrayList<Cord> jumps = new ArrayList<>();
 

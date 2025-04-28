@@ -150,6 +150,9 @@ public class BotIITest {
     @Test
     public void testMakeBestMove() {
         Board board = new Board();
+        board.checkerBoard[2][1] = null;
+        Checker redChecker = new Checker(new Cord(2, 3), Color.RED);
+        board.checkerBoard[3][2] = redChecker;
         printBoardWithCoordinates(board);
         BotII.Move bestMove = BotII.makeBestMove(board);
         assertTrue(bestMove != null, "An offensive move should be found");
