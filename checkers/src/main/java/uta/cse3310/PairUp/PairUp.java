@@ -9,6 +9,7 @@ import uta.cse3310.Bot.BotII.BotII;
 
 import uta.cse3310.GameManager.GameManager;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PairUp.Player.STATUS;
 
 
 public class PairUp {
@@ -82,8 +83,12 @@ public class PairUp {
      * @return - false if the player was not added to the queue, true otherwise
      */
     public boolean addToQueue(Player p) {
-      
-        //If there are no games available, add the player to the queue
+        if (p.getStatus() == STATUS.IN_GAME) {
+            return false;
+        } else if (p.getStatus() == STATUS.IN_QUEUE) {
+            removeFromQueue(p);
+        }
+
         Challenge challenge = new Challenge(p);
         numPlayersInQueue++; //Increment the number of players in the queue
         playerQueue.add(challenge);
@@ -109,6 +114,13 @@ public class PairUp {
      * @return - false if the challengers were not added to the queue or a game, true otherwise
      */
     public boolean challenge(Player p, Player c, HumanPlayer spectator) {
+        if (p.getStatus() == STATUS.IN_GAME || c.getStatus() == STATUS.IN_GAME) {
+            return false;
+        } else if (p.getStatus() == STATUS.IN_QUEUE || c.getStatus() == STATUS.IN_QUEUE) {
+            removeFromQueue(p);
+            removeFromQueue(c);
+        }
+
         if (gm.getNumOfAvailableGames() > 0 && gm.createGame(p, c)) {
             //Queue was bypassed
             return true;
