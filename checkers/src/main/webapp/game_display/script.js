@@ -143,7 +143,9 @@ function handleClick(clickedId) {
     //Selecting a piece
     if (!selectedPieceId &&
         ((currentPlayer === "red" && clickedElement.classList.contains("red-piece")) ||
-         (currentPlayer === "black" && clickedElement.classList.contains("black-piece")))) {
+         (currentPlayer === "black" && clickedElement.classList.contains("black-piece")) ||
+         (currentPlayer === "red" && clickedElement.classList.contains("red-king")) ||
+         (currentPlayer === "black" && clickedElement.classList.contains("black-king")))) {
 
         selectedPieceId = clickedId;
     }
@@ -152,7 +154,9 @@ function handleClick(clickedId) {
     else if (selectedPieceId &&
         clickedElement.classList.contains("emptySquare") &&
         !clickedElement.classList.contains("red-piece") &&
-        !clickedElement.classList.contains("black-piece")) {
+        !clickedElement.classList.contains("black-piece") &&
+        !clickedElement.classList.contains("red-king") &&
+        !clickedElement.classList.contains("black-king")) {
 
         const fromId = selectedPieceId;
         const toId = clickedId;
@@ -182,6 +186,7 @@ function handleClick(clickedId) {
     }
 }
 
+/* No longer used
 function movePiece(fromId, toId) {
     const fromElement = document.getElementById(fromId);
     const toElement = document.getElementById(toId);
@@ -201,6 +206,7 @@ function movePiece(fromId, toId) {
     toElement.id = fromElement.id;
     fromElement.id = `square-r${fromElement.parentNode.rowIndex}-c${fromElement.cellIndex}`;
 }
+*/
 
 function getRowColFromId(id) {
     const match = id.match(/r(\d+)-c(\d+)/i);
