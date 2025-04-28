@@ -38,6 +38,8 @@ public class GamePlay
         ArrayList<Cord> possibleJumpsForward = new ArrayList<Cord>();
         ArrayList<Cord> possibleJumpsBackward = new ArrayList<Cord>();
 
+        forceJump = board.hasJump(piece.getColor()); // If any jump are available to the player force them to jump.
+
         if (piece == null || dest == null) // Check for null piece or destination
         {
             return 0;
