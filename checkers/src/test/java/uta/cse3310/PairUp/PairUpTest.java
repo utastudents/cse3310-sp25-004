@@ -58,7 +58,18 @@ public class PairUpTest {
         assertEquals(pu.getNumPlayersInQueue(), 0); //Challenge should now be in GM
         assertEquals(gm.getNumOfAvailableGames(), 9);
     }
+    @Test
+    void isInRange() {
+        GameManager gm = new GameManager();
+        PairUp pu = new PairUp(gm);
 
+        Player human = new TestPlayer(0, 1000);
+        Player human2 = new TestPlayer(1, 1300);
+        Player human3 = new TestPlayer(2, 1600);
+
+        assertEquals(pu.isInRange(human, human2), true);
+        assertEquals(pu.isInRange(human, human3), false);
+    }
     /* This test was to make sure the tests were running. They are!
     @Test
     void failure() {
