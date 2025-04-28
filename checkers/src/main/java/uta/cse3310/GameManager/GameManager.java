@@ -6,6 +6,7 @@ import java.util.List;
 import uta.cse3310.Bot.BotI.BotI;
 import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Checker;
+import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameTermination.GameTermination;
@@ -107,12 +108,25 @@ public class GameManager {
         System.out.println("Player " + playerId + " is moving from " + from + " to " + to);
 
         Checker piece = gamePlay.getBoard().checkerBoard[from.getY()][from.getX()];
+        int result = 0;
+        boolean valid = false;
         if (piece == null) {
             System.out.println("Attempted to move a piece that does not exist!");
             gamePlay.getBoard().printBoard();
+        } else if (piece.getColor() == Color.RED && gamePlay.turn) {
+            //Black is trying to move red's piece
+            g.printBasics();
+            System.out.println("Black (" + playerId + ") tried to move red's piece!");
+            gamePlay.getBoard().printBoard();
+        } else if (piece.getColor() == Color.BLACK && !gamePlay.turn) {
+            //Red is trying to move black's piece
+            g.printBasics();
+            System.out.println("Red (" + playerId + ") tried to move black's piece!");
+            gamePlay.getBoard().printBoard();
+        } else {
+            result = gamePlay.move(piece, to);
+            valid = (result == 2);
         }
-        int result = gamePlay.move(piece, to);
-        boolean valid = (result == 2);
 
         // Sending all important information through movePath
         String movePath = "Playerid " + playerId + ":" + "(" + from.getX() + "," + from.getY() + ")" + " -> " + "("

@@ -444,13 +444,16 @@
 	// Board display
 	// This method is called by socket.js with the game board from Java / GamePlay
 	function displayBoard(json) {
-		const boardState = json.boardState;
+		let boardState = json.boardState;
 		if (!boardState) {
 			console.log("Json invalid!");
 			console.log(json);
 			return;
 		}
 		if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
+		if (me == "red") {
+			boardState = invertBoard(boardState);
+		}
 		for (let row = 0; row < 8; row++) {
 			for (let col = 0; col < 8; col++) {
 				const el = document.getElementById(`square-r${row}-c${col}`);

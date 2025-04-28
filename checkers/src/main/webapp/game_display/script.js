@@ -41,6 +41,18 @@ function opponentTurn() {
     displayPlayerTurn();
 }
 
+function invertBoard(boardState) {
+    const newBoardState = [];
+    for (let i=7; i>=0; i--) {
+        let row = [];
+        for (let j=7; j>=0; j--) {
+            row.push(boardState[i][j]);
+        }
+        newBoardState.push(row);
+    }
+    return newBoardState;
+}
+
 // Update the player turn display
 function updatePlayerTurn() {
     const playerDisplay = document.getElementById("players");
@@ -210,10 +222,11 @@ function movePiece(fromId, toId) {
 
 function getRowColFromId(id) {
     const match = id.match(/r(\d+)-c(\d+)/i);
-    return {
+    const rc = {
         row: match ? (parseInt(match[1])+1) : -1,
         col: match ? (parseInt(match[2])+1) : -1
     };
+    return rc;
 }
 
 //Sending moves to pageManager
@@ -222,6 +235,14 @@ function sendGameMove(fromId, toId) {
     const toMatch = toId.match(/r(\d+)-c(\d+)/i);
 
     if (!fromMatch || !toMatch) return;
+
+    if (me == "red") {
+        //Invert
+        fromMatch[1] = 7 - fromMatch[1];
+        fromMatch[2] = 7 - fromMatch[2];
+        toMatch[1] = 7 - toMatch[1];
+        toMatch[2] = 7 - toMatch[2];
+    }
 
     const fromPos = `R${fromMatch[1]}-C${fromMatch[2]}`;
     const toPos = `R${toMatch[1]}-C${toMatch[2]}`;
