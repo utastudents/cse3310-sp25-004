@@ -78,6 +78,8 @@ public class GamePlay
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
                         board.kingMe(piece);
+
+                        result = 2;
                     }  
                     else
                     {
@@ -96,6 +98,8 @@ public class GamePlay
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
                         board.kingMe(piece);
+
+                        result = 2;
                     }   
                     else
                     {
@@ -114,6 +118,8 @@ public class GamePlay
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
                     concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else if (cordIndexbwd != -1)
                 {
@@ -121,6 +127,8 @@ public class GamePlay
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
                     concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else
                 {
