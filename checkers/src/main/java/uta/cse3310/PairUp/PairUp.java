@@ -30,7 +30,7 @@ public class PairUp {
     }
 
     //Compares elo scores. If either is not a HumanPlayer, return true
-    private boolean isInRange(Player p1, Player p2) {
+    public boolean isInRange(Player p1, Player p2) {
         // If either player is not a HumanPlayer, return true
         if (!(p1 instanceof HumanPlayer) || !(p2 instanceof HumanPlayer)) {
             return true;
