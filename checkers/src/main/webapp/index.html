@@ -454,7 +454,7 @@
 		for (let row = 0; row < 8; row++) {
 			for (let col = 0; col < 8; col++) {
 				const el = document.getElementById(`square-r${row}-c${col}`);
-				el.classList.remove("red-piece", "black-piece", "empty");
+				el.classList.remove("red-piece", "black-piece", "empty", "red-king", "black-king");
 
 				if (boardState[row][col] == "empty") {
 					el.classList.add("empty");
