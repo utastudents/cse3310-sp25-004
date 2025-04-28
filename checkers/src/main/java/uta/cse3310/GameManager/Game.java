@@ -9,6 +9,7 @@ public class Game{
    private int gameID;   // Unique game identifier
    private GamePlay board;
    public boolean isAvailable;
+   public int consecutiveAttempts = 0;
 
 	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
       this.gameID = gameID; // gameID is index number in ArrayList
