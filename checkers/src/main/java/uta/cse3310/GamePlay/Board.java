@@ -449,40 +449,4 @@ public class Board
 		}
 		return toReturn;
 	}
-
-	boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
-    {
-        ArrayList<Cord> jumps = new ArrayList<>();
-
-		for (Checker[] row : checkerBoard) 
-		{
-			for (Checker p : row) 
-			{
-				if(p.getColor() == pColor) // Check if the piece is the same color as the player
-				{
-					if(p.isKing() || p.getColor() == Color.BLACK) // Check if the piece is a king or black
-					{
-						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
-						jumps.addAll(getPossibleForwardJump(p)); 
-					}
-					else if(p.getColor() == Color.RED || p.isKing()) // Check if the piece is a king or red
-					{
-						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
-						jumps.addAll(getPossibleBackwardJump(p));
-					}
-					/* The code should not add the opposite color's jumps to the list,
-					because of the if(p.getColor() == pColor) check above that should prevent it.
-					*/
-				}
-			}
-		}
-		if(jumps.size() > 0)
-		{
-			return true; // Player has at least one jump
-		}
-		else
-		{
-			return false; // Player has no jumps
-		}
-	}
 }
