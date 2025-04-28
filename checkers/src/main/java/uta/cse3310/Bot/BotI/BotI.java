@@ -44,12 +44,14 @@ public class BotI extends Bot {
     public boolean makeMove(GamePlay gs){
         //if game ends bot cant make a move
         if (gameEnded) {
+            System.out.println("Bot I: No move. Game has ended");
             return false;
         }
 
         //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
         if (availableCheckers.isEmpty()) { 
+            System.out.println("Bot I: No move. No checkers available to move");
             return false; 
         } 
         
@@ -69,6 +71,7 @@ public class BotI extends Bot {
             executeMove(bestMove); 
             return true; 
         } 
+        System.out.println("Bot I: No move. No moves are available.");
         return false; //if theres no moves at all
     } 
        
