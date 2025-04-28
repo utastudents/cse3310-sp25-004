@@ -308,36 +308,36 @@ public class BotII extends Bot {
         // TODO: Wait for opponent to make a move before acting
     }
 
-    public static boolean adjustStrategy(Board board) {
-        // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
-        // TODO: Change strategy based on early, mid, or late game
-        // Early: Moving first row pieces?
-        // Second: A King comes into play?
-        // Late: A select # of pieces left on the board?
-        //Board board = game.getBoard().getBoard();
-        int myCount = 0;
-        int oppCount = 0;
+    // public static boolean adjustStrategy(Board board) {
+    //     // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
+    //     // TODO: Change strategy based on early, mid, or late game
+    //     // Early: Moving first row pieces?
+    //     // Second: A King comes into play?
+    //     // Late: A select # of pieces left on the board?
+    //     //Board board = game.getBoard().getBoard();
+    //     int myCount = 0;
+    //     int oppCount = 0;
 
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                Checker c = board.checkerBoard[y][x];
-                if (c != null) {
-                    if (c.getColor() == botColor) {
-                        myCount++;
-                    } else {
-                        oppCount++;
-                    }
-                }
-            }
-        }
+    //     for (int y = 0; y < 8; y++) {
+    //         for (int x = 0; x < 8; x++) {
+    //             Checker c = board.checkerBoard[y][x];
+    //             if (c != null) {
+    //                 if (c.getColor() == botColor) {
+    //                     myCount++;
+    //                 } else {
+    //                     oppCount++;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        // if opponent has 3 or more pieces than us, go aggressive
-        beAggressive = oppCount - myCount >= 3;
+    //     // if opponent has 3 or more pieces than us, go aggressive
+    //     beAggressive = oppCount - myCount >= 3;
 
-        // (Optional) print for debugging
-        System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
-        return beAggressive;
-    }
+    //     // (Optional) print for debugging
+    //     System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
+    //     return beAggressive;
+    // }
 
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
@@ -353,11 +353,11 @@ public class BotII extends Bot {
     public static Move makeBestMove (Board board) {
         Move bestMove = null;
         
-        if (adjustStrategy(board) && bestMove == null) {
-            bestMove = defendPieces(board);
-        }
-        else if (bestMove == null) {
+        if (bestMove == null) {
             bestMove = capturePiece(board);
+        }
+        if (bestMove == null) {
+            bestMove = defendPieces(board);
         }
         if (bestMove == null) {
             bestMove = makeValidMove(board);
