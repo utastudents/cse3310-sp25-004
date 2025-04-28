@@ -412,7 +412,8 @@ public class PageManager {
         // Extracting what i recieve
         int botId = jsonObj.get("botId").getAsInt();
 
-        if(botId == 1)
+        //botId = 0 is bot1 and botId = 1 is bot 2
+        if(botId == 0)
         {
             bot1 = true;
         }
