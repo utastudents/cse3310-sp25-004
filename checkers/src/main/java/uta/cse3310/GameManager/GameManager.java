@@ -102,6 +102,8 @@ public class GameManager {
             return new GameUpdate(false, "In Progress", "", false, false, "Playerid failed to move");
         }
 
+        g.consecutiveAttempts++;
+
         Cord from = new Cord(move.getFromPosition_X(), move.getFromPosition_Y());
         Cord to = new Cord(move.getToPosition_X(), move.getToPosition_Y());
 
@@ -139,11 +141,18 @@ public class GameManager {
         if (valid) {
             // Swap turns
             board.turn = !board.turn;
+            GameTermination.endGame(g);
+            g.consecutiveAttempts = 0;
         } else {
             // Send the actual game board back so they can compare
             System.out.println("Attempted invalid move. Actual board:");
             board.getBoard().printBoard();
             board.getBoard().printBoard(from, to);
+
+            if (g.consecutiveAttempts > 5) {
+                System.out.println("Too many failed attempts! Exiting infinite loop.");
+                return null;
+            }
         }
         
         // Debug
