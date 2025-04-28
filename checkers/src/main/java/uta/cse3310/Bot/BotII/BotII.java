@@ -366,9 +366,9 @@ public class BotII extends Bot {
     public boolean makeMove(GamePlay gp) {
 
         GameMove move = finalMove(gp);
-        
+
         try {
-            Thread.sleep(100); // Sleep 100 milliseconds to break the infinite recursion
+            Thread.sleep(1000); // Sleep 100 milliseconds to break the infinite recursion
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
