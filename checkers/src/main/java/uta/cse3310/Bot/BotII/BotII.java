@@ -241,31 +241,55 @@ public class BotII extends Bot {
         }
     }
     
-    public void capturePiece(Board board) {
-    board = game.getBoard().getBoard();
-
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Checker piece = board.checkerBoard[y][x];
-            if (piece != null && piece.getColor() == botColor) {
-                ArrayList<Cord> jumps = new ArrayList<>();
-
-                if (botColor == Color.BLACK || piece.isKing()) {
-                    jumps.addAll(board.getPossibleForwardJump(piece));
-                }
-                if (botColor == Color.RED || piece.isKing()) {
-                    jumps.addAll(board.getPossibleBackwardJump(piece));
-                }
-
-                if (!jumps.isEmpty()) {
-                    Cord jumpDest = jumps.get(0);
-                    board.updatePosition(piece, jumpDest); // Just jump
-                    board.kingMe(piece);
-                    return;
+    public static Move capturePiece(Board board) {
+        Move bestCapture = null;
+        
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker piece = board.checkerBoard[y][x];
+                if (piece != null && piece.getColor() == Color.BLACK) {
+                    ArrayList<Cord> jumps = getPossibleJumps(piece, board);
+                    if (!jumps.isEmpty()) {
+                        bestCapture = new Move(piece, jumps.get(0)); // Take first available jump
+                        break; // Prioritize earliest found capture
+                    }
                 }
             }
         }
+        return bestCapture;
     }
+    
+    private static ArrayList<Cord> getPossibleJumps(Checker piece, Board board) {
+        ArrayList<Cord> jumps = new ArrayList<>();
+        int x = piece.getCord().getX();
+        int y = piece.getCord().getY();
+
+        // BLACK pieces move upward (y decreases)
+        int[][] directions = piece.isKing() ? 
+            new int[][]{{-1,-1}, {1,-1}, {-1,1}, {1,1}} : // Kings can move all directions
+            new int[][]{{-1,-1}, {1,-1}}; // Regular pieces move upward only
+
+        for (int[] dir : directions) {
+            int newX = x + dir[0]*2;
+            int newY = y + dir[1]*2;
+            
+            if (isValidJump(board, x, y, dir[0], dir[1])) {
+                jumps.add(new Cord(newX, newY));
+            }
+        }
+        return jumps;
+    }
+
+    private static boolean isValidJump(Board board, int x, int y, int dx, int dy) {
+        int midX = x + dx;
+        int midY = y + dy;
+        int destX = x + dx*2;
+        int destY = y + dy*2;
+
+        return inBounds(destX, destY) &&
+               board.checkerBoard[midY][midX] != null && 
+               board.checkerBoard[midY][midX].getColor() != Color.BLACK && 
+               board.checkerBoard[destY][destX] == null;
     }
 
     public void checkMultipleJumps() {
@@ -327,28 +351,18 @@ public class BotII extends Bot {
         // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
     }
 
-    // Helper method to check if a move is valid and add it to the list
-    // private void checkMove(Board board, Checker checker, int dx, int dy, ArrayList<Cord> moves) {
-    //     int newX = checker.getCord().getX() + dx;
-    //     int newY = checker.getCord().getY() + dy;
-
-    //     if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8 && board.checkerBoard[newY][newX] == null) {
-    //         moves.add(new Cord(newX, newY));
-    //     }
-    // }
-
     public static Move makeBestMove (Board board) {
         Move bestMove = null;
         
-        if (adjustStrategy(board)) {
+        if (adjustStrategy(board) && bestMove == null) {
             bestMove = defendPieces(board);
         }
         else if (bestMove == null) {
+            bestMove = capturePiece(board);
+        }
+        if (bestMove == null) {
             bestMove = makeValidMove(board);
         }
-        // else {
-            
-        // }
         return bestMove;
     }
     

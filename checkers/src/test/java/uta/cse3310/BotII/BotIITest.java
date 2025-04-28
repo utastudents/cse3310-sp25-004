@@ -1,6 +1,8 @@
 package uta.cse3310.BotII;
 import java.util.ArrayList;
 
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 //import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 //import org.junit.jupiter.api.Disabled;
@@ -154,15 +156,38 @@ public class BotIITest {
         System.out.println("Black move from" + bestMove.piece.getCord() + " -> to: " + bestMove.destination);
     }
 
-    // @Test
-    // public void testMakeMove() {
-    //     BotII bot = new BotII();
-    //     GamePlay gp = new GamePlay(0);
-    //     if (bot.makeMove(gp) == false) {
-    //         System.out.println("This should be working");
-    //     }
-    //     else{
-    //         System.out.println("This isnt working");
-    //     }
-    // }
+    @Test
+    public void testBlackPieceCapture() {
+        Board board = new Board();
+        clearBoard(board);
+        
+        // Black piece at (3,3) with red at (4,4)
+        board.checkerBoard[4][4] = new Checker(new Cord(4, 4), Color.BLACK);
+        board.checkerBoard[3][3] = new Checker(new Cord(3, 3), Color.RED); // Opponent
+        printBoardWithCoordinates(board);
+        
+        BotII.Move move = BotII.capturePiece(board);
+        assertNotNull(move);
+        //assertEquals(new Cord(2, 2), move.destination); // Should capture downward
+        System.out.println("From: (4, 4) To: " + move.destination);
+    }
+
+    @Test
+    public void testBlackKingCapture() {
+        Board board = new Board();
+        clearBoard(board);
+        
+        // Black king at (2,2) with red at (1,1)
+        Checker king = new Checker(new Cord(0, 0), Color.BLACK);
+        king.setKing(true);
+        board.checkerBoard[0][0] = king;
+        board.checkerBoard[1][1] = new Checker(new Cord(1, 1), Color.RED);
+        printBoardWithCoordinates(board);
+        
+        BotII.Move move = BotII.capturePiece(board);
+        assertNotNull(move);
+        //assertEquals(new Cord(0, 0), move.destination); // King can capture upward
+        System.out.println("From: " + king.getCord() + " To: " + move.destination);
+    }
+
 }
