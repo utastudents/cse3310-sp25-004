@@ -193,23 +193,22 @@ public class BotII extends Bot {
         ArrayList<Cord> safeMoves = new ArrayList<>();
         int x = checker.getCord().getX();
         int y = checker.getCord().getY();
+        int temp = 0;
 
         // For BLACK pieces, safe moves are backward
         if(checker.getColor() == Color.BLACK) {
-            int[][] moves = {{-1,-1}, {1,-1}}; // backward diagonals
+            int[][] moves = {{-1,-1}, {1,-1}, {-1, 1}, {1, 1}}; // all sides
             
             for(int[] m : moves) {
                 int nx = x + m[0];
                 int ny = y + m[1];
-                if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null/*  && 
-                    !wouldBeInDangerAfterMove(checker, new Cord(nx, ny), board)*/) {
+                if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null && temp < 2) {
                     safeMoves.add(new Cord(nx, ny));
                 }
-                // else if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null && 
-                //     board.checkerBoard[y-2][x-2].getColor() == Color.BLACK || 
-                //     board.checkerBoard[y-2][x+2].getColor() == Color.BLACK) {
-
-                // }
+                if (checker.isKing() && temp >= 2) {
+                    safeMoves.add(new Cord(nx, ny));
+                }
+                temp++;
             }
         }
         return safeMoves;
