@@ -182,6 +182,18 @@ public class GamePlay
                         result = 0;
                     }
                 }
+                else if(piece.getColor() == Color.RED) // Red King piece move code
+                {
+                    if(board.moveForwardCheck(piece, dest) == true || board.moveBackwardCheck(piece, dest) == true)
+                    {
+                        board.updatePosition(piece, dest);
+                        result = 2;
+                    }
+                    else
+                    {
+                        result = 0;
+                    }
+                }
             }
         }
         //TODO: Send Game Termination end board
