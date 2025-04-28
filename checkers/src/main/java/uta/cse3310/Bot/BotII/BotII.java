@@ -305,8 +305,9 @@ public class BotII extends Bot {
     }
     
     private GameMove finalMove(GamePlay gp) {
-        //Board board = game.getBoard().getBoard();
-        Board board = new Board();
+        // Omar: dont forget to update the board
+        Board board = game.getBoard().getBoard();
+        // Board board = new Board();
         Move fM = makeBestMove(board);
         Cord from = fM.piece.getCord();
         Cord to = fM.destination;
