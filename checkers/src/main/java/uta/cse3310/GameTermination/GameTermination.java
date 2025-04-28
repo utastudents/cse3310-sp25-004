@@ -27,11 +27,15 @@ public class GameTermination {
         // Tells game play game is over.
 
         // New endGame functionality.  
-        public Game endGame(Game currentGame) {
+        public static Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
                 Player player1 = currentGame.getPlayer1();
                 Player player2 = currentGame.getPlayer2();
+
+
+                // TODO: Player turn matters as well. In checkers, there is no such thing as a draw. If it is your move and no legal moves are available, you lose.
+                // The other way to lose is to have all of your pieces captured
 
 
 
