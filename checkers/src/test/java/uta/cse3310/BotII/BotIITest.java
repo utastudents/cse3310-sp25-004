@@ -11,7 +11,7 @@ import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
-import uta.cse3310.GamePlay.GamePlay;
+//import uta.cse3310.GamePlay.GamePlay;
 
 
 

@@ -69,6 +69,7 @@ public class BotII extends Bot {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
+                Checker blockingChecker = board.checkerBoard[y+2][x];
                 if (checker != null && checker.getColor() == Color.BLACK) {
                     if (isInDanger(checker, board)) {
                         ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
@@ -76,9 +77,9 @@ public class BotII extends Bot {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
                             } 
-                            // else if (bestMove == null) {
-
-                            // }
+                            else if (bestMove == null && blockingChecker.getColor() == Color.BLACK) {
+                                bestMove = blockAttack(blockingChecker);
+                            }
                             // else {
                             //     // Prioritize backward movement if near being jumped
                             //     if (move.getY() > checker.getCord().getY()) {
@@ -90,6 +91,14 @@ public class BotII extends Bot {
                 }
             }
         }
+        return bestMove;
+    }
+
+    public static Move blockAttack (Checker checker) {
+        Move bestMove = null;
+        int x = checker.getCord().getX();
+        int y = checker.getCord().getY();
+        
         return bestMove;
     }
 
@@ -306,7 +315,7 @@ public class BotII extends Bot {
     
     private GameMove finalMove(GamePlay gp) {
         //Board board = game.getBoard().getBoard();
-        Board board = new Board();
+        Board board = gp.getBoard();
         Move fM = makeBestMove(board);
         Cord from = fM.piece.getCord();
         Cord to = fM.destination;
