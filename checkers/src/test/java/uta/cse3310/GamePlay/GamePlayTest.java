@@ -164,22 +164,24 @@ public class GamePlayTest{
     @Test
     void updatePositionTest() {
         var testBoard = new Board();
+        var verifyCord = new Cord(3,2);
         var testCord = new Cord(4,3);
         var pieceTest1 = testBoard.checkerBoard[2][3]; //create a copy of the piexe we're moving
-        pieceTest1.setCord(4, 3);
         //just needed to look at the board initalization again lel
 
         //manually set a new position
 
         //change the position of a checker to a position where it can be jumped
         testBoard.updatePosition( testBoard.checkerBoard[2][3], testCord );
-        //assertEquals(null, testBoard.checkerBoard[2][3]);
+        assertEquals(null, testBoard.checkerBoard[2][3]);
         //for some reason it doesn't want to delete checker
-                
+        //okay so it was updating the piece on the actual cords position since i don't think we're able to make a copy
+
         //assert that the piece has been removed from the old spot
         //next we want to assert that the new position does not equal null
 
         //Please run test BEFORE committing, thank you :)
+        pieceTest1.setCord(4, 3); //for some reason this works??
         assertEquals(pieceTest1, testBoard.checkerBoard[3][4]);
         
         System.out.println("Update Position Final Board");

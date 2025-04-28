@@ -391,11 +391,11 @@ public class Board
 	public void updatePosition(Checker piece, Cord dest)
 	{
 		Cord oldCord = piece.getCord();
+		deleteChecker(oldCord);
 		int newX = dest.getX();
 		int newY = dest.getY();
-		deleteChecker(oldCord);
-		piece.setCord(newX, newY);
 		checkerBoard[newY][newX] = piece; //test works with this format like how initialized
+		piece.setCord(newX, newY);
 	}
 	
 	/* 
