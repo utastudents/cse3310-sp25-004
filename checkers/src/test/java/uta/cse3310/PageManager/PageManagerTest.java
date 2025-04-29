@@ -2,6 +2,8 @@ package uta.cse3310.PageManager;
 
 import java.util.ArrayList;
 
+import javax.management.RuntimeErrorException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -164,4 +166,54 @@ public class PageManagerTest
 
     }    
 
+	@Test
+	public void checkLoginExistsTest()
+	{
+		/*
+		 * Test for req. PG-23 and PG-24, tests that PM check with DB that a user logging in exists in DB
+		 */
+
+		int ID = 123;
+		JsonObject jsonData = new JsonObject();
+		jsonData.addProperty("action", "new_user");
+		jsonData.addProperty("UserName", "Alice");
+		jsonData.addProperty("Password", "FooBar1");
+
+		pm.handleNewUser(jsonData, ID);
+
+		jsonData.addProperty("action", "login");
+
+		UserEventReply reply = pm.handleLogin(jsonData, ID);
+
+		if ( reply.replyObj.get("responseID").getAsString() != "loginSuccessful" )
+		{
+			throw new RuntimeException("Login was unsuccessful!");
+		}
+	}
+	
+	@Test
+	public void checkBadLoginFails()
+	{
+		/*
+		 * Test for req. PG-23, tests that PM check with DB that a user logging in exists in DB
+		 */
+
+		int ID = 123;
+		JsonObject jsonData = new JsonObject();
+		jsonData.addProperty("action", "new_user");
+		jsonData.addProperty("UserName", "Alice");
+		jsonData.addProperty("Password", "FooBar1");
+
+		pm.handleNewUser(jsonData, ID);
+
+		jsonData.addProperty("action", "login");
+		jsonData.addProperty("Password", "FooBar2");
+
+		UserEventReply reply = pm.handleLogin(jsonData, ID);
+
+		if ( reply.replyObj.get("msg").getAsString() != "Invalid username or password.")
+		{
+			throw new RuntimeException("Did not receive expected response for an incorrect sign in");
+		}
+	}
 }

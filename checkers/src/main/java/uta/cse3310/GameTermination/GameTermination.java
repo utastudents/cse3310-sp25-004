@@ -66,27 +66,35 @@ public class GameTermination {
             return false;
         }
 
-        // New endGame functionality.  
+        // New endGame functionality. Takes into accound player turns.   
         public static Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
                 Player player1 = currentGame.getPlayer1();
                 Player player2 = currentGame.getPlayer2();
 
-
-                // TODO: Player turn matters as well. In checkers, there is no such thing as a draw. If it is your move and no legal moves are available, you lose.
-                // The other way to lose is to have all of your pieces captured
-
-
+                // Check whose turn it is and if they have no legal moves
+                boolean isPlayer1Turn = !currentGame.getBoard().getBoard().turn; // false for red's turn (player 1)
+                boolean isPlayer2Turn = currentGame.getBoard().getBoard().turn;  // true for black's turn (player 2)
+                
+                // If it's player 1's turn and they can't move, player 2 wins
+                if (isPlayer1Turn && !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
+                    winnerID = currentGame.getPlayer2().getPlayerId();
+                    currentGame.setGameActive(false);
+                    return currentGame;
+                }
+                
+                // If it's player 2's turn and they can't move, player 1 wins
+                if (isPlayer2Turn && !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer2().getPlayerId())) {
+                    winnerID = currentGame.getPlayer1().getPlayerId();
+                    currentGame.setGameActive(false);
+                    return currentGame;
+                }
 
                 // Check if player 1 has won
                 if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
                         winnerID = currentGame.getPlayer1().getPlayerId();
                         currentGame.setGameActive(false);
-                        //saveResults(currentGame, winnerID);
-                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameWon"));
-                       //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameLost"));
-
                         return currentGame;
                 }
 
@@ -94,21 +102,15 @@ public class GameTermination {
                 if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer2().getPlayerId())) {
                         winnerID = currentGame.getPlayer2().getPlayerId(); 
                         currentGame.setGameActive(false);
-                        //saveResults(currentGame, winnerID);
-                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameLost"));
-                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameWon"));
                         return currentGame;
                 }
 
-                // Check for draw
-                if (state.gameStateDraw(currentGame.getBoard().getBoard(), currentGame)) {
+                // Check for draw - only if it's neither player's turn and both have no legal moves
+                if (!isPlayer1Turn && !isPlayer2Turn && 
+                    !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId()) &&
+                    !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer2().getPlayerId())) {
                         winnerID = -1;
                         currentGame.setGameActive(false);
-                        //saveResults(currentGame, winnerID);
-
-                       // App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameDraw"));
-                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameDraw"));
-
                         return currentGame;
                 }
 
