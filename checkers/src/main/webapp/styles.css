@@ -31,9 +31,11 @@ body {
     border-radius: 1%;
 }
 
+/*
 .signup-box {
     height: 535px;
 }
+*/
 
 .signup-box img {
     width: 230px;
@@ -148,8 +150,14 @@ center-container {
     height: 100vh;
 }
 
+/*
 .login-box {
     height: 500px;
+}
+*/
+
+.h0 {
+  height: 0px;
 }
 
 .login-box img {

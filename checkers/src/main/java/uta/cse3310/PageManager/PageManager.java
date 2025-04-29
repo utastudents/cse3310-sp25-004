@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -23,7 +25,6 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 public class PageManager {
-    DB db;
     PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
                       // is not unique per client (or game)
@@ -33,6 +34,7 @@ public class PageManager {
     public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
     Gson gson = new Gson();
     public static GameManager Gm;
+    public static DB db;
     public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
     public Hashtable<Integer,GamePlay> getGamePlay = new Hashtable<>();
 
@@ -45,6 +47,26 @@ public class PageManager {
         db = new DB();
         // pass over a pointer to the single database object in this system
         pu = new PairUp(Gm);
+    }
+
+
+    private void putTop10InJson(JsonObject obj) {
+        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
+
+        JsonArray top10 = new JsonArray(10);
+
+        for (HumanPlayer player : topPlayers) {
+            if (player == null) {continue;}
+            JsonObject playerData = new JsonObject();
+            playerData.addProperty("ID", player.getPlayerId());
+            playerData.addProperty("Username", player.getUsername());
+            playerData.addProperty("elo", player.getELO());
+            playerData.addProperty("gamesWon", player.getWins());
+            playerData.addProperty("gamesLost", player.getLosses());
+
+            top10.add(playerData);
+        }
+        obj.add("top10", top10);
     }
 
     //gets top10 playersfirst , 11th is the current player
@@ -71,27 +93,7 @@ public class PageManager {
             }
     
         // Get the top10 players by elo from db
-        HumanPlayer[] topPlayers = db.getTop10PlayersByElo();
-
-        JsonArray top10 = new JsonArray(10);
-    
-        //int count = 1;
-        for (HumanPlayer player : topPlayers) {
-            if (player == null) {continue;}
-            JsonObject playerData = new JsonObject();
-            playerData.addProperty("ID", player.getPlayerId());
-            playerData.addProperty("Username", player.getUsername());
-            playerData.addProperty("elo", player.getELO());
-            playerData.addProperty("gamesWon", player.getWins());
-            playerData.addProperty("gamesLost", player.getLosses());
-
-            top10.add(playerData);
-    
-            //String userKey = "userID" + count;
-            //responseJson.add(userKey, playerData);
-            //count++;
-        }
-        responseJson.add("top10", top10);
+        putTop10InJson(responseJson);
     
         // Add current player (even if not in top 10)
         HumanPlayer currentPlayer = activePlayers.get(id);
@@ -246,14 +248,16 @@ public class PageManager {
         UserEventReply userEventReply=  new UserEventReply();
 
         // Extracting what i recieve
-        int playerClientId = jsonObj.get("playerClientId").getAsInt();
+        //int playerClientId = jsonObj.get("playerClientId").getAsInt(); // This is an unsafe way to do this. Use the Id reference instead
 
     //      general identification of JSON
         responseJson.addProperty("responseID", "joinQueue");
         responseJson.addProperty("MyClientID", Id);
 
+        System.out.println("Player " + Id + " with PlayerID " + activePlayers.get(Id).getPlayerId() + " is joining the queue");
+
         // State whether the adding to queue was a success
-        if (pu.addToQueue(activePlayers.get(playerClientId)))
+        if (pu.addToQueue(activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
         }
@@ -653,7 +657,7 @@ public class PageManager {
         System.out.println("Mapped " + player.getPlayerId() + " to client id " + Id);
 
         // Now that the player is an active player, let the other clients know
-        App.sendMessage(sendActivePlayersToAll());
+        // App.sendMessage(sendActivePlayersToAll()); // This is handled by the above status update
 
         // 6) if the player is not null, then the username and password are correct
         status.addProperty("responseID", "loginSuccessful");
@@ -869,8 +873,26 @@ public class PageManager {
             
             Game g = player.getGame(); //get game object from that player
 
-            if(g!= null){ //if the player is in a game
-            g.setGameActive(false); //signal the game must end due to player leaving.
+            if (g != null) { //if the player is in a game
+                Player other = g.getPlayer1();
+                if (other.equals(player)) {
+                    other = g.getPlayer2();
+                }
+                Gm.removeGame(g, player); //signal the game must end due to player leaving.
+                pu.boardAvailable();
+
+                if (other instanceof HumanPlayer) {
+                    JsonObject bootedMsg = new JsonObject();
+                    bootedMsg.addProperty("responseID", "gameWon");
+
+                    putTop10InJson(bootedMsg);
+
+                    UserEventReply booted = new UserEventReply(bootedMsg, userIDToClientID.get(other.getPlayerId()));
+
+                    App.sendMessage(booted);
+
+                    App.sendMessage(transitionPage(List.of(userIDToClientID.get(other.getPlayerId())), GameState.SUMMARY));
+                }
             }
     
             // message

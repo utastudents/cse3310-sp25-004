@@ -365,8 +365,11 @@ function hidePopup() {
 
 // Example placeholder functions:
 function quitGame() {
-    alert("Game will now end. (Placeholder for quit logic)");
+    //alert("Game will now end. (Placeholder for quit logic)");
     // Optionally: redirect, send WS message, etc.
+    sendMessage({
+        action: "backToHome"
+    })
 }
 
 function sendDrawRequest() {

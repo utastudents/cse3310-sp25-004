@@ -72,7 +72,7 @@ public class HumanPlayer extends Player{
     @Override
     public boolean startGame(Game g) {
         this.game = g;
-        this.status = STATUS.IN_GAME;
+        //this.status = STATUS.IN_GAME; // handled by GameManager
 
         System.out.println("Player " + playerId + "'s game is starting!");
 

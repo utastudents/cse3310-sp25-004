@@ -26,6 +26,15 @@ public class GameTermination {
             } */
         // Tells game play game is over.
 
+        public static void forceEndGame(Game g, Player p) {
+            // Player p lost
+            if (p.equals(g.getPlayer1())) {
+                PageManager.db.recordMatchResult(p.getPlayerId(), g.getPlayer2().getPlayerId());
+            } else {
+                PageManager.db.recordMatchResult(g.getPlayer1().getPlayerId(), p.getPlayerId());
+            }
+        }
+
         // New endGame functionality.  
         public static Game endGame(Game currentGame) {
                 gameState state = new gameState();

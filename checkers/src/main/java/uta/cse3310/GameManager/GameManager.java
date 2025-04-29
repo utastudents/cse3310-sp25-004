@@ -3,8 +3,6 @@ package uta.cse3310.GameManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import uta.cse3310.Bot.BotI.BotI;
-import uta.cse3310.Bot.BotII.BotII;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
@@ -13,15 +11,11 @@ import uta.cse3310.GameTermination.GameTermination;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.PageManager.PageManager;
-import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 
 public class GameManager {
     static final int MAX_GAMES = 10;
-    BotI b1;
-    BotII b2;
-    PairUp pu;
     GameTermination gt;
     private ArrayList<Game> games = new ArrayList<>(MAX_GAMES);
 
@@ -85,6 +79,9 @@ public class GameManager {
 
     // Removes game once GameTermination concludes game is over
     public void removeGame(Game currentGame) {
+        GameTermination.endGame(currentGame);
+        games.set(currentGame.getGameID(), null);
+        /*
         Game gameToRemove = gt.endGame(currentGame);
         for (int i = 0; i < games.size(); i++) {
             Game g = games.get(i);
@@ -92,7 +89,14 @@ public class GameManager {
                 games.set(i, null);
                 pu.boardAvailable();
             }
-        }
+        } */
+    }
+
+    // When a player disconnects
+    public void removeGame(Game currentGame, Player p) {
+        if (currentGame == null) {return;}
+        GameTermination.forceEndGame(currentGame, p);
+        games.set(currentGame.getGameID(), null);
     }
 
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back
