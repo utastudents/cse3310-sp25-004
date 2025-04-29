@@ -27,7 +27,7 @@ public class BotI extends Bot {
     public BotI() {
         super();
         this.random = new Random();
-        this.playerId = -1;
+        this.playerId = -2;
     } 
 
      //sets up the botn with a specific and color - like red or black
@@ -37,7 +37,7 @@ public class BotI extends Bot {
         this.color = Color.BLACK;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
-        this.playerId = -1;
+        this.playerId = -2;
     }
 
     @Override
@@ -52,8 +52,8 @@ public class BotI extends Bot {
     @Override
     public boolean makeMove(GamePlay gs){
 
-        if(game != null) {
-            this.board = game.getBoard().getBoard();
+        if(gs != null) {
+            this.board = gs.getBoard();
         } 
 
         try {
@@ -117,8 +117,8 @@ public class BotI extends Bot {
     //updates where the peices are on the board
     @Override 
     public boolean updateBoard(GamePlay gs) {
-        if (game != null) {
-            this.board = game.getBoard().getBoard();
+        if (gs != null) {
+            this.board = gs.getBoard();
         }
         return true;
     } 
