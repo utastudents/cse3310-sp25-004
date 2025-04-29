@@ -64,14 +64,14 @@ public class GameManager {
             if (game == null || !game.isGameActive()) {
                 Game newGame = new Game(i, p1, p2); // Use index as game ID
 
+                games.set(i, newGame);
+                newGame.setGameActive(true);
+
                 p1.setStatus(STATUS.IN_GAME);
                 p2.setStatus(STATUS.IN_GAME);
 
                 p1.startGame(newGame);
                 p2.startGame(newGame);
-
-                games.set(i, newGame);
-                newGame.setGameActive(true);
 
                 // p1 goes first
                 p1.makeMove(newGame.getBoard());
