@@ -199,13 +199,15 @@ public class BotIITest {
         Board board = new Board();
         clearBoard(board);
         
-        Checker king = new Checker(new Cord(0, 0), Color.BLACK);
+        Checker king = new Checker(new Cord(1, 1), Color.BLACK);
         king.setKing(true);
-        board.checkerBoard[0][0] = king;
+        board.checkerBoard[1][1] = king;
         board.checkerBoard[4][2] = new Checker(new Cord(2, 4), Color.RED);
+        board.checkerBoard[6][6] = new Checker(new Cord(6, 6), Color.BLACK);
+
         printBoardWithCoordinates(board);
         
-        BotII.Move move = BotII.makeValidMove(board);
+        BotII.Move move = BotII.makeBestMove(board);
         //System.out.println("Move" + moves.get(1));
         // for (Cord move : moves) {
         //     System.out.println("Move: " + move);

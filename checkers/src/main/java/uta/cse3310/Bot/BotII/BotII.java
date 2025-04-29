@@ -61,6 +61,7 @@ public class BotII extends Bot {
                 }
             }
         }
+        System.out.println("final move is: " + bestMove.destination);
         return bestMove;
     }
 
@@ -443,10 +444,12 @@ public class BotII extends Bot {
         if (fJump) {
             bestMove = capturePiece(board);
         }
-        else if (bestMove == null) {
-            bestMove = defendPieces(board);
-        }
+        // else if (bestMove == null) {
+        //     System.out.println("cannot capture");
+        //     bestMove = defendPieces(board);
+        // }
         if (bestMove == null) {
+            System.out.println("cannot defend");
             bestMove = makeValidMove(board);
         }
         return bestMove;
