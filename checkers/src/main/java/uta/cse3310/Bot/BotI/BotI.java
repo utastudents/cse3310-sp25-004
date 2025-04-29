@@ -52,8 +52,8 @@ public class BotI extends Bot {
     @Override
     public boolean makeMove(GamePlay gs){
 
-        if(game != null) {
-            this.board = game.getBoard().getBoard();
+        if(gs != null) {
+            this.board = gs.getBoard();
         } 
 
         try {
@@ -117,8 +117,8 @@ public class BotI extends Bot {
     //updates where the peices are on the board
     @Override 
     public boolean updateBoard(GamePlay gs) {
-        if (game != null) {
-            this.board = game.getBoard().getBoard();
+        if (gs != null) {
+            this.board = gs.getBoard();
         }
         return true;
     } 
