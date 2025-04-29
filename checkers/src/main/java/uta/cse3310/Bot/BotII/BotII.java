@@ -34,7 +34,7 @@ public class BotII extends Bot {
                 if (checker != null && checker.getColor() == Color.BLACK && !checker.isKing()) {
                     ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                     for (Cord move : safeMoves) {
-                        if (!wouldBeInDangerAfterMove(checker, move, board)) {
+                        if (bestMove == null && !wouldBeInDangerAfterMove(checker, move, board)) {
                             bestMove = new Move(checker, move);
                         }
                         else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
