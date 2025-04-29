@@ -187,6 +187,7 @@ public class GameManager {
             board.getBoard().printBoard(from, to);
 
             if (g.consecutiveAttempts > 10) {
+                g.getBoard().getBoard().printAvailableMoves();
                 throw new Error("Automatic move failed!");
             } else if (g.consecutiveAttempts > 5) {
                 System.out.println("Too many failed attempts! Forcing automatic move.");

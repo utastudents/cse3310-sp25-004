@@ -9,4 +9,8 @@ public class Move {
         this.from = f;
 		this.dest = d;
 	}
+
+    public String toString() {
+        return piece + " from " + from + " to " + dest;
+    }
 }
