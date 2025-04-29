@@ -42,16 +42,15 @@ public class BotII extends Bot {
                         }
                     }
                 }
-                else if (bestMove == null) {
-                    if (checker != null && checker.isKing()) //stops failing since there was no null check before
-                    {
-                        ArrayList<Cord> kingMoves = getKingMoves(board, checker);
+                else if (bestMove == null && checker != null && checker.isKing() ) {
+                    //stops failing since there was no null check before
+                    ArrayList<Cord> kingMoves = getKingMoves(board, checker);
                         for (Cord move : kingMoves) {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
                             }
                         }
-                    }
+                    
                 }
             }
         }
