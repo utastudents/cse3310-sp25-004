@@ -86,7 +86,7 @@ public class BotI extends Bot {
                     GameMove move = new GameMove(this.playerId, this.game.getGameID(), start.getX(), start.getY(),
                                                 end.getX(), end.getY(), "black");
                     PageManager.Gm.processMove(move, gs);
-                    updateBoard(gs);
+                    // updateBoard(gs);
                 }
                 return true;
             } else {
@@ -94,7 +94,7 @@ public class BotI extends Bot {
                                             bestJumpMove.piece.getCord().getY(), bestJumpMove.destination.getX(), 
                                             bestJumpMove.destination.getY(), "black");
                 PageManager.Gm.processMove(move, gs);
-                updateBoard(gs);
+                // updateBoard(gs);
                 return true;
             }
         }
@@ -108,7 +108,7 @@ public class BotI extends Bot {
                                     bestMove.piece.getCord().getX(), bestMove.piece.getCord().getY(), 
                                     bestMove.destination.getX(), bestMove.destination.getY(), "black");
             PageManager.Gm.processMove(move, gs); 
-            updateBoard(gs);
+            // updateBoard(gs);
             return true; 
         } 
         return false; //if theres no moves at all
