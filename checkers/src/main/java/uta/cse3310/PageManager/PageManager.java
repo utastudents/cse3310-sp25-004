@@ -30,12 +30,12 @@ public class PageManager {
 
     
     // List to track active players in the subsystem
-    public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
+    public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>(); // Key : clientId. NOT PLAYER ID. clientId is from App.java
     Gson gson = new Gson();
     public static PairUp pu;
     public static GameManager Gm;
     public static DB db;
-    public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
+    public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>(); // key: playerId. NOT CLIENT ID. Handled by database. Out: clientId
     public Hashtable<Integer,GamePlay> getGamePlay = new Hashtable<>();
 
     // Track user in which subsytem they are in.
@@ -835,19 +835,14 @@ public class PageManager {
     }
 
      public void EndGameNotifier(int UserId, GamePlay gs){
-        
-        if (!userIDToClientID.contains(UserId)) {
-            // User left the game
+
+        if (!userIDToClientID.containsKey(UserId)) {
             System.out.println("Sent no end game message to playerId " + UserId + "\nCurrent map:");
-            Enumeration<Integer> keys = userIDToClientID.keys();
-            int k;
-            while (keys.hasMoreElements()) {
-                k = keys.nextElement();
-                System.out.print(k + " ");
-            }
-            System.out.println();
             return;
         }
+        
+
+        System.out.println("Sending game over message to playerId " + UserId);
 
         UserEventReply reply = new UserEventReply();
         JsonObject json = new JsonObject();
@@ -879,9 +874,11 @@ public class PageManager {
         if (player != null) {
             // Remove from all the maps and stuff I know of
             System.out.println("Unmapping client id " + Id);
-            activePlayers.remove(Id);
             pu.removeFromQueue(player);
-            userIDToClientID.remove(Id);
+            if (userIDToClientID.contains(Id)) {
+                userIDToClientID.remove(activePlayers.get(Id).getPlayerId());
+            }
+            activePlayers.remove(Id);
             clientStates.remove(Id);
             
             Game g = player.getGame(); //get game object from that player
@@ -894,7 +891,7 @@ public class PageManager {
             JsonObject msg = new JsonObject();
             msg.addProperty("responseID", "playerLeft");
             msg.addProperty("username", player.getUsername());
-            msg.addProperty("ID", userIDToClientID.get(Id));
+            msg.addProperty("ID", Id);
     
             UserEventReply reply = new UserEventReply();
             reply.replyObj = msg;

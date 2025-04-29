@@ -272,6 +272,10 @@ public class GamePlay
         return board;
     }
 
+    public void setWinner(int w) {
+        this.winner = w;
+    }
+
     public int getWinner() {
         return winner;
     }

@@ -28,11 +28,8 @@ public class GameTermination {
 
         public static void forceEndGame(Game g, Player p) {
             // Player p lost
-            if (p.equals(g.getPlayer1())) {
-                PageManager.db.recordMatchResult(p.getPlayerId(), g.getPlayer2().getPlayerId());
-            } else {
-                PageManager.db.recordMatchResult(g.getPlayer1().getPlayerId(), p.getPlayerId());
-            }
+            g.getBoard().setWinner(g.getOther(p).getPlayerId());
+            PageManager.db.recordMatchResult(g.getOther(p).getPlayerId(), p.getPlayerId());
         }
 
         // New endGame functionality.  
