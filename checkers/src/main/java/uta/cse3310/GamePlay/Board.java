@@ -530,7 +530,7 @@ public class Board
 							jumps.add(new Move(p, from, c));
 						}
 					}
-					else if(p.getColor() == Color.RED || p.isKing()) // Check if the piece is a king or red
+					if(p.getColor() == Color.RED || p.isKing()) // Check if the piece is a king or red
 					{
 						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
 						ArrayList<Cord> dests = getPossibleBackwardJump(p);
