@@ -18,7 +18,7 @@ import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 
 public class GameManager {
-    private static final int MAX_GAMES = 10;
+    static final int MAX_GAMES = 10;
     BotI b1;
     BotII b2;
     PairUp pu;
@@ -69,7 +69,7 @@ public class GameManager {
 
                 p1.startGame(newGame);
                 p2.startGame(newGame);
-                
+
                 games.set(i, newGame);
                 newGame.setGameActive(true);
 

@@ -155,4 +155,16 @@ public class GameTest {
             assertNull(game.getPlayer2(), "Player 2 should initially be null.");
         }
     }
+
+    @Test
+    void testNumGamesAvailable() {
+        //This test was created because the number client-side seems to not change, despite the number of active games changing
+        GameManager gm = new GameManager();
+
+        for (int i=0; i<10; i++) {
+            assertEquals(gm.getNumOfAvailableGames(), GameManager.MAX_GAMES - i);
+            gm.createGame(new TestPlayer(i*2), new TestPlayer(i*2 + 1));
+        }
+        
+    }
 }
