@@ -27,7 +27,7 @@ public class BotI extends Bot {
     public BotI() {
         super();
         this.random = new Random();
-        this.playerId = -1;
+        this.playerId = -2;
     } 
 
      //sets up the botn with a specific and color - like red or black
@@ -37,7 +37,7 @@ public class BotI extends Bot {
         this.color = Color.BLACK;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
-        this.playerId = -1;
+        this.playerId = -2;
     }
 
     @Override
