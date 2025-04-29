@@ -170,7 +170,7 @@ public class PageManagerTest
 	public void checkLoginExistsTest()
 	{
 		/*
-		 * Test for req. PG-23, tests that PM check with DB that a user logging in exists in DB
+		 * Test for req. PG-23 and PG-24, tests that PM check with DB that a user logging in exists in DB
 		 */
 
 		int ID = 123;
@@ -183,7 +183,12 @@ public class PageManagerTest
 
 		jsonData.addProperty("action", "login");
 
-		pm.handleLogin(jsonData, ID);
+		UserEventReply reply = pm.handleLogin(jsonData, ID);
+
+		if ( reply.replyObj.get("responseID").getAsString() != "loginSuccessful" )
+		{
+			throw new RuntimeException("Login was unsuccessful!");
+		}
 	}
 	
 	@Test
