@@ -95,7 +95,8 @@ public class GameManager {
         }
     }
 
-    // Retrieves move by PageManager, passes to GamePlay to update, pass update back to caller
+    // Retrieves move by PageManager, passes to GamePlay to update, pass update back
+    // to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
         int playerId = move.getClientId();
         Game g = games.get(move.getGameId());
@@ -176,6 +177,15 @@ public class GameManager {
 
         return new GameUpdate(valid, "In Progress", "", result == 2, (piece != null ? piece.isKing() : false), movePath);
     }
+    /*
+     * public void SendUpdatedBoard(Game game, int currentPlayerId) {
+     * Player p1 = game.getPlayer1();
+     * Player p2 = game.getPlayer2();
+     * 
+     * if (p1 != null) p1.updateBoard(null);
+     * if (p2 != null) p2.updateBoard(null);
+     * }
+     */
 
     //Converting the board from Checker[][] to String[][] for display
     public String[][] To2DstringArray(Checker[][] board) {
