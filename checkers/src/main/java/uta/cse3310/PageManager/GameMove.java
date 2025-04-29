@@ -29,6 +29,14 @@ public class GameMove {
         this.toPosition_X = m.dest.getX();
         this.toPosition_Y = m.dest.getY();
     }
+    public GameMove(int cId, int gId, Move m) {
+        this.clientId = cId;
+        this.gameId = gId;
+        this.fromPosition_X = m.from.getX();
+        this.fromPosition_Y = m.from.getY();
+        this.toPosition_X = m.dest.getX();
+        this.toPosition_Y = m.dest.getY();
+    }
     //getters
     public int getClientId() { 
         return clientId; 

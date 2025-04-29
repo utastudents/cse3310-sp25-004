@@ -186,12 +186,8 @@ connection.onmessage = function (msg) {
         }
         case "EndGame": {
             console.log("The game has ended");
-            console.log("The winner is " + jsonMsg.winner); //If 0, game was a draw. Player ID
-            if (jsonMsg.winner == clientId) {
-                showWinStatus();
-            } else {
-                showLoseStatus();
-            }
+            console.log("The winner is " + jsonMsg.winner); //Name. Bot, You, or other player's name
+            displayGameOverData(jsonMsg);
             loadData(jsonMsg.top10);
             break;
         }

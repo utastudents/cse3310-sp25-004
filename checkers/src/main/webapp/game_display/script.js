@@ -10,6 +10,10 @@ let blackName;
 
 let me = "red"; // default
 
+function amI(name) {
+    return me == "red" ? name == redName : name == blackName;
+}
+
 function startGameInitialize(json) {
     me = json.you;
     console.log("You are " + me);

@@ -514,6 +514,16 @@
 		}
 	}
 
+	function displayGameOverData(json) {
+		const Iwon = amI(json.winner);
+
+		if (Iwon) {
+			showWinStatus();
+		} else {
+			showLoseStatus();
+		}
+	}
+
 	// Log in / new user functions
 
 	function login(message) {

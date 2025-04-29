@@ -68,13 +68,24 @@ public class GameManager {
                 p2.startGame(newGame);
 
                 // p1 goes first
-                p1.makeMove(newGame.getBoard());
+                moveWrapper(newGame.getPlayer1(), newGame);
 
                 return true;
             }
         }
         System.out.println("Failed to create a new game!");
         return false;
+    }
+
+    private void moveWrapper(Player p, Game g) {
+        try {
+            p.makeMove(g.getBoard());
+        } catch (Exception e) {
+            System.out.println(e);
+            GameMove fallback = new GameMove(p.getPlayerId(), g.getGameID(), 
+                g.getBoard().getBoard().getAllMoves().get(0));
+            processMove(fallback, g.getBoard());
+        }
     }
 
     // Removes game once GameTermination concludes game is over
@@ -104,7 +115,7 @@ public class GameManager {
         currentGame.getPlayer2().endGame(currentGame.getBoard());
 
         games.set(currentGame.getGameID(), null);
-        
+
         PageManager.pu.boardAvailable();
     }
 
@@ -190,10 +201,10 @@ public class GameManager {
         if (board.getTurn()) {
             //Black's move
             g.getPlayer1().updateBoard(board);
-            g.getPlayer2().makeMove(board);
+            moveWrapper(g.getPlayer2(), g);
         } else {
             //Red's move
-            g.getPlayer1().makeMove(board);
+            moveWrapper(g.getPlayer1(), g);
             g.getPlayer2().updateBoard(board);
         }
 

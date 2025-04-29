@@ -846,12 +846,23 @@ public class PageManager {
             return;
         }
         
+        int clientId = userIDToClientID.get(UserId);
+
+        int winnerId = gs.getWinner();
+        String winner = "Bot";
+        if (winnerId == UserId) {
+            // This user won
+            winner = "You";
+        } else if (userIDToClientID.containsKey(winnerId)) {
+            int winnerClient = userIDToClientID.get(winnerId);
+            winner = activePlayers.get(winnerClient).getUsername();
+        }
 
         System.out.println("Sending game over message to playerId " + UserId);
 
         UserEventReply reply = new UserEventReply();
         JsonObject json = new JsonObject();
-        int clientId = userIDToClientID.get(UserId);
+        
         reply.recipients.add(clientId);
 
         //turning the board to 2d string array
@@ -860,7 +871,7 @@ public class PageManager {
         //getting the 2d string board as a jsonobj
         json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "EndGame");
-        json.addProperty("winner", gs.getWinner());
+        json.addProperty("winner", winner);
         
         putTop10InJson(json);
         
