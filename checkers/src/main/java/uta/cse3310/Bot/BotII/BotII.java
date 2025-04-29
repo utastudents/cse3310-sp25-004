@@ -42,16 +42,15 @@ public class BotII extends Bot {
                         }
                     }
                 }
-                /*else if (bestMove == null && checker != null && checker.isKing() ) {
+                else if (bestMove == null && checker != null && checker.isKing() ) {
                     //stops failing since there was no null check before
                     ArrayList<Cord> kingMoves = getKingMoves(board, checker);
-                        for (Cord move : kingMoves) {
-                            if (bestMove == null) {
-                                bestMove = new Move(checker, move);
-                            }
+                    for (Cord move : kingMoves) {
+                        if (bestMove == null) {
+                            bestMove = new Move(checker, move);
                         }
-                    
-                }*/
+                    }
+                }
             }
         }
         return bestMove;
@@ -149,9 +148,6 @@ public class BotII extends Bot {
                         if (bestMove == null && blockingChecker != null) {
                             bestMove = blockAttack(blockingChecker);
                         }
-                            // else {
-                            //     bestMove = makeValidMove(board);
-                            // }
                     }
                 }
             }
