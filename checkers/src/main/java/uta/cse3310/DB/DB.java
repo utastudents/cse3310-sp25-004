@@ -1,6 +1,7 @@
 
 package uta.cse3310.DB;
 
+/* import all required documents */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.sql.Statement;
 import uta.cse3310.PageManager.HumanPlayer;
 import uta.cse3310.PairUp.Player.STATUS;
 
-
+/* define our main class to be used */
 public class DB 
 {
     /*declaring conn variable with Connection type, Connection will let us SELECT, INSERT, and UPDATE the database*/
@@ -45,7 +46,7 @@ public class DB
                      "salt TEXT NOT NULL," +
                      "wins INTEGER DEFAULT 0," +   
                      "losses INTEGER DEFAULT 0," + 
-                     "elo INTEGER DEFAULT 1000," + //Unsure how we are gonig to do elo, starting at 1000 for now
+                     "elo INTEGER DEFAULT 1000," + 
                      "games_played INTEGER DEFAULT 0)";
         
         try (Statement stmt = conn.createStatement()) {
@@ -248,13 +249,6 @@ public class DB
         } catch (SQLException e) {
             System.out.println("Error recording match result: " + e.getMessage());
         }
-    }
-
-    // GameTermination was calling this method,
-    // so this is temp code. Will fix when they clarify what they meant to call - GameManager
-    public HumanPlayer getPlayerById(int player1Id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerById'");
     }
 
 }

@@ -9,6 +9,7 @@ public class Game{
    private int gameID;   // Unique game identifier
    private GamePlay board;
    public boolean isAvailable;
+   public int consecutiveAttempts = 0;
 
 	public Game(int gameID, Player player1, Player player2){ // might need to handle challenge Q in here too 
       this.gameID = gameID; // gameID is index number in ArrayList
@@ -61,5 +62,12 @@ public class Game{
    // initializing the board gameplay logic
    public void startGame(Game game) {
       board = new GamePlay(gameID);
+   }
+
+   public void printBasics() {
+      System.out.println("GAME " + gameID);
+      System.out.println("Player 1: " + player1.getPlayerId());
+      System.out.println("Player 2: " + player2.getPlayerId());
+      System.out.println("Turn: " + (board.turn ? "black" : "red"));
    }
 }

@@ -38,7 +38,7 @@
 					match.</span>
 				<span id="database-failure-error" class="error-msg" style="display: none;">Database failed to retrieve
 					player.</span>
-				<button id="signup-btn" type="submit">SIGN UP</button>
+				<button id="signup-btn" type="submit"><span>SIGN UP</span></button>
 				<p class="signup-text">Already have an account? <a href="#" id="back-to-login">Log in</a></p>
 			</form>
 		</div>
@@ -60,25 +60,26 @@
 				<span id="login-password-error" class="error-msg" style="display: none;">Incorrect username and/or
 					password.</span>
 
-				<button id="login-btn" type="submit">LOGIN</button>
+				<button id="login-btn" type="submit"><span>LOGIN</span></button>
 
-				<p class="signup-text">
-					Don't have an account? <a href="#" id="show-signup">Sign up</a>
-				</p>
-			</form>
-			<div>
-				<button id="showDragonBtn"></button>
-				<img id="dragon" class="dragon" src="transparent_dragon.png" style="display:none;">
-			</div>
+				<!-- TODO: REMOVE THE FOLLOWING LINE (for debug/testing purposes only) -->
+				 <button onclick="sendMessage({'action':'quickstart'})">Quick Start DEBUG</button>
 
-			<button id="chaos-button"
-				style="position: absolute; top: 10px; left: 10px; width: 50px; height: 50px; opacity: 0; z-index: 999;">Click</button>
+            <p class="signup-text">
+                Don't have an account? <a href="#" id="show-signup">Sign up</a>
+            </p>
+        </form>
+		<div>
+			<button id="showDragonBtn"></button>
+			<img id="dragon" class="dragon" src="transparent_dragon.png" style="display:none;">
 		</div>
+		
+		<button id="chaos-button" style="position: absolute; top: 10px; left: 10px; width: 50px; height: 50px; opacity: 0; z-index: 999;">Click</button>
+	</div>
 		<script src="login_signup/auth.js"></script>
 	</div>
-
-	<div id="join_game">
-		<div class="lobby_lists_container" style="width:100%;">
+    <div id="join_game" style="display: none;">
+		<div class="lobby_lists_container" style = "width:100%;">
 			<!-- have function to get player username and/ or ID -->
 			<h2>Have fun in the lobby :D</h2>
 			<!-- Have function to get amount of players -->
@@ -91,31 +92,26 @@
 
 					<!-- EXAMPLE: -->
 					<!-- <li class="player">
-						<p id="UID002"> Player 2 - {ELO} <span class="status free"></span></p>
-						<button id="btn1-UID002" onclick="req_challenge(1,2)">Challenge</button>
-						<button id="btn2-UID002" onclick="console.log('request spectate')" disabled>View Match</button>
+						<p id="UID{player_id}"> Player 2 - {ELO} <span class="status free"></span></p>
+						<button id="chall_btn-{player_id}" onclick="req_challenge(1,2)">Challenge</button>
+						<button id="view_btn-{player_id}" onclick="console.log('request spectate')" disabled>View Match</button>
 					</li> -->
 				</ol>
 			</div>
 
-			<button>
-				<!-- Will always have current player information, parameter is player they want to challenge -->
-				<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
-				<a id="CURRENT_SESSION_JQ" type="button" onclick="sendMessage({action:'joinQueue', playerClientId: globalClientID})">
-					Match Making
-				</a>
+			<!-- Will always have current player information, parameter is player they want to challenge -->
+			<!-- Challanged player must accept, timer of 10 seconds then automatic deny -->
+			<button class="enable_btn" id="CURRENT_SESSION_JQ"  type="button" onclick="sendMessage({action:'joinQueue', playerClientId: globalClientID})">
+				Matchmaking
 			</button>
 			<!-- Will send info to DB and Bots with what bot and person -->
-			<button>
-				<a id="CURRENT_SESSION_BOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 0})">
-					Challenge Bot I
-				</a>
+			<button class="enable_btn" id="CURRENT_SESSION_BOT"  type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 0})">
+				Challenge Bot I
 			</button>
 			<!-- request to see bots play -->
-			<button>
-				<a id="CURRENT_SESSION_BOTvsBOT" type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
-					Challenge Bot II
-				</a></button>
+			<button class="enable_btn" id="CURRENT_SESSION_BOTvsBOT"  type="button" onclick="sendMessage({'action':'challengeBot', 'botId': 1})">
+				Challenge Bot II
+			</button>
 		</div>
 		<!-- Send server who is the current player that logged in and request to see the list of active players-->
 		<script>
@@ -135,10 +131,10 @@
 				paragraph.innerText = `${player_info.username} - Elo: ${player_info.elo}`;
 
 				const span = document.createElement("span");
-				if (player_info.status == "ONLINE") {
-					span.className = "status free";
+				if (player_info.status == "ONLINE"){
+					span.className = "status free"; 
 				} else {
-					span.className = "status busy";
+					span.className = "status busy"; 
 				}
 				paragraph.appendChild(span);
 
@@ -146,59 +142,78 @@
 				const challenge_btn = document.createElement("button");
 				challenge_btn.id = `chall_btn-${player_info.ClientID}`;
 				challenge_btn.innerText = "Challenge";
-				challenge_btn.addEventListener("click", function () {
-					// req_challenge(1, player_info.ClientID);
-					// console.log(`Requesting challenge to player: ${player_info.ClientID}`);
-					sendMessage({action:"challengePlayer",opponentClientId: player_info.ClientID});
-				});
+				if (player_info.status == "ONLINE") {
+					challenge_btn.className = "chall_btn";
+				} else {
+					challenge_btn.disabled = true;
+				}
+				challenge_btn.onclick = function () {
+					challenge_btn.classList.add("challenged");
+					req_challenge(player_info.ClientID);
+				};
 
 				const view_btn = document.createElement("button");
 				view_btn.id = `view_btn-${player_info.ClientID}`;
 				view_btn.innerText = "View Match";
+
+				// Set the disabled state based on player_info.status
 				if (player_info.status == "ONLINE") {
 					view_btn.disabled = true;
+					view_btn.className = "";
 				} else {
 					view_btn.disabled = false;
+					view_btn.className = "enable_btn";
 				}
-				view_btn.disabled = true;
+
 				view_btn.onclick = function () {
 					viewMatch(player_info.ClientID);
 				};
-
+			
 				li.appendChild(paragraph);
 				li.appendChild(challenge_btn);
 				li.appendChild(view_btn);
 
 				listEl.appendChild(li);
 			};
+
+			function req_challenge(challenged_player_id) {
+				const challengeRequest = {
+					action: "challengePlayer",
+					opponentClientID: challenged_player_id
+				};
+
+				console.log("Requesting challenge to player:", challenged_player_id);
+				sendMessage(JSON.stringify(challengeRequest));
+			}
+			
 			//view match function
 			function viewMatch(playerID) {
 				const viewMatchRequest = {
 					type: "request_view_match",
-					playerID: playerID
+					playerID: playerID 
 				};
 
 				console.log("Requesting to view match for player:", playerID);
-				sendMessage(JSON.stringify(viewMatchRequest));
+					sendMessage(JSON.stringify(viewMatchRequest));
 			}
 
 			function watchBotVsBot(player_info) {
 				const botVsBotReq = {
 					type: "request_bot_vs_bot",
-					playerID: player_info.ClientID,
+					playerID: player_info.ClientID, 
 				};
 
 				console.log("Requesting Bot vs Bot Match:", botVsBotReq);
 				sendMessage(JSON.stringify(botVsBotReq));
 			}
-			// end
+				
 			function updateJoinGameList(data) {
 				clearLobbyList();
 				const current_player_id = globalClientID;
 				const online_players = data["activePlayers"];
 
-				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48`;
-
+				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
+				console.log(JSON.stringify(data));
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
 						Object.assign(currentPlayerInfo, player);
@@ -280,10 +295,10 @@
 			function botChallenged(inQueue) {
 				if (inQueue) {
 					// TODO: Display the queue here
-					alert("In queue! Waiting for game to start...")
+					console.log("In queue! Waiting for game to start...")
 				} else {
 					// TODO: Display the game board
-					alert("Challenge accepted! Too bad no one has displayed the board :/");
+					console.log("Challenge accepted!");
 				}
 			}
 		</script>
@@ -309,6 +324,42 @@
 			</div>
 		</div>
 	</div>
+	<div id="popup-modal" style="
+		display: none;
+		position: fixed;
+		top: 0; left: 0;
+		width: 100vw; height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 999;
+		justify-content: center;
+		align-items: center;
+	">
+		<div style="
+			background: white;
+			padding: 25px 35px;
+			border-radius: 12px;
+			text-align: center;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+			min-width: 300px;
+		">
+			<p id="popup-message" style="font-size: 1.2em; margin-bottom: 20px;">Are you sure?</p>
+			<button id="popup-confirm" style="
+				background-color: #4CAF50;
+				color: white;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				margin-right: 10px;
+			">Yes</button>
+			<button id="popup-cancel" style="
+				background-color: #F44336;
+				color: white;
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+			">No</button>
+		</div>
+	</div>
 </div>
 
 
@@ -318,6 +369,7 @@
 	<!-- visibility hidden -->
 	<div id="summary-leaderboard" style="display: none;">
 		<meta charset="UTF-8">
+		<h2 id="summary-gameResultBanner">Game Status</h2>
 		<h1>Leaderboard</h1>
 		<div class="scrollable-table">
 			<table id="summary-table">
@@ -373,10 +425,13 @@
 
 		</div>
 		<!--- <p class= "caption"> Top 10 players.</p> -->
-		<button id="summary-button-hide" onclick="summaryHide()">Back to Home</button>
+		<button id="summary-button-hide" onclick="summaryHide()">Hide Leaderboard</button>
+		<p style="text-align: center; font-size: 14px; color: gray; margin-top: 10px;">
+			Click on a header to sort ascending/descending.
+		</p>
 		<script src="./summary/summary.js"></script>
 		<script>
-			// Temporary functions to show/hide the leaderboard until page manager can take over
+			// Show/hide the leaderboard
 			function summaryShow() {
 				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
 				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
@@ -386,6 +441,30 @@
 			function summaryHide() {
 				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
 				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+			}
+
+			winMessage = "You won!";
+			loseMessage = "You lost!";
+			bannerID = "summary-gameResultBanner";
+
+			function bannerMessage(show, message="") {
+				document.getElementById(bannerID).textContent = message;
+				if (show) {
+					document.getElementById(bannerID).style.display = "block";
+				} else {
+					document.getElementById(bannerID).style.display = "none";
+				}
+			}
+
+			// Show/hide win status banner
+			function showWinStatus() {
+				bannerMessage(true, winMessage);
+			}
+			function showLoseStatus() {
+				bannerMessage(true, loseMessage);
+			}
+			function hideGameStatus() {
+				bannerMessage(false);
 			}
 		</script>
 	</div>
@@ -401,6 +480,40 @@
 </html>
 <script src="socket.js"></script>
 <script>
+	// Board display
+	// This method is called by socket.js with the game board from Java / GamePlay
+	function displayBoard(json) {
+		let boardState = json.boardState;
+		if (!boardState) {
+			console.log("Json invalid!");
+			console.log(json);
+			return;
+		}
+		if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
+		if (me == "red") {
+			boardState = invertBoard(boardState);
+		}
+		for (let row = 0; row < 8; row++) {
+			for (let col = 0; col < 8; col++) {
+				const el = document.getElementById(`square-r${row}-c${col}`);
+				el.classList.remove("red-piece", "black-piece", "empty", "red-king", "black-king");
+
+				if (boardState[row][col] == "empty") {
+					el.classList.add("empty");
+				} else {
+					const pieceType = boardState[row][col].split("_");
+					const isKing = pieceType[1] == "king"; //Either "king" or "pawn"
+
+					if (!isKing) {
+						el.classList.add(`${pieceType[0]}-piece`);
+					} else {
+						el.classList.add(`${pieceType[0]}-king`);
+					}
+				}
+			}
+		}
+	}
+
 	// Log in / new user functions
 
 	function login(message) {

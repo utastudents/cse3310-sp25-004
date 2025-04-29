@@ -1,14 +1,20 @@
 package uta.cse3310.GameTermination;
 
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.App;
 import uta.cse3310.DB.DB;
 import uta.cse3310.PageManager.HumanPlayer;
+import uta.cse3310.PageManager.PageManager;
+import uta.cse3310.PageManager.UserEventReply;
+import uta.cse3310.PairUp.Player;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonObject;
+
 public class GameTermination {
-//<<<<<<< HEAD
         // Tells game play game is over. 
 /*
         public void checkGameEnd(GameState gameState) {
@@ -19,17 +25,28 @@ public class GameTermination {
                 }
             } */
         // Tells game play game is over.
-//>>>>>>> 53d9da39b39717d17063f1874bfb036c82d15d50
+
         // New endGame functionality.  
-        public Game endGame(Game currentGame) {
+        public static Game endGame(Game currentGame) {
                 gameState state = new gameState();
                 int winnerID = -1; // -1 for draw
+                Player player1 = currentGame.getPlayer1();
+                Player player2 = currentGame.getPlayer2();
+
+
+                // TODO: Player turn matters as well. In checkers, there is no such thing as a draw. If it is your move and no legal moves are available, you lose.
+                // The other way to lose is to have all of your pieces captured
+
+
 
                 // Check if player 1 has won
                 if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
                         winnerID = currentGame.getPlayer1().getPlayerId();
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameWon"));
+                       //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameLost"));
+
                         return currentGame;
                 }
 
@@ -38,6 +55,8 @@ public class GameTermination {
                         winnerID = currentGame.getPlayer2().getPlayerId(); 
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+                        //App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameLost"));
+                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameWon"));
                         return currentGame;
                 }
 
@@ -46,6 +65,10 @@ public class GameTermination {
                         winnerID = -1;
                         currentGame.setGameActive(false);
                         //saveResults(currentGame, winnerID);
+
+                       // App.sendMessage(PageManager.sendGameResult(player1.getPlayerId(), "gameDraw"));
+                        //App.sendMessage(PageManager.sendGameResult(player2.getPlayerId(), "gameDraw"));
+
                         return currentGame;
                 }
 
@@ -58,96 +81,110 @@ public class GameTermination {
 
                 return null;
         }
-        public HumanPlayer[] saveResults(Game game){
+
+        public HumanPlayer[] saveResults(Game game) {
                 DB database = new DB();
                 gameState state = new gameState();
-
-
-                //retrieves playerId
-                int player1Id = game.getPlayer1().getPlayerId();
-                int player2Id = game.getPlayer2().getPlayerId();
-
-                //Determine which player is winning
-                int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game);
-
-                //retrieve players current stats
-                HumanPlayer player1 = database.getPlayerById(player1Id);
-                HumanPlayer player2 = database.getPlayerById(player2Id);
-
-                //if no games have ever been played start with 0
-                int p1Wins = 0, p1Losses = 0, p1Games = 0, p1Elo = 1000;
-                int p2Wins = 0, p2Losses = 0, p2Games = 0, p2Elo = 1000;
-
-                //check incase players aren't detected
-                if(player1 != null && player2 != null){
-                        p1Wins = player1.getWins();
-                        p1Losses = player1.getLosses();
-                        p1Games = player1.getGamesPlayed();
-                        p1Elo = player1.getELO();
-
-                        p2Wins = player2.getWins();
-                        p2Losses = player2.getLosses();
-                        p2Games = player2.getGamesPlayed();
-                        p2Elo = player2.getELO();
+            
+                // Ensure both players are Humans
+                if (!(game.getPlayer1() instanceof HumanPlayer) || !(game.getPlayer2() instanceof HumanPlayer)) {
+                    System.out.println("BOT DETECTED");
+                    return new HumanPlayer[]{null, null};
                 }
-
+            
+                // Cast players
+                HumanPlayer gamePlayer1 = (HumanPlayer) game.getPlayer1();
+                HumanPlayer gamePlayer2 = (HumanPlayer) game.getPlayer2();
+            
+                // Retrieve usernames
+                String username1 = gamePlayer1.getUsername();
+                String username2 = gamePlayer2.getUsername();
+            
+                // Retrieve players from DB
+                HumanPlayer player1 = database.getPlayerByUsername(username1);
+                HumanPlayer player2 = database.getPlayerByUsername(username2);
+            
+                // Safety check
+                if (player1 == null || player2 == null) {
+                    System.out.println("Player not detected");
+                    return new HumanPlayer[]{null, null};
+                }
+            
+                // Determine winner
+                int winnerID = state.checkForWinningPlayer(game.getBoard().getBoard(), game);
+            
+                // Current stats
+                int p1Id = player1.getPlayerId();
+                int p2Id = player2.getPlayerId();
+            
+                int p1Wins = player1.getWins();
+                int p1Losses = player1.getLosses();
+                int p1Games = player1.getGamesPlayed();
+                int p1Elo = player1.getELO();
+            
+                int p2Wins = player2.getWins();
+                int p2Losses = player2.getLosses();
+                int p2Games = player2.getGamesPlayed();
+                int p2Elo = player2.getELO();
+            
                 int updatedElo1 = p1Elo;
                 int updatedElo2 = p2Elo;
-
-                //Handles player draw
-                if (winnerID == -1){
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
-                //Handles Player 1 Win
-                }else if(winnerID == player1Id){
-                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
-                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
-
-                        database.updatePlayerStats(player1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
-                        database.updatePlayerStats(player2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 2);
-                //Handles Player 2 Win
-                }else if(winnerID == player2Id){
-                        updatedElo2 = (int)(p2Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p1Elo - p2Elo) / 400.0)))));
-                        updatedElo1 = (int)(p1Elo + 32 * (1 - (1.0/ (1.0 + Math.pow(10, (p2Elo - p1Elo) / 400.0)))));
-
-                        database.updatePlayerStats(player2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
-                        database.updatePlayerStats(player1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
+            
+                // Handle outcome
+                if (winnerID == -1) {
+                    // Draw
+                    database.updatePlayerStats(p1Id, p1Wins, p1Losses, p1Elo, p1Games + 1);
+                    database.updatePlayerStats(p2Id, p2Wins, p2Losses, p2Elo, p2Games + 1);
+                } else if (winnerID == p1Id) {
+                    // Player 1 wins
+                    updatedElo1 = calculateElo(p1Elo, p2Elo, true);
+                    updatedElo2 = calculateElo(p2Elo, p1Elo, false);
+            
+                    database.updatePlayerStats(p1Id, p1Wins + 1, p1Losses, updatedElo1, p1Games + 1);
+                    database.updatePlayerStats(p2Id, p2Wins, p2Losses + 1, updatedElo2, p2Games + 1);
+                } else if (winnerID == p2Id) {
+                    // Player 2 wins
+                    updatedElo2 = calculateElo(p2Elo, p1Elo, true);
+                    updatedElo1 = calculateElo(p1Elo, p2Elo, false);
+            
+                    database.updatePlayerStats(p2Id, p2Wins + 1, p2Losses, updatedElo2, p2Games + 1);
+                    database.updatePlayerStats(p1Id, p1Wins, p1Losses + 1, updatedElo1, p1Games + 1);
                 }
-
-                //return updated player stats
+            
+                
+            
+                // Return updated stats
                 HumanPlayer[] updatedStats = new HumanPlayer[2];
-                updatedStats[0] = database.getPlayerById(player1Id);
-                updatedStats[1] = database.getPlayerById(player2Id);
+                updatedStats[0] = database.getPlayerByUsername(username1);
+                updatedStats[1] = database.getPlayerByUsername(username2);
 
+                // Send updated leaderboard to both players
+                int outcome1;
+                int outcome2;
+                if (winnerID == -1) {
+                    outcome1 = 0;
+                    outcome2 = 0;
+                } else if (winnerID == p1Id) {
+                    outcome1 = 1;
+                    outcome2 = -1;
+                } else {
+                    outcome1 = -1;
+                    outcome2 = 1;
+                }
+                App.sendMessage(App.pmInstance.retrieveLeaderboardJson(new JsonObject(), p1Id, outcome1));
+                App.sendMessage(App.pmInstance.retrieveLeaderboardJson(new JsonObject(), p2Id, outcome2));
+            
                 return updatedStats;
-        }
-         // Generates and displays the leaderboard based on player scores. 
-         public void generateLeaderboard(int clientId) {
-        // Query the database for top 10 players.
-        List<String> topPlayers = new ArrayList<>();
-        String url = "jdbc:sqlite:game.db";  // Ensure this path is correct for your system
-
-        String sql = "SELECT username, wins FROM players ORDER BY wins DESC LIMIT 10";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                // For simplicity, just create a string representation.
-                String entry = rs.getString("username") + " - Wins: " + rs.getInt("wins");
-                topPlayers.add(entry);
             }
+            
+        
+        //moved here so Elo can be calculated easily
+        private int calculateElo(int playerElo, int opponentElo, boolean isWinner) {
+                double expectedScore = 1.0 / (1.0 + Math.pow(10, (opponentElo - playerElo) / 400.0));
+                return (int)(playerElo + 32 * ((isWinner ? 1 : 0) - expectedScore));
 
-        } catch (SQLException e) {
-            System.out.println("Error retrieving leaderboard: " + e.getMessage());
         }
 
-        // Delegate the sending of the leaderboard data to the PageManager.
-        // Note: You could either create a new PageManager instance here or use an existing one if available.
-       // PageManager pm = new PageManager();
-       // pm.sendLeaderboard(topPlayers, clientId);
-    }
 }
 
 

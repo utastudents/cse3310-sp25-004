@@ -15,14 +15,24 @@ connection = new WebSocket(serverUrl);
 
 // Messenger - This is how ALL outgoing messages will be sent to the server. ALL OF THEM. 
 function sendMessage(json = {}) {
-    if (!json.action) {
-        console.trace("No ACTION specified in sendMessage! Msg:");
-        console.log(json);
+    let jsonMsg = null;
+    if (typeof json === "string") {
+        jsonMsg = JSON.parse(json);
+    } else {
+        jsonMsg = json;
+    }
+
+    if (!jsonMsg.action) {
+        console.trace("No ACTION specified in sendMessage!");
         return;
     }
-    console.log("Sending message " + json.action + " to server");
-    console.log(JSON.stringify(json));
-    connection.send(JSON.stringify(json));
+    
+    console.log("Sending message " + jsonMsg.action + " to server");
+
+    let toSend = JSON.stringify(jsonMsg);
+
+    console.log(toSend);
+    connection.send(toSend);
 }
 
 
@@ -36,16 +46,10 @@ connection.onclose = function (evt) {
 
 var globalClientID = null;
 
-connection.onmessage = function (evt) {
-    let msg = evt.data; //extract data from websocket response
-    console.log("Message received: " + msg);
-    let jsonMsg = JSON.parse(msg);
-
-    console.log(jsonMsg);
-
+connection.onmessage = function (msg) {
+    let jsonMsg = JSON.parse(msg.data);
+    // console.log("Message from server: ", jsonMsg);
     let responseID = jsonMsg.responseID;
-
-    console.log("Response ID: " + responseID);
 
     if (jsonMsg.clientId) {
         globalClientID = jsonMsg.clientId;
@@ -105,6 +109,15 @@ connection.onmessage = function (evt) {
             updateJoinGameList(jsonMsg);
             break;
         }
+        case "challengePlayer": {
+            // console.log("Player challenge request accepted", jsonMsg);
+            sendMessage({action:"challengePlayerReply", opponentClientId:jsonMsg.playerClientId, playerClientId:globalClientID, accepted:true});
+            break;
+        }
+        case "challengePlayerReply":{
+            // console.log("Player vs player ",jsonMsg);
+            break;
+        }
 
         case "new_user": {
             newUser(jsonMsg.msg);
@@ -123,10 +136,39 @@ connection.onmessage = function (evt) {
         }
 
         // Game Responses
+        case "getActivePlayers": {
+            updateJoinGameList(jsonMsg);
+            break;
+        }
         case "startGame": {
             //Start the actual game!
             //{"responseID":"startGame","gameType":"pvb","player1":{"isBot":false,"playerClientId":1,"username":"test","elo":0,"gamesWon":0,"gamesLost":0,"status":"IN_GAME"},"player2":{"isBot":true}}
-            alert("Starting the game! " + JSON.stringify(jsonMsg));
+            console.log("Starting the game!", JSON.stringify(jsonMsg));
+            startGameInitialize(jsonMsg);
+            break;
+        }
+        case "invalidMove": {
+            alert("Invalid Move!");
+            break;
+        }
+        case "validMove": {
+            console.log("Valid move");
+            console.log(jsonMsg.valid);
+            break;
+        }
+        case "UpdateBoard": {
+            console.log("Board update! e.g. Bot Move");
+            console.log(jsonMsg);
+            displayBoard(jsonMsg);
+            opponentTurn();
+            break;
+        }
+        case "requestMove": {
+            //alert('Your move')
+            console.log("Your move!");
+            console.log(jsonMsg);
+            displayBoard(jsonMsg);
+            yourTurn();
             break;
         }
 
@@ -142,8 +184,29 @@ connection.onmessage = function (evt) {
             console.log("Player left:", jsonMsg.username);
             break;
         }
+		case "gameWon": {
+            console.log("Received gameWon");
+			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've won the game
+			//Expects the same response data, just a different responseID
+			showWinStatus();
+			loadData(jsonMsg.top10);
+			break;
+		}
+		case "gameLost": {
+			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've lost the game
+			//Expects the same response data, just a different responseID
+			showLoseStatus();
+			loadData(jsonMsg.top10);
+			break;
+		}
+        case "gameDraw": {
+            //more summaryData for a draw
+
+            break;
+        }
         default:{
             console.log("Received unexpected responseID! Got: \n"+responseID);
+            console.log(jsonMsg);
         }
     }
 }
@@ -155,3 +218,48 @@ connection.onmessage = function (evt) {
  * - NO document.getElementById
  * - NO game logic, game code, etc.
  */
+
+/*START: This part will be for the challenged button timer, this is so I can come back to it */
+function startChallenge(button){
+    button.classList.add("challenged");
+    let time = 10;
+    const origText = button.innerText;
+    button.disabled = true;
+
+    //to show count down//
+    const count = setInterval(() => {
+        button.innerText = 'Waiting... ${timeLeft}s';
+        time--;
+
+        if(time < 0){
+            clearInterval(count);
+            button.classList.remove("challenged");
+            button.classList.add("fail");
+            button.innerText = "Challenge Expired";
+        }
+    }, 1000);
+
+    setTimeout(() => {
+        clearInterval(count);
+        const accepted = Math.random() > 0.5;
+        button.classList.remove("challenged");
+
+        if(accepted){
+            button.classList.add("success");
+            button.innerText = "Challenge Accepted!";
+        }else{
+            button.classList.add("fail");
+            button.innerText = "Challenge Declined";
+        }
+    }, Math.floor(Math.random() * 10000))
+}
+
+/*END of timer code*/ 
+
+function handleJoinGame(data) { //function to update when join team
+    console.log("Join team response received", data);
+    document.getElementById("join_game").style.display = "block"; // set join game to visible and the rest to hidden
+    document.getElementById("game_display").style.display = "none";
+    document.getElementById("new_account").style.display = "none";
+    document.getElementById("login").style.display = "none"; 
+}

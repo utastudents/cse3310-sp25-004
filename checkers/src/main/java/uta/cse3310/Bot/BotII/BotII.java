@@ -1,137 +1,299 @@
 package uta.cse3310.Bot.BotII;
 
-import uta.cse3310.GameState;
+import java.util.ArrayList;
+
 import uta.cse3310.Bot.Bot;
 import uta.cse3310.GameManager.Game;
-//import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
-import java.util.ArrayList;
-
+import uta.cse3310.GamePlay.GamePlay;
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.PageManager;
+//import uta.cse3310.GameState;
 
 public class BotII extends Bot {
-	
-	//private GamePlay gamePlay;
-    //private Color botColor = Color.BLACK; // Default color for the bot
 
-    /*
-    public BotII(GamePlay gamePlay, Color botColor) {
-        this.gamePlay = gamePlay; // Initialize the game play
-        this.botColor = botColor; // Set the bot's color
+    public BotII() {
+        this.playerId = -2; //Bots are -1, -2. Might change this later
     }
-    */
+
+	// private Game game; // Game game is declared in the abstract Player super class
+
+    private static Color botColor = Color.BLACK; // Initializing with a default value
+    //private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
+    private static boolean attackSide = false; // True will be for left and False for right side
     
-    public void makeValidMove() {
-        // TODO: Logic to choose and make a legal move
-    }
-    public void promoteToKing() {
-        // TODO: Check if a piece reached the end and promote to king / Allow more than one king on board
-    }
-    public static Move defendPieces(Board board) {
-    // TODO: Prioritize defending own pieces over offense
-    // TODO: Try to block opponent from advancing or jumping
-    Move bestMove = null;
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Checker checker = board.checkerBoard[y][x];
-            if (checker != null && checker.getColor() == Color.BLACK) {
-                if (isInDanger(checker, board)) {
+    public static Move makeValidMove(Board board) {
+        Move bestMove = null;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker checker = board.checkerBoard[y][x];
+                if (checker != null && checker.getColor() == Color.BLACK) {
                     ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                     for (Cord move : safeMoves) {
-                        if (bestMove == null) {
+                        if (wouldBeInDangerAfterMove(checker, move, board) == false && bestMove == null) {
                             bestMove = new Move(checker, move);
-                        } else {
-                            // Prioritize backward movement if near being jumped
-                            if (move.getY() > checker.getCord().getY()) {
-                                bestMove = new Move(checker, move);
-                            }
+                        }
+                        if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
+                            bestMove = new Move(checker, move);
+                        }
+                    }
+                }
+            }
+        }
+        return bestMove;
+    }
+
+
+    public void promoteToKing() {
+    // go through all my pieces and promote if they reached end
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker c = game.getBoard().getBoard().checkerBoard[y][x];
+                if (c != null && c.getColor() == botColor) {
+                    if (!c.isKing()) {
+                        if (botColor == Color.BLACK && c.getCord().getY() == 7) {
+                            c.setKing(true);
+                        }
+                        if (botColor == Color.RED && c.getCord().getY() == 0) {
+                            c.setKing(true);
                         }
                     }
                 }
             }
         }
     }
+
+    public static Move defendPieces(Board board) {
+        // TODO: Prioritize defending own pieces over offense
+        // TODO: Try to block opponent from advancing or jumping
+        Move bestMove = null;
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker checker = board.checkerBoard[y][x];
+                Checker blockingChecker = null;
+                if (y < 6) {
+                    blockingChecker = board.checkerBoard[y+2][x];
+                }
+                if (checker != null && checker.getColor() == Color.BLACK) {
+                    if (isInDanger(checker, board)) {
+                        ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
+                        for (Cord move : safeMoves) {
+                            System.out.println(y);
+                            if (bestMove == null && !wouldBeInDangerAfterMove(checker, move, board)) {
+                                bestMove = new Move(checker, move);
+                            } 
+                        }
+                        if (bestMove == null && blockingChecker != null) {
+                            bestMove = blockAttack(blockingChecker);
+                        }
+                            // else {
+                            //     bestMove = makeValidMove(board);
+                            // }
+                    }
+                }
+            }
+        }
         return bestMove;
-}
+    }
+
+    public static Move blockAttack(Checker checker) {
+        int x = checker.getCord().getX();
+        int y = checker.getCord().getY();
+        
+        if (attackSide && inBounds(x+1, y-1)) {
+            Cord dest = new Cord(x+1, y-1);
+            return new Move(checker, dest);
+        }
+        else if (!attackSide && inBounds(x-1, y-1)) {
+            Cord dest = new Cord(x-1, y-1);
+            return new Move(checker, dest);
+        }
+        
+        return null;
+    }
+    
     /**
      * Checks if the checker can be jumped by any red piece.
      */
-public static boolean isInDanger(Checker checker, Board board) {
-    int x = checker.getCord().getX();
-    int y = checker.getCord().getY();
-
-    // Check if a red piece could jump this checker
-    int[][] dirs = { {-1, -1}, {1, -1} };
-    for (int[] d : dirs) {
-        int rx = x + d[0];
-        int ry = y + d[1];
-        int jx = x - d[0];
-        int jy = y - d[1];
-
-        if (inBounds(rx, ry) && inBounds(jx, jy)) {
-            Checker red = board.checkerBoard[ry][rx];
-            if (red != null && red.getColor() == Color.RED && board.checkerBoard[jy][jx] == null) {
-                return true;
+    public static boolean isInDanger(Checker checker, Board board) {
+        // get the coordinates from the specific piece we are looking at
+        int x = checker.getCord().getX();
+        int y = checker.getCord().getY();
+        
+    
+        // Check all four possible jump directions incase of king pices
+        int[][] directions = {
+            // direction of man pieces relative to our piece
+            {-1, -1},   // bottom-right
+            {1, -1},   // bottom-left
+            // direction of king pieces relative to our piece
+            {-1, 1},   // top-right
+            {1, 1}   // top-left
+        };
+        // created an iterator in order to differentiate the pieces between kings and mans
+        int it = 0;
+    
+        for (int[] dir : directions) {
+            int attackX = x + dir[0];
+            int attackY = y + dir[1];
+            int jumpX = x - dir[0];
+            int jumpY = y - dir[1];
+    
+            // Check bounds
+            if (inBounds(attackX, attackY) && inBounds(jumpX, jumpY)) {
+                // Check if there's an opponent piece that can jump us
+                Checker attacker = board.checkerBoard[attackY][attackX];
+                boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+    
+                if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && it < 2) {
+                    switch (it) {
+                        case 0:
+                            attackSide = true;
+                            break;
+                        case 1:
+                            attackSide = false;
+                            break;
+                        case 2: 
+                            attackSide = true;
+                            break;
+                        case 3: 
+                            attackSide = false;
+                            break;
+                    }
+                    System.out.println("The attacker is on the left side: " + attackSide);
+                    return true;
+                }
+                if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && attacker.isKing()) {
+                    switch (it) {
+                        case 0:
+                            attackSide = true;
+                            break;
+                        case 1:
+                            attackSide = false;
+                            break;
+                        case 2: 
+                            attackSide = true;
+                            break;
+                        case 3: 
+                            attackSide = false;
+                            break;
+                    }
+                    return true;
+                }
             }
+            it++;
         }
+        return false;
     }
-    return false;
-}
 
     /**
      * Finds all legal safe moves for the checker.
      */
-public static ArrayList<Cord> getSafeMoves(Checker checker, Board board) {
-    ArrayList<Cord> safeMoves = new ArrayList<>();
-    int x = checker.getCord().getX();
-    int y = checker.getCord().getY();
+    public static ArrayList<Cord> getSafeMoves(Checker checker, Board board) {
+        ArrayList<Cord> safeMoves = new ArrayList<>();
+        int x = checker.getCord().getX();
+        int y = checker.getCord().getY();
+        int temp = 0;
 
-    int[][] moves = { {-1, 1}, {1, 1} }; // forward directions for black
-
-    for (int[] m : moves) {
-        int nx = x + m[0];
-        int ny = y + m[1];
-        if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null) {
-            // Simulate move and check if it leads to danger
-            Cord simulatedCord = new Cord(nx, ny);
-            if (!wouldBeInDangerAfterMove(checker, simulatedCord, board)) {
-                safeMoves.add(simulatedCord);
+        // For BLACK pieces, safe moves are backward
+        if(checker.getColor() == Color.BLACK) {
+            int[][] moves = {{-1,-1}, {1,-1}, {-1, 1}, {1, 1}}; // all sides
+            
+            for(int[] m : moves) {
+                int nx = x + m[0];
+                int ny = y + m[1];
+                if (inBounds(nx, ny) && board.checkerBoard[ny][nx] == null && temp < 2) {
+                    safeMoves.add(new Cord(nx, ny));
+                }
+                if (checker.isKing() && temp >= 2) {
+                    safeMoves.add(new Cord(nx, ny));
+                }
+                temp++;
             }
         }
+        return safeMoves;
     }
-    return safeMoves;
-}
 
     /**
      * Checks if moving to a given destination would put the checker in danger.
      */
-private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
-    Checker temp = new Checker(dest, piece.getColor());
-    return isInDanger(temp, board);
-}
+    private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
+        Checker temp = new Checker(dest, Color.BLACK);
+        return isInDanger(temp, board);
+    }
 
-    /** Utility to check if board coordinates are valid. */
-private static boolean inBounds(int x, int y) {
-    return x >= 0 && x < 8 && y >= 0 && y < 8;
-}
+        /** Utility to check if board coordinates are valid. */
+    private static boolean inBounds(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
 
     /**
      * Simple data structure to store a move.
      */
-public static class Move {
-    public Checker piece;
-    public Cord destination;
+    public static class Move {
+        public Checker piece;
+        public Cord destination;
 
-    public Move(Checker piece, Cord destination) {
-        this.piece = piece;
-        this.destination = destination;
+        public Move(Checker piece, Cord destination) {
+            this.piece = piece;
+            this.destination = destination;
+        }
     }
-}
-    public void capturePiece() {
-        // TODO: Capture opponent piece by jumping diagonally (Call method)
+    
+    public static Move capturePiece(Board board) {
+        Move bestCapture = null;
+        
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Checker piece = board.checkerBoard[y][x];
+                if (piece != null && piece.getColor() == Color.BLACK) {
+                    ArrayList<Cord> jumps = getPossibleJumps(piece, board);
+                    if (!jumps.isEmpty()) {
+                        bestCapture = new Move(piece, jumps.get(0)); // Take first available jump
+                        break; // Prioritize earliest found capture
+                    }
+                }
+            }
+        }
+        return bestCapture;
     }
+    
+    private static ArrayList<Cord> getPossibleJumps(Checker piece, Board board) {
+        ArrayList<Cord> jumps = new ArrayList<>();
+        int x = piece.getCord().getX();
+        int y = piece.getCord().getY();
+
+        // BLACK pieces move upward (y decreases)
+        int[][] directions = piece.isKing() ? 
+            new int[][]{{-1,-1}, {1,-1}, {-1,1}, {1,1}} : // Kings can move all directions
+            new int[][]{{-1,-1}, {1,-1}}; // Regular pieces move upward only
+
+        for (int[] dir : directions) {
+            int newX = x + dir[0]*2;
+            int newY = y + dir[1]*2;
+            
+            if (isValidJump(board, x, y, dir[0], dir[1])) {
+                jumps.add(new Cord(newX, newY));
+            }
+        }
+        return jumps;
+    }
+
+    private static boolean isValidJump(Board board, int x, int y, int dx, int dy) {
+        int midX = x + dx;
+        int midY = y + dy;
+        int destX = x + dx*2;
+        int destY = y + dy*2;
+
+        return inBounds(destX, destY) &&
+               board.checkerBoard[midY][midX] != null && 
+               board.checkerBoard[midY][midX].getColor() != Color.BLACK && 
+               board.checkerBoard[destY][destX] == null;
+    }
+
     public void checkMultipleJumps() {
         // TODO: If multiple jumps are possible, do them
     }
@@ -148,17 +310,42 @@ public static class Move {
     public void waitForOpponent() {
         // TODO: Wait for opponent to make a move before acting
     }
-      public void adjustStrategy() {
-        // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
-        // TODO: Change strategy based on early, mid, or late game
-        // Early: Moving first row pieces?
-        // Second: A King comes into play?
-        // Late: A select # of pieces left on the board?
-    }
+
+    // public static boolean adjustStrategy(Board board) {
+    //     // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
+    //     // TODO: Change strategy based on early, mid, or late game
+    //     // Early: Moving first row pieces?
+    //     // Second: A King comes into play?
+    //     // Late: A select # of pieces left on the board?
+    //     //Board board = game.getBoard().getBoard();
+    //     int myCount = 0;
+    //     int oppCount = 0;
+
+    //     for (int y = 0; y < 8; y++) {
+    //         for (int x = 0; x < 8; x++) {
+    //             Checker c = board.checkerBoard[y][x];
+    //             if (c != null) {
+    //                 if (c.getColor() == botColor) {
+    //                     myCount++;
+    //                 } else {
+    //                     oppCount++;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     // if opponent has 3 or more pieces than us, go aggressive
+    //     beAggressive = oppCount - myCount >= 3;
+
+    //     // (Optional) print for debugging
+    //     System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
+    //     return beAggressive;
+    // }
+
     public void findOffensiveMove() {
         // TODO: Decide if it's safe and smart to attack
     }
-     public boolean isPieceCaptured(int pieceId) {
+    public boolean isPieceCaptured(int pieceId) {
         // TODO: Check if a piece has been captured
         return false;
     }
@@ -166,24 +353,59 @@ public static class Move {
         // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
     }
 
-    @Override
-    public boolean makeMove(GameState gs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'makeMove'");
+    public static Move makeBestMove (Board board) {
+        Move bestMove = null;
+        boolean fJump = board.hasJump(Color.BLACK);
+        
+        if (fJump) {
+            bestMove = capturePiece(board);
+        }
+        else if (bestMove == null) {
+            bestMove = defendPieces(board);
+        }
+        if (bestMove == null) {
+            bestMove = makeValidMove(board);
+        }
+        return bestMove;
+    }
+    
+    private GameMove finalMove(GamePlay gp) {
+        // Omar: dont forget to update the board
+        Board board = game.getBoard().getBoard();
+        Move fM = makeBestMove(board);
+        Cord from = fM.piece.getCord();
+        Cord to = fM.destination;
+        return new GameMove(this.playerId, this.game.getGameID(), from.getX(), from.getY(), to.getX(), to.getY(), "black");
     }
 
     @Override
-    public boolean updateBoard(GameState gs) {
-        return true; //Can be ignored
+    public boolean makeMove(GamePlay gp) {
+
+        GameMove move = finalMove(gp);
+
+        try {
+            Thread.sleep(1000); // Sleep 100 milliseconds to break the infinite recursion
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+       
+        PageManager.Gm.processMove(move, gp);
+        return true;
     }
 
+    @Override
+    public boolean updateBoard(GamePlay gs) {
+        //Can be ignored
+        return true;
+    }
     @Override
     public boolean startGame(Game g) {
-        return true; //Can be ignored
+        this.game = g;
+        return true;
     }
 
     @Override
-    public boolean endGame(GameState gs) {
+    public boolean endGame(GamePlay gs) {
         return true; //Can be ignored
     }
 

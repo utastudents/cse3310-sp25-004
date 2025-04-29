@@ -2,6 +2,7 @@ package uta.cse3310.PageManager;
 
 
 import uta.cse3310.GameManager.Game;
+import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.GameState;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
@@ -53,18 +54,18 @@ public class HumanPlayer extends Player{
     // These methods will be implemented soon
 
     @Override
-    public boolean makeMove(GameState gs) //Returns false if the client could not be reached
+    public boolean makeMove(GamePlay gs) //Returns false if the client could not be reached
     {
-        App.pmInstance.makeMove(playerId);
+        App.pmInstance.makeMove(playerId, gs);
         
         return true;
     }
 
-    @Override
-    public boolean updateBoard(GameState gs) //Returns false if the client could not be reached
+    @Override                                
+    public boolean updateBoard(GamePlay gs) //Returns false if the client could not be reached
     {
         
-       // App.pmInstance.sendUpdate(playerId, update);
+        App.pmInstance.sendBoard(playerId, gs);
         return true;
     }
 
@@ -85,8 +86,9 @@ public class HumanPlayer extends Player{
     }
 
     @Override
-    public boolean endGame(GameState gs) {
+    public boolean endGame(GamePlay gs) {
         //TODO: let the client know the game has ended. Show the final board and Win/Loss, and allow them to click through to summary page
+        App.pmInstance.EndGameNotifier(playerId, gs);
         return false;
     }
 

@@ -174,7 +174,7 @@ public class App extends WebSocketServer {
     // UserEvent, and return a ReplyEvent
 
     //Log the raw incoming WebSocket message
-    System.out.println("Incoming raw message: " + message);
+    System.out.println("Incoming raw message: " + message + " from clientID " + Id);
 
     //Omar: trying new way to parse JSON to allow for clients to have their own JSON structure
     JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
@@ -198,6 +198,10 @@ public class App extends WebSocketServer {
 
     switch(action)
     {
+      case "quickstart":
+        // debug code to immediately login and put user in a game
+        Reply = PM.quickStart(jsonObj, Id);
+        break;
       case "login":
         Reply = PM.handleLogin(jsonObj, Id);
         break;
@@ -214,6 +218,9 @@ public class App extends WebSocketServer {
       case "challengePlayer":      
         Reply = PM.challengePlayer(jsonObj, Id);
         break;
+      case "challengePlayerReply":      
+        Reply = PM.challengePlayerReply(jsonObj, Id);
+        break;  
       case "challengeBot":        
         Reply = PM.challengeBot(jsonObj, Id);
         break;
@@ -224,13 +231,13 @@ public class App extends WebSocketServer {
         Reply = PM.ViewMatch(jsonObj, Id);
         break;  
       case "GameMove":        
-        PM.GameMove(jsonObj, Id);
+        Reply = PM.GameMove(jsonObj, Id);
         break;
       case "backToHome":
         Reply = PM.backToHome(Id);
         break;
       case "summaryData":
-        Reply = PM.retrieveLeaderboardJson(jsonObj, Id);
+        Reply = PM.retrieveLeaderboardJson(jsonObj, Id, -2);
         break;
       default:
         System.out.println("Unknown action: " + action);

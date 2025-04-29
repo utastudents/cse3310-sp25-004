@@ -10,27 +10,15 @@ public class GamePlay
     private Board board;
     //private GameTermination termination;
 
+    public boolean turn; // false for red's turn, true for black's turn
+
     public GamePlay(int id) 
     {
         this.GameID = id;
         this.board= new Board();
         //Initialize class with GameID and create starting board
     }
-
-    /*public int gameTermCheck(Board board)
-    {
-
-        //return 0 if game does not end
-        //call for endGame method
-        if ()
-
-        //could do a try and catch method if they decide to use a throw to make terminate
-
-
-    } */
-   //we don't use the game object so we'll let manager handle this
     
-
     public int move(Checker piece, Cord dest) 
     {
         // Return values
@@ -38,15 +26,28 @@ public class GamePlay
         // 1 = Invalid move. The player must choose a valid jump.
         // 0 = Invalid move for any other reason
 
+        System.out.println("Moving piece " + piece + " to destination " + dest);
+
+        if (piece == null) {
+            return 0; // No piece to move
+        }
+
         int result = 0;
         boolean forceJump = false; // Set To true if a jump is found. 
         //create two ArrayLists for possible jumps
-        ArrayList<Cord> possibleJumpsForward = null;
-        ArrayList<Cord> possibleJumpsBackward = null;
+        ArrayList<Cord> possibleJumpsForward = new ArrayList<Cord>();
+        ArrayList<Cord> possibleJumpsBackward = new ArrayList<Cord>();
+
+        forceJump = board.hasJump(piece.getColor()); // If any jump are available to the player force them to jump.
+
+        if (piece == null || dest == null) // Check for null piece or destination
+        {
+            return 0;
+        }
 
         if(piece.getColor() == Color.BLACK || piece.isKing())
         {
-            possibleJumpsForward = board.getPossibleForwardJump(piece);
+            possibleJumpsForward.addAll(board.getPossibleForwardJump(piece));
             if(possibleJumpsForward.size() > 0)
             {
                 forceJump = true;
@@ -55,13 +56,14 @@ public class GamePlay
         
         if(piece.getColor() == Color.RED || piece.isKing())
         {
-            possibleJumpsBackward = board.getPossibleBackwardJump(piece);
+            possibleJumpsBackward.addAll(board.getPossibleBackwardJump(piece));
             if(possibleJumpsBackward.size() > 0)
             {
                 forceJump = true; 
             }
         }
-    
+        System.out.println(possibleJumpsBackward);
+        System.out.println(possibleJumpsForward);
         if(forceJump == true) // If the piece can jump
         {
             if(piece.isKing() == false) // Man piece jump code 
@@ -78,6 +80,8 @@ public class GamePlay
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
                         board.kingMe(piece);
+
+                        result = 2;
                     }  
                     else
                     {
@@ -96,6 +100,8 @@ public class GamePlay
                         board.updatePosition(piece, newPos);
                         concurrentJumps(piece);
                         board.kingMe(piece);
+
+                        result = 2;
                     }   
                     else
                     {
@@ -114,6 +120,8 @@ public class GamePlay
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
                     concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else if (cordIndexbwd != -1)
                 {
@@ -121,6 +129,8 @@ public class GamePlay
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
                     concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else
                 {
@@ -135,7 +145,7 @@ public class GamePlay
             {
                 if(piece.getColor() == Color.BLACK) // Black piece move code
                 {
-                    if(board.moveForwardCheck(piece, dest) == true)
+                    if(board.moveBackwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
                         board.kingMe(piece);
@@ -148,7 +158,7 @@ public class GamePlay
                 }
                 else if(piece.getColor() == Color.RED) // Red piece move code
                 {
-                    if(board.moveBackwardCheck(piece, dest) == true)
+                    if(board.moveForwardCheck(piece, dest) == true)
                     {
                         board.updatePosition(piece, dest);
                         board.kingMe(piece);
@@ -174,21 +184,34 @@ public class GamePlay
                         result = 0;
                     }
                 }
+                else if(piece.getColor() == Color.RED) // Red King piece move code
+                {
+                    if(board.moveForwardCheck(piece, dest) == true || board.moveBackwardCheck(piece, dest) == true)
+                    {
+                        board.updatePosition(piece, dest);
+                        result = 2;
+                    }
+                    else
+                    {
+                        result = 0;
+                    }
+                }
             }
         }
         //TODO: Send Game Termination end board
         return result;
     }
+    
     //Allows the piece to automatically take direct jumps after a jump by the player
     public int concurrentJumps(Checker piece)
     {
-        ArrayList<Cord> possibleJumpsForward;
-        ArrayList<Cord> possibleJumpsBackward;
+        ArrayList<Cord> possibleJumpsForward = new ArrayList<Cord>();
+        ArrayList<Cord> possibleJumpsBackward = new ArrayList<Cord>();
         int result = 0;
         if (piece.isKing())
         {
-            possibleJumpsForward = board.getPossibleForwardJump(piece);
-            possibleJumpsBackward = board.getPossibleBackwardJump(piece);
+            possibleJumpsForward.addAll(board.getPossibleForwardJump(piece));
+            possibleJumpsBackward.addAll(board.getPossibleBackwardJump(piece));
             if (possibleJumpsForward.size() + possibleJumpsBackward.size() > 1)
             {
                 return 1;
@@ -208,7 +231,7 @@ public class GamePlay
         }
         else if (piece.getColor() == Color.BLACK)
         {
-            possibleJumpsForward = board.getPossibleForwardJump(piece);
+            possibleJumpsForward.addAll(board.getPossibleForwardJump(piece));
             if (possibleJumpsForward.size() > 1)
             {
                 return 1;
@@ -224,7 +247,7 @@ public class GamePlay
         }
         else if (piece.getColor() == Color.RED)
         {
-            possibleJumpsBackward = board.getPossibleBackwardJump(piece);
+            possibleJumpsBackward.addAll(board.getPossibleBackwardJump(piece));
             if (possibleJumpsBackward.size() > 1)
             {
                 return 1;

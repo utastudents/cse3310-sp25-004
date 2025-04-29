@@ -1,3 +1,5 @@
+
+/*SIGN UP*/
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -6,16 +8,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: whitesmoke; 
+    background: rgb(24, 24, 24); 
     color: 333333;
 }
 
-/*SIGN UP*/
 .center-container {
     position: relative;
     width: 100%;
     height: 100vh;
-  }
+}
 
 .login-box,
 .signup-box {
@@ -24,21 +25,21 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    border-radius: 9px;
     width: 500px;
-    padding: 25px;
+    padding: 5px;
     text-align: center;
-    box-shadow: 1px 1px 7px rgba(15, 4, 106, 0.3);
+    border-radius: 1%;
 }
 
 .signup-box {
-    height: 500px;
+    height: 535px;
 }
 
 .signup-box img {
     width: 230px;
     height: 230px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 } 
 
 .signup-box input[type="text"],
@@ -63,22 +64,41 @@ input::placeholder {
     color: #b8b8b8;
 }
 
-
 .signup-box button {
-    background-color: #39393959;
+    position: relative;
+    background: transparent;
     color: rgb(255, 255, 255);
-    border: none;
+    border: 2px solid black;
     font-size: 16px;
+    font-weight: 500;
     width: 75%;
-    padding: 5px;
-    margin-top: 5px;
-    border-radius: 2px;
-    height: 40px;
+    height: 45px;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
 }
 
-.signup-box button:hover {
-    color: rgb(255, 255, 255);
-    background: #000;
+.signup-box button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
+    transition: .5s;
+}
+    
+.signup-box button span {
+    position: relative;
+    z-index: 1;
+}
+
+.signup-box button:hover::before {
+    opacity: 60%;
 }
 
 .signup-text {
@@ -89,12 +109,22 @@ input::placeholder {
 }
 
 .signup-text a{
-    color: #39393959;
+    color: rgb(172, 172, 172);
     text-decoration: underline;
 }
 
 .signup-text a:hover {
-    color: #000; 
+    color: #000000; 
+}
+
+#back-to-login{
+    color: rgb(172, 172, 172);
+    font-weight: 600;
+}
+
+#back-to-login:hover{
+    color: black;
+    text-decoration: underline;
 }
 
 /*ICON SIGNUP*/
@@ -116,7 +146,7 @@ center-container {
     position: relative;
     width: 100%;
     height: 100vh;
-  }
+}
 
 .login-box {
     height: 500px;
@@ -125,7 +155,8 @@ center-container {
 .login-box img {
     width: 230px;
     height: 230px;
-    margin-bottom: 30px;
+    margin-top: 17px;
+    margin-bottom: 20px;
 } 
 
 .login-box input[type="text"],
@@ -164,7 +195,6 @@ input::placeholder {
     color: #b8b8b8;
 }
 
-
 .login-box button { 
     background-color: #39393959;
     color: rgb(255, 255, 255);
@@ -172,7 +202,6 @@ input::placeholder {
     font-size: 15px;
     width: 75%;
     padding: 5px;
-    border-radius: 6px;
     height: 40px;
 }
 
@@ -191,7 +220,20 @@ input::placeholder {
 .login-box button:hover {
     color: rgb(255, 255, 255);
     background: #000;
+}
 
+#login-btn{
+  position: relative;
+  background: transparent;
+  color: rgb(255, 255, 255);
+  border: 2px solid black;
+  font-size: 16px;
+  font-weight: 500;
+  width: 75%;
+  height: 45px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .signup-text {
@@ -201,15 +243,33 @@ input::placeholder {
     margin-top: 30px;
 }
 
-.signup-text a{
-    color: #39393959;
-    text-decoration: underline;
+#login-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 0;
+  pointer-events: none;
+  transition: .5s;
+}
+  
+#login-btn span {
+  position: relative;
+  z-index: 1;
 }
 
-.signup-text a:hover {
-    color: #000; 
+#show-signup{
+  color: rgb(172, 172, 172);
+  font-weight: 600;
 }
 
+#show-signup:hover{
+   color: black;
+  text-decoration: underline;
+}
 
 /* LEADERBOARD*/
 h2 { 
@@ -286,6 +346,35 @@ button a {
     text-decoration: none;
 }
 
+
+button:disabled
+button[disabled] {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  border: 1px solid #aaa;
+}
+
+/* JOIN GAME */
+.enable_btn {
+  background-color: #007bff;
+}
+
+.chall_btn {
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.chall_btn.challenged{
+  background-color: orange;
+}
+
 .lobby_actions {
     margin-top: 25px;
     display: flex;
@@ -341,6 +430,7 @@ button a {
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
+    border-radius: 16px;
   }
   
   #summary-table thead {
@@ -569,7 +659,7 @@ button a {
       border-radius: 5px;
     
       width: 100%;
-      height: 100%;
+      /*height: 100%; height 100 makes it super ugly please don't < I mean the summary table*/
     }
   
     td {
@@ -582,51 +672,95 @@ button a {
       border:none; /*no border around squares*/
     }
   
-    /*light beige squares*/
+    /*Dark Squares*/
     .emptySquare {
-      background-color: #f0d9b5;
+      background-color: #b58863;
     }
   
     /*dark brown squares*/
     td:not(.emptySquare) {
-      background-color: #b58863;
+      background-color: #f0d9b5;
     }
   
   /* Styling for red pieces (Player 1) */
-  .red-piece {
-    position: relative;
-  }
-  
-  .red-piece::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-color: #FF0000; /* Red color */
-    border-radius: 50%; /* Makes it circular */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
-  }
-  
-  /* Styling for black pieces (Player 2) */
-  .black-piece {
-    position: relative;
-  }
-  
-  .black-piece::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background-color: #000000; /* Black color */
-    border-radius: 50%; /* Makes it circular */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
-  }
+.red-piece {
+  position: relative;
+}
+
+.red-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #FF0000; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+.red-king {
+  position: relative;
+}
+
+.red-king::before {
+  content: "K";
+  text-align: center;
+  vertical-align: "center";
+  font-size: 30;
+  font-weight: bold;
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #FF0000; /* Red color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+/* Styling for black pieces (Player 2) */
+.black-piece {
+  position: relative;
+}
+
+.black-piece::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #000000; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
+
+.black-king {
+  position: relative;
+}
+
+.black-king::before {
+  content: "K";
+  text-align: center;
+  vertical-align: "center";
+  font-size: 30;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: #000000; /* Black color */
+  border-radius: 50%; /* Makes it circular */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adds depth */
+}
   
   
   /* Fullscreen background overlay */

@@ -18,23 +18,72 @@ public class Board
 	{
 		this.checkerBoard = new Checker[8][8];
         //Initialize class with board array and initialize checker positions
-
 		initCheckers();
 	}
+
+	public void printBoard()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (checkerBoard[i][j] == null)
+                {
+                    System.out.print("0 ");
+                }
+                else if(checkerBoard[i][j].getColor() == Color.BLACK)
+                {
+                    System.out.print("B ");
+                }
+                else if(checkerBoard[i][j].getColor() == Color.RED)
+                {
+                    System.out.print("R ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+	public void printBoard(Cord from, Cord to)
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+				String space = "  ";
+				if ((from.getX() == j && from.getY() == i)) {
+					space = "f ";
+				} else if (to.getX() == j && to.getY() == i) {
+					space = "t ";
+				}
+
+                if (checkerBoard[i][j] == null)
+                {
+                    System.out.print("0" + space);
+                }
+                else if(checkerBoard[i][j].getColor() == Color.BLACK)
+                {
+                    System.out.print("B" + space);
+                }
+                else if(checkerBoard[i][j].getColor() == Color.RED)
+                {
+                    System.out.print("R" + space);
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 
 	public Checker checkSpace(Cord Cord) // Checks to see what checker if any occupies a space 
 	// Returns null if no checker is found
 	{
-		return checkerBoard[Cord.getX()][Cord.getY()]; 
+		return checkerBoard[Cord.getY()][Cord.getX()]; 
 	}
-	
-	
-	private void initCheckers() // Initializes the checkers on the board at there starting positions
+
+	public void clearboard() // Set all spaces to null
 	{
-		int nums[] = {1,3,5,7};
-
-
-		// Set the whole board to null
 		for (int i = 0; i < 8; i++)
 		{
 			for(int j = 0; j < 8; j++)
@@ -42,154 +91,181 @@ public class Board
 				checkerBoard[i][j] = null; // Initialize the board with null values
 			}
 		}
+	}
+	
+	private void initCheckers() // Initializes the checkers on the board at there starting positions
+	{
+		clearboard();
 
-		// Set the black checkers on the board on row 0, 1, 2
-		for(int y = 0; y < 3; y++)
+		for(int i = 5; i < 8; i++) // row aka y coordinate
 		{
-			for(int x = 0; x < 8; x+=2)
+			if(i == 6) // second
 			{
-				if(y%2 == 0)// Row 0 and 2 have the black checkers on squares 1,3,5,7
-				{
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.BLACK);
-				}
-				else // Row 1 has the black checkers on squares 0,2,4,6
-				{
-					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.BLACK);
-				}
+				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.BLACK);
+				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.BLACK);
+				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.BLACK);
+				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.BLACK);
 			}
+			else // first and third black row
+			{
+				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.BLACK);
+				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.BLACK);
+				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.BLACK);
+				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.BLACK);
+			}
+
 		}
 
-		// Set the red checkers on the board on row 5, 6, 7
-		for(int y = 5; y < 8; y++)
+		for(int i = 0; i < 3; i++) // row aka y coordinate
 		{
-			for(int x = 0; x < 8; x+=2)
+			if(i == 1) // second Red Row
 			{
-				if(y%2 == 1) // Row 5 and 7 have the red checkers on squares 0,2,4,6
-				{
-					checkerBoard[x+1][y] = new Checker(new Cord(x+1, y), Color.RED);
-				}
-				else // Row 6 has the red checkers on squares 1,3,5,7
-				{
-					checkerBoard[x][y] = new Checker(new Cord(x, y), Color.RED);
-				}
+				checkerBoard[i][0] = new Checker(new Cord(0, i), Color.RED);
+				checkerBoard[i][2] = new Checker(new Cord(2, i), Color.RED);
+				checkerBoard[i][4] = new Checker(new Cord(4, i), Color.RED);
+				checkerBoard[i][6] = new Checker(new Cord(6, i), Color.RED);
 			}
-		}
+			else // first and thire Red Row
+			{
+				checkerBoard[i][1] = new Checker(new Cord(1, i), Color.RED);
+				checkerBoard[i][3] = new Checker(new Cord(3, i), Color.RED);
+				checkerBoard[i][5] = new Checker(new Cord(5, i), Color.RED);
+				checkerBoard[i][7] = new Checker(new Cord(7, i), Color.RED);
+			}
 
+		}
 	}
 
+	/* 
+		Definition: kingMe sets a checker piece to be a king
+			- called after every move
+
+		Arguments:
+			piece: checker piece that was moved
+
+		Returns:
+			void
+	*/
 	public void kingMe(Checker piece)
 	{
-		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 7)
+		/*
+  		BLACK STARTS ON R7 SO 0 AND 7 SHOULD BE SWITCHED
+  		*/
+		if(piece.getColor() == Color.BLACK && piece.getCord().getY() == 0)
 		{
 			piece.setKing(true);
 		}
-		else if(piece.getColor() == Color.RED && piece.getCord().getY() == 0)
+		else if(piece.getColor() == Color.RED && piece.getCord().getY() == 7)
 		{
 			piece.setKing(true);
 		}
 	}
-	
-	boolean moveForwardCheck(Checker piece, Cord dest) 
-	// Returns true if the piece can move diagonally forward to the destination square. 
-	// Does not check Jumps
-	{
 
+	/* 
+		Definition: moveForwardCheck checks if the requested destination by the user is a valid simple move
+			- for forward move only (black and king pieces)
+			- Does not check Jumps
+
+		Arguments:
+			piece : checker piece chosen by the player
+			dest : destination cord that the player click/request to move to
+
+		Returns:
+			true : piece can move diagonally forward to the destination square
+	*/
+	public boolean moveForwardCheck(Checker piece, Cord dest) 
+	{
+		// verify destination square is in bound
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
-			return false; // Invalid move, out of bounds
+			System.out.println("Out of bounds");
+			return false;
 		}
-
+		// verify destination square is not occupied by another piece
 		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
-			return false; // Cannot move to a square already occupied by another piece
+			System.out.println("Space occupied");
+			return false;
 		}
-
-		/*else
-		{
-			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-			int yDiff = Math.abs(dest.getY() - piece.getCord().getY());
-
-			if(xDiff == 1 && yDiff == 1)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		//return false; // Should not reach. If it does something is wrong and the move is */
+		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
+		
+		System.out.println("X/Y diffs: expected: (1,1) actual: (" + xDiff + ", " + yDiff + ")");
 
-		if(xDiff == 1 && yDiff == 1)
-		{
-			return true;
-		}
-
-		return false;
-
+		return (xDiff == 1 && yDiff == 1);
 	}
 
-	boolean moveBackwardCheck(Checker piece, Cord dest) 
-	// Returns true if the piece can move diagonally backward to the destination square. 
-	// Does not check Jumps
-	{
+	/* 
+		Definition: moveBackwardCheck checks if the requested destination by the user is a valid simple move
+			- for backward move only (red and king pieces)
+			- Does not check Jumps
 
+		Arguments:
+			piece : checker piece chosen by the player
+			dest : destination cord that the player click/request to move to
+
+		Returns:
+			true : piece can move diagonally backward to the destination square
+	*/
+	public boolean moveBackwardCheck(Checker piece, Cord dest) 
+	{
+		// verify destination square is in bound
 		if(dest.getX() < 0 || dest.getX() > 7 || dest.getY() < 0 || dest.getY() > 7)
 		{
-			return false; // Invalid move, out of bounds
+			System.out.println("Out of bounds");
+			return false;
 		}
-
-		if(checkerBoard[dest.getY()][dest.getX()] == null)
+		// verify destination square is not occupied by another piece	
+		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
-			return false; // Cannot move to a square already occupied by another piece
+			System.out.println("Space occupied");
+			return false;
 		}
-		else
-		{
-			int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
-			int yDiff = (dest.getY() - piece.getCord().getY());
+		// verify if destination is 1 square below and to the right/left of the chosen checker
+		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
+		int yDiff = (dest.getY() - piece.getCord().getY());
+		
+			System.out.println("X/Y diffs: expected: (1,-1) actual: (" + xDiff + ", " + yDiff + ")");
 
-			if(xDiff == 1 && yDiff == -1)
-			{
-				return true;
-			}
-		}
-
-		return false; // Should not reach. If it does something is wrong and the move is invalid
+			return (xDiff == 1 && yDiff == -1);
 	}
 	
-	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
+	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
 		int originY = piece.getCord().getY();
 		Color originColor = piece.getColor();
+		/*
+  		COLOR CHECK UNLESS IN A DIFFERENT METHOD
+    		NEED COLOR FOR DIRECTION
+  		*/
 		//First check if the jump to the left is in bounds
-		if ((originX-2 > 0 && originX-2 <=8) && (originY+2 > 0 && originY+2 <=8))
+		if ((originX-2 >= 0 && originX-2 < 8) && (originY+2 >= 0 && originY+2 < 8))
 		{
 			//Check if the immediate diagonal is an enemy piece
-			if (checkerBoard[originX-1][originY+1] != null && checkerBoard[originX-1][originY+1].getColor() != originColor)
+			if (checkerBoard[originY+1][originX-1] != null && checkerBoard[originY+1][originX-1].getColor() != originColor)
 			{
 				//Add to list of jumps if space is free
-				if (checkerBoard[originX-2][originY+2] == null)
+				if (checkerBoard[originY+2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY+2));
 				}
 			}
 		}
 		//Same as above but checking to the right
-		if ((originX+2 > 0 && originX+2 <=8) && (originY+2 > 0 && originY+2 <=8))
+		if ((originX+2 >= 0 && originX+2 < 8) && (originY+2 >= 0 && originY+2 < 8))
 		{
-			if (checkerBoard[originX+1][originY+1] != null && checkerBoard[originX+1][originY+1].getColor() != originColor)
+			if (checkerBoard[originY+1][originX+1] != null && checkerBoard[originY+1][originX+1].getColor() != originColor)
 			{
-				if (checkerBoard[originX+2][originY+2] == null)
+				if (checkerBoard[originY+2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY+2));
 				}
 			}
 		}
+		System.out.println(jumpList);
 		return jumpList;
 	}
 	
@@ -207,13 +283,15 @@ public class Board
 		{
 			//checks if cords are equal
 			//might need a separate equals methods to actually compare the x-y positions
-			if(jumpList.get(i).equals(cord))
+			if(jumpList.get(i).getX() == cord.getX() && jumpList.get(i).getY() == cord.getY())
 			{
 				check = true;
 				break;
 			}
 		}
-		
+		System.out.println("CHECK JUMP RESULT");
+		System.out.println(jumpList);
+		System.out.println(cord);
 		//if true return index of cord in list
 		//else return -1, same as null
 		if(check)
@@ -226,38 +304,39 @@ public class Board
 		}
 	}
 
-	//Same as getPossibleForwardJump but backwards
-	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
+	//Same as getPossibleBackwardJump but forwards
+	public ArrayList<Cord> getPossibleForwardJump(Checker piece) 
 	{
 		ArrayList<Cord> jumpList = new ArrayList<Cord>();
 		int originX = piece.getCord().getX();
 		int originY = piece.getCord().getY();
 		Color originColor = piece.getColor();
-		if ((originX-2 > 0 && originX-2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		if ((originX-2 >= 0 && originX-2 < 8) && (originY-2 >= 0 && originY-2 < 8))
 		{
-			if (checkerBoard[originX-1][originY-1] != null && checkerBoard[originX-1][originY-1].getColor() != originColor)
+			if (checkerBoard[originY-1][originX-1] != null && checkerBoard[originY-1][originX-1].getColor() != originColor)
 			{
-				if (checkerBoard[originX-2][originY-2] == null)
+				if (checkerBoard[originY-2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY-2));
 				}
 			}
 		}
-		if ((originX+2 > 0 && originX+2 <=8) && (originY-2 > 0 && originY-2 <=8))
+		if ((originX+2 >= 0 && originX+2 < 8) && (originY-2 >= 0 && originY-2 < 8))
 		{
-			if (checkerBoard[originX+1][originY-1] != null && checkerBoard[originX+1][originY-1].getColor() != originColor)
+			if (checkerBoard[originY-1][originX+1] != null && checkerBoard[originY-1][originX+1].getColor() != originColor)
 			{
-				if (checkerBoard[originX+2][originY-2] == null)
+				if (checkerBoard[originY-2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY-2));
 				}
 			}
 		}
+		System.out.println(jumpList);
 		return jumpList;
 	}
 
 	/* 
-		Definition: checkBackwardJump checks if the requested detination by the user is a valid jump
+		Definition: checkBackwardJump checks if the requested destination by the user is a valid jump
 		Arguments:
 			jumpList : List of possible backwards jumps gathered after running getPossibleBackwardJump
 			cord : destination cord that the player click/request to move to
@@ -279,13 +358,16 @@ public class Board
 		{
 			//checks if cords are equal
 			//might need a separate equals methods to actually compare the x-y positions
-			if(jumpList.get(i).equals(cord))
+			if(jumpList.get(i).getX() == cord.getX() && jumpList.get(i).getY() == cord.getY())
 			{
 				check = true;
 				break;
 			}
 		}
-		
+		System.out.println("CHECK JUMP RESULT");
+		System.out.println(jumpList);
+		System.out.println(cord);
+		System.out.println(check);
 		//if found return index of cord in list
 		//if cord is not found in possibleBackwardJumps list, return -1 (same as null)
 		if(check)
@@ -308,14 +390,12 @@ public class Board
 	// updatePosition updates the chosen checker piece with the chosen destination
 	public void updatePosition(Checker piece, Cord dest)
 	{
+		Cord oldCord = piece.getCord();
+		deleteChecker(oldCord);
 		int newX = dest.getX();
 		int newY = dest.getY();
-		Cord oldCord = piece.getCord();
-		int oldX = oldCord.getX();
-		int oldY = oldCord.getY();
-		checkerBoard[oldX][oldY] = null;
+		checkerBoard[newY][newX] = piece; //test works with this format like how initialized
 		piece.setCord(newX, newY);
-		checkerBoard[newX][newY] = piece; //test works with this format like how initialized
 	}
 	
 	/* 
@@ -333,6 +413,9 @@ public class Board
 		int destX = dest.getX();
 		int destY = dest.getY();
 
+		/*
+ 		COULD ADD COLOR AND/OR KING CHECKS TO MAKE CODE CLEANER
+  		*/
 		// check which location piece moved too by comparing the cords piece original location the location of the jump
 		// remove piece in the bottom left (in terms of dest)
 		if (origX == destX-2 && origY == destY-2)
@@ -355,18 +438,59 @@ public class Board
 			deleteChecker(new Cord(destX+1, destY+1));
 		}
 	}
+	
+	public String toString() {
+		String toReturn = "";
+		for (Checker[] row : checkerBoard) {
+			for (Checker c : row) {
+				toReturn += Checker.shortString(c) + " ";
+			}
+			toReturn += "\n";
+		}
+		return toReturn;
+	}
 
-	//UNUSED
-	// public static int moveValidation(Checker piece, Cord dest)
-	// // The main logic for movement. 
-	// // This functions call the jump/move functions in order to determine if the passed in move is can should be allowed. 
+	public boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
+    {
+        ArrayList<Cord> jumps = new ArrayList<>();
 
-	// {
-	// 	// TODO: Finish Board moveValidation function
-	// 	int result = 0; // 0 = invalid move, 1 = jump required, 2 = valid move
-
-
-
-	// 	return result;
-	// }
+		for (Checker[] row : checkerBoard) 
+		{
+			for (Checker p : row) 
+			{
+				if (p == null) // Skip to next piece if p is NULL
+				{
+					continue; 
+				}
+				else if(p.getColor() != pColor) // Skip to next piece if p's color doesn't match the player's color
+				{
+					continue;
+				}
+				else 
+				{
+					if(p.isKing() || p.getColor() == Color.BLACK) // Check if the piece is a king or black
+					{
+						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
+						jumps.addAll(getPossibleForwardJump(p)); 
+					}
+					else if(p.getColor() == Color.RED || p.isKing()) // Check if the piece is a king or red
+					{
+						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
+						jumps.addAll(getPossibleBackwardJump(p));
+					}
+					/* The code should not add the opposite color's jumps to the list,
+					because of the if(p.getColor() == pColor) check above that should prevent it.
+					*/
+				}
+			}
+		}
+		if(jumps.size() > 0)
+		{
+			return true; // Player has at least one jump
+		}
+		else
+		{
+			return false; // Player has no jumps
+		}
+	}
 }

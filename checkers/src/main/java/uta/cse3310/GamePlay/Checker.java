@@ -46,5 +46,14 @@ public class Checker
 		return playerID;
 	}
 
+	public static String shortString(Checker c) {
+		if (c == null) {
+			return "_";
+		}
+		return c.getColor() == Color.BLACK ? "B" : "R";
+	}
 
+	public String toString() {
+		return color + " piece " + cord.toString() + " isKing " + isKing;
+	}
 }

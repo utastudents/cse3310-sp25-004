@@ -1,18 +1,63 @@
-//API call to fetch users
-let playerRed = "bot 1";
-let playerBlack = "bot 2";
-
 // Initialize the game state
 let currentPlayer = "red"; // Red starts first
 let selectedPieceId = null;
 let board = document.getElementById("game-board");
 const initialRedPieceRows = [0, 1, 2];
 const initialBlackPieceRows = [5, 6, 7];
+
+let redName;
+let blackName;
+
+let me = "red"; // default
+
+function startGameInitialize(json) {
+    me = json.you;
+    console.log("You are " + me);
+    redName = json.player1.isBot ? 'Bot' : json.player1.username;
+    blackName = json.player2.isBot ? 'Bot' : json.player2.username;
+    currentPlayer = "red";
+    displayPlayerTurn();
+}
+
+function displayPlayerTurn() {
+    const playerDisplay = document.getElementById("players");
+    if (currentPlayer == me) {
+        playerDisplay.textContent = currentPlayer === "red"
+            ? `Your Turn (Red)` : `Your Turn (Black)`;
+    } else {
+        playerDisplay.textContent = currentPlayer === "red"
+            ? `${redName}'s Turn (Red)` : `${blackName}'s Turn (Black)`;
+    }
+}
+
+function yourTurn() {
+    //Called by requestMove
+    currentPlayer = me;
+    displayPlayerTurn();
+}
+
+function opponentTurn() {
+    currentPlayer = me === "red" ? "black" : "red";
+    displayPlayerTurn();
+}
+
+function invertBoard(boardState) {
+    const newBoardState = [];
+    for (let i=7; i>=0; i--) {
+        let row = [];
+        for (let j=7; j>=0; j--) {
+            row.push(boardState[i][j]);
+        }
+        newBoardState.push(row);
+    }
+    return newBoardState;
+}
+
 // Update the player turn display
 function updatePlayerTurn() {
     const playerDisplay = document.getElementById("players");
     playerDisplay.textContent = currentPlayer === "red"
-     ? `${window.playerRed}'s Turn (Red)` : `${window.playerBlack}'s Turn (Black)`;
+     ? `${redName}'s Turn (Red)` : `${blackName}'s Turn (Black)`;
 }
 // Switch the current player
 function switchPlayer() {
@@ -59,23 +104,52 @@ function handleMoveResult(moveData)  {
 }
 
 // Add event listeners to the board
-function addEventListeners() {
+function addGameDisplayListeners() {
+    /* This code has been replaced by java-side move handling. Thank you for your service o7
     document.querySelectorAll("td").forEach(cell => {
         cell.addEventListener("click", () => {
             // For now, just switch the player on any cell click
             switchPlayer();
         });
     });
+    */
+    console.log("Adding button listeners");
+
+    const cancelBtn = document.getElementById("popup-cancel");
+    const confirmBtn = document.getElementById("popup-confirm");
+
+    // 🪝 Hook up Quit/Draw buttons to popup
+    const quitBtn = document.getElementById("quit");
+    const drawBtn = document.getElementById("draw-request");
+
+    if (quitBtn) quitBtn.onclick = () => showPopup("quit");
+    if (drawBtn) drawBtn.onclick = () => showPopup("draw");
+
+    if (cancelBtn) cancelBtn.onclick = hidePopup;
+
+    if (confirmBtn) {
+        confirmBtn.onclick = function () {
+            if (popupAction === 'quit') {
+                quitGame();
+            } else if (popupAction === 'draw') {
+                sendDrawRequest();
+            }
+            hidePopup();
+        };
+    }
 }
 //Game Board Setup
 function createBoard() {
+    console.log("Creating board");
     if (!board) {board = document.getElementById("game-board");} //Script may have loaded in before page
     for (let row = 0; row < 8; row++) {
         const tr = document.createElement("tr");
-
+        tr.style.height = "50px";
         for (let col = 0; col < 8; col++) {
             const td = document.createElement("td");
-            const isPlayable = (row + col) % 2 === 0;
+            const isPlayable = (row + col) % 2 === 1;
+            td.style.height = "50px";
+            td.id = `square-r${row}-c${col}`;
 
             if (isPlayable) {
                 td.classList.add("emptySquare");
@@ -85,12 +159,8 @@ function createBoard() {
 
                 if (isRed) {
                     td.classList.add("red-piece");
-                    td.id = `red-piece-r${row}-c${col}`;
                 } else if (isBlack) {
                     td.classList.add("black-piece");
-                    td.id = `black-piece-r${row}-c${col}`;
-                } else {
-                    td.id = `square-r${row}-c${col}`;
                 }
 
                 td.addEventListener("click", () => handleClick(td.id));
@@ -109,7 +179,9 @@ function handleClick(clickedId) {
     //Selecting a piece
     if (!selectedPieceId &&
         ((currentPlayer === "red" && clickedElement.classList.contains("red-piece")) ||
-         (currentPlayer === "black" && clickedElement.classList.contains("black-piece")))) {
+         (currentPlayer === "black" && clickedElement.classList.contains("black-piece")) ||
+         (currentPlayer === "red" && clickedElement.classList.contains("red-king")) ||
+         (currentPlayer === "black" && clickedElement.classList.contains("black-king")))) {
 
         selectedPieceId = clickedId;
     }
@@ -118,12 +190,14 @@ function handleClick(clickedId) {
     else if (selectedPieceId &&
         clickedElement.classList.contains("emptySquare") &&
         !clickedElement.classList.contains("red-piece") &&
-        !clickedElement.classList.contains("black-piece")) {
+        !clickedElement.classList.contains("black-piece") &&
+        !clickedElement.classList.contains("red-king") &&
+        !clickedElement.classList.contains("black-king")) {
 
         const fromId = selectedPieceId;
         const toId = clickedId;
 
-        movePiece(fromId, toId);
+        // movePiece(fromId, toId); // Don't actually move the piece :) java-side will take care of that
         selectedPieceId = null;
 
         const fromCoords = getRowColFromId(fromId);
@@ -139,7 +213,7 @@ function handleClick(clickedId) {
 
         handleMoveResult(moveData);
         sendGameMove(fromId, toId);
-        switchPlayer();
+        //switchPlayer(); // Java will handle this
     }
 
     //Invalid or cancel selection
@@ -148,6 +222,7 @@ function handleClick(clickedId) {
     }
 }
 
+/* No longer used
 function movePiece(fromId, toId) {
     const fromElement = document.getElementById(fromId);
     const toElement = document.getElementById(toId);
@@ -167,13 +242,15 @@ function movePiece(fromId, toId) {
     toElement.id = fromElement.id;
     fromElement.id = `square-r${fromElement.parentNode.rowIndex}-c${fromElement.cellIndex}`;
 }
+*/
 
 function getRowColFromId(id) {
     const match = id.match(/r(\d+)-c(\d+)/i);
-    return {
+    const rc = {
         row: match ? (parseInt(match[1])+1) : -1,
         col: match ? (parseInt(match[2])+1) : -1
     };
+    return rc;
 }
 
 //Sending moves to pageManager
@@ -182,6 +259,14 @@ function sendGameMove(fromId, toId) {
     const toMatch = toId.match(/r(\d+)-c(\d+)/i);
 
     if (!fromMatch || !toMatch) return;
+
+    if (me == "red") {
+        //Invert
+        fromMatch[1] = 7 - fromMatch[1];
+        fromMatch[2] = 7 - fromMatch[2];
+        toMatch[1] = 7 - toMatch[1];
+        toMatch[2] = 7 - toMatch[2];
+    }
 
     const fromPos = `R${fromMatch[1]}-C${fromMatch[2]}`;
     const toPos = `R${toMatch[1]}-C${toMatch[2]}`;
@@ -202,10 +287,11 @@ function sendGameMove(fromId, toId) {
 }
 // Initialize the game
 function startGame() {
+    console.log("Loading in game_display content...");
     clearExampleLogs();
     createBoard();
     updatePlayerTurn();
-    addEventListeners();
+    addGameDisplayListeners();
 }
 // Start the game when the page loads
 document.addEventListener("DOMContentLoaded", startGame);
@@ -275,32 +361,6 @@ function hidePopup() {
         controls.style.opacity = "1";
     }
 }
-
-// Run when page is loaded
-document.addEventListener("DOMContentLoaded", function () {
-    const cancelBtn = document.getElementById("popup-cancel");
-    const confirmBtn = document.getElementById("popup-confirm");
-
-    // 🪝 Hook up Quit/Draw buttons to popup
-    const quitBtn = document.getElementById("quit");
-    const drawBtn = document.getElementById("draw-request");
-
-    if (quitBtn) quitBtn.onclick = () => showPopup("quit");
-    if (drawBtn) drawBtn.onclick = () => showPopup("draw");
-
-    if (cancelBtn) cancelBtn.onclick = hidePopup;
-
-    if (confirmBtn) {
-        confirmBtn.onclick = function () {
-            if (popupAction === 'quit') {
-                quitGame();
-            } else if (popupAction === 'draw') {
-                sendDrawRequest();
-            }
-            hidePopup();
-        };
-    }
-});
 
 
 // Example placeholder functions:
