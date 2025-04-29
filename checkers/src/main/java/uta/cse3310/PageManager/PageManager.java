@@ -209,6 +209,7 @@ public class PageManager {
     // used whenever a person updates their status (send to all online players)
     public void statusUpdate()
     {
+        System.out.println("Status update");
         UserEventReply userEventReply=  new UserEventReply(activePlayerList());
 
         /*

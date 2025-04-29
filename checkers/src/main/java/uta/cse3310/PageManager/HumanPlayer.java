@@ -151,6 +151,7 @@ public class HumanPlayer extends Player{
 
     public void setStatus(STATUS status){
         this.status = status;
+        App.pmInstance.statusUpdate();
     }
 
 }

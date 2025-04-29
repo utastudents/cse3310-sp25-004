@@ -31,4 +31,9 @@ public class TestPlayer extends HumanPlayer {
     public boolean endGame(GamePlay gs) {
         return true;
     }
+
+    @Override
+    public void setStatus(STATUS s) {
+        this.status = s;
+    }
 }
