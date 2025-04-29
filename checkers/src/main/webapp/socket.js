@@ -172,11 +172,21 @@ connection.onmessage = function (msg) {
             break;
         }
 
+        case "drawRequestValid":
+        case "drawAcceptValid":
+        case "quit":
+            break; // Ignore these three, they're just acknowledgements
+        case "drawRequest": {
+            requestDraw();
+            break;
+        }
+
         // Summary Responses
         case "summaryData": {
             console.log("Received summary data for leaderboard!");
             //ommits the responseID and only sends needed values to loadData
             loadData(jsonMsg.top10);
+            summaryShow();
             break;
         }
         //Signals that a user has abrubtly left
@@ -186,13 +196,10 @@ connection.onmessage = function (msg) {
         }
         case "EndGame": {
             console.log("The game has ended");
-            console.log("The winner is " + jsonMsg.winner); //If 0, game was a draw. Player ID
-            if (jsonMsg.winner == clientId) {
-                showWinStatus();
-            } else {
-                showLoseStatus();
-            }
+            console.log("The winner is " + jsonMsg.winner); //Name. Bot, You, or other player's name
+            displayGameOverData(jsonMsg);
             loadData(jsonMsg.top10);
+            summaryShow();
             break;
         }
 		case "gameWon": {
@@ -201,6 +208,7 @@ connection.onmessage = function (msg) {
 			//Expects the same response data, just a different responseID
 			showWinStatus();
 			loadData(jsonMsg.top10);
+            summaryShow();
 			break;
 		}
 		case "gameLost": {
@@ -208,6 +216,7 @@ connection.onmessage = function (msg) {
 			//Expects the same response data, just a different responseID
 			showLoseStatus();
 			loadData(jsonMsg.top10);
+            summaryShow();
 			break;
 		}
         case "gameDraw": {

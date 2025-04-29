@@ -559,4 +559,12 @@ public class Board
 			return false; // Player has no jumps
 		}
 	}
+
+	public void printAvailableMoves() {
+		ArrayList<Move> moves = getAllMoves();
+		for (Move m : moves) {
+			System.out.print(m);
+		}
+		System.out.println();
+	}
 }

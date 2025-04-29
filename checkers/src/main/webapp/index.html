@@ -213,6 +213,7 @@
 				const online_players = data["activePlayers"];
 
 				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
+				document.querySelector("#queue h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
 				console.log(JSON.stringify(data));
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
@@ -303,6 +304,13 @@
 			}
 		</script>
 	</div>
+	<div id="queue" style="display: none;">
+		<div class="lobby_lists_container" style = "width:100%;">
+			<h2>In Queue</h2>
+			<h3></h3>
+			<p>Hi there. Welcome the the queue.</p>
+		</div>
+	</div>
 	</div>
 </body>
 
@@ -363,11 +371,11 @@
 </div>
 
 
-<div class="summary" id="summary">
-	<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>
+<div class="summary" id="summary" style="display: none;">
+	
 
-	<!-- visibility hidden -->
-	<div id="summary-leaderboard" style="display: none;">
+	<!-- <button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button> visibility hidden -->
+	<div id="summary-leaderboard">
 		<meta charset="UTF-8">
 		<h2 id="summary-gameResultBanner">Game Status</h2>
 		<h1>Leaderboard</h1>
@@ -424,8 +432,8 @@
 			</script>
 
 		</div>
-		<!--- <p class= "caption"> Top 10 players.</p> -->
-		<button id="summary-button-hide" onclick="summaryHide()">Hide Leaderboard</button>
+		<!--- <p class= "caption"> Top 10 players.</p><button id="summary-button-hide" onclick="summaryHide()">Hide Leaderboard</button> -->
+		
 		<p style="text-align: center; font-size: 14px; color: gray; margin-top: 10px;">
 			Click on a header to sort ascending/descending.
 		</p>
@@ -433,14 +441,14 @@
 		<script>
 			// Show/hide the leaderboard
 			function summaryShow() {
-				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+				//document.getElementById("summary-button-display").style.display = "none"; // Hide the button
 				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
-				renderLeaderboard();
+				//renderLeaderboard(); // causes infinite loop
 			}
 
 			function summaryHide() {
-				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
-				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				//document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+				//document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
 			}
 
 			winMessage = "You won!";
@@ -457,8 +465,12 @@
 			}
 
 			// Show/hide win status banner
-			function showWinStatus() {
-				bannerMessage(true, winMessage);
+			function showWinStatus(winner) {
+				if (winner == "draw" || winner == "Draw") {
+					bannerMessage(true, "Draw");
+				} else {
+					bannerMessage(true, winner + " won!");
+				}
 			}
 			function showLoseStatus() {
 				bannerMessage(true, loseMessage);
@@ -480,6 +492,11 @@
 </html>
 <script src="socket.js"></script>
 <script>
+
+	function requestDraw() {
+		showPopup("drawAccept");
+	}
+
 	// Board display
 	// This method is called by socket.js with the game board from Java / GamePlay
 	function displayBoard(json) {
@@ -512,6 +529,10 @@
 				}
 			}
 		}
+	}
+
+	function displayGameOverData(json) {
+		showWinStatus(json.winner);
 	}
 
 	// Log in / new user functions
@@ -562,11 +583,11 @@
 		document.getElementById("summary").style.display = "none";
 	}
 
-	const pageToTitle = {"join_game": "Join Game", "game_display": "Play", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard"};
+	const pageToTitle = {"join_game": "Join Game", "game_display": "Play", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard", "queue": "Queue"};
 
 	function swapToPage(page) {
 		console.log("Switching to page " + page);
-		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
+		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary", "queue"];
 		listOfDiv.forEach(function (id) {
 			const div = document.getElementById(id);
 			if (div) div.style.display = "none";
@@ -576,6 +597,12 @@
 
 		if (page === "join_game") {
 			document.getElementById("summary").style.display = "block"; //So players can check out the leaderboard while queuing up. Also for debug since this page is unreachable lol
+			summaryShow();
+			renderLeaderboard();
+		}
+
+		if (page === "summary") {
+			document.getElementById("join_game").style.display = "block"; // So player can join a new game after the first one ends
 		}
 
 		document.title = pageToTitle[page] + " | Checkers | CSE3310-004";

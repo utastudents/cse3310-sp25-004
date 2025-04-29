@@ -14,6 +14,7 @@ import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.GameUpdate;
+import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.TestPlayer;
@@ -64,6 +65,8 @@ public class GameTest {
         GameManager manager = new GameManager();
 
         PairUp pu = new PairUp(manager);
+
+        PageManager.pu = pu;
 
         // Player objects
         Player p1 = new MockPlayer(0);

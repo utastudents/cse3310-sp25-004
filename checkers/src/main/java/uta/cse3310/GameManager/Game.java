@@ -64,6 +64,16 @@ public class Game{
       return null;
    }
 
+   public int getOther(int id) {
+      if (player1.getPlayerId() == id) {
+         return player2.getPlayerId();
+      }
+      if (player2.getPlayerId() == id) {
+         return player1.getPlayerId();
+      }
+      return 0;
+   }
+
    // Getting the unique game ID
    public int getGameID() {
       return gameID;

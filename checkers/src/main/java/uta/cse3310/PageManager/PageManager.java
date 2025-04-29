@@ -260,6 +260,9 @@ public class PageManager {
         if (pu.addToQueue(activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {
@@ -349,6 +352,12 @@ public class PageManager {
             if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
             {
                 responseJson.addProperty("inQueue", true);
+                if (activePlayers.get(playerClientId).getStatus() == STATUS.IN_QUEUE) {
+                    App.sendMessage(transitionPage(List.of(playerClientId), GameState.QUEUE));
+                }
+                if (activePlayers.get(opponentClientId).getStatus() == STATUS.IN_QUEUE) {
+                    App.sendMessage(transitionPage(List.of(opponentClientId), GameState.QUEUE));
+                }
             }
             else
             {
@@ -415,6 +424,9 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {
@@ -458,6 +470,9 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {
@@ -819,7 +834,12 @@ public class PageManager {
         
         GameUpdate update = Gm.processMove(gameMove, gamePlay);
 
-        json.addProperty("valid", update.isValidMove());
+        if (update == null) {
+            json.addProperty("valid", false);
+        } else {
+            json.addProperty("valid", update.isValidMove());
+        }
+        
         json.addProperty("responseID", "validMove");
 
         return reply;
@@ -841,12 +861,25 @@ public class PageManager {
             return;
         }
         
+        int clientId = userIDToClientID.get(UserId);
+
+        int winnerId = gs.getWinner();
+        String winner = "Bot";
+        if (winnerId == 0) {
+            winner = "draw";
+        } else if (winnerId == UserId) {
+            // This user won
+            winner = "You";
+        } else if (userIDToClientID.containsKey(winnerId)) {
+            int winnerClient = userIDToClientID.get(winnerId);
+            winner = activePlayers.get(winnerClient).getUsername();
+        }
 
         System.out.println("Sending game over message to playerId " + UserId);
 
         UserEventReply reply = new UserEventReply();
         JsonObject json = new JsonObject();
-        int clientId = userIDToClientID.get(UserId);
+        
         reply.recipients.add(clientId);
 
         //turning the board to 2d string array
@@ -855,7 +888,7 @@ public class PageManager {
         //getting the 2d string board as a jsonobj
         json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "EndGame");
-        json.addProperty("winner", gs.getWinner());
+        json.addProperty("winner", winner);
         
         putTop10InJson(json);
         
@@ -866,6 +899,62 @@ public class PageManager {
         App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
      }    
      
+     public UserEventReply quit(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+
+            if (g != null) { //if the player is in a game
+                Gm.removeGame(g, player); //signal the game must end due to player leaving.
+            }
+        }
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "quit");
+        return new UserEventReply(json, Id);
+     }
+
+     public UserEventReply drawRequest(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+
+            Player other = g.getOther(player);
+
+            if (other instanceof HumanPlayer) {
+                // Send draw request
+                JsonObject json = new JsonObject();
+                json.addProperty("responseID", "drawRequest");
+                UserEventReply draw = new UserEventReply(json, userIDToClientID.get(other.getPlayerId()));
+                App.sendMessage(draw);
+            } else {
+                //Force game draw for bots
+                Gm.drawGame(g); //signal the game must end due to player leaving.
+            }
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "drawRequestValid");
+        UserEventReply reply = new UserEventReply(json, Id);
+        return reply;
+     }
+
+     public UserEventReply drawAccept(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+            Gm.drawGame(g);
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "drawAcceptValid");
+        UserEventReply reply = new UserEventReply(json, Id);
+        return reply;
+     }
+
+
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      //because users are only put on active list when they log in, no message will be generated for users who did not log in and left

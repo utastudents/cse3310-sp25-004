@@ -236,6 +236,15 @@ public class App extends WebSocketServer {
       case "backToHome":
         Reply = PM.backToHome(Id);
         break;
+      case "quit":
+        Reply = PM.quit(Id);
+        break;
+      case "drawRequest":
+        Reply = PM.drawRequest(Id);
+        break;
+      case "drawAccept":
+        Reply = PM.drawAccept(Id);
+        break;
       case "summaryData":
         Reply = PM.retrieveLeaderboardJson(jsonObj, Id, -2);
         break;

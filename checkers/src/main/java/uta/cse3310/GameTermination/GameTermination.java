@@ -32,6 +32,40 @@ public class GameTermination {
             PageManager.db.recordMatchResult(g.getOther(p).getPlayerId(), p.getPlayerId());
         }
 
+        public static void forceEndGame(Game g) {
+            // Game was a draw
+            g.getBoard().setWinner(0);
+        }
+
+        public static boolean isGameOver(Game g) {
+            if (g.getBoard().getBoard().getAllMoves().size() == 0) {
+                return true;
+            }
+            return false;
+        }
+
+        public static void handleGameOver(Game g) {
+            // Assumes game is over
+            //If it is black's turn (true), red wins. Otherwise, black wins
+            int winner = g.getBoard().getTurn() ? g.getPlayer1().getPlayerId() : g.getPlayer2().getPlayerId();
+
+            g.getBoard().setWinner(winner);
+
+            int loser = g.getOther(winner);
+
+            PageManager.db.recordMatchResult(winner, loser);
+
+            // GameManager will call player.endGame
+        }
+
+        public static boolean gameResult(Game g) {
+            if (isGameOver(g)) {
+                handleGameOver(g);
+                return true;
+            }
+            return false;
+        }
+
         // New endGame functionality.  
         public static Game endGame(Game currentGame) {
                 gameState state = new gameState();

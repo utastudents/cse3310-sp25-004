@@ -68,7 +68,7 @@ public class GameManager {
                 p2.startGame(newGame);
 
                 // p1 goes first
-                p1.makeMove(newGame.getBoard());
+                moveWrapper(newGame.getPlayer1(), newGame);
 
                 return true;
             }
@@ -77,28 +77,61 @@ public class GameManager {
         return false;
     }
 
+    private void moveWrapper(Player p, Game g) {
+        try {
+            p.makeMove(g.getBoard());
+        } catch (Exception e) {
+            System.out.println(e);
+            GameMove fallback = new GameMove(p.getPlayerId(), g.getGameID(), 
+                g.getBoard().getBoard().getAllMoves().get(0));
+            processMove(fallback, g.getBoard());
+        }
+    }
+
     // Removes game once GameTermination concludes game is over
-    public void removeGame(Game currentGame) {
-        GameTermination.endGame(currentGame);
-        games.set(currentGame.getGameID(), null);
-        /*
-        Game gameToRemove = gt.endGame(currentGame);
-        for (int i = 0; i < games.size(); i++) {
-            Game g = games.get(i);
-            if (g != null && g.getGameID() == gameToRemove.getGameID()) {
-                games.set(i, null);
-                pu.boardAvailable();
-            }
-        } */
+    public void removeGame(Game g) {
+        System.out.println("Game " + g.getGameID() + " has ended");
+
+        g.getPlayer1().setStatus(STATUS.ONLINE);
+        g.getPlayer2().setStatus(STATUS.ONLINE);
+
+        g.getPlayer1().endGame(g.getBoard());
+        g.getPlayer2().endGame(g.getBoard());
+
+        games.set(g.getGameID(), null);
+
+        PageManager.pu.boardAvailable();
     }
 
     // When a player disconnects
     public void removeGame(Game currentGame, Player p) {
         if (currentGame == null) {return;}
         GameTermination.forceEndGame(currentGame, p);
+
+        currentGame.getPlayer1().setStatus(STATUS.ONLINE);
+        currentGame.getPlayer2().setStatus(STATUS.ONLINE);
+
         currentGame.getPlayer1().endGame(currentGame.getBoard());
         currentGame.getPlayer2().endGame(currentGame.getBoard());
+
         games.set(currentGame.getGameID(), null);
+
+        PageManager.pu.boardAvailable();
+    }
+
+    // When a draw is accepted
+    public void drawGame(Game currentGame) {
+        if (currentGame == null) {return;}
+        GameTermination.forceEndGame(currentGame);
+
+        currentGame.getPlayer1().setStatus(STATUS.ONLINE);
+        currentGame.getPlayer2().setStatus(STATUS.ONLINE);
+
+        currentGame.getPlayer1().endGame(currentGame.getBoard());
+        currentGame.getPlayer2().endGame(currentGame.getBoard());
+
+        games.set(currentGame.getGameID(), null);
+
         PageManager.pu.boardAvailable();
     }
 
@@ -155,7 +188,13 @@ public class GameManager {
         if (valid) {
             // Swap turns
             board.setTurn(!board.getTurn());
-            GameTermination.endGame(g);
+            if (GameTermination.gameResult(g)) {
+                //Game is over
+                removeGame(g);
+
+                return null;
+            }
+            //GameTermination.endGame(g);
             g.consecutiveAttempts = 0;
         } else {
             // Send the actual game board back so they can compare
@@ -164,6 +203,7 @@ public class GameManager {
             board.getBoard().printBoard(from, to);
 
             if (g.consecutiveAttempts > 10) {
+                g.getBoard().getBoard().printAvailableMoves();
                 throw new Error("Automatic move failed!");
             } else if (g.consecutiveAttempts > 5) {
                 System.out.println("Too many failed attempts! Forcing automatic move.");
@@ -178,10 +218,10 @@ public class GameManager {
         if (board.getTurn()) {
             //Black's move
             g.getPlayer1().updateBoard(board);
-            g.getPlayer2().makeMove(board);
+            moveWrapper(g.getPlayer2(), g);
         } else {
             //Red's move
-            g.getPlayer1().makeMove(board);
+            moveWrapper(g.getPlayer1(), g);
             g.getPlayer2().updateBoard(board);
         }
 
