@@ -165,13 +165,44 @@ public class BotI extends Bot {
                 ArrayList<Cord> jumpSequence = new ArrayList<>();
                 jumpSequence.add(checker.getCord());
                 jumpSequence.add(jump);
+                findMultJumps(checker, jump, jumpSequence, jumpMoves);
             } 
         } 
         
         return jumpMoves; 
     } 
 
-    private void findMultJumps(Checker checker, Cord currentPos, ArrayList<Cord> jumpSequence, ArrayList<Move> jumpMoves) {}
+    private void findMultJumps(Checker checker, Cord currentPos, ArrayList<Cord> jumpSequence, ArrayList<Move> jumpMoves) {
+        jumpMoves.add(new Move(checker, jumpSequence.get(jumpSequence.size()-1), true, new ArrayList<>(jumpSequence)));
+
+        Checker tempChecker = new Checker(currentPos, checker.getColor());
+        tempChecker.setKing(checker.isKing());
+
+        ArrayList<Cord> nextJumps;
+        if (tempChecker.getColor() == Color.BLACK) {
+            nextJumps = board.getPossibleForwardJump(tempChecker);
+        } else {
+            nextJumps = board.getPossibleBackwardJump(tempChecker);
+        } 
+
+        if (tempChecker.isKing()) {
+            ArrayList<Cord> kingJumps;
+            if (tempChecker.getColor() == Color.BLACK) {
+                kingJumps = board.getPossibleBackwardJump(tempChecker);
+            } else {
+                kingJumps = board.getPossibleForwardJump(tempChecker);
+            }
+            nextJumps.addAll(kingJumps);
+        }
+
+        for (Cord nextJump : nextJumps) {
+            if (!jumpSequence.contains(nextJump)) { 
+                jumpSequence.add(nextJump);
+                findMultJumps(checker, nextJump, jumpSequence, jumpMoves);
+                jumpSequence.remove(jumpSequence.size()-1);
+            }
+        }
+    }
    
 
 
@@ -263,34 +294,52 @@ public class BotI extends Bot {
         
     // Picks best jump move - prefers making kings and capturing kings
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
-        // if (jumpMoves.size() == 1) {
-        //     return jumpMoves.get(0);
-        // }
-        
-        // ArrayList<Move> kingJumps = new ArrayList<>();
-        // for (Move move : jumpMoves) {
-        //     if (wouldBecomeKing(move)) {
-        //         kingJumps.add(move);
-        //     }
-        // }
+        if (jumpMoves.size() == 1) {
+            return jumpMoves.get(0);
+        }
 
-        // if (!kingJumps.isEmpty()) {
-        //     return kingJumps.get(random.nextInt(kingJumps.size()));
-        // }
+        int maxJumps = 0;
+        ArrayList<Move> longJumps = new ArrayList<>();
+        for (Move move : jumpMoves) {
+            int jumps;
+            if (move.jumpSequence != null) {
+                jumps = move.jumpSequence.size() - 1;
+            } else {
+                jumps = 1;
+            }
+            
+            if (jumps > maxJumps) {
+                maxJumps = jumps;
+                longJumps.clear();
+                longJumps.add(move);
+            } else if (jumps == maxJumps) {
+                longJumps.add(move);
+            }
+        }
         
-        // ArrayList<Move> kingCaptureJumps = new ArrayList<>();
-        // for (Move move : jumpMoves) {
-        //     if (capturesKing(move)) {
-        //         kingCaptureJumps.add(move);
-        //     }
-        // }
+        ArrayList<Move> kingJumps = new ArrayList<>();
+        for (Move move : longJumps) {
+            if (wouldBecomeKing(move)) {
+                kingJumps.add(move);
+            }
+        }
 
-        // if (!kingCaptureJumps.isEmpty()) {
-        //     return kingCaptureJumps.get(random.nextInt(kingCaptureJumps.size()));
-        // }
+        if (!kingJumps.isEmpty()) {
+            return kingJumps.get(random.nextInt(kingJumps.size()));
+        }
         
-        // return jumpMoves.get(random.nextInt(jumpMoves.size()));
-        return null;
+        ArrayList<Move> kingCaptureJumps = new ArrayList<>();
+        for (Move move : longJumps) {
+            if (capturesKing(move)) {
+                kingCaptureJumps.add(move);
+            }
+        }
+
+        if (!kingCaptureJumps.isEmpty()) {
+            return kingCaptureJumps.get(random.nextInt(kingCaptureJumps.size()));
+        }
+        
+        return longJumps.get(random.nextInt(longJumps.size()));
     }
  
     
@@ -480,6 +529,7 @@ public class BotI extends Bot {
     } 
 }
     
+
 
 
 
