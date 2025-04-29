@@ -39,14 +39,31 @@ public class BotI extends Bot {
         this.random = new Random();
         this.playerId = -1;
     }
+
+    @Override
+    public boolean startGame(Game g) {
+        this.game = g;
+        this.board = g.getBoard().getBoard();
+        return true;
+    }
     
      //this method checks what move to make, its made strategically, 
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
     public boolean makeMove(GamePlay gs){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         //if game ends bot cant make a move
         if (gameEnded) {
             return false;
+        }
+
+        if(game != null) {
+            this.board = game.getBoard().getBoard();
         }
 
         //checks the available peices 
@@ -91,18 +108,13 @@ public class BotI extends Bot {
         return false; //if theres no moves at all
     } 
        
-
-
-
     //updates where the peices are on the board
     @Override 
     public boolean updateBoard(GamePlay gs) {
-        
         if (game != null) {
             this.board = game.getBoard().getBoard();
         }
         return true;
-        
     } 
 
     //this function is called when the game is over
@@ -117,9 +129,6 @@ public class BotI extends Bot {
         
     } 
     
-
-
-
     //finds all checkers that are available on the board
     protected ArrayList<Checker> getAvailableCheckers() { 
         //creates a new list to store our checkers
@@ -139,8 +148,6 @@ public class BotI extends Bot {
         } 
         return checkers; 
     }  
-
-    
 
     // Finds all possible jump moves (capturing opponent pieces)
     private ArrayList<Move> getAllJumpMoves(ArrayList<Checker> checkers) { 
@@ -204,10 +211,6 @@ public class BotI extends Bot {
         }
     }
    
-
-
-
-
     // finds all possible moves
     private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){
 	    ArrayList<Move> moves = new ArrayList<>(); 
@@ -227,7 +230,6 @@ public class BotI extends Bot {
         return moves; 
     } 
 
- 
     // gets all possible mvoes for a single checker piece
     private ArrayList<Cord> getPossibleMoves(Checker piece) { 
         ArrayList<Cord> moves = new ArrayList<>(); 
@@ -290,8 +292,6 @@ public class BotI extends Bot {
         return moves; 
     } 
 
-  
-        
     // Picks best jump move - prefers making kings and capturing kings
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
         if (jumpMoves.size() == 1) {
