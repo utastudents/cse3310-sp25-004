@@ -819,7 +819,12 @@ public class PageManager {
         
         GameUpdate update = Gm.processMove(gameMove, gamePlay);
 
-        json.addProperty("valid", update.isValidMove());
+        if (update == null) {
+            json.addProperty("valid", false);
+        } else {
+            json.addProperty("valid", update.isValidMove());
+        }
+        
         json.addProperty("responseID", "validMove");
 
         return reply;

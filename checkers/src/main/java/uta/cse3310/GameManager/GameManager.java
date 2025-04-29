@@ -78,27 +78,33 @@ public class GameManager {
     }
 
     // Removes game once GameTermination concludes game is over
-    public void removeGame(Game currentGame) {
-        GameTermination.endGame(currentGame);
-        games.set(currentGame.getGameID(), null);
-        /*
-        Game gameToRemove = gt.endGame(currentGame);
-        for (int i = 0; i < games.size(); i++) {
-            Game g = games.get(i);
-            if (g != null && g.getGameID() == gameToRemove.getGameID()) {
-                games.set(i, null);
-                pu.boardAvailable();
-            }
-        } */
+    public void removeGame(Game g) {
+        System.out.println("Game " + g.getGameID() + " has ended");
+
+        g.getPlayer1().setStatus(STATUS.ONLINE);
+        g.getPlayer2().setStatus(STATUS.ONLINE);
+
+        g.getPlayer1().endGame(g.getBoard());
+        g.getPlayer2().endGame(g.getBoard());
+
+        games.set(g.getGameID(), null);
+
+        PageManager.pu.boardAvailable();
     }
 
     // When a player disconnects
     public void removeGame(Game currentGame, Player p) {
         if (currentGame == null) {return;}
         GameTermination.forceEndGame(currentGame, p);
+
+        currentGame.getPlayer1().setStatus(STATUS.ONLINE);
+        currentGame.getPlayer2().setStatus(STATUS.ONLINE);
+
         currentGame.getPlayer1().endGame(currentGame.getBoard());
         currentGame.getPlayer2().endGame(currentGame.getBoard());
+
         games.set(currentGame.getGameID(), null);
+        
         PageManager.pu.boardAvailable();
     }
 
@@ -155,7 +161,13 @@ public class GameManager {
         if (valid) {
             // Swap turns
             board.setTurn(!board.getTurn());
-            GameTermination.endGame(g);
+            if (GameTermination.gameResult(g)) {
+                //Game is over
+                removeGame(g);
+
+                return null;
+            }
+            //GameTermination.endGame(g);
             g.consecutiveAttempts = 0;
         } else {
             // Send the actual game board back so they can compare
