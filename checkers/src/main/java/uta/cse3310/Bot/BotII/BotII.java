@@ -42,7 +42,7 @@ public class BotII extends Bot {
                         }
                     }
                 }
-                else if (bestMove == null && checker != null && checker.isKing() ) {
+                /*else if (bestMove == null && checker != null && checker.isKing() ) {
                     //stops failing since there was no null check before
                     ArrayList<Cord> kingMoves = getKingMoves(board, checker);
                         for (Cord move : kingMoves) {
@@ -51,7 +51,7 @@ public class BotII extends Bot {
                             }
                         }
                     
-                }
+                }*/
             }
         }
         return bestMove;

@@ -13,7 +13,7 @@ import uta.cse3310.GamePlay.Board;
 import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord;
-import uta.cse3310.GamePlay.GamePlay;
+//import uta.cse3310.GamePlay.GamePlay;
 
 
 
@@ -191,6 +191,11 @@ public class BotIITest {
         assertNotNull(move);
         //assertEquals(new Cord(0, 0), move.destination); // King can capture upward
         System.out.println("From: " + king.getCord() + " To: " + move.destination);
+    }
+
+    @Test
+    public void testBlackKing() {
+
     }
 
 }
