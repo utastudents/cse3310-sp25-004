@@ -11,6 +11,8 @@ import uta.cse3310.GamePlay.Checker;
 import uta.cse3310.GamePlay.Color;
 import uta.cse3310.GamePlay.Cord; 
 import uta.cse3310.GamePlay.GamePlay; 
+import uta.cse3310.PageManager.GameMove;
+import uta.cse3310.PageManager.PageManager;
 
 public class BotI extends Bot {
     
@@ -44,34 +46,48 @@ public class BotI extends Bot {
     public boolean makeMove(GamePlay gs){
         //if game ends bot cant make a move
         if (gameEnded) {
-            System.out.println("Bot I: No move. Game has ended");
             return false;
         }
 
         //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
         if (availableCheckers.isEmpty()) { 
-            System.out.println("Bot I: No move. No checkers available to move");
             return false; 
         } 
         
         //looks for jump moves that capture opponent
-         ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers); 
-         if (!jumpMoves.isEmpty()) { 
+        ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers); 
+        if (!jumpMoves.isEmpty()) { 
             Move bestJumpMove = selectBestJumpMove(jumpMoves); //picks the best jump option if its available
-            executeMove(bestJumpMove); 
-            return true; 
-        } 
+            if (bestJumpMove.jumpSequence != null && bestJumpMove.jumpSequence.size() > 2) {
+                for (int i = 0; i < bestJumpMove.jumpSequence.size() - 1; i++) {
+                    Cord start = bestJumpMove.jumpSequence.get(i);
+                    Cord end = bestJumpMove.jumpSequence.get(i + 1);
+                    GameMove move = new GameMove(this.playerId, this.game.getGameID(), start.getX(), start.getY(),
+                                                end.getX(), end.getY(), "black");
+                    PageManager.Gm.processMove(move, gs);
+                }
+                return true;
+            } else {
+                GameMove move = new GameMove(this.playerId, this.game.getGameID(), bestJumpMove.piece.getCord().getX(), 
+                                            bestJumpMove.piece.getCord().getY(), bestJumpMove.destination.getX(), 
+                                            bestJumpMove.destination.getY(), "black");
+                PageManager.Gm.processMove(move, gs);
+                return true;
+            }
+        }
          
          //if theres no jump moves,  just look for regular moves
          ArrayList<Move> moves = getAllMoves(availableCheckers); 
          if (!moves.isEmpty()) { 
             //picks the best move for regular moves
             Move bestMove = selectBestMove(moves); 
-            executeMove(bestMove); 
+            GameMove move =  new GameMove( this.playerId, this.game.getGameID(), 
+                                    bestMove.piece.getCord().getX(), bestMove.piece.getCord().getY(), 
+                                    bestMove.destination.getX(), bestMove.destination.getY(), "black");
+            PageManager.Gm.processMove(move, gs); 
             return true; 
         } 
-        System.out.println("Bot I: No move. No moves are available.");
         return false; //if theres no moves at all
     } 
        
@@ -144,16 +160,54 @@ public class BotI extends Bot {
                 jumps = board.getPossibleBackwardJump(checker); 
             } 
 
-            //adds each possible jump place as a move
+            //looks for multiple jumps
             for (Cord jump : jumps) { 
-                jumpMoves.add(new Move(checker, jump, true)); 
+                ArrayList<Cord> jumpSequence = new ArrayList<>();
+                jumpSequence.add(checker.getCord());
+                jumpSequence.add(jump);
+                findMultJumps(checker, jump, jumpSequence, jumpMoves);
             } 
         } 
         
         return jumpMoves; 
     } 
 
+    private void findMultJumps(Checker checker, Cord currentPos, ArrayList<Cord> jumpSequence, ArrayList<Move> jumpMoves) {
+        jumpMoves.add(new Move(checker, jumpSequence.get(jumpSequence.size()-1), true, new ArrayList<>(jumpSequence)));
+
+        Checker tempChecker = new Checker(currentPos, checker.getColor());
+        tempChecker.setKing(checker.isKing());
+
+        ArrayList<Cord> nextJumps;
+        if (tempChecker.getColor() == Color.BLACK) {
+            nextJumps = board.getPossibleForwardJump(tempChecker);
+        } else {
+            nextJumps = board.getPossibleBackwardJump(tempChecker);
+        } 
+
+        if (tempChecker.isKing()) {
+            ArrayList<Cord> kingJumps;
+            if (tempChecker.getColor() == Color.BLACK) {
+                kingJumps = board.getPossibleBackwardJump(tempChecker);
+            } else {
+                kingJumps = board.getPossibleForwardJump(tempChecker);
+            }
+            nextJumps.addAll(kingJumps);
+        }
+
+        for (Cord nextJump : nextJumps) {
+            if (!jumpSequence.contains(nextJump)) { 
+                jumpSequence.add(nextJump);
+                findMultJumps(checker, nextJump, jumpSequence, jumpMoves);
+                jumpSequence.remove(jumpSequence.size()-1);
+            }
+        }
+    }
    
+
+
+
+
     // finds all possible moves
     private ArrayList<Move> getAllMoves(ArrayList<Checker> checkers){
 	    ArrayList<Move> moves = new ArrayList<>(); 
@@ -243,9 +297,28 @@ public class BotI extends Bot {
         if (jumpMoves.size() == 1) {
             return jumpMoves.get(0);
         }
+
+        int maxJumps = 0;
+        ArrayList<Move> longJumps = new ArrayList<>();
+        for (Move move : jumpMoves) {
+            int jumps;
+            if (move.jumpSequence != null) {
+                jumps = move.jumpSequence.size() - 1;
+            } else {
+                jumps = 1;
+            }
+            
+            if (jumps > maxJumps) {
+                maxJumps = jumps;
+                longJumps.clear();
+                longJumps.add(move);
+            } else if (jumps == maxJumps) {
+                longJumps.add(move);
+            }
+        }
         
         ArrayList<Move> kingJumps = new ArrayList<>();
-        for (Move move : jumpMoves) {
+        for (Move move : longJumps) {
             if (wouldBecomeKing(move)) {
                 kingJumps.add(move);
             }
@@ -256,7 +329,7 @@ public class BotI extends Bot {
         }
         
         ArrayList<Move> kingCaptureJumps = new ArrayList<>();
-        for (Move move : jumpMoves) {
+        for (Move move : longJumps) {
             if (capturesKing(move)) {
                 kingCaptureJumps.add(move);
             }
@@ -266,7 +339,7 @@ public class BotI extends Bot {
             return kingCaptureJumps.get(random.nextInt(kingCaptureJumps.size()));
         }
         
-        return jumpMoves.get(random.nextInt(jumpMoves.size()));
+        return longJumps.get(random.nextInt(longJumps.size()));
     }
  
     
@@ -348,11 +421,26 @@ public class BotI extends Bot {
         { 
         return false; 
         }
-	// Find the piece we're jumping over  
-        int capturedX = (move.piece.getCord().getX() + move.destination.getX()) / 2; 
-        int capturedY = (move.piece.getCord().getY() + move.destination.getY()) / 2; 
-        Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY)); 
-        return capturedPiece != null && capturedPiece.isKing(); 
+	 
+        if (move.jumpSequence != null && move.jumpSequence.size() > 2) {
+
+            for (int i = 0; i < move.jumpSequence.size() - 1; i++) {
+                Cord start = move.jumpSequence.get(i);
+                Cord end = move.jumpSequence.get(i + 1);
+                int capturedX = (start.getX() + end.getX()) / 2;
+                int capturedY = (start.getY() + end.getY()) / 2;
+                Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY));
+                if (capturedPiece != null && capturedPiece.isKing()) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            int capturedX = (move.piece.getCord().getX() + move.destination.getX()) / 2;
+            int capturedY = (move.piece.getCord().getY() + move.destination.getY()) / 2;
+            Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY));
+            return capturedPiece != null && capturedPiece.isKing();
+        }
     } 
 
     // Checks if a move is safe from being captured
@@ -420,40 +508,28 @@ public class BotI extends Bot {
         } 
     }  
 
-
-    // Actually performs the move on the board and checks for king promotion
-    private void executeMove(Move move)
-    { 
-        // WARNING : THIS CODE IS INCORRECT
-        // Moves should be made by calling GameManager's processMove method
-        // This is available through PageManager.Gm.processMove()
-        // See Bot.java for reference
-        System.err.println("Please update this code to use GameManager's processMove method!");
-        if (board != null)
-        { 
-	    // Move the piece and check for king promotion
-            board.updatePosition(move.piece, move.destination); 
-            board.kingMe(move.piece); 
-        } 
-        
-    } 
-
     // Keeps track of move information (which piece, where it's going, if it's a jump)
     private class Move
     { 
         Checker piece;  // The piece being moved 
         Cord destination; // Where it's going 
         boolean isJump; // True if it's a jump/capture
+        ArrayList<Cord> jumpSequence;
+
+        Move(Checker piece, Cord destination, boolean isJump){
+            this(piece, destination, isJump, null);
+        }
  
-        Move(Checker piece, Cord destination, boolean isJump)
-        { 
+        Move(Checker piece, Cord destination, boolean isJump, ArrayList<Cord> jumpSequence) { 
             this.piece = piece; 
             this.destination = destination; 
             this.isJump = isJump; 
+            this.jumpSequence = jumpSequence;
         } 
     } 
 }
     
+
 
 
 
