@@ -171,21 +171,16 @@ public class PageManagerTest
 		 * Test for req. PG-23, tests that PM check with DB that a user logging in exists in DB
 		 */
 
-		System.out.println("TESTED!!");
-		 int ID = 123;
+		int ID = 123;
 		JsonObject jsonData = new JsonObject();
 		jsonData.addProperty("action", "new_user");
 		jsonData.addProperty("UserName", "Alice");
-		jsonData.addProperty("", "FooBar1");
+		jsonData.addProperty("Password", "FooBar1");
 
 		pm.handleNewUser(jsonData, ID);
 
 		jsonData.addProperty("action", "login");
 
 		pm.handleLogin(jsonData, ID);
-		
-
-		
-
 	}
 }
