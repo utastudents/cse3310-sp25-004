@@ -108,11 +108,11 @@ public class GameManager {
         int playerId = move.getClientId();
         Game g = games.get(move.getGameId());
 
-        if (gamePlay.turn == (g.getPlayer1().getPlayerId() == playerId)) {
+        if (gamePlay.getTurn() == (g.getPlayer1().getPlayerId() == playerId)) {
             // Red's turn and black is trying to move or vice-versa
             g.printBasics();
             System.out.println("Wrong player (" + playerId + ") tried to move!");
-            System.out.println("Expected move from player " + (gamePlay.turn ? g.getPlayer2().getPlayerId() : g.getPlayer1().getPlayerId()));
+            System.out.println("Expected move from player " + (gamePlay.getTurn() ? g.getPlayer2().getPlayerId() : g.getPlayer1().getPlayerId()));
             return new GameUpdate(false, "In Progress", "", false, false, "Playerid failed to move");
         }
 
@@ -129,12 +129,12 @@ public class GameManager {
         if (piece == null) {
             System.out.println("Attempted to move a piece that does not exist!");
             gamePlay.getBoard().printBoard();
-        } else if (piece.getColor() == Color.RED && gamePlay.turn) {
+        } else if (piece.getColor() == Color.RED && gamePlay.getTurn()) {
             //Black is trying to move red's piece
             g.printBasics();
             System.out.println("Black (" + playerId + ") tried to move red's piece!");
             gamePlay.getBoard().printBoard();
-        } else if (piece.getColor() == Color.BLACK && !gamePlay.turn) {
+        } else if (piece.getColor() == Color.BLACK && !gamePlay.getTurn()) {
             //Red is trying to move black's piece
             g.printBasics();
             System.out.println("Red (" + playerId + ") tried to move black's piece!");
@@ -154,7 +154,7 @@ public class GameManager {
         GamePlay board = g.getBoard();
         if (valid) {
             // Swap turns
-            board.turn = !board.turn;
+            board.setTurn(!board.getTurn());
             GameTermination.endGame(g);
             g.consecutiveAttempts = 0;
         } else {
@@ -163,16 +163,19 @@ public class GameManager {
             board.getBoard().printBoard();
             board.getBoard().printBoard(from, to);
 
-            if (g.consecutiveAttempts > 5) {
-                System.out.println("Too many failed attempts! Exiting infinite loop.");
-                return null;
+            if (g.consecutiveAttempts > 10) {
+                throw new Error("Automatic move failed!");
+            } else if (g.consecutiveAttempts > 5) {
+                System.out.println("Too many failed attempts! Forcing automatic move.");
+                GameMove forced = new GameMove(move, board.getBoard().getAllMoves().get(0));
+                return processMove(forced, gamePlay);
             }
         }
         
         // Debug
         g.printBasics();
 
-        if (board.turn) {
+        if (board.getTurn()) {
             //Black's move
             g.getPlayer1().updateBoard(board);
             g.getPlayer2().makeMove(board);

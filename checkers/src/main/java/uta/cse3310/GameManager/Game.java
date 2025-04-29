@@ -78,6 +78,6 @@ public class Game{
       System.out.println("GAME " + gameID);
       System.out.println("Player 1: " + player1.getPlayerId());
       System.out.println("Player 2: " + player2.getPlayerId());
-      System.out.println("Turn: " + (board.turn ? "black" : "red"));
+      System.out.println("Turn: " + (board.getTurn() ? "black" : "red"));
    }
 }

@@ -10,7 +10,7 @@ public class GamePlay
     private Board board;
     //private GameTermination termination;
 
-    public boolean turn; // false for red's turn, true for black's turn
+    
 
     private int winner; // Player id of winner, or 0 if none
 
@@ -278,5 +278,13 @@ public class GamePlay
 
     public int getWinner() {
         return winner;
+    }
+
+    public boolean getTurn() {
+        return this.board.turn;
+    }
+
+    public void setTurn(boolean t) {
+        this.board.turn = t;
     }
 }
