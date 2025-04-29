@@ -34,7 +34,7 @@ public class BotI extends Bot {
     public BotI(Game game, Color color){
         super();
         this.game = game;
-        this.color = color;
+        this.color = Color.BLACK;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
         this.playerId = -1;

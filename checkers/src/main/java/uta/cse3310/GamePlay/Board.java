@@ -10,8 +10,11 @@ public class Board
 {
     //Variable for 2D array board
 
+	// checkerBoard[y][x]
 	public Checker[][] checkerBoard; // 2D array of checkers on the board
 	//NOTE: A NULL value in the array means that the square is empty.
+
+	public boolean turn; // false for red's turn, true for black's turn
 
 
 	public Board()
@@ -184,14 +187,14 @@ public class Board
 		// verify destination square is not occupied by another piece
 		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
-			System.out.println("Space occupied");
+			//System.out.println("Space occupied");
 			return false;
 		}
 		// verify if destination is 1 square above and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
 		
-		System.out.println("X/Y diffs: expected: (1,1) actual: (" + xDiff + ", " + yDiff + ")");
+		//System.out.println("X/Y diffs: expected: (1,1) actual: (" + xDiff + ", " + yDiff + ")");
 
 		return (xDiff == 1 && yDiff == 1);
 	}
@@ -219,16 +222,66 @@ public class Board
 		// verify destination square is not occupied by another piece	
 		if(checkerBoard[dest.getY()][dest.getX()] != null)
 		{
-			System.out.println("Space occupied");
+			//System.out.println("Space occupied");
 			return false;
 		}
 		// verify if destination is 1 square below and to the right/left of the chosen checker
 		int xDiff = Math.abs(dest.getX() - piece.getCord().getX());
 		int yDiff = (dest.getY() - piece.getCord().getY());
 		
-			System.out.println("X/Y diffs: expected: (1,-1) actual: (" + xDiff + ", " + yDiff + ")");
+		//System.out.println("X/Y diffs: expected: (1,-1) actual: (" + xDiff + ", " + yDiff + ")");
 
-			return (xDiff == 1 && yDiff == -1);
+		return (xDiff == 1 && yDiff == -1);
+	}
+
+	public ArrayList<Move> getAllRegularMoves(Color pColor) {
+		ArrayList<Move> moves = new ArrayList<>();
+		// Brute force approach
+
+		Checker c;
+		Cord f;
+		Cord d;
+		
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				c = checkerBoard[row][col];
+				f = new Cord(col, row);
+				if (c != null && c.getColor() == pColor) {
+					// Check every possible square
+					for (int dr = 0; dr < 8; dr++) {
+						for (int dc = 0; dc < 8; dc++) {
+							d = new Cord(dc, dr);
+							if (c.isKing() || pColor == Color.BLACK) {
+								if (moveBackwardCheck(c, d)) {
+									moves.add(new Move(c, f, d));
+								}
+							}
+							if (c.isKing() || pColor == Color.RED) {
+								if (moveForwardCheck(c, d)) {
+									moves.add(new Move(c, f, d));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return moves;
+	}
+
+	public ArrayList<Move> getAllMoves() {
+		ArrayList<Move> moves = new ArrayList<>();
+
+		Color current = turn ? Color.BLACK : Color.RED;
+
+		moves.addAll(getAllJumps(current));
+
+		if (moves.size() > 0) {
+			return moves;
+		}
+
+		return getAllRegularMoves(current);
 	}
 	
 	public ArrayList<Cord> getPossibleBackwardJump(Checker piece) 
@@ -450,14 +503,15 @@ public class Board
 		return toReturn;
 	}
 
-	public boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
-    {
-        ArrayList<Cord> jumps = new ArrayList<>();
+	public ArrayList<Move> getAllJumps(Color pColor) {
+		ArrayList<Move> jumps = new ArrayList<>();
 
-		for (Checker[] row : checkerBoard) 
+		for (int row = 0; row < 8; row++) 
 		{
-			for (Checker p : row) 
+			for (int col = 0; col < 8; col++) 
 			{
+				Checker p = checkerBoard[row][col];
+				Cord from = new Cord(col, row);
 				if (p == null) // Skip to next piece if p is NULL
 				{
 					continue; 
@@ -471,12 +525,18 @@ public class Board
 					if(p.isKing() || p.getColor() == Color.BLACK) // Check if the piece is a king or black
 					{
 						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
-						jumps.addAll(getPossibleForwardJump(p)); 
+						ArrayList<Cord> dests = getPossibleForwardJump(p);
+						for (Cord c : dests) {
+							jumps.add(new Move(p, from, c));
+						}
 					}
 					else if(p.getColor() == Color.RED || p.isKing()) // Check if the piece is a king or red
 					{
 						assert p.getColor() == pColor; // Assert that the piece is the same color as the player
-						jumps.addAll(getPossibleBackwardJump(p));
+						ArrayList<Cord> dests = getPossibleBackwardJump(p);
+						for (Cord c : dests) {
+							jumps.add(new Move(p, from, c));
+						}
 					}
 					/* The code should not add the opposite color's jumps to the list,
 					because of the if(p.getColor() == pColor) check above that should prevent it.
@@ -484,6 +544,12 @@ public class Board
 				}
 			}
 		}
+		return jumps;
+	}
+
+	public boolean hasJump(Color pColor) // Checks if a specific player (red or black) has any jumps
+    {
+        ArrayList<Move> jumps = getAllJumps(pColor);
 		if(jumps.size() > 0)
 		{
 			return true; // Player has at least one jump
