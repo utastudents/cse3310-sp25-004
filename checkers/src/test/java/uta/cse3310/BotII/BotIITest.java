@@ -65,11 +65,12 @@ public class BotIITest {
         board.checkerBoard[4][3] = blackChecker;
 
         // Red piece at column 2, row 3 (x=2, y=3) - can jump downward
-        Checker redChecker = new Checker(new Cord(4, 3), Color.RED);
-        board.checkerBoard[3][4] = redChecker;
+        Checker redChecker = new Checker(new Cord(4, 5), Color.RED);
+        board.checkerBoard[5][4] = redChecker;
+        redChecker.setKing(true);
 
         // Empty landing spot at column 4, row 5 (x=4, y=5)
-        board.checkerBoard[5][4] = null;
+        // board.checkerBoard[5][4] = null;
 
         System.out.println("\nBoard state in testIsInDanger:");
         printBoardWithCoordinates(board);
@@ -194,8 +195,23 @@ public class BotIITest {
     }
 
     @Test
-    public void testBlackKing() {
-
+    public void testGetKingMoves() {
+        Board board = new Board();
+        clearBoard(board);
+        
+        Checker king = new Checker(new Cord(0, 0), Color.BLACK);
+        king.setKing(true);
+        board.checkerBoard[0][0] = king;
+        board.checkerBoard[4][2] = new Checker(new Cord(2, 4), Color.RED);
+        printBoardWithCoordinates(board);
+        
+        ArrayList<Cord> moves = BotII.getKingMoves(board, king);
+        //System.out.println("Move" + moves.get(1));
+        for (Cord move : moves) {
+            System.out.println("Move: " + move);
+        }
+        //assertNotNull(moves);
+        assertTrue(!moves.isEmpty());
     }
 
 }

@@ -31,24 +31,30 @@ public class BotII extends Bot {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
-                if (checker != null && checker.getColor() == Color.BLACK && !checker.isKing()) {
-                    ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
-                    for (Cord move : safeMoves) {
-                        if (bestMove == null && !wouldBeInDangerAfterMove(checker, move, board)) {
-                            bestMove = new Move(checker, move);
-                        }
-                        else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
-                            bestMove = new Move(checker, move);
-                        }
-                    }
-                }
-                else if (bestMove == null && checker != null && checker.isKing() ) {
+                if (bestMove == null && checker != null && checker.isKing() && 
+                    checker.getColor() == Color.BLACK) {
                     //stops failing since there was no null check before
                     ArrayList<Cord> kingMoves = getKingMoves(board, checker);
-                    for (Cord move : kingMoves) {
-                        if (bestMove == null) {
+                    if (kingMoves != null) {
+                        for (Cord move : kingMoves) {
+                            if (bestMove == null) {
+                                bestMove = new Move(checker, move);
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("kingMoves is null");;
+                    }
+                }
+                else if (checker != null && checker.getColor() == Color.BLACK && !checker.isKing()) {
+                    ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
+                    for (Cord move : safeMoves) {
+                        if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board) == false) {
                             bestMove = new Move(checker, move);
                         }
+                        // else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
+                        //     bestMove = new Move(checker, move);
+                        // }
                     }
                 }
             }
@@ -66,6 +72,7 @@ public class BotII extends Bot {
                 redChecker = board.checkerBoard[y][x];
                 if (redChecker != null && redChecker.getColor() == Color.RED) {
                     allRedPieces.add(redChecker.getCord());
+                    System.out.println("RedChecker: " + redChecker.getCord());
                 }
             }
         }
@@ -111,15 +118,28 @@ public class BotII extends Bot {
 
             Cord kCord = new Cord(jumpX, jumpY);
 
-            if (priority > 2 && inBounds(jumpX, jumpY) && !wouldBeInDangerAfterMove(king, kCord, board)) {
+            if (priority > 2 && inBounds(jumpX, jumpY) && wouldBeInDangerAfterMove(king, kCord, board) == false) {
                 boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+                if (jumpSpaceEmpty) {
+                    System.out.println("Space is empty: " + kCord);
+                }
                 jumpX -= x1;
                 jumpY -= y1;
+                jumpX = Math.abs(jumpX);
+                jumpY = Math.abs(jumpY);
                 int tempPriority = jumpX > jumpY ? jumpX : jumpY;
-                tempPriority = Math.abs(priority);
+                System.out.println("New Priority: " + tempPriority);
+                System.out.println("Old priority: " + priority);
                 if (jumpSpaceEmpty && tempPriority < priority) {
                     kingMoves.add(kCord);
+                    System.out.println("A coordinate was added" + kCord);
                 }
+                else {
+                    System.out.println("Not this move: " + kCord);
+                }
+            }
+            else {
+                System.out.println("Not this move: " + kCord);
             }
         }
         return kingMoves;
@@ -242,6 +262,7 @@ public class BotII extends Bot {
             }
             it++;
         }
+        System.out.println("Not in danger");
         return false;
     }
 
@@ -278,11 +299,15 @@ public class BotII extends Bot {
      */
     private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
         Checker temp = new Checker(dest, Color.BLACK);
+        System.out.println("Checking...");
         return isInDanger(temp, board);
     }
 
         /** Utility to check if board coordinates are valid. */
     private static boolean inBounds(int x, int y) {
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            System.out.println("move is in bounds");
+        }
         return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 
