@@ -371,11 +371,11 @@
 </div>
 
 
-<div class="summary" id="summary">
-	<button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button>
+<div class="summary" id="summary" style="display: none;">
+	
 
-	<!-- visibility hidden -->
-	<div id="summary-leaderboard" style="display: none;">
+	<!-- <button id="summary-button-display" onclick="summaryShow()">LEADERBOARD</button> visibility hidden -->
+	<div id="summary-leaderboard">
 		<meta charset="UTF-8">
 		<h2 id="summary-gameResultBanner">Game Status</h2>
 		<h1>Leaderboard</h1>
@@ -432,8 +432,8 @@
 			</script>
 
 		</div>
-		<!--- <p class= "caption"> Top 10 players.</p> -->
-		<button id="summary-button-hide" onclick="summaryHide()">Hide Leaderboard</button>
+		<!--- <p class= "caption"> Top 10 players.</p><button id="summary-button-hide" onclick="summaryHide()">Hide Leaderboard</button> -->
+		
 		<p style="text-align: center; font-size: 14px; color: gray; margin-top: 10px;">
 			Click on a header to sort ascending/descending.
 		</p>
@@ -441,14 +441,14 @@
 		<script>
 			// Show/hide the leaderboard
 			function summaryShow() {
-				document.getElementById("summary-button-display").style.display = "none"; // Hide the button
+				//document.getElementById("summary-button-display").style.display = "none"; // Hide the button
 				document.getElementById("summary-leaderboard").style.display = "inline-block"; // Show the leaderboard
-				renderLeaderboard();
+				//renderLeaderboard(); // causes infinite loop
 			}
 
 			function summaryHide() {
-				document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
-				document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
+				//document.getElementById("summary-button-display").style.display = "inline-block"; // Show the button
+				//document.getElementById("summary-leaderboard").style.display = "none"; // Hide the leaderboard
 			}
 
 			winMessage = "You won!";
@@ -594,6 +594,8 @@
 
 		if (page === "join_game") {
 			document.getElementById("summary").style.display = "block"; //So players can check out the leaderboard while queuing up. Also for debug since this page is unreachable lol
+			summaryShow();
+			renderLeaderboard();
 		}
 
 		document.title = pageToTitle[page] + " | Checkers | CSE3310-004";

@@ -177,6 +177,7 @@ connection.onmessage = function (msg) {
             console.log("Received summary data for leaderboard!");
             //ommits the responseID and only sends needed values to loadData
             loadData(jsonMsg.top10);
+            summaryShow();
             break;
         }
         //Signals that a user has abrubtly left
@@ -189,6 +190,7 @@ connection.onmessage = function (msg) {
             console.log("The winner is " + jsonMsg.winner); //Name. Bot, You, or other player's name
             displayGameOverData(jsonMsg);
             loadData(jsonMsg.top10);
+            summaryShow();
             break;
         }
 		case "gameWon": {
@@ -197,6 +199,7 @@ connection.onmessage = function (msg) {
 			//Expects the same response data, just a different responseID
 			showWinStatus();
 			loadData(jsonMsg.top10);
+            summaryShow();
 			break;
 		}
 		case "gameLost": {
@@ -204,6 +207,7 @@ connection.onmessage = function (msg) {
 			//Expects the same response data, just a different responseID
 			showLoseStatus();
 			loadData(jsonMsg.top10);
+            summaryShow();
 			break;
 		}
         case "gameDraw": {
