@@ -466,7 +466,11 @@
 
 			// Show/hide win status banner
 			function showWinStatus(winner) {
-				bannerMessage(true, winner + " won!");
+				if (winner == "draw" || winner == "Draw") {
+					bannerMessage(true, "Draw");
+				} else {
+					bannerMessage(true, winner + " won!");
+				}
 			}
 			function showLoseStatus() {
 				bannerMessage(true, loseMessage);
@@ -488,6 +492,11 @@
 </html>
 <script src="socket.js"></script>
 <script>
+
+	function requestDraw() {
+		showPopup("drawAccept");
+	}
+
 	// Board display
 	// This method is called by socket.js with the game board from Java / GamePlay
 	function displayBoard(json) {

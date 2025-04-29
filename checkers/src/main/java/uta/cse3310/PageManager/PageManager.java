@@ -865,7 +865,9 @@ public class PageManager {
 
         int winnerId = gs.getWinner();
         String winner = "Bot";
-        if (winnerId == UserId) {
+        if (winnerId == 0) {
+            winner = "draw";
+        } else if (winnerId == UserId) {
             // This user won
             winner = "You";
         } else if (userIDToClientID.containsKey(winnerId)) {
@@ -897,6 +899,62 @@ public class PageManager {
         App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
      }    
      
+     public UserEventReply quit(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+
+            if (g != null) { //if the player is in a game
+                Gm.removeGame(g, player); //signal the game must end due to player leaving.
+            }
+        }
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "quit");
+        return new UserEventReply(json, Id);
+     }
+
+     public UserEventReply drawRequest(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+
+            Player other = g.getOther(player);
+
+            if (other instanceof HumanPlayer) {
+                // Send draw request
+                JsonObject json = new JsonObject();
+                json.addProperty("responseID", "drawRequest");
+                UserEventReply draw = new UserEventReply(json, userIDToClientID.get(other.getPlayerId()));
+                App.sendMessage(draw);
+            } else {
+                //Force game draw for bots
+                Gm.drawGame(g); //signal the game must end due to player leaving.
+            }
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "drawRequestValid");
+        UserEventReply reply = new UserEventReply(json, Id);
+        return reply;
+     }
+
+     public UserEventReply drawAccept(int Id) {
+        HumanPlayer player = activePlayers.get(Id);
+        if (player != null) {
+            
+            Game g = player.getGame(); //get game object from that player
+            Gm.drawGame(g);
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("responseID", "drawAcceptValid");
+        UserEventReply reply = new UserEventReply(json, Id);
+        return reply;
+     }
+
+
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
      //because users are only put on active list when they log in, no message will be generated for users who did not log in and left

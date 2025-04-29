@@ -32,6 +32,11 @@ public class GameTermination {
             PageManager.db.recordMatchResult(g.getOther(p).getPlayerId(), p.getPlayerId());
         }
 
+        public static void forceEndGame(Game g) {
+            // Game was a draw
+            g.getBoard().setWinner(0);
+        }
+
         public static boolean isGameOver(Game g) {
             if (g.getBoard().getBoard().getAllMoves().size() == 0) {
                 return true;

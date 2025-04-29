@@ -172,6 +172,15 @@ connection.onmessage = function (msg) {
             break;
         }
 
+        case "drawRequestValid":
+        case "drawAcceptValid":
+        case "quit":
+            break; // Ignore these three, they're just acknowledgements
+        case "drawRequest": {
+            requestDraw();
+            break;
+        }
+
         // Summary Responses
         case "summaryData": {
             console.log("Received summary data for leaderboard!");

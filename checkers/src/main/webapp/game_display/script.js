@@ -137,6 +137,8 @@ function addGameDisplayListeners() {
                 quitGame();
             } else if (popupAction === 'draw') {
                 sendDrawRequest();
+            } else if (popupAction === 'drawAccept') {
+                sendDrawAccept();
             }
             hidePopup();
         };
@@ -322,6 +324,9 @@ function showPopup(actionType) {
         case 'draw':
             message.textContent = "Are you sure you want to request a draw?";
             break;
+        case 'drawAccept':
+            message.textContent = "Accept the draw?";
+            break;
         default:
             message.textContent = "Are you sure?";
     }
@@ -371,14 +376,20 @@ function hidePopup() {
 function quitGame() {
     //alert("Game will now end. (Placeholder for quit logic)");
     // Optionally: redirect, send WS message, etc.
+    sendMessage({action: "quit"});
     sendMessage({
         action: "backToHome"
     })
 }
 
 function sendDrawRequest() {
-    alert("Draw request sent. (Placeholder for draw logic)");
+    sendMessage({action: "drawRequest"});
+    //alert("Draw request sent. (Placeholder for draw logic)");
     // Optionally: send WebSocket message, notify opponent, etc.
+}
+
+function sendDrawAccept() {
+    sendMessage({action: "drawAccept"});
 }
 
 

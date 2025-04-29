@@ -119,6 +119,22 @@ public class GameManager {
         PageManager.pu.boardAvailable();
     }
 
+    // When a draw is accepted
+    public void drawGame(Game currentGame) {
+        if (currentGame == null) {return;}
+        GameTermination.forceEndGame(currentGame);
+
+        currentGame.getPlayer1().setStatus(STATUS.ONLINE);
+        currentGame.getPlayer2().setStatus(STATUS.ONLINE);
+
+        currentGame.getPlayer1().endGame(currentGame.getBoard());
+        currentGame.getPlayer2().endGame(currentGame.getBoard());
+
+        games.set(currentGame.getGameID(), null);
+
+        PageManager.pu.boardAvailable();
+    }
+
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back
     // to caller
     public GameUpdate processMove(GameMove move, GamePlay gamePlay) {
