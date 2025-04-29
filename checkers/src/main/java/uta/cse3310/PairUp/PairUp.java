@@ -195,12 +195,8 @@ public class PairUp {
      * @return - false if there was an error, true otherwise
      */
     public boolean boardAvailable() {
-        try {
-            pairUp(); // Attempt to make a new match
-            return true;
-        } catch (Exception e) { //excpetion thrown when match could not be made by pairUp()
-            return false;
-        }
+        pairUp(); // Attempt to make a new match
+        return true;
     }
     
     /**

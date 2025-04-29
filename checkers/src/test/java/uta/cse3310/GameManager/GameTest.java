@@ -63,7 +63,7 @@ public class GameTest {
         // Making game manager object
         GameManager manager = new GameManager();
 
-        manager.pu = new PairUp(manager);
+        PairUp pu = new PairUp(manager);
 
         // Player objects
         Player p1 = new MockPlayer(0);
