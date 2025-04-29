@@ -465,8 +465,8 @@
 			}
 
 			// Show/hide win status banner
-			function showWinStatus() {
-				bannerMessage(true, winMessage);
+			function showWinStatus(winner) {
+				bannerMessage(true, winner + " won!");
 			}
 			function showLoseStatus() {
 				bannerMessage(true, loseMessage);
@@ -523,13 +523,7 @@
 	}
 
 	function displayGameOverData(json) {
-		const Iwon = amI(json.winner);
-
-		if (Iwon) {
-			showWinStatus();
-		} else {
-			showLoseStatus();
-		}
+		showWinStatus(json.winner);
 	}
 
 	// Log in / new user functions
