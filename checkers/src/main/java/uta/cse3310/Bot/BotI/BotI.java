@@ -133,14 +133,14 @@ public class BotI extends Bot {
     protected ArrayList<Checker> getAvailableCheckers() { 
         //creates a new list to store our checkers
         ArrayList<Checker> checkers = new ArrayList<>(); 
-        if (board == null) { //if the board doesnt exist, return empty list
+        if (board == null) { 
             return checkers; 
         } 
 
         //just checking the board
         for (int y = 0; y < 8; y++) { 
             for (int x = 0; x < 8; x++) { 
-                Checker checker = board.checkSpace(new Cord(x, y)); 
+                Checker checker = board.checkerBoard[y][x]; 
                 if (checker != null && checker.getColor() == color) { 
                     checkers.add(checker); 
                 } 
@@ -222,9 +222,20 @@ public class BotI extends Bot {
 
         for (Checker checker : checkers) { 
             //get all possible moves
-            ArrayList<Cord> possibleMoves = getPossibleMoves(checker); 
-            for (Cord move : possibleMoves) { 
-                moves.add(new Move(checker, move, false)); //adds each possible destination as a move
+             int x = checker.getCord().getX();
+            int y = checker.getCord().getY();
+
+            int[][] directions = checker.isKing() ? 
+                new int[][]{{-1,-1}, {1,-1}, {-1,1}, {1,1}} : 
+                new int[][]{{-1,-1}, {1,-1}};
+
+            for (int[] dir : directions) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+                
+                if (isValidPosition(newX, newY) && board.checkerBoard[newY][newX] == null) {
+                    moves.add(new Move(checker, new Cord(newX, newY), false));
+                }
             } 
         } 
         return moves; 
@@ -413,6 +424,10 @@ public class BotI extends Bot {
         return false;
     }
 
+    private boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
+
 
     // Checks if a jump would capture an opponent's king
     private boolean capturesKing(Move move) 
@@ -429,7 +444,7 @@ public class BotI extends Bot {
                 Cord end = move.jumpSequence.get(i + 1);
                 int capturedX = (start.getX() + end.getX()) / 2;
                 int capturedY = (start.getY() + end.getY()) / 2;
-                Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY));
+                Checker capturedPiece = board.checkerBoard[capturedY][capturedX];
                 if (capturedPiece != null && capturedPiece.isKing()) {
                     return true;
                 }
@@ -438,10 +453,22 @@ public class BotI extends Bot {
         } else {
             int capturedX = (move.piece.getCord().getX() + move.destination.getX()) / 2;
             int capturedY = (move.piece.getCord().getY() + move.destination.getY()) / 2;
-            Checker capturedPiece = board.checkSpace(new Cord(capturedX, capturedY));
+            Checker capturedPiece = board.checkerBoard[capturedY][capturedX];
             return capturedPiece != null && capturedPiece.isKing();
         }
     } 
+
+    private boolean isLegalJump(int x, int y, int dx, int dy) {
+        int midX = x + dx;
+        int midY = y + dy;
+        int destX = x + dx*2;
+        int destY = y + dy*2;
+
+        return isValidPosition(destX, destY) &&
+            board.checkerBoard[midY][midX] != null && 
+            board.checkerBoard[midY][midX].getColor() != color && 
+            board.checkerBoard[destY][destX] == null;
+    }
 
     // Checks if a move is safe from being captured
     private boolean isSafeMove(Move move) 
@@ -450,45 +477,39 @@ public class BotI extends Bot {
         { 
         return true; 
         }
-	// Look at all four diagonal squares around new position 
-        for (int dy = -1; dy <= 1; dy += 2)
-        { 
-            for (int dx = -1; dx <= 1; dx += 2)
-            { 
-                int x = move.destination.getX() + dx; 
-                int y = move.destination.getY() + dy; 
-                if (x >= 0 && x < 8 && y >= 0 && y < 8)
-                { 
-                    Checker adjacentPiece = board.checkSpace(new Cord(x, y));
+
+        int x = move.destination.getX();
+        int y = move.destination.getY();
+
+	    // Look at all four diagonal squares around new position 
+        for (int dy = -1; dy <= 1; dy += 2){
+            for (int dx = -1; dx <= 1; dx += 2) { 
+                int checkX = x + dx; 
+                int checkY = y + dy;  
+                if (isValidPosition(checkX, checkY)) { 
+                    Checker adjacentPiece = board.checkerBoard[checkY][checkX];
 			
-			// If there's an enemy piece that can capture us 
-                    if (adjacentPiece != null && adjacentPiece.getColor() != color)
-                    {
-			// Kings can capture any direction 
-                        if (adjacentPiece.isKing() || 
-			// Black can only capture downward 
-                        (adjacentPiece.getColor() == Color.BLACK && y < move.destination.getY()) ||
-			// Red can only capture upward 
-                        (adjacentPiece.getColor() == Color.RED && y > move.destination.getY())) 
-                        {
-		        	// Check if we have a friend behind us to block 
-                            int behindX = move.destination.getX() - dx; 
-                            int behindY = move.destination.getY() - dy; 
-                            if (behindX >= 0 && behindX < 8 && behindY >= 0 && behindY < 8)
-                            { 
-                                Checker behindPiece = board.checkSpace(new Cord(behindX, behindY)); 
-                                if (behindPiece != null && behindPiece.getColor() == color) 
-                                { 
-                                    return true; // Return's true when protected 
+			        // If there's an enemy piece that can capture us 
+                    if (adjacentPiece != null && adjacentPiece.getColor() != color) {
+			        // Kings can capture any direction 
+                        if (adjacentPiece.isKing() || (adjacentPiece.getColor() == Color.BLACK && checkY < y) ||
+                                                        (adjacentPiece.getColor() == Color.RED && checkY > y)) {
+		        	        // Check if we have a friend behind us to block 
+                            int behindX = x - dx; 
+                            int behindY = y - dy; 
+                            if (isValidPosition(behindX, behindY)) { 
+                                Checker behindPiece = board.checkerBoard[behindY][behindX]; 
+                                if (behindPiece != null && behindPiece.getColor() == color) { 
+                                    return true; 
                                 } 
                             } 
-                            return false;  // Return's false if in danger 
+                            return false;  
                         } 
                     } 
                 } 
             } 
         } 
-        return true; // No threats found 
+        return true; 
     }
           
     // Checks if a move helps advance toward opponent's side
