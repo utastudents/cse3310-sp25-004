@@ -11,12 +11,12 @@ public class GamePlayTest{
 	@Test
 	void moveForwardCheckTest() 
     {
-	//var legal_right = new Cord(4, 3);
+	    var legal_right = new Cord(4, 3);
         // ?? this shouldnt be failing
-        // var legal_left = new Cord(2, 3);
-        // var illegal_back_left = new Cord(2, 1);
-        // var illegal_nonDiagonal = new Cord(2, 2);
-        // var illegal_outOfBound = new Cord(0,8);
+        var legal_left = new Cord(2, 3);
+        var illegal_back_left = new Cord(2, 1);
+        var illegal_nonDiagonal = new Cord(2, 2);
+        var illegal_outOfBound = new Cord(0,8);
 		var board = new Board();
         
 		//assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
