@@ -12,6 +12,8 @@ public class GamePlay
 
     public boolean turn; // false for red's turn, true for black's turn
 
+    private int winner; // Player id of winner, or 0 if none
+
     public GamePlay(int id) 
     {
         this.GameID = id;
@@ -268,5 +270,9 @@ public class GamePlay
     {
         //Return Board
         return board;
+    }
+
+    public int getWinner() {
+        return winner;
     }
 }

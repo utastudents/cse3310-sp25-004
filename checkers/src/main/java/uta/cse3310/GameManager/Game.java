@@ -54,6 +54,16 @@ public class Game{
       return player2;
    }
 
+   public Player getOther(Player p) {
+      if (p.equals(player1)) {
+         return player2;
+      }
+      if (p.equals(player2)) {
+         return player1;
+      }
+      return null;
+   }
+
    // Getting the unique game ID
    public int getGameID() {
       return gameID;

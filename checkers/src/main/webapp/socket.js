@@ -184,6 +184,17 @@ connection.onmessage = function (msg) {
             console.log("Player left:", jsonMsg.username);
             break;
         }
+        case "EndGame": {
+            console.log("The game has ended");
+            console.log("The winner is " + jsonMsg.winner); //If 0, game was a draw. Player ID
+            if (jsonMsg.winner == clientId) {
+                showWinStatus();
+            } else {
+                showLoseStatus();
+            }
+            loadData(jsonMsg.top10);
+            break;
+        }
 		case "gameWon": {
             console.log("Received gameWon");
 			//Behaves identically to summaryData, but toggles an HTML banner telling the player that they've won the game
