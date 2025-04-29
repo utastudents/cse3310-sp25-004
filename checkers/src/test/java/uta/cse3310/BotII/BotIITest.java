@@ -190,7 +190,7 @@ public class BotIITest {
         
         BotII.Move move = BotII.capturePiece(board);
         assertNotNull(move);
-        //assertEquals(new Cord(0, 0), move.destination); // King can capture upward
+        //assertEquals(new Cord(2, 2), move.destination); // King can capture upward
         System.out.println("From: " + king.getCord() + " To: " + move.destination);
     }
 
