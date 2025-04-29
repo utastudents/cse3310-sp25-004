@@ -39,6 +39,7 @@ public class BotII extends Bot {
                         for (Cord move : kingMoves) {
                             if (bestMove == null) {
                                 bestMove = new Move(checker, move);
+                                System.out.println("adding move to king move logic");
                             }
                         }
                     }
@@ -51,6 +52,7 @@ public class BotII extends Bot {
                     for (Cord move : safeMoves) {
                         if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board) == false) {
                             bestMove = new Move(checker, move);
+                            System.out.println("adding move to man move logic");
                         }
                         // else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
                         //     bestMove = new Move(checker, move);

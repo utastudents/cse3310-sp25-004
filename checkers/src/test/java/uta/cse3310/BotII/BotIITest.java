@@ -195,7 +195,7 @@ public class BotIITest {
     }
 
     @Test
-    public void testGetKingMoves() {
+    public void testMakeKingMove() {
         Board board = new Board();
         clearBoard(board);
         
@@ -205,13 +205,13 @@ public class BotIITest {
         board.checkerBoard[4][2] = new Checker(new Cord(2, 4), Color.RED);
         printBoardWithCoordinates(board);
         
-        ArrayList<Cord> moves = BotII.getKingMoves(board, king);
+        BotII.Move move = BotII.makeValidMove(board);
         //System.out.println("Move" + moves.get(1));
-        for (Cord move : moves) {
-            System.out.println("Move: " + move);
-        }
+        // for (Cord move : moves) {
+        //     System.out.println("Move: " + move);
+        // }
         //assertNotNull(moves);
-        assertTrue(!moves.isEmpty());
+        assertTrue(move != null);
     }
 
 }
