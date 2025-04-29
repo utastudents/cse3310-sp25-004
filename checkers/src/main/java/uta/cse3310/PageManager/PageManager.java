@@ -260,6 +260,9 @@ public class PageManager {
         if (pu.addToQueue(activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {
@@ -349,6 +352,12 @@ public class PageManager {
             if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
             {
                 responseJson.addProperty("inQueue", true);
+                if (activePlayers.get(playerClientId).getStatus() == STATUS.IN_QUEUE) {
+                    App.sendMessage(transitionPage(List.of(playerClientId), GameState.QUEUE));
+                }
+                if (activePlayers.get(opponentClientId).getStatus() == STATUS.IN_QUEUE) {
+                    App.sendMessage(transitionPage(List.of(opponentClientId), GameState.QUEUE));
+                }
             }
             else
             {
@@ -415,6 +424,9 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {
@@ -458,6 +470,9 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
+            if (activePlayers.get(Id).getStatus() == STATUS.IN_QUEUE) {
+                App.sendMessage(transitionPage(List.of(Id), GameState.QUEUE));
+            }
         }
         else
         {

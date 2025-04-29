@@ -213,6 +213,7 @@
 				const online_players = data["activePlayers"];
 
 				document.querySelector("#join_game h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
+				document.querySelector("#queue h3").textContent = `Current players: ${countPlayersInGame(data.activePlayers)}/48 | Players In queue: ${data.playersInQueue} | Available Game: ${data.availableGames}`;
 				console.log(JSON.stringify(data));
 				online_players.forEach(player => {
 					if (player.ClientID === current_player_id) {
@@ -302,6 +303,13 @@
 				}
 			}
 		</script>
+	</div>
+	<div id="queue" style="display: none;">
+		<div class="lobby_lists_container" style = "width:100%;">
+			<h2>In Queue</h2>
+			<h3></h3>
+			<p>Hi there. Welcome the the queue.</p>
+		</div>
 	</div>
 	</div>
 </body>
@@ -572,11 +580,11 @@
 		document.getElementById("summary").style.display = "none";
 	}
 
-	const pageToTitle = {"join_game": "Join Game", "game_display": "Play", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard"};
+	const pageToTitle = {"join_game": "Join Game", "game_display": "Play", "new_account": "Sign Up", "login": "Login", "summary": "Leaderboard", "queue": "Queue"};
 
 	function swapToPage(page) {
 		console.log("Switching to page " + page);
-		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary"];
+		const listOfDiv = ["join_game", "game_display", "new_account", "login", "summary", "queue"];
 		listOfDiv.forEach(function (id) {
 			const div = document.getElementById(id);
 			if (div) div.style.display = "none";

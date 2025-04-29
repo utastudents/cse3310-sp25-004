@@ -7,5 +7,6 @@ public enum GameState {
     JOIN_GAME,      // join game / home page
     GAME_DISPLAY,   // actual game display
     SUMMARY,        // summary after game ends
-    HOME
+    HOME,
+    QUEUE
 }
