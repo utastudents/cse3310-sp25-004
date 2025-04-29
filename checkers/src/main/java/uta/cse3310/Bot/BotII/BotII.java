@@ -11,6 +11,7 @@ import uta.cse3310.GamePlay.Cord;
 import uta.cse3310.GamePlay.GamePlay;
 import uta.cse3310.PageManager.GameMove;
 import uta.cse3310.PageManager.PageManager;
+import java.lang.Math;
 //import uta.cse3310.GameState;
 
 public class BotII extends Bot {
@@ -21,7 +22,7 @@ public class BotII extends Bot {
 
 	// private Game game; // Game game is declared in the abstract Player super class
 
-    private static Color botColor = Color.BLACK; // Initializing with a default value
+    //private static Color botColor = Color.BLACK; // Initializing with a default value
     //private static boolean beAggressive = false; // Flag to determine if the bot should be aggressive
     private static boolean attackSide = false; // True will be for left and False for right side
     
@@ -30,13 +31,21 @@ public class BotII extends Bot {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Checker checker = board.checkerBoard[y][x];
-                if (checker != null && checker.getColor() == Color.BLACK) {
+                if (checker != null && checker.getColor() == Color.BLACK && !checker.isKing()) {
                     ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                     for (Cord move : safeMoves) {
-                        if (wouldBeInDangerAfterMove(checker, move, board) == false && bestMove == null) {
+                        if (!wouldBeInDangerAfterMove(checker, move, board)) {
                             bestMove = new Move(checker, move);
                         }
-                        if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
+                        else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
+                            bestMove = new Move(checker, move);
+                        }
+                    }
+                }
+                else if (bestMove == null && checker.isKing()) {
+                    ArrayList<Cord> kingMoves = getKingMoves(board, checker);
+                    for (Cord move : kingMoves) {
+                        if (bestMove == null) {
                             bestMove = new Move(checker, move);
                         }
                     }
@@ -46,24 +55,73 @@ public class BotII extends Bot {
         return bestMove;
     }
 
-
-    public void promoteToKing() {
-    // go through all my pieces and promote if they reached end
+    public static ArrayList<Cord> getKingMoves (Board board, Checker king) {
+        ArrayList<Cord> kingMoves = new ArrayList<>();
+        ArrayList<Cord> allRedPieces = new ArrayList<>();
+        Checker redChecker = null;
+        Cord priorityPiece = null;
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                Checker c = game.getBoard().getBoard().checkerBoard[y][x];
-                if (c != null && c.getColor() == botColor) {
-                    if (!c.isKing()) {
-                        if (botColor == Color.BLACK && c.getCord().getY() == 7) {
-                            c.setKing(true);
-                        }
-                        if (botColor == Color.RED && c.getCord().getY() == 0) {
-                            c.setKing(true);
-                        }
-                    }
+                redChecker = board.checkerBoard[y][x];
+                if (redChecker != null && redChecker.getColor() == Color.RED) {
+                    allRedPieces.add(redChecker.getCord());
                 }
             }
         }
+        int[] p = new int[12];
+        int i = 0; 
+        for (Cord priority : allRedPieces) {
+            int x1 = priority.getX();
+            int y1 = priority.getY();
+            int x2 = king.getCord().getX();
+            int y2 = king.getCord().getY();
+            x2 -= x1;
+            y2 -= y1;
+            x2 = Math.abs(x2);
+            y2 = Math.abs(y2);
+
+            p[i] = x2 > y2 ? x2 : y2;
+
+            i++;
+        }
+        int priority = 8;
+        for (int a = 0; a < i; a++) {
+            if (p[a] < priority) {
+                priority = p[a];
+                priorityPiece = allRedPieces.get(a);
+            } 
+        }
+
+        int[][] directions = {
+            // direction of man pieces relative to our piece
+            {-1, -1},   // bottom-right
+            {1, -1},   // bottom-left
+            // direction of king pieces relative to our piece
+            {-1, 1},   // top-right
+            {1, 1}   // top-left
+        };
+        int cordx = king.getCord().getX();
+        int cordy = king.getCord().getY();
+        for (int[] dir : directions) { 
+            int jumpX = cordx - dir[0];
+            int jumpY = cordy - dir[1];
+            int x1 = priorityPiece.getX();
+            int y1 = priorityPiece.getY();
+
+            Cord kCord = new Cord(jumpX, jumpY);
+
+            if (priority > 2 && inBounds(jumpX, jumpY) && !wouldBeInDangerAfterMove(king, kCord, board)) {
+                boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+                jumpX -= x1;
+                jumpY -= y1;
+                int tempPriority = jumpX > jumpY ? jumpX : jumpY;
+                tempPriority = Math.abs(priority);
+                if (jumpSpaceEmpty && tempPriority < priority) {
+                    kingMoves.add(kCord);
+                }
+            }
+        }
+        return kingMoves;
     }
 
     public static Move defendPieces(Board board) {
