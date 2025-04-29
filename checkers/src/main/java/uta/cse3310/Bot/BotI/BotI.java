@@ -51,6 +51,11 @@ public class BotI extends Bot {
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
     public boolean makeMove(GamePlay gs){
+
+        if(game != null) {
+            this.board = game.getBoard().getBoard();
+        } 
+        
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -62,9 +67,7 @@ public class BotI extends Bot {
             return false;
         }
 
-        if(game != null) {
-            this.board = game.getBoard().getBoard();
-        }
+        
 
         //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
