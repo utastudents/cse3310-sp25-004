@@ -74,9 +74,9 @@ public class GameTermination {
                 Player player2 = currentGame.getPlayer2();
 
                 // Check whose turn it is and if they have no legal moves
-                boolean isPlayer1Turn = !currentGame.getBoard().turn; // false for red's turn (player 1)
-                boolean isPlayer2Turn = currentGame.getBoard().turn;  // true for black's turn (player 2)
-                
+             //   boolean isPlayer1Turn = !currentGame.getBoard().turn; // false for red's turn (player 1)
+              //  boolean isPlayer2Turn = currentGame.getBoard().turn;  // true for black's turn (player 2)
+     /*           
                 // If it's player 1's turn and they can't move, player 2 wins
                 if (isPlayer1Turn && !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
                     winnerID = currentGame.getPlayer2().getPlayerId();
@@ -89,7 +89,7 @@ public class GameTermination {
                     winnerID = currentGame.getPlayer1().getPlayerId();
                     currentGame.setGameActive(false);
                     return currentGame;
-                }
+                }*/
 
                 // Check if player 1 has won
                 if (state.hasPlayerWon(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId())) {
@@ -105,14 +105,14 @@ public class GameTermination {
                         return currentGame;
                 }
 
-                // Check for draw - only if it's neither player's turn and both have no legal moves
+                /*// Check for draw - only if it's neither player's turn and both have no legal moves
                 if (!isPlayer1Turn && !isPlayer2Turn && 
                     !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer1().getPlayerId()) &&
                     !state.canPlayerMove(currentGame.getBoard().getBoard(), currentGame.getPlayer2().getPlayerId())) {
                         winnerID = -1;
                         currentGame.setGameActive(false);
                         return currentGame;
-                }
+                }*/
 
                 // Checks if game ended before it was over. 
                 if(!(currentGame.isAvailable))
