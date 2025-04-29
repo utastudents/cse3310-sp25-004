@@ -25,7 +25,6 @@ import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 import uta.cse3310.PairUp.Player.STATUS;
 public class PageManager {
-    PairUp pu;
     Integer turn = 0; // just here for a demo. note it is a global, effectively and
                       // is not unique per client (or game)
 
@@ -33,6 +32,7 @@ public class PageManager {
     // List to track active players in the subsystem
     public Hashtable<Integer, HumanPlayer> activePlayers = new Hashtable<>();
     Gson gson = new Gson();
+    public static PairUp pu;
     public static GameManager Gm;
     public static DB db;
     public Hashtable<Integer, Integer> userIDToClientID = new Hashtable<>();
@@ -836,6 +836,19 @@ public class PageManager {
 
      public void EndGameNotifier(int UserId, GamePlay gs){
         
+        if (!userIDToClientID.contains(UserId)) {
+            // User left the game
+            System.out.println("Sent no end game message to playerId " + UserId + "\nCurrent map:");
+            Enumeration<Integer> keys = userIDToClientID.keys();
+            int k;
+            while (keys.hasMoreElements()) {
+                k = keys.nextElement();
+                System.out.print(k + " ");
+            }
+            System.out.println();
+            return;
+        }
+
         UserEventReply reply = new UserEventReply();
         JsonObject json = new JsonObject();
         int clientId = userIDToClientID.get(UserId);
@@ -847,17 +860,16 @@ public class PageManager {
         //getting the 2d string board as a jsonobj
         json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "EndGame");
+        json.addProperty("winner", gs.getWinner());
+        
+        putTop10InJson(json);
         
         //changePlayerStatus(STATUS.ONLINE, clientId);
        
         reply.replyObj = json;
         App.sendMessage(reply);
         App.sendMessage(transitionPage(reply.recipients, GameState.SUMMARY));
-        
-     }
-
-
-    
+     }    
      
      //removes player who left from queue, active players hashmap, and notifies clients.
      //Called from app.java OnCLose();
@@ -866,6 +878,7 @@ public class PageManager {
         HumanPlayer player = activePlayers.get(Id);
         if (player != null) {
             // Remove from all the maps and stuff I know of
+            System.out.println("Unmapping client id " + Id);
             activePlayers.remove(Id);
             pu.removeFromQueue(player);
             userIDToClientID.remove(Id);
@@ -874,25 +887,7 @@ public class PageManager {
             Game g = player.getGame(); //get game object from that player
 
             if (g != null) { //if the player is in a game
-                Player other = g.getPlayer1();
-                if (other.equals(player)) {
-                    other = g.getPlayer2();
-                }
                 Gm.removeGame(g, player); //signal the game must end due to player leaving.
-                pu.boardAvailable();
-
-                if (other instanceof HumanPlayer) {
-                    JsonObject bootedMsg = new JsonObject();
-                    bootedMsg.addProperty("responseID", "gameWon");
-
-                    putTop10InJson(bootedMsg);
-
-                    UserEventReply booted = new UserEventReply(bootedMsg, userIDToClientID.get(other.getPlayerId()));
-
-                    App.sendMessage(booted);
-
-                    App.sendMessage(transitionPage(List.of(userIDToClientID.get(other.getPlayerId())), GameState.SUMMARY));
-                }
             }
     
             // message

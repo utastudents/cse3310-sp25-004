@@ -96,7 +96,10 @@ public class GameManager {
     public void removeGame(Game currentGame, Player p) {
         if (currentGame == null) {return;}
         GameTermination.forceEndGame(currentGame, p);
+        currentGame.getPlayer1().endGame(currentGame.getBoard());
+        currentGame.getPlayer2().endGame(currentGame.getBoard());
         games.set(currentGame.getGameID(), null);
+        PageManager.pu.boardAvailable();
     }
 
     // Retrieves move by PageManager, passes to GamePlay to update, pass update back
