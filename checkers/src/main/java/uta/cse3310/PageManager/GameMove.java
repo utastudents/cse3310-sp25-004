@@ -1,5 +1,7 @@
 package uta.cse3310.PageManager;
 
+import uta.cse3310.GamePlay.Move;
+
 public class GameMove {
     private int clientId;
     private int fromPosition_X;
@@ -18,6 +20,14 @@ public class GameMove {
         this.fromPosition_Y = fromPosition_Y;
         this.toPosition_X = toPosition_X;
         this.toPosition_Y = toPosition_Y;
+    }
+    public GameMove(GameMove g, Move m) {
+        this.clientId = g.clientId;
+        this.gameId = g.gameId;
+        this.fromPosition_X = m.from.getX();
+        this.fromPosition_Y = m.from.getY();
+        this.toPosition_X = m.dest.getX();
+        this.toPosition_Y = m.dest.getY();
     }
     //getters
     public int getClientId() { 
