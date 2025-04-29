@@ -148,8 +148,14 @@ center-container {
     height: 100vh;
 }
 
+/*
 .login-box {
     height: 500px;
+}
+*/
+
+.h0 {
+  height: 0px;
 }
 
 .login-box img {
