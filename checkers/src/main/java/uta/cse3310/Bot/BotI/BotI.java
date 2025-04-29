@@ -34,7 +34,7 @@ public class BotI extends Bot {
     public BotI(Game game, Color color){
         super();
         this.game = game;
-        this.color = color;
+        this.color = Color.BLACK;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
         this.playerId = -1;
@@ -51,6 +51,11 @@ public class BotI extends Bot {
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
     public boolean makeMove(GamePlay gs){
+
+        if(game != null) {
+            this.board = game.getBoard().getBoard();
+        } 
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -62,9 +67,7 @@ public class BotI extends Bot {
             return false;
         }
 
-        if(game != null) {
-            this.board = game.getBoard().getBoard();
-        }
+        
 
         //checks the available peices 
         ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
@@ -83,6 +86,7 @@ public class BotI extends Bot {
                     GameMove move = new GameMove(this.playerId, this.game.getGameID(), start.getX(), start.getY(),
                                                 end.getX(), end.getY(), "black");
                     PageManager.Gm.processMove(move, gs);
+                    updateBoard(gs);
                 }
                 return true;
             } else {
@@ -90,6 +94,7 @@ public class BotI extends Bot {
                                             bestJumpMove.piece.getCord().getY(), bestJumpMove.destination.getX(), 
                                             bestJumpMove.destination.getY(), "black");
                 PageManager.Gm.processMove(move, gs);
+                updateBoard(gs);
                 return true;
             }
         }
@@ -103,6 +108,7 @@ public class BotI extends Bot {
                                     bestMove.piece.getCord().getX(), bestMove.piece.getCord().getY(), 
                                     bestMove.destination.getX(), bestMove.destination.getY(), "black");
             PageManager.Gm.processMove(move, gs); 
+            updateBoard(gs);
             return true; 
         } 
         return false; //if theres no moves at all
