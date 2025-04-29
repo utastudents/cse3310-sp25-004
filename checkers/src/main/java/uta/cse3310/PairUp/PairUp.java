@@ -92,6 +92,9 @@ public class PairUp {
         Challenge challenge = new Challenge(p);
         numPlayersInQueue++; //Increment the number of players in the queue
         playerQueue.add(challenge);
+
+        p.setStatus(STATUS.IN_QUEUE);
+
         pairUp();
         return true;
     }
@@ -129,6 +132,10 @@ public class PairUp {
         Challenge challenge = new Challenge(p, c, spectator);
         numPlayersInQueue += 2;
         playerQueue.add(challenge);
+
+        p.setStatus(STATUS.IN_QUEUE);
+        c.setStatus(STATUS.IN_QUEUE);
+
         pairUp();
         return true;
     }

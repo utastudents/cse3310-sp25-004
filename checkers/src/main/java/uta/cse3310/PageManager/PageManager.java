@@ -207,11 +207,11 @@ public class PageManager {
     }
 
     // used whenever a person updates their status (send to all online players)
-    public UserEventReply statusUpdate(Player.STATUS status, int Id)
+    public void statusUpdate()
     {
-        JsonObject responseJson = new JsonObject();
-        UserEventReply userEventReply=  new UserEventReply();
+        UserEventReply userEventReply=  new UserEventReply(activePlayerList());
 
+        /*
         responseJson.addProperty("responseID", "statusUpdate");
         responseJson.addProperty("playerID", Id);
         responseJson.addProperty("statusChange", status.toString());
@@ -219,6 +219,7 @@ public class PageManager {
         userEventReply.replyObj = responseJson;
 
         userEventReply.recipients = new ArrayList<>();
+        */
 
         //send to every player that is online
         Enumeration<Integer> e = activePlayers.keys();
@@ -228,21 +229,14 @@ public class PageManager {
             userEventReply.recipients.add(key);
         }
 
-        return userEventReply;
+        App.sendMessage(userEventReply);
         
         // {
         //     "responseID": "playerID",
         //     "MyClientID": 123,
         //     "statusChange": "IN_QUEUE"
         // }
-    } 
-    
-    // just a wrapper for ease of use
-    private void changePlayerStatus(Player.STATUS status, int Id)
-    {
-        activePlayers.get(Id).setStatus(status);
-        App.sendMessage(statusUpdate(status, Id));  
-    } 
+    }
 
     public UserEventReply joinQueue(JsonObject jsonObj, int Id)
     {
@@ -261,11 +255,6 @@ public class PageManager {
         if (pu.addToQueue(activePlayers.get(playerClientId)))
         {
             responseJson.addProperty("inQueue", true);
-
-            if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
-            {
-                changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
-            }
         }
         else
         {
@@ -355,11 +344,6 @@ public class PageManager {
             if (pu.challenge(activePlayers.get(playerClientId), activePlayers.get(opponentClientId)))
             {
                 responseJson.addProperty("inQueue", true);
-                if(!(activePlayers.get(playerClientId).getStatus() == Player.STATUS.IN_GAME))
-                {
-                    changePlayerStatus(Player.STATUS.IN_QUEUE, playerClientId);
-                    changePlayerStatus(Player.STATUS.IN_QUEUE, opponentClientId);
-                }
             }
             else
             {
@@ -426,10 +410,6 @@ public class PageManager {
         if (pu.challengeBot(activePlayers.get(Id), bot1))
         {
             responseJson.addProperty("inQueue", true);
-            if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
-            {
-                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
-            }
         }
         else
         {
@@ -473,10 +453,6 @@ public class PageManager {
         if (pu.botVBot(bot1, bot2, activePlayers.get(Id)))
         {
             responseJson.addProperty("inQueue", true);
-            if(!(activePlayers.get(Id).getStatus() == Player.STATUS.IN_GAME))
-            {
-                changePlayerStatus(Player.STATUS.IN_QUEUE, Id);
-            }
         }
         else
         {
@@ -591,7 +567,7 @@ public class PageManager {
         userEventReply.recipients.add(clientId);
 
         // change status of the player that called this method (the other player will also start the game and change their status)
-        changePlayerStatus(Player.STATUS.IN_GAME, clientId);
+        //changePlayerStatus(Player.STATUS.IN_GAME, clientId);
 
         //transition
         App.sendMessage(transitionPage(userEventReply.recipients, GameState.GAME_DISPLAY));
@@ -867,7 +843,7 @@ public class PageManager {
         json.add("boardState", gson.toJsonTree(board));
         json.addProperty("responseID", "EndGame");
         
-        changePlayerStatus(STATUS.ONLINE, clientId);
+        //changePlayerStatus(STATUS.ONLINE, clientId);
        
         reply.replyObj = json;
         App.sendMessage(reply);

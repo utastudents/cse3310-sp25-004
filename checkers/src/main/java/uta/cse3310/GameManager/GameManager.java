@@ -15,6 +15,7 @@ import uta.cse3310.PageManager.GameUpdate;
 import uta.cse3310.PageManager.PageManager;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
+import uta.cse3310.PairUp.Player.STATUS;
 
 public class GameManager {
     private static final int MAX_GAMES = 10;
@@ -62,8 +63,13 @@ public class GameManager {
             Game game = games.get(i);
             if (game == null || !game.isGameActive()) {
                 Game newGame = new Game(i, p1, p2); // Use index as game ID
+
+                p1.setStatus(STATUS.IN_GAME);
+                p2.setStatus(STATUS.IN_GAME);
+
                 p1.startGame(newGame);
                 p2.startGame(newGame);
+                
                 games.set(i, newGame);
                 newGame.setGameActive(true);
 
