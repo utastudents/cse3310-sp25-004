@@ -12,4 +12,3 @@ cd checkers
 mvn clean compile package
 mvn exec:java -D"exec.mainClass"="uta.cse3310.App"
 ```
-cd check
