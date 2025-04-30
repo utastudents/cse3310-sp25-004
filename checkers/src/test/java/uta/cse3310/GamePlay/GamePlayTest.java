@@ -19,7 +19,7 @@ public class GamePlayTest{
         var illegal_outOfBound = new Cord(0,8);
 		var board = new Board();
         
-		//assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
+		assertEquals(true, board.moveForwardCheck(board.checkerBoard[2][3], legal_right));
         //assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_left));
         // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_back_left));
         // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_nonDiagonal));
