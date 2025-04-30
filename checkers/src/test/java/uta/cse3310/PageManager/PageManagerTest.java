@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.HashMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -34,7 +35,7 @@ public class PageManagerTest
     @BeforeEach
     public void setup()
     {
-
+        PageManager.pu = pu;
 
         byte[] testSalt1 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         byte[] testSalt2 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -43,7 +44,7 @@ public class PageManagerTest
         human1.setELO(1450);
         human1.setWins(8);
         human1.setLosses(7);
-        human1.setStatus(Player.STATUS.IN_GAME);
+        human1.setStatus(Player.STATUS.ONLINE);
 
         HumanPlayer human2 = new HumanPlayer("Johnny", "Pass", testSalt2);
         human2.setELO(1300);
@@ -91,7 +92,7 @@ public class PageManagerTest
                 assertEquals(1450, playerData.get("elo").getAsInt());
                 assertEquals(8, playerData.get("gamesWon").getAsInt());
                 assertEquals(7, playerData.get("gamesLost").getAsInt());
-                assertEquals("IN_GAME", playerData.get("status").getAsString());
+                assertEquals("ONLINE", playerData.get("status").getAsString());
             }
             else if("Johnny".equals(playerData.get("username").getAsString()))
             {
@@ -112,7 +113,7 @@ public class PageManagerTest
     public void joinQueueSuccessTest()
     {
         // Only using Alice for this test
-        /* Not sure what's wrong with the test - everything seems right but the test fails anyway
+
         JsonObject temp = new JsonObject();
         temp.addProperty("playerClientId", 1);
 
@@ -125,14 +126,14 @@ public class PageManagerTest
         assertEquals("joinQueue", response.get("responseID").getAsString());
         assertEquals(1, response.get("MyClientID").getAsInt());
         assertTrue(response.get("inQueue").getAsBoolean(), "inQueue is false for some reason");
-         */
+         
     }
 
     @Test
     public void joinQueueFailureTest()
     {
         // Only using Alice for this test
-        /* Unnecessary stubbing? not sure what that is
+
         JsonObject temp = new JsonObject();
         temp.addProperty("playerClientId", 1);
 
@@ -145,7 +146,7 @@ public class PageManagerTest
         assertEquals("joinQueue", response.get("responseID").getAsString());
         assertEquals(1, response.get("MyClientID").getAsInt());
         assertFalse(response.get("inQueue").getAsBoolean(), "inQueue is true for some reason");
-         */
+         
     }
 
     @Test
@@ -166,58 +167,4 @@ public class PageManagerTest
 
     }    
 
-	@Test
-	public void checkLoginExistsTest()
-	{
-		/*
-		 * Test for req. PG-23 and PG-24, tests that PM check with DB that a user logging in exists in DB
-		 */
-
-         /* This test passses locally, sometimes, but fails reliably on the cse3310 website - not sure why
-
-		int ID = 123;
-		JsonObject jsonData = new JsonObject();
-		jsonData.addProperty("action", "new_user");
-		jsonData.addProperty("UserName", "Alice");
-		jsonData.addProperty("Password", "FooBar1");
-
-		pm.handleNewUser(jsonData, ID);
-
-		jsonData.addProperty("action", "login");
-
-		UserEventReply reply = pm.handleLogin(jsonData, ID);
-
-		if ( reply.replyObj.get("responseID").getAsString() != "loginSuccessful" )
-		{
-			throw new RuntimeException("Login was unsuccessful!");
-		}*/
-	}
-	
-	@Test
-	public void checkBadLoginFails()
-	{
-		/*
-		 * Test for req. PG-23, tests that PM check with DB that a user logging in exists in DB
-		 */
-
-         /* This test fails when pushed to github - but not when tested locally??
-
-		int ID = 123;
-		JsonObject jsonData = new JsonObject();
-		jsonData.addProperty("action", "new_user");
-		jsonData.addProperty("UserName", "Alice");
-		jsonData.addProperty("Password", "FooBar1");
-
-		pm.handleNewUser(jsonData, ID);
-
-		jsonData.addProperty("action", "login");
-		jsonData.addProperty("Password", "FooBar2");
-
-		UserEventReply reply = pm.handleLogin(jsonData, ID);
-
-		if ( reply.replyObj.get("msg").getAsString() != "Invalid username or password.")
-		{
-			throw new RuntimeException("Did not receive expected response for an incorrect sign in");
-		} */
-	}
 }

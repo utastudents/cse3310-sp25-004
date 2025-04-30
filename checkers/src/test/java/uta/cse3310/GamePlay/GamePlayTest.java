@@ -11,23 +11,23 @@ public class GamePlayTest{
 	@Test
 	void moveForwardCheckTest() 
     {
-	//var legal_right = new Cord(4, 3);
+	    var legal_right = new Cord(4, 3);
         // ?? this shouldnt be failing
-        // var legal_left = new Cord(2, 3);
-        // var illegal_back_left = new Cord(2, 1);
-        // var illegal_nonDiagonal = new Cord(2, 2);
-        // var illegal_outOfBound = new Cord(0,8);
+        var legal_left = new Cord(2, 3);
+        var illegal_back_left = new Cord(2, 1);
+        var illegal_nonDiagonal = new Cord(2, 2);
+        var illegal_outOfBound = new Cord(0,8);
 		var board = new Board();
         
-		//assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
-        //assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_left));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_back_left));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_nonDiagonal));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_outOfBound));
+		assertEquals(true, board.moveForwardCheck(board.checkerBoard[2][3], legal_right));
+        assertEquals(true, board.moveForwardCheck(board.checkerBoard[2][3], legal_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_back_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_nonDiagonal));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_outOfBound));
 
         // ?? this shouldnt be failing
-        // var checker = new Checker(new Cord(4, 3), Color.BLACK);
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
+        board.checkerBoard[3][4] = new Checker(new Cord(4, 3), Color.BLACK);
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], legal_right));
 	}
 
     @Test

@@ -28,6 +28,7 @@ public class BotI extends Bot {
         super();
         this.random = new Random();
         this.playerId = -2;
+        this.color = Color.BLACK;
     } 
 
      //sets up the botn with a specific and color - like red or black
@@ -50,21 +51,24 @@ public class BotI extends Bot {
      //this method checks what move to make, its made strategically, 
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
-    public boolean makeMove(GamePlay gp){ //TODO: make sure bot moves right after player
+    public boolean makeMove(GamePlay gp){
         if (gameEnded) {
-            return false;
-        }
-
-        GameMove move = finalMove(gp);
-        if (move == null) {
+            System.out.println("Bot I didn't move: Game Ended");
             return false;
         }
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(750); 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        GameMove move = finalMove(gp);
+        if (move == null) {
+            System.out.println("Bot I didn't move: finalMove was null");
+            return false;
+        }
+
         PageManager.Gm.processMove(move, gp);
         return true;
     } 
@@ -95,6 +99,7 @@ public class BotI extends Bot {
         //creates a new list to store our checkers
         ArrayList<Checker> checkers = new ArrayList<>(); 
         if (board == null) { 
+            System.out.println("Bot I: Board is null, returning empty list of checkers");
             return checkers; 
         } 
 
@@ -177,13 +182,14 @@ public class BotI extends Bot {
 	    ArrayList<Move> moves = new ArrayList<>(); 
 
         if (board == null) { //returns empty list if the board is null
+            System.out.println("Bot I: board is null. Returning empty array");
             return moves; 
         } 
 
 
         for (Checker checker : checkers) { 
             //get all possible moves
-             int x = checker.getCord().getX();
+            int x = checker.getCord().getX();
             int y = checker.getCord().getY();
 
             int[][] directions = checker.isKing() ? 
@@ -195,7 +201,10 @@ public class BotI extends Bot {
                 int newY = y + dir[1];
                 
                 if (isValidPosition(newX, newY) && board.checkerBoard[newY][newX] == null) {
+                    System.out.println("Bot I: add valid move");
                     moves.add(new Move(checker, new Cord(newX, newY), false));
+                } else {
+                    System.out.println("Bot I: skip invalid move");
                 }
             } 
         } 
@@ -266,20 +275,15 @@ public class BotI extends Bot {
 
     // Picks best jump move - prefers making kings and capturing kings
     private Move selectBestJumpMove(ArrayList<Move> jumpMoves) {
-        if (jumpMoves.size() == 1) {
-            return jumpMoves.get(0);
+        if (jumpMoves.isEmpty()) {
+            return null;
         }
 
+        // First, find moves with the most jumps
         int maxJumps = 0;
         ArrayList<Move> longJumps = new ArrayList<>();
         for (Move move : jumpMoves) {
-            int jumps;
-            if (move.jumpSequence != null) {
-                jumps = move.jumpSequence.size() - 1;
-            } else {
-                jumps = 1;
-            }
-            
+            int jumps = move.jumpSequence != null ? move.jumpSequence.size() - 1 : 1;
             if (jumps > maxJumps) {
                 maxJumps = jumps;
                 longJumps.clear();
@@ -288,100 +292,102 @@ public class BotI extends Bot {
                 longJumps.add(move);
             }
         }
-        
+
+        // Among moves with max jumps, prioritize:
+        // 1. Moves that make a king
         ArrayList<Move> kingJumps = new ArrayList<>();
         for (Move move : longJumps) {
             if (wouldBecomeKing(move)) {
                 kingJumps.add(move);
             }
         }
-
         if (!kingJumps.isEmpty()) {
             return kingJumps.get(random.nextInt(kingJumps.size()));
         }
-        
+
+        // 2. Moves that capture a king
         ArrayList<Move> kingCaptureJumps = new ArrayList<>();
         for (Move move : longJumps) {
             if (capturesKing(move)) {
                 kingCaptureJumps.add(move);
             }
         }
-
         if (!kingCaptureJumps.isEmpty()) {
             return kingCaptureJumps.get(random.nextInt(kingCaptureJumps.size()));
         }
-        
+
+        // 3. Moves that are safe (won't be captured next turn)
+        ArrayList<Move> safeJumps = new ArrayList<>();
+        for (Move move : longJumps) {
+            if (isSafeMove(move)) {
+                safeJumps.add(move);
+            }
+        }
+        if (!safeJumps.isEmpty()) {
+            return safeJumps.get(random.nextInt(safeJumps.size()));
+        }
+
+        // If no safe moves, return any move with max jumps
         return longJumps.get(random.nextInt(longJumps.size()));
     }
  
     
     // Picks best regular move - prefers making kings, staying safe, and advancing
     private Move selectBestMove(ArrayList<Move> moves) {
-	// If there's only one move, it'll just do that one
-        if (moves.size() == 1) {
-            return moves.get(0);
+        if (moves.isEmpty()) {
+            return null;
         }
-       
-	//First check for moves that make us a king choose the best option! 
+
         ArrayList<Move> kingMoves = new ArrayList<>();
         for (Move move : moves) {
             if (wouldBecomeKing(move)) {
                 kingMoves.add(move);
             }
         }
-       
-	// If we found king moves, pick one randomly 
         if (!kingMoves.isEmpty()) {
             return kingMoves.get(random.nextInt(kingMoves.size()));
         }
-       
-	// Next look for safe moves where we won't get captured right away 
+
         ArrayList<Move> safeMoves = new ArrayList<>();
         for (Move move : moves) {
             if (isSafeMove(move)) {
                 safeMoves.add(move);
             }
         }
-       
-	// If safe moves exist, pick one randomly 
         if (!safeMoves.isEmpty()) {
             return safeMoves.get(random.nextInt(safeMoves.size()));
         }
-       
-	// Then check for moves that move us forward toward being king 
+
         ArrayList<Move> advancingMoves = new ArrayList<>();
         for (Move move : moves) {
             if (isAdvancingMove(move)) {
                 advancingMoves.add(move);
             }
         }
-       
-	// If we have advancing moves, pick one randomly 
         if (!advancingMoves.isEmpty()) {
             return advancingMoves.get(random.nextInt(advancingMoves.size()));
         }
 
-	// If all else fails, just pick any random move
         return moves.get(random.nextInt(moves.size()));
     }
  
     
     // Checks if a move would make the piece a king
     private boolean wouldBecomeKing(Move move) {
-	// Can't become king if already a king
         if (move.piece.isKing()) {
             return false;
         }
 
-	// Black pieces become kings at the top row (y=7)
-        if (move.piece.getColor() == Color.BLACK && move.destination.getY() == 7) {
+        // Black pieces become kings at the top row (y=0)
+        if (move.piece.getColor() == Color.BLACK && move.destination.getY() == 0) {
             return true;
         }
 
-	// Red pieces become kings at the bottom row (y=0)
-        if (move.piece.getColor() == Color.RED && move.destination.getY() == 0) {
+        // Red pieces become kings at the bottom row (y=7)
+        if (move.piece.getColor() == Color.RED && move.destination.getY() == 7) {
             return true;
         }
+
         return false;
     }
 
@@ -482,11 +488,11 @@ public class BotI extends Bot {
         }
 	// Black moves up the board (higher y values) 
         if (move.piece.getColor() == Color.BLACK)  {
-            return move.destination.getY() > move.piece.getCord().getY(); 
+            return move.destination.getY() < move.piece.getCord().getY(); 
         }
 	// Red moves down the board (lower y values) 
         else { 
-            return move.destination.getY() < move.piece.getCord().getY(); 
+            return move.destination.getY() > move.piece.getCord().getY(); 
         } 
     }  
 
@@ -515,30 +521,44 @@ public class BotI extends Bot {
         if (gp != null) {
             this.board = gp.getBoard();
         }
-        
+
         // Get available checkers and find best move
         ArrayList<Checker> availableCheckers = getAvailableCheckers();
+
+        System.out.println("Bot I: available checkers: " + availableCheckers.size());
+
         ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers);
-        
+
         if (!jumpMoves.isEmpty()) {
             Move bestJumpMove = selectBestJumpMove(jumpMoves);
-            return new GameMove(this.playerId, this.game.getGameID(), 
-                              bestJumpMove.piece.getCord().getX(),
-                              bestJumpMove.piece.getCord().getY(),
-                              bestJumpMove.destination.getX(),
-                              bestJumpMove.destination.getY(), "black");
+            if (bestJumpMove != null) {
+                return new GameMove(this.playerId, this.game.getGameID(),
+                                  bestJumpMove.piece.getCord().getX(),
+                                  bestJumpMove.piece.getCord().getY(),
+                                  bestJumpMove.destination.getX(),
+                                  bestJumpMove.destination.getY(),
+                                  this.color == Color.BLACK ? "black" : "red");
+            }
         }
-        
+
+        System.out.println("Bot I: No jump moves found");
+
         ArrayList<Move> moves = getAllMoves(availableCheckers);
+
         if (!moves.isEmpty()) {
             Move bestMove = selectBestMove(moves);
-            return new GameMove(this.playerId, this.game.getGameID(),
-                              bestMove.piece.getCord().getX(),
-                              bestMove.piece.getCord().getY(),
-                              bestMove.destination.getX(),
-                              bestMove.destination.getY(), "black");
+            if (bestMove != null) {
+                return new GameMove(this.playerId, this.game.getGameID(),
+                                  bestMove.piece.getCord().getX(),
+                                  bestMove.piece.getCord().getY(),
+                                  bestMove.destination.getX(),
+                                  bestMove.destination.getY(),
+                                  this.color == Color.BLACK ? "black" : "red");
+            }
         }
-        
+
+        System.out.println("Bot I: No regular move found: returning null");
+
         return null;
     }
 }
