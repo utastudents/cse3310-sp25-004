@@ -34,7 +34,7 @@ public class BotI extends Bot {
     public BotI(Game game, Color color){
         super();
         this.game = game;
-        this.color = Color.BLACK;
+        this.color = color;
         this.board = game.getBoard().getBoard();
         this.random = new Random();
         this.playerId = -2;
@@ -50,68 +50,23 @@ public class BotI extends Bot {
      //this method checks what move to make, its made strategically, 
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
-    public boolean makeMove(GamePlay gs){
+    public boolean makeMove(GamePlay gp){
+        if (gameEnded) {
+            return false;
+        }
 
-        if(gs != null) {
-            this.board = gs.getBoard();
-        } 
+        GameMove move = finalMove(gp);
+        if (move == null) {
+            return false;
+        }
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //if game ends bot cant make a move
-        if (gameEnded) {
-            return false;
-        }
-
-        
-
-        //checks the available peices 
-        ArrayList<Checker> availableCheckers = getAvailableCheckers(); 
-        if (availableCheckers.isEmpty()) { 
-            return false; 
-        } 
-        
-        //looks for jump moves that capture opponent
-        ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers); 
-        if (!jumpMoves.isEmpty()) { 
-            Move bestJumpMove = selectBestJumpMove(jumpMoves); //picks the best jump option if its available
-            if (bestJumpMove.jumpSequence != null && bestJumpMove.jumpSequence.size() > 2) {
-                for (int i = 0; i < bestJumpMove.jumpSequence.size() - 1; i++) {
-                    Cord start = bestJumpMove.jumpSequence.get(i);
-                    Cord end = bestJumpMove.jumpSequence.get(i + 1);
-                    GameMove move = new GameMove(this.playerId, this.game.getGameID(), start.getX(), start.getY(),
-                                                end.getX(), end.getY(), "black");
-                    PageManager.Gm.processMove(move, gs);
-                    // updateBoard(gs);
-                }
-                return true;
-            } else {
-                GameMove move = new GameMove(this.playerId, this.game.getGameID(), bestJumpMove.piece.getCord().getX(), 
-                                            bestJumpMove.piece.getCord().getY(), bestJumpMove.destination.getX(), 
-                                            bestJumpMove.destination.getY(), "black");
-                PageManager.Gm.processMove(move, gs);
-                // updateBoard(gs);
-                return true;
-            }
-        }
-         
-         //if theres no jump moves,  just look for regular moves
-         ArrayList<Move> moves = getAllMoves(availableCheckers); 
-         if (!moves.isEmpty()) { 
-            //picks the best move for regular moves
-            Move bestMove = selectBestMove(moves); 
-            GameMove move =  new GameMove( this.playerId, this.game.getGameID(), 
-                                    bestMove.piece.getCord().getX(), bestMove.piece.getCord().getY(), 
-                                    bestMove.destination.getX(), bestMove.destination.getY(), "black");
-            PageManager.Gm.processMove(move, gs); 
-            // updateBoard(gs);
-            return true; 
-        } 
-        return false; //if theres no moves at all
+        PageManager.Gm.processMove(move, gp);
+        return true;
     } 
        
     //updates where the peices are on the board
@@ -554,6 +509,38 @@ public class BotI extends Bot {
             this.jumpSequence = jumpSequence;
         } 
     } 
+
+    private GameMove finalMove(GamePlay gp) {
+        // Update the board state
+        if (gp != null) {
+            this.board = gp.getBoard();
+        }
+        
+        // Get available checkers and find best move
+        ArrayList<Checker> availableCheckers = getAvailableCheckers();
+        ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers);
+        
+        if (!jumpMoves.isEmpty()) {
+            Move bestJumpMove = selectBestJumpMove(jumpMoves);
+            return new GameMove(this.playerId, this.game.getGameID(), 
+                              bestJumpMove.piece.getCord().getX(),
+                              bestJumpMove.piece.getCord().getY(),
+                              bestJumpMove.destination.getX(),
+                              bestJumpMove.destination.getY(), "black");
+        }
+        
+        ArrayList<Move> moves = getAllMoves(availableCheckers);
+        if (!moves.isEmpty()) {
+            Move bestMove = selectBestMove(moves);
+            return new GameMove(this.playerId, this.game.getGameID(),
+                              bestMove.piece.getCord().getX(),
+                              bestMove.piece.getCord().getY(),
+                              bestMove.destination.getX(),
+                              bestMove.destination.getY(), "black");
+        }
+        
+        return null;
+    }
 }
     
 
