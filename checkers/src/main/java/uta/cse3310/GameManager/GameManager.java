@@ -79,7 +79,11 @@ public class GameManager {
 
     private void moveWrapper(Player p, Game g) {
         try {
-            p.makeMove(g.getBoard());
+            boolean result = p.makeMove(g.getBoard());
+            if (!result) {
+                // Either bot failed to find valid move or client disconnected - run an auto move
+                throw new Exception("Player returned false - running automatic move");
+            }
         } catch (Exception e) {
             System.out.println(e);
             GameMove fallback = new GameMove(p.getPlayerId(), g.getGameID(), 
