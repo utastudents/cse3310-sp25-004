@@ -50,9 +50,10 @@ public class BotII extends Bot {
                 else if (checker != null && checker.getColor() == Color.BLACK && !checker.isKing()) {
                     ArrayList<Cord> safeMoves = getSafeMoves(checker, board);
                     for (Cord move : safeMoves) {
+                        System.out.println("Saved Move: " + move);
                         if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board) == false) {
                             bestMove = new Move(checker, move);
-                            System.out.println("adding move to man move logic");
+                            System.out.println("adding move to man move logic: " + move);
                         }
                         // else if (bestMove == null && wouldBeInDangerAfterMove(checker, move, board)) {
                         //     bestMove = new Move(checker, move);
@@ -204,14 +205,7 @@ public class BotII extends Bot {
         
     
         // Check all four possible jump directions incase of king pices
-        int[][] directions = {
-            // direction of man pieces relative to our piece
-            {-1, -1},   // bottom-right
-            {1, -1},   // bottom-left
-            // direction of king pieces relative to our piece
-            {-1, 1},   // top-right
-            {1, 1}   // top-left
-        };
+        int[][] directions = {{-1,-1}, {1,-1}, {-1,1}, {1,1}}; // Kings can move all directions
         // created an iterator in order to differentiate the pieces between kings and mans
         int it = 0;
     
@@ -226,8 +220,10 @@ public class BotII extends Bot {
                 // Check if there's an opponent piece that can jump us
                 Checker attacker = board.checkerBoard[attackY][attackX];
                 boolean jumpSpaceEmpty = board.checkerBoard[jumpY][jumpX] == null;
+                System.out.println("Checking: (" + jumpX + ", " + jumpY + ")");
     
                 if (attacker != null && attacker.getColor() == Color.RED && jumpSpaceEmpty && it < 2) {
+                    System.out.println("Attacker: " + attacker.getCord());
                     switch (it) {
                         case 0:
                             attackSide = true;
@@ -280,7 +276,9 @@ public class BotII extends Bot {
 
         // For BLACK pieces, safe moves are backward
         if(checker.getColor() == Color.BLACK) {
-            int[][] moves = {{-1,-1}, {1,-1}, {-1, 1}, {1, 1}}; // all sides
+            int[][] moves = checker.isKing() ? 
+            new int[][]{{-1,-1}, {1,-1}, {-1,1}, {1,1}} : // Kings can move all directions
+            new int[][]{{-1,-1}, {1, -1}}; // Regular pieces move upward only
             
             for(int[] m : moves) {
                 int nx = x + m[0];
@@ -302,8 +300,11 @@ public class BotII extends Bot {
      */
     private static boolean wouldBeInDangerAfterMove(Checker piece, Cord dest, Board board) {
         Checker temp = new Checker(dest, Color.BLACK);
-        System.out.println("Checking...");
-        return isInDanger(temp, board);
+        board.checkerBoard[piece.getCord().getY()][piece.getCord().getX()] = null;
+        boolean inDanger = isInDanger(temp, board);
+        board.checkerBoard[piece.getCord().getY()][piece.getCord().getX()] = piece;
+        System.out.println("Checking...: " + temp.getCord());
+        return inDanger;
     }
 
         /** Utility to check if board coordinates are valid. */
@@ -378,65 +379,6 @@ public class BotII extends Bot {
                board.checkerBoard[destY][destX] == null;
     }
 
-    public void checkMultipleJumps() {
-        // TODO: If multiple jumps are possible, do them
-    }
-    public void moveChecker() {
-        // TODO: Move a non-king piece diagonally one square
-    }
-    public void moveKing() {
-        // TODO: Move a king piece diagonally one square in any direction
-    }
-    public boolean isMoveLegal() {
-        // TODO: Validate if a move is legal
-        return true;
-    }
-    public void waitForOpponent() {
-        // TODO: Wait for opponent to make a move before acting
-    }
-
-    // public static boolean adjustStrategy(Board board) {
-    //     // When the opponent has 3 points more than us, adjustStrategy changes to more offensive
-    //     // TODO: Change strategy based on early, mid, or late game
-    //     // Early: Moving first row pieces?
-    //     // Second: A King comes into play?
-    //     // Late: A select # of pieces left on the board?
-    //     //Board board = game.getBoard().getBoard();
-    //     int myCount = 0;
-    //     int oppCount = 0;
-
-    //     for (int y = 0; y < 8; y++) {
-    //         for (int x = 0; x < 8; x++) {
-    //             Checker c = board.checkerBoard[y][x];
-    //             if (c != null) {
-    //                 if (c.getColor() == botColor) {
-    //                     myCount++;
-    //                 } else {
-    //                     oppCount++;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     // if opponent has 3 or more pieces than us, go aggressive
-    //     beAggressive = oppCount - myCount >= 3;
-
-    //     // (Optional) print for debugging
-    //     System.out.println("BotII strategy: " + (beAggressive ? "Aggressive" : "Defensive"));
-    //     return beAggressive;
-    // }
-
-    public void findOffensiveMove() {
-        // TODO: Decide if it's safe and smart to attack
-    }
-    public boolean isPieceCaptured(int pieceId) {
-        // TODO: Check if a piece has been captured
-        return false;
-    }
-    public void protectBackLine() {
-        // TODO: Avoid moving back row pieces unless necessary to stop other player from getting king pieces
-    }
-
     public static Move makeBestMove (Board board) {
         Move bestMove = null;
         boolean fJump = board.hasJump(Color.BLACK);
@@ -444,10 +386,10 @@ public class BotII extends Bot {
         if (fJump) {
             bestMove = capturePiece(board);
         }
-        // else if (bestMove == null) {
-        //     System.out.println("cannot capture");
-        //     bestMove = defendPieces(board);
-        // }
+        else if (bestMove == null) {
+            System.out.println("cannot capture");
+            bestMove = defendPieces(board);
+        }
         if (bestMove == null) {
             System.out.println("cannot defend");
             bestMove = makeValidMove(board);
@@ -470,7 +412,7 @@ public class BotII extends Bot {
         GameMove move = finalMove(gp);
 
         try {
-            Thread.sleep(1000); // Sleep 100 milliseconds to break the infinite recursion
+            Thread.sleep(750); 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
