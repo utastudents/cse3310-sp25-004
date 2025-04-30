@@ -21,11 +21,11 @@ document.getElementById("signup-btn").onclick = function(e){
 
 
     let valid = true;
-if(username.length < 3){
+if(username.length <= 3){
     document.getElementById("username-error").style.display = "inline";
     valid = false;
 }
-if(password.length < 5){
+if(password.length <= 5){
     document.getElementById("password-error").style.display = "inline";
     valid = false;
 }
