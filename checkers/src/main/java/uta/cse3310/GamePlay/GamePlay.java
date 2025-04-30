@@ -121,28 +121,18 @@ public class GamePlay
                     Cord newPos = possibleJumpsForward.get(cordIndexfwd);
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
-                    if (concurrentJumps(piece) == 1)
-                    {
-                        result=1;
-                    }
-                    else
-                    {
-                        result=2;
-                    }
+                    concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else if (cordIndexbwd != -1)
                 {
                     Cord newPos = possibleJumpsBackward.get(cordIndexbwd);
                     board.removeJumpedChecker(piece, newPos);
                     board.updatePosition(piece, newPos);
-                    if (concurrentJumps(piece) == 1)
-                    {
-                        result=1;
-                    }
-                    else
-                    {
-                        result=2;
-                    }
+                    concurrentJumps(piece);
+
+                    result = 2;
                 }
                 else
                 {
