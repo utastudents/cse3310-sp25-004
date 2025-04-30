@@ -444,10 +444,10 @@ public class BotII extends Bot {
         if (fJump) {
             bestMove = capturePiece(board);
         }
-        // else if (bestMove == null) {
-        //     System.out.println("cannot capture");
-        //     bestMove = defendPieces(board);
-        // }
+        else if (bestMove == null) {
+            System.out.println("cannot capture");
+            bestMove = defendPieces(board);
+        }
         if (bestMove == null) {
             System.out.println("cannot defend");
             bestMove = makeValidMove(board);
