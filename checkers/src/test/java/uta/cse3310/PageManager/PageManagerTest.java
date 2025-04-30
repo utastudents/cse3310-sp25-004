@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.HashMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -34,7 +35,7 @@ public class PageManagerTest
     @BeforeEach
     public void setup()
     {
-        pm.pu = pu;
+        PageManager.pu = pu;
 
         byte[] testSalt1 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         byte[] testSalt2 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -125,7 +126,7 @@ public class PageManagerTest
         assertEquals("joinQueue", response.get("responseID").getAsString());
         assertEquals(1, response.get("MyClientID").getAsInt());
         assertTrue(response.get("inQueue").getAsBoolean(), "inQueue is false for some reason");
-        
+         
     }
 
     @Test
