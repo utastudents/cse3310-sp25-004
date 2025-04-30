@@ -52,19 +52,16 @@ public class BotI extends Bot {
     @Override
     public boolean makeMove(GamePlay gp){
         if (gameEnded) {
+            System.out.println("Bot I didn't move: Game Ended");
             return false;
         }
 
         GameMove move = finalMove(gp);
         if (move == null) {
+            System.out.println("Bot I didn't move: finalMove was null");
             return false;
         }
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        
         PageManager.Gm.processMove(move, gp);
         return true;
     } 
