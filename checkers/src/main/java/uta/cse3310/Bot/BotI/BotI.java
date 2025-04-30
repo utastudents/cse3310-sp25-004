@@ -57,6 +57,12 @@ public class BotI extends Bot {
             return false;
         }
 
+        try {
+            Thread.sleep(750); 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         GameMove move = finalMove(gp);
         if (move == null) {
             System.out.println("Bot I didn't move: finalMove was null");
