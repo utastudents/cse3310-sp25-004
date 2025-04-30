@@ -20,10 +20,10 @@ public class GamePlayTest{
 		var board = new Board();
         
 		assertEquals(true, board.moveForwardCheck(board.checkerBoard[2][3], legal_right));
-        //assertEquals(true, board.moveForwardCheck(board.checkerBoard[3][2], legal_left));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_back_left));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_nonDiagonal));
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], illegal_outOfBound));
+        assertEquals(true, board.moveForwardCheck(board.checkerBoard[2][3], legal_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_back_left));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_nonDiagonal));
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_outOfBound));
 
         // ?? this shouldnt be failing
         // var checker = new Checker(new Cord(4, 3), Color.BLACK);
