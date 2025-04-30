@@ -305,20 +305,28 @@ public class Board
 				{
 					jumpList.add(new Cord(originX-2, originY+2));
 
+					//check for second leftward
 					if ((originX-4 >= 0 && originX-4 < 8) && (originY+4 >= 0 && originY+4 < 8))
 					{
-						if (checkerBoard[originY+3][originX-3] != null && checkerBoard[originY+3][originX-3].getColor() != originColor)
+						if (checkerBoard[originY+4][originX-4] == null)
 						{
-							jumpList.add(new Cord(originX-4, originY+4));
+							if (checkerBoard[originY+3][originX-3] != null && checkerBoard[originY+3][originX-3].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX-4, originY+4));
+							}
 						}
 
 					}
-
-					if ((originX+4 >= 0 && originX+4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+					
+					//check for second rightward
+					if ((originX >= 0 && originX < 8) && (originY+4 >= 0 && originY+4 < 8))
 					{
-						if (checkerBoard[originY+3][originX+3] != null && checkerBoard[originY+3][originX+3].getColor() != originColor)
+						if (checkerBoard[originY+4][originX] == null)
 						{
-							jumpList.add(new Cord(originX+4, originY+4));
+							if (checkerBoard[originY+3][originX+1] != null && checkerBoard[originY+3][originX+1].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX, originY+4));
+							}
 						}
 
 					}
@@ -335,20 +343,28 @@ public class Board
 					jumpList.add(new Cord(originX+2, originY+2));
 				}
 
-				if ((originX-4 >= 0 && originX-4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+				//check for second leftward jump
+				if ((originX >= 0 && originX < 8) && (originY+4 >= 0 && originY+4 < 8))
 				{
-					if (checkerBoard[originY+3][originX-3] != null && checkerBoard[originY+3][originX-3].getColor() != originColor)
+					if (checkerBoard[originY+4][originX] == null)
 					{
-						jumpList.add(new Cord(originX-4, originY+4));
+						if (checkerBoard[originY+3][originX-1] != null && checkerBoard[originY+3][originX-1].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX-4, originY+4));
+						}
 					}
 
 				}
 
+				//check for second rightward jump
 				if ((originX+4 >= 0 && originX+4 < 8) && (originY+4 >= 0 && originY+4 < 8))
 				{
-					if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+					if (checkerBoard[originY+4][originX+4] == null)
 					{
-						jumpList.add(new Cord(originX+4, originY+4));
+						if (checkerBoard[originY+3][originX+3] != null && checkerBoard[originY+3][originX+3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX+4, originY+4));
+						}
 					}
 
 				}
@@ -408,20 +424,28 @@ public class Board
 				{
 					jumpList.add(new Cord(originX-2, originY-2));
 
+					//check for second jump to left
 					if ((originX-4 >= 0 && originX-4 < 8) && (originY-4 >= 0 && originY-4 < 8))
 					{
-						if (checkerBoard[originY-3][originX-3] != null && checkerBoard[originY-3][originX-3].getColor() != originColor)
+						if (checkerBoard[originY-4][originX-4] == null)
 						{
-							jumpList.add(new Cord(originX-4, originY-4));
+							if (checkerBoard[originY-3][originX-3] != null && checkerBoard[originY-3][originX-3].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX-4, originY-4));
+							}
 						}
 
 					}
-
-					if ((originX+4 >= 0 && originX+4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					
+					//check for second jump to the right
+					if ((originX >= 0 && originX < 8) && (originY-4 >= 0 && originY-4 < 8))
 					{
-						if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+						if (checkerBoard[originY-4][originX] == null)
 						{
-							jumpList.add(new Cord(originX+4, originY-4));
+							if (checkerBoard[originY-3][originX-1] != null && checkerBoard[originY-3][originX-1].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX, originY-4));
+							}	
 						}
 
 					}
@@ -436,20 +460,28 @@ public class Board
 				{
 					jumpList.add(new Cord(originX+2, originY-2));
 
-					if ((originX-4 >= 0 && originX-4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					//check for second jump to left
+					if ((originX >= 0 && originX < 8) && (originY-4 >= 0 && originY-4 < 8))
 					{
-						if (checkerBoard[originY-3][originX-3] != null && checkerBoard[originY-3][originX-3].getColor() != originColor)
+						if (checkerBoard[originY-4][originX] == null)
 						{
-							jumpList.add(new Cord(originX-4, originY-4));
+							if (checkerBoard[originY-3][originX+1] != null && checkerBoard[originY-3][originX+1].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX, originY-4));
+							}
 						}
 
 					}
 
+					//check for second jump to the right
 					if ((originX+4 >= 0 && originX+4 < 8) && (originY-4 >= 0 && originY-4 < 8))
 					{
-						if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+						if (checkerBoard[originY-4][originX+4] == null)
 						{
-							jumpList.add(new Cord(originX-4, originY-4));
+							if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+							{
+								jumpList.add(new Cord(originX-4, originY-4));
+							}
 						}
 
 					}
