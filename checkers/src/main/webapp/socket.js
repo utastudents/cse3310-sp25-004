@@ -42,6 +42,7 @@ connection.onopen = function (evt) {
 
 connection.onclose = function (evt) {
     console.log("close");
+    alert("You have disconnected.");
 }
 
 var globalClientID = null;
