@@ -50,7 +50,7 @@ public class BotI extends Bot {
      //this method checks what move to make, its made strategically, 
     // it goes through different checks/options and then makes it decisions, explained below
     @Override
-    public boolean makeMove(GamePlay gp){
+    public boolean makeMove(GamePlay gp){ //TODO: make sure bot moves right after player
         if (gameEnded) {
             return false;
         }
