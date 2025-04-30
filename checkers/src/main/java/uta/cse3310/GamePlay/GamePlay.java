@@ -119,7 +119,7 @@ public class GamePlay
                 if(cordIndexfwd != -1)
                 {
                     Cord pieceCord = piece.getCord();
-                    if(dest.getY() == pieceCord.getY()+4)
+                    if(dest.getY() == pieceCord.getY()-4)
                     {
                         Cord newPos = possibleJumpsForward.get(cordIndexfwd);
                         board.removeJumpedChecker(piece, newPos);
