@@ -455,6 +455,13 @@ button[disabled] {
     text-align: center;
     border-bottom: 1px solid #ddd;
   }
+
+#summary-table th:hover {
+    background-color: #808080;
+    color: #fff;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
   
   #summary-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
