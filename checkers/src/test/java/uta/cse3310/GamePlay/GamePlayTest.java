@@ -26,8 +26,8 @@ public class GamePlayTest{
         assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], illegal_outOfBound));
 
         // ?? this shouldnt be failing
-        // var checker = new Checker(new Cord(4, 3), Color.BLACK);
-        // assertEquals(false, board.moveForwardCheck(board.checkerBoard[3][2], legal_right));
+        board.checkerBoard[3][4] = new Checker(new Cord(4, 3), Color.BLACK);
+        assertEquals(false, board.moveForwardCheck(board.checkerBoard[2][3], legal_right));
 	}
 
     @Test
