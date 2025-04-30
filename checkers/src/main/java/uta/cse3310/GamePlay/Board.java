@@ -304,6 +304,24 @@ public class Board
 				if (checkerBoard[originY+2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY+2));
+
+					if ((originX-4 >= 0 && originX-4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+					{
+						if (checkerBoard[originY+3][originX-3] != null && checkerBoard[originY+3][originX-3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX-4, originY+4));
+						}
+
+					}
+
+					if ((originX+4 >= 0 && originX+4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+					{
+						if (checkerBoard[originY+3][originX+3] != null && checkerBoard[originY+3][originX+3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX+4, originY+4));
+						}
+
+					}
 				}
 			}
 		}
@@ -315,6 +333,24 @@ public class Board
 				if (checkerBoard[originY+2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY+2));
+				}
+
+				if ((originX-4 >= 0 && originX-4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+				{
+					if (checkerBoard[originY+3][originX-3] != null && checkerBoard[originY+3][originX-3].getColor() != originColor)
+					{
+						jumpList.add(new Cord(originX-4, originY+4));
+					}
+
+				}
+
+				if ((originX+4 >= 0 && originX+4 < 8) && (originY+4 >= 0 && originY+4 < 8))
+				{
+					if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+					{
+						jumpList.add(new Cord(originX+4, originY+4));
+					}
+
 				}
 			}
 		}
@@ -371,6 +407,24 @@ public class Board
 				if (checkerBoard[originY-2][originX-2] == null)
 				{
 					jumpList.add(new Cord(originX-2, originY-2));
+
+					if ((originX-4 >= 0 && originX-4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					{
+						if (checkerBoard[originY-3][originX-3] != null && checkerBoard[originY-3][originX-3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX-4, originY-4));
+						}
+
+					}
+
+					if ((originX+4 >= 0 && originX+4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					{
+						if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX+4, originY-4));
+						}
+
+					}
 				}
 			}
 		}
@@ -381,6 +435,24 @@ public class Board
 				if (checkerBoard[originY-2][originX+2] == null)
 				{
 					jumpList.add(new Cord(originX+2, originY-2));
+
+					if ((originX-4 >= 0 && originX-4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					{
+						if (checkerBoard[originY-3][originX-3] != null && checkerBoard[originY-3][originX-3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX-4, originY-4));
+						}
+
+					}
+
+					if ((originX+4 >= 0 && originX+4 < 8) && (originY-4 >= 0 && originY-4 < 8))
+					{
+						if (checkerBoard[originY-3][originX+3] != null && checkerBoard[originY-3][originX+3].getColor() != originColor)
+						{
+							jumpList.add(new Cord(originX-4, originY-4));
+						}
+
+					}
 				}
 			}
 		}
@@ -489,6 +561,30 @@ public class Board
 		else if (origX == destX+2 && origY == destY+2)
 		{
 			deleteChecker(new Cord(destX+1, destY+1));
+		}
+
+		else if (origX == destX+4 && origY == destY+4)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+			deleteChecker(new Cord(destX+3, destY+3));
+		}
+
+		else if (origX == destX-4 && origY == destY-4)
+		{
+			deleteChecker(new Cord(destX-1, destY-1));
+			deleteChecker(new Cord(destX-3, destY-3));
+		}
+
+		else if (origX == destX+4 && origY == destY-4)
+		{
+			deleteChecker(new Cord(destX+1, destY-1));
+			deleteChecker(new Cord(destX+3, destY-3));
+		}
+
+		else if (origX == destX-4 && origY == destY+4)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+			deleteChecker(new Cord(destX+3, destY+3));
 		}
 	}
 	
