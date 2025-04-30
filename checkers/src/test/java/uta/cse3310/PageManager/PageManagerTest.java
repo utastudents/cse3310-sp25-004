@@ -20,6 +20,7 @@ import java.util.HashMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import uta.cse3310.App;
 import uta.cse3310.PairUp.PairUp;
 import uta.cse3310.PairUp.Player;
 
@@ -35,6 +36,8 @@ public class PageManagerTest
     @BeforeEach
     public void setup()
     {
+        App.pmInstance = pm;
+
         PageManager.pu = pu;
 
         byte[] testSalt1 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
