@@ -621,14 +621,30 @@ public class Board
 
 		else if (origX == destX && origY == destY+4)
 		{
-			deleteChecker(new Cord(destX+1, destY+1));
-			deleteChecker(new Cord(destX, destY+3));
+			if (checkerBoard[destX+2][origY+2] == null)
+			{
+				deleteChecker(new Cord(destX+1, destY+1));
+				deleteChecker(new Cord(destX+1, destY+3));
+			}
+			else if (checkerBoard[destX-2][origY+2] == null)
+			{
+				deleteChecker(new Cord(destX-1, destY+1));
+				deleteChecker(new Cord(destX-1, destY+3));
+			}
 		}
 
 		else if (origX == destX && origY == destY-4)
 		{
-			deleteChecker(new Cord(destX+1, destY+1));
-			deleteChecker(new Cord(destX, destY-3));
+			if (checkerBoard[destX+2][origY-2] == null)
+			{
+				deleteChecker(new Cord(destX+1, destY-1));
+				deleteChecker(new Cord(destX+1, destY-3));
+			}
+			else if (checkerBoard[destX-2][origY-2] == null)
+			{
+				deleteChecker(new Cord(destX-1, destY-1));
+				deleteChecker(new Cord(destX-1, destY-3));
+			}
 		}
 	}
 	
