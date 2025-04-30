@@ -21,7 +21,7 @@ document.getElementById("signup-btn").onclick = function(e){
 
 
     let valid = true;
-if(username.length <= 3){
+if(username.length <= 3 || /\s/.test(username) ){
     document.getElementById("username-error").style.display = "inline";
     valid = false;
 }
