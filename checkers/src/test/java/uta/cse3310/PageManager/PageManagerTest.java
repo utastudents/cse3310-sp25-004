@@ -34,7 +34,7 @@ public class PageManagerTest
     @BeforeEach
     public void setup()
     {
-
+        pm.pu = pu;
 
         byte[] testSalt1 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         byte[] testSalt2 = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -43,7 +43,7 @@ public class PageManagerTest
         human1.setELO(1450);
         human1.setWins(8);
         human1.setLosses(7);
-        human1.setStatus(Player.STATUS.IN_GAME);
+        human1.setStatus(Player.STATUS.ONLINE);
 
         HumanPlayer human2 = new HumanPlayer("Johnny", "Pass", testSalt2);
         human2.setELO(1300);
@@ -91,7 +91,7 @@ public class PageManagerTest
                 assertEquals(1450, playerData.get("elo").getAsInt());
                 assertEquals(8, playerData.get("gamesWon").getAsInt());
                 assertEquals(7, playerData.get("gamesLost").getAsInt());
-                assertEquals("IN_GAME", playerData.get("status").getAsString());
+                assertEquals("ONLINE", playerData.get("status").getAsString());
             }
             else if("Johnny".equals(playerData.get("username").getAsString()))
             {
@@ -112,7 +112,7 @@ public class PageManagerTest
     public void joinQueueSuccessTest()
     {
         // Only using Alice for this test
-        /* Not sure what's wrong with the test - everything seems right but the test fails anyway
+
         JsonObject temp = new JsonObject();
         temp.addProperty("playerClientId", 1);
 
@@ -125,14 +125,14 @@ public class PageManagerTest
         assertEquals("joinQueue", response.get("responseID").getAsString());
         assertEquals(1, response.get("MyClientID").getAsInt());
         assertTrue(response.get("inQueue").getAsBoolean(), "inQueue is false for some reason");
-         */
+        
     }
 
     @Test
     public void joinQueueFailureTest()
     {
         // Only using Alice for this test
-        /* Unnecessary stubbing? not sure what that is
+
         JsonObject temp = new JsonObject();
         temp.addProperty("playerClientId", 1);
 
@@ -145,7 +145,7 @@ public class PageManagerTest
         assertEquals("joinQueue", response.get("responseID").getAsString());
         assertEquals(1, response.get("MyClientID").getAsInt());
         assertFalse(response.get("inQueue").getAsBoolean(), "inQueue is true for some reason");
-         */
+         
     }
 
     @Test
