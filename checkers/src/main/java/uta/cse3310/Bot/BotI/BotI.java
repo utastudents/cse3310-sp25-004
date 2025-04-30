@@ -28,6 +28,7 @@ public class BotI extends Bot {
         super();
         this.random = new Random();
         this.playerId = -2;
+        this.color = Color.BLACK;
     } 
 
      //sets up the botn with a specific and color - like red or black
@@ -61,7 +62,7 @@ public class BotI extends Bot {
             System.out.println("Bot I didn't move: finalMove was null");
             return false;
         }
-        
+
         PageManager.Gm.processMove(move, gp);
         return true;
     } 
@@ -92,6 +93,7 @@ public class BotI extends Bot {
         //creates a new list to store our checkers
         ArrayList<Checker> checkers = new ArrayList<>(); 
         if (board == null) { 
+            System.out.println("Bot I: Board is null, returning empty list of checkers");
             return checkers; 
         } 
 
@@ -174,13 +176,14 @@ public class BotI extends Bot {
 	    ArrayList<Move> moves = new ArrayList<>(); 
 
         if (board == null) { //returns empty list if the board is null
+            System.out.println("Bot I: board is null. Returning empty array");
             return moves; 
         } 
 
 
         for (Checker checker : checkers) { 
             //get all possible moves
-             int x = checker.getCord().getX();
+            int x = checker.getCord().getX();
             int y = checker.getCord().getY();
 
             int[][] directions = checker.isKing() ? 
@@ -192,7 +195,10 @@ public class BotI extends Bot {
                 int newY = y + dir[1];
                 
                 if (isValidPosition(newX, newY) && board.checkerBoard[newY][newX] == null) {
+                    System.out.println("Bot I: add valid move");
                     moves.add(new Move(checker, new Cord(newX, newY), false));
+                } else {
+                    System.out.println("Bot I: skip invalid move");
                 }
             } 
         } 
@@ -513,6 +519,8 @@ public class BotI extends Bot {
         // Get available checkers and find best move
         ArrayList<Checker> availableCheckers = getAvailableCheckers();
 
+        System.out.println("Bot I: available checkers: " + availableCheckers.size());
+
         ArrayList<Move> jumpMoves = getAllJumpMoves(availableCheckers);
 
         if (!jumpMoves.isEmpty()) {
@@ -527,6 +535,8 @@ public class BotI extends Bot {
             }
         }
 
+        System.out.println("Bot I: No jump moves found");
+
         ArrayList<Move> moves = getAllMoves(availableCheckers);
 
         if (!moves.isEmpty()) {
@@ -540,6 +550,8 @@ public class BotI extends Bot {
                                   this.color == Color.BLACK ? "black" : "red");
             }
         }
+
+        System.out.println("Bot I: No regular move found: returning null");
 
         return null;
     }
