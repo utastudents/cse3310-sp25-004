@@ -618,6 +618,18 @@ public class Board
 			deleteChecker(new Cord(destX+1, destY+1));
 			deleteChecker(new Cord(destX+3, destY+3));
 		}
+
+		else if (origX == destX && origY == destY+4)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+			deleteChecker(new Cord(destX, destY+3));
+		}
+
+		else if (origX == destX && origY == destY-4)
+		{
+			deleteChecker(new Cord(destX+1, destY+1));
+			deleteChecker(new Cord(destX, destY-3));
+		}
 	}
 	
 	public String toString() {
