@@ -92,5 +92,22 @@ private int getOpponent(int playerID) {
     return (playerID == 1) ? 2 : 1;
 }
 
+// function to check if a player left
+public static int checIfPlayerLeft(Game game) {
+    boolean player1Left = (game.getPlayer1() == null);
+    boolean player2left = (game.getPlayer2() == null);
+
+    if (player1Left && !player2left) {
+        return game.getPlayer2().getPlayerId();
+    } else if (player2left && !player1Left) {
+        return game.getPlayer1().getPlayerId();
+    } else if (player1Left && player2left) {
+        return 0;
+    }
+
+    return -1;
+    
+}
+
 
 }
